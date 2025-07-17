@@ -1,11 +1,20 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CarController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private MeshCollider mC;
+    private NavMeshAgent nMA;
     void Start()
     {
-        
+        if (mC == null)
+        {
+            mC = GetComponent<MeshCollider>();
+        }
+        if (nMA == null)
+        {
+            nMA = GetComponent<NavMeshAgent>();
+        }
     }
 
     // Update is called once per frame
