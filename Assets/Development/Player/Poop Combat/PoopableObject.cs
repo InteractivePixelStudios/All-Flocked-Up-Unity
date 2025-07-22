@@ -1,16 +1,17 @@
 using UnityEngine;
 
-public class PoopableObject : MonoBehaviour
+public class PoopableObject : MonoBehaviour, IPoopable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    //Define damage(stun duration) on hit for poopable objects
+    //We used an enum in unreal to define different types of poopable objects (garbage, NPC, car, bike)
+    //Going to switch to interface for now, but we can change back if not needed
+
+    [SerializeField] private PoopType objectType;
+
+    public void OnPoopHit(PoopType type)
     {
-        
+        Debug.Log($"{objectType} was pooped on with {type.poopName}");
+        //Trigger stun logic here
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
