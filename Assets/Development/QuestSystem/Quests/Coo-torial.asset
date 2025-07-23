@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25da5333b879d2d45a8d16915869372e, type: 3}
+  m_Name: Coo-torial
+  m_EditorClassIdentifier: 
+  questName: Coo-torial
+  questLogDescription: TESTING THE COOTORIAL
+  trackerDescription: TESTING THE COOTORIAL
+  isMainQuest: 1
+  stagesToComplete: 1
+  autoAcceptQuest: 1
+  autoCompleteQuest: 0
+  stages:
+  - stageName: TEST STAGE 1
+    stageDescription: TESTING COOTORIAL STAGE 1
+    objectivesToComplete:
+    - objectiveName: OBJECTIVE 1
+      objectiveDescription: TESTING COOTORIAL OBJECTIVE 1
+      objectiveType: Q_Location
+      objectiveID: 001
+      quantityToComplete: 0
+      isOptional: 0
+      bonusEXP: 0
+    expReward: 0
+    trinketReward: 0
