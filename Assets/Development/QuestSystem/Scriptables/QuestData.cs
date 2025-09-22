@@ -13,6 +13,7 @@ public class QuestData : ScriptableObject
     public string questTitle;
     [TextArea] public string questDescription;
 
-    ObjectiveDetails[] objectives;
+    public ObjectiveDetails[] objectives;
+
   
 }

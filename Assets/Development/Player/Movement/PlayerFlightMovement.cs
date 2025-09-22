@@ -10,22 +10,17 @@ public class PlayerFlightMovement : MonoBehaviour
     bool gliding = true;
 
     [Header("Flight Speeds: ")]
-    [SerializeField]
-    float baseGlideSpeed = 400f;
+    [SerializeField] float baseGlideSpeed = 400f;
+    [SerializeField] float maxDownwardVelocity = -3f;
 
     [Header("Flap Variables: ")]
-    [SerializeField]
-    float flapUpHeight = 5f;
+    [SerializeField] float flapUpHeight = 5f;
 
     [Header("Movement Variables: ")]
-    [SerializeField]
-    float rotateSpeed = 80f;
-    [SerializeField]
-    float glideDownSpeed = 1000f;
-    [SerializeField]
-    float glideDownDropSpeed = 1f;
-    [SerializeField]
-    float stallDownSpeed = .00001f;
+    [SerializeField] float rotateSpeed = 80f;
+    [SerializeField] float glideDownSpeed = 1000f;
+    [SerializeField] float glideDownDropSpeed = 1f;
+    [SerializeField] float stallDownSpeed = .00001f;
 
     float flapUpVelocity;
 
@@ -62,7 +57,10 @@ public class PlayerFlightMovement : MonoBehaviour
     {
         if (isFlying)
         {
-            playerBody.AddForce((Vector3.up * Mathf.Abs(Physics.gravity.y / 2)) * Time.deltaTime, ForceMode.VelocityChange);
+            // add "Gravity" to player
+            playerBody.AddForce((Vector3.down * Mathf.Abs(Physics.gravity.y / 4)) * Time.deltaTime, ForceMode.VelocityChange);
+            // clamp the max downward velocity
+            playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, Mathf.Clamp(playerBody.linearVelocity.y, maxDownwardVelocity, 10000) , playerBody.linearVelocity.z);
             FlightMovement();
             ForwardGlide();
         }

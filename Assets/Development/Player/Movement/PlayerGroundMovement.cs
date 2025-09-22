@@ -15,34 +15,45 @@ public class PlayerGroundMovement : MonoBehaviour
 
     // movement variables
     [Header("Movement Speed: ")]
-    [SerializeField]
-    float moveSpeed = 4500f;
-    [SerializeField]
-    float maxSpeed = 10f;
-    [SerializeField]
-    float crouchSpeed = 4f;
-    [SerializeField]
-    float jumpHeight = 400f;
+    [SerializeField] float moveSpeed = 500f;
+    [SerializeField] float maxSpeed = 4f;
+    [SerializeField] float crouchSpeed = 2f;
+    [SerializeField] float jumpHeight = 150f;
 
     float currentMaxSpeed;
     float currentSpeed;
 
     [Header("Counter Movement: ")]
-    [SerializeField]
-    float counterMovement = 0.175f;
-    [SerializeField]
-    float threshold = 0.01f;
+    [SerializeField] float counterMovement = 0.175f;
+    [SerializeField] float threshold = 0.01f;
+
+    [Header("Step Variables: ")]
+    [SerializeField] GameObject stepRayUpper;
+    [SerializeField] GameObject stepRayLower;
+    [SerializeField] float stepHeight = 0.3f;
+    [SerializeField] float stepSmoothing = 2f;
+    [SerializeField] float stepCastDistance = .2f;
+
+
+    [Header("Other Variables")]
+    [SerializeField] float rotationLerpSpeed = 0.1f;
+
 
     //playerInput
     float x, z;
     bool jumping, crouching;
     bool isJumping = false;
-    public bool isFlying = false;
+    bool isFlying = false;
 
     InputAction moveAction;
     InputAction jumpAction;
 
-    private void Awake() => playerBody = GetComponent<Rigidbody>();
+    private void Awake()
+    { 
+        playerBody = GetComponent<Rigidbody>();
+
+        stepRayUpper.transform.localPosition = new Vector3(stepRayUpper.transform.localPosition.x, stepHeight, stepRayUpper.transform.localPosition.z);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -93,6 +104,9 @@ public class PlayerGroundMovement : MonoBehaviour
 
     void Movement()
     {
+        if (x != 0 || z != 0)
+            StepClimb();
+
         //Set max speed
         float maxSpeed = currentMaxSpeed;
 
@@ -117,11 +131,11 @@ public class PlayerGroundMovement : MonoBehaviour
 
         if (z > 0)
         {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, cameraRef.eulerAngles.y, transform.eulerAngles.z);
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y, rotationLerpSpeed), transform.eulerAngles.z);
         }
         //Apply forces to playerBody
         playerBody.AddForce(transform.forward * z * currentSpeed * Time.deltaTime);
-        playerBody.AddForce(transform.right * x * currentSpeed * Time.deltaTime);
+        playerBody.AddForce(transform.right * x * currentSpeed * Time.deltaTime);      
     }
 
     void Jump()
@@ -187,15 +201,70 @@ public class PlayerGroundMovement : MonoBehaviour
         }
     }
 
+    void StepClimb()
+    {
+        RaycastHit hitLower;
+        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(Vector3.forward), out hitLower, stepCastDistance))
+        {
+            RaycastHit hitUpper;
+            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(Vector3.forward), out hitUpper, stepCastDistance))
+            {
+                playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
+            }
+        }
+
+        RaycastHit hitLower30;
+        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(1f, 0f, 1f), out hitLower30, stepCastDistance))
+        {
+            RaycastHit hitUpper30;
+            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(1f, 0f, 1f), out hitUpper30, stepCastDistance))
+            {
+                playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
+            }
+        }
+
+        RaycastHit hitLowerMinus30;
+        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(-1f, 0f, 1f), out hitLowerMinus30, stepCastDistance))
+        {
+            RaycastHit hitUpperMinus30;
+            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(-1f, 0f, 1f), out hitUpperMinus30, stepCastDistance)) 
+            {
+                playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
+            }
+        }
+
+        RaycastHit hitLower60;
+        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(2f, 0f, 1f), out hitLower60, stepCastDistance))
+        {
+            RaycastHit hitUpper60;
+            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(2f, 0f, 1f), out hitUpper60, stepCastDistance))
+            {
+                playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
+            }
+        }
+
+        RaycastHit hitLowerMinus60;
+        if (Physics.Raycast(stepRayLower.transform.position, transform.TransformDirection(-2f, 0f, 1f), out hitLowerMinus60, stepCastDistance))
+        {
+            RaycastHit hitUpperMinus60;
+            if (!Physics.Raycast(stepRayUpper.transform.position, transform.TransformDirection(-2f, 0f, 1f), out hitUpperMinus60, stepCastDistance))
+            {
+                playerBody.position -= new Vector3(0f, -stepSmoothing * Time.deltaTime, 0f);
+            }
+        }
+    }
+
     public void InitiateFlight()
     {
         isFlying = true;
+        playerBody.useGravity = false;
         playerFlightMovement.InitiateFlight();
     }
 
     public void InitiateWalkState()
     {
         isFlying = false;
+        playerBody.useGravity = true;
     }
 
 }

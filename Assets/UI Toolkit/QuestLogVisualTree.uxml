@@ -1,12 +1,17 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/QuestLogStyle.uss?fileID=7433441132597879392&amp;guid=2d4f88d13da3fc844a3f15a3124e4a39&amp;type=3#QuestLogStyle" />
-    <ui:VisualElement name="UIContainer" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Art/Textures/UI/UI_CUSTOMIZE_background.png?fileID=2800000&amp;guid=6e1ba016afb36ac4ea28a9645aae05ea&amp;type=3#UI_CUSTOMIZE_background&quot;);">
-        <ui:GroupBox style="align-self: flex-start; height: 1072px; width: 1933px;">
-            <ui:Label text="Label" name="QuestName" class="header" style="background-image: none;" />
-            <ui:Label text="Label" name="QuestDescription" class="header" />
-            <ui:Label text="Label" name="Description" class="description" />
-            <ui:ListView />
-            <ui:Foldout text="Foldout" name="Objectives" />
-        </ui:GroupBox>
+    <ui:VisualElement name="UIContainer" style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Art/Textures/UI/UI_CUSTOMIZE_background.png?fileID=2800000&amp;guid=6e1ba016afb36ac4ea28a9645aae05ea&amp;type=3#UI_CUSTOMIZE_background&quot;); width: auto; height: auto;">
+        <ui:VisualElement name="QuestSideContainer" style="flex-grow: 1; width: 559px; height: 1080px; position: absolute; top: -5px; left: 0;">
+            <ui:Label text="Main Quest" name="MainQuestBoxTitle" class="header" style="background-image: none; -unity-text-align: upper-center;" />
+            <ui:ScrollView name="MainQuestBox" style="height: 450px;" />
+            <ui:Label text="Side Quest" name="SideQuestBoxTitle" class="header" style="-unity-text-align: upper-center;" />
+            <ui:ScrollView name="SideQuestBox" style="height: 450px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="QuestInfoContainer" style="flex-grow: 1; flex-direction: column; width: 1377px; height: 1076px; align-items: center; align-self: flex-end; justify-content: space-between; position: absolute; left: 560px; top: 0;">
+            <ui:Label text="Label" name="QuestName" class="header" style="background-image: none; -unity-text-align: upper-center;" />
+            <ui:Label text="Label" name="QuestDescription" class="header" style="-unity-text-align: upper-center; position: absolute; top: 84px; left: 626px;" />
+            <ui:Label text="Label" name="Description" class="description" style="-unity-text-align: upper-center; position: absolute; top: 159px; left: 652px;" />
+            <ui:Foldout text="Foldout" name="Objectives" style="position: absolute; top: 235px; left: 622px;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5285818879667603142
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7260810265770499246}
+  - component: {fileID: 3569887676213852972}
+  m_Layer: 0
+  m_Name: QuestPackage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7260810265770499246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5285818879667603142}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3569887676213852972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5285818879667603142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c70b80277e60bed45be7e8e9d9aa7b01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerCanvas: {fileID: 5240851892648539506, guid: e017759075689f24f8a36b3bfd58f710, type: 3}
+  activeTimerInstance: {fileID: 0}
+  questGiverCanvas: {fileID: 4917639395874850267, guid: a91e25775d4034746bdf0812e2bbf3d6, type: 3}
+  activeGiverInstance: {fileID: 0}
+  questRewardsCanvas: {fileID: 7940219107663976474, guid: c5b1b9e7905306348912e0918e817415, type: 3}
+  activeRewardInstance: {fileID: 0}
+  questTrackerCanvas: {fileID: 6480601528536900819, guid: 135c9e212f0f98c4c9829b9f7564fc26, type: 3}
+  activeTrackerInstance: {fileID: 0}
+  questNotifCanvas: {fileID: 873717643653519133, guid: a3be7adea83eb0f43820cc393121229c, type: 3}
+  activeNotifInstance: {fileID: 0}
+  questLocationNotifCanvas: {fileID: 4503963831914532512, guid: 24b99a15e48635d48acc07d40e807e56, type: 3}
+  activeLocationNotifInstance: {fileID: 0}
+  questLogCanvas: {fileID: 6368815328901718887, guid: a674d11e25a29d04f974d7e292a236f8, type: 3}
+  activeLogInstance: {fileID: 0}
+  dialogueCanvas: {fileID: 0}
+  activeDialogueInstance: {fileID: 0}
+  dialogueResponses: []
+  trashCanvas: {fileID: 0}
+  activeTrashInstance: {fileID: 0}
+  raceGiverCanvas: {fileID: 2793775808448263488, guid: 2e972cc05ee8e234ea34af77b0e573e4, type: 3}
+  raceGiverInstance: {fileID: 0}
+  raceRewardCanvas: {fileID: 1459131974207716007, guid: ae848762e7cc33b419b5866f1bfdc227, type: 3}
+  raceRewardInstance: {fileID: 0}
+  raceFailCanvas: {fileID: 7786899535867227638, guid: b18d349877bd80a448cf558189fe3896, type: 3}
+  raceFailInstance: {fileID: 0}
+  raceCountdownCanvas: {fileID: 218592972201708335, guid: addc7747b14bc29408ffd86801dcbd20, type: 3}
+  activeCountdownInstance: {fileID: 0}

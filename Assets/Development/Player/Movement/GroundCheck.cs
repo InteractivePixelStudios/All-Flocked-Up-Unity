@@ -2,10 +2,8 @@ using UnityEngine;
 
 public class GroundCheck : MonoBehaviour
 {
-    [SerializeField]
-    float checkDistance = 0.2f;
-    [SerializeField]
-    LayerMask groundMask;
+    [SerializeField] float checkDistance = 0.2f;
+    [SerializeField] LayerMask groundMask;
 
     public bool IsGrounded()
     {

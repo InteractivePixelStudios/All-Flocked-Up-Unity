@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25da5333b879d2d45a8d16915869372e, type: 3}
   m_Name: Coo-torial
   m_EditorClassIdentifier: 
-  questName: Coo-torial
+  questName: Coo-Torial
+  questID: Q1
   questLogDescription: TESTING THE COOTORIAL
   trackerDescription: TESTING THE COOTORIAL
   isMainQuest: 1
   stagesToComplete: 1
+  isQuestTimed: 0
+  questTime: 0
   autoAcceptQuest: 1
   autoCompleteQuest: 0
   stages:
@@ -26,9 +29,37 @@ MonoBehaviour:
     - objectiveName: OBJECTIVE 1
       objectiveDescription: TESTING COOTORIAL OBJECTIVE 1
       objectiveType: Q_Location
-      objectiveID: 001
-      quantityToComplete: 0
+      objectiveID: 101
+      quantityToComplete: 1
+      isOptional: 0
+      bonusEXP: 2
+    expReward: 1
+    trinketReward: 0
+  - stageName: TEST STAGE 2
+    stageDescription: TESTING COOTORIAL STAGE 1
+    objectivesToComplete:
+    - objectiveName: OBJECTIVE 2
+      objectiveDescription: 'TESTING COOTORIAL OBJECTIVE 2
+
+'
+      objectiveType: Q_Location
+      objectiveID: 102
+      quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0
-    expReward: 0
+    expReward: 1
+    trinketReward: 0
+  - stageName: TEST STAGE 3
+    stageDescription: TESTING COOTORIAL STAGE 3
+    objectivesToComplete:
+    - objectiveName: OBJECTIVE 3
+      objectiveDescription: 'TESTING COOTORIAL OBJECTIVE 3
+
+'
+      objectiveType: Q_ItemToLocation
+      objectiveID: 103
+      quantityToComplete: 1
+      isOptional: 0
+      bonusEXP: 0
+    expReward: 1
     trinketReward: 0

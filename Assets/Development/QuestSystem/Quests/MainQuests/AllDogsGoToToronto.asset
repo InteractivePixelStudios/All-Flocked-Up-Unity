@@ -12,11 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25da5333b879d2d45a8d16915869372e, type: 3}
   m_Name: AllDogsGoToToronto
   m_EditorClassIdentifier: 
-  questName: 
-  questLogDescription: 
-  trackerDescription: 
-  isMainQuest: 0
-  stagesToComplete: 0
-  autoAcceptQuest: 0
+  questName: All Dogs
+  questID: Q002
+  questLogDescription: All Dogs
+  trackerDescription: All Dogs
+  isMainQuest: 1
+  stagesToComplete: 1
+  isQuestTimed: 1
+  questTime: 30
+  autoAcceptQuest: 1
   autoCompleteQuest: 0
-  stages: []
+  stages:
+  - stageName: All Dogs
+    stageDescription: All Dogs
+    objectivesToComplete:
+    - objectiveName: All Dogs
+      objectiveDescription: All Dogs
+      objectiveType: Q_KillComponent
+      objectiveID: 201
+      quantityToComplete: 1
+      isOptional: 0
+      bonusEXP: 0
+    - objectiveName: All Dogs
+      objectiveDescription: All Dogs
+      objectiveType: Q_InteractComponent
+      objectiveID: 202
+      quantityToComplete: 1
+      isOptional: 0
+      bonusEXP: 0
+    expReward: 0
+    trinketReward: 0
