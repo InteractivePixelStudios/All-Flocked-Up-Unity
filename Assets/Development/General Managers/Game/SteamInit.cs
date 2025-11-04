@@ -10,35 +10,45 @@ public class SteamInit : MonoBehaviour
 
     private void Awake()
     {
+        // Singleton pattern
         if (instance != null)
         {
             Destroy(gameObject);
             return;
         }
-
         instance = this;
         DontDestroyOnLoad(gameObject);
 
+
+        if (Application.isEditor)
+        {
+            Debug.Log("[Steamworks.NET] Skipping Steam init in Editor.");
+            isInitialized = false;
+            return;
+        }
+
         try
         {
+
             if (SteamAPI.RestartAppIfNecessary((AppId_t)480))
             {
+                Debug.Log("[Steamworks.NET] Steam not running, quitting build.");
                 Application.Quit();
                 return;
             }
         }
         catch (System.DllNotFoundException e)
         {
-            Debug.LogError("[Steamworks.NET] Could not find steam_api.dll/so/dylib: " + e);
-            Application.Quit();
+            Debug.LogWarning("[Steamworks.NET] DLL not found: " + e + ". Skipping Steam init.");
+            isInitialized = false;
             return;
         }
 
+        // Initialize Steam API
         isInitialized = SteamAPI.Init();
         if (!isInitialized)
         {
-            Debug.LogError("[Steamworks.NET] SteamAPI_Init() failed. Is Steam running?");
-            Application.Quit();
+            Debug.LogError("[Steamworks.NET] SteamAPI_Init() failed. Steam must be running.");
         }
         else
         {

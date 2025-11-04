@@ -14,6 +14,7 @@ public class UI_MainMenu : MonoBehaviour
     [SerializeField] private Button loadButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button controlsButton;
+    [SerializeField] private Button creditsButton;
     [SerializeField] private Button quitButton;
     private bool settingsOpen;
     private bool controlsOpen;
@@ -32,6 +33,7 @@ public class UI_MainMenu : MonoBehaviour
         loadButton.onClick.AddListener(CheckForSavedGame);
         settingsButton.onClick.AddListener(OnSettingsOpen);
         controlsButton.onClick.AddListener(OnControlsOpen);
+        creditsButton.onClick.AddListener(PlayCredits);
         quitButton.onClick.AddListener(QuitGame);
         canvasController = FindFirstObjectByType<UI_CanvasController>();
         playerRef = FindFirstObjectByType<PlayerFlightMovement>().gameObject;
@@ -70,6 +72,12 @@ public class UI_MainMenu : MonoBehaviour
             controlsCanvas.SetActive(false);
             controlsOpen= false;
         }
+    }
+
+    protected void PlayCredits()
+    {
+        //Needs to either trigger cinematic camera or change scene to a credits scene
+
     }
 
     protected void StartNewGame()
