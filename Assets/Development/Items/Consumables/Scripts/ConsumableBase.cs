@@ -21,6 +21,7 @@ public class ConsumableBase : MonoBehaviour
     //[Header("Health")]
     //[SerializeField] private bool isHealth;
     [SerializeField] PlayerHealth playerHealth;
+    [SerializeField] StaminaSystem playerStamina;
     //[SerializeField] private int healthToRegen;
     //[SerializeField] private int healthToLose;
     //[Header("Stamina")]
@@ -69,21 +70,28 @@ public class ConsumableBase : MonoBehaviour
             case E_ConsumableType.Health:
                 //isHealth = true;
                 playerHealth = playerRef.GetComponent<PlayerHealth>();
+                if (playerHealth.currentHealth <= playerHealth.maxHealth) { playerRef.GetComponent<PlayerWingventory>().AddItemToInv(this.gameObject, 1); }
                 HealEffect(positiveEffectValue, positiveModifier);
                 CheckForReaction();
                 break;
             case E_ConsumableType.Stamina:
-                //isStamina = true;
+                playerStamina = playerRef.GetComponent<StaminaSystem>();
+                //Change me to add to INV
+                //if (playerHealth.currentHealth <= playerHealth.maxHealth) { playerRef.GetComponent<PlayerWingventory>().AddItemToInv(this.gameObject, 1); }
                 StaminaEffect(positiveEffectValue,positiveModifier);
                 CheckForReaction();
                 break;
             case E_ConsumableType.Poop:
                 //isPoop = true;
+                //Change me to add to INV
+                //if (playerHealth.currentHealth <= playerHealth.maxHealth) { playerRef.GetComponent<PlayerWingventory>().AddItemToInv(this.gameObject, 1); }
                 PoopEffect(positiveEffectValue,positiveModifier,canPoop);
                 CheckForReaction();
                 break;
             case E_ConsumableType.Custom:
                 //isCustom = true;
+                //Change me to add to INV
+                //if (playerHealth.currentHealth <= playerHealth.maxHealth) { playerRef.GetComponent<PlayerWingventory>().AddItemToInv(this.gameObject, 1); }
                 CustomEffect(positiveEffectValue,positiveModifier,canFly,canPoop);
                 CheckForReaction();
                 break;
@@ -214,6 +222,12 @@ public class ConsumableBase : MonoBehaviour
     private void FlySpeedEffect(float flySpeed)
     {
 
+    }
+
+    public void UseConsumable()
+    {
+        ConsumableEffect(consumableType);
+        Destroy(gameObject);
     }
     
 }

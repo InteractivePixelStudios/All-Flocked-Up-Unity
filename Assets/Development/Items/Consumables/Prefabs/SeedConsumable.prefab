@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6843758195919811795}
+  - component: {fileID: -3512274495849934887}
   - component: {fileID: 2891308119320294778}
   - component: {fileID: 9074522639577750593}
   - component: {fileID: 5901621302428895277}
@@ -37,6 +38,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-3512274495849934887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300902396776574876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca212caab0f3852438d2c0ed5273dd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  itemName: Seed
+  itemDescription: 100% Organic ;)
+  cost: 1
 --- !u!114 &2891308119320294778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54,24 +71,14 @@ MonoBehaviour:
   consumableType: 0
   hasReaction: 0
   reactionType: 0
-  isHealth: 0
+  positiveEffectValue: 0
+  positiveModifier: 0
+  negativeEffectValue: 0
+  negativeModifier: 0
   playerHealth: {fileID: 0}
-  healthToRegen: 0
-  healthToLose: 0
-  isStamina: 0
-  staminaToRegen: 0
-  staminaToLose: 0
-  isPoop: 0
-  poopToRegen: 0
-  poopToLose: 0
-  isCustom: 0
-  healthModifier: 0
-  staminaModifier: 0
-  poopModifier: 0
-  groundSpeedModifier: 0
+  playerStamina: {fileID: 0}
   canFly: 0
   canPoop: 0
-  flightSpeedModifier: 0
   consumableParticles: {fileID: 0}
 --- !u!33 &9074522639577750593
 MeshFilter:

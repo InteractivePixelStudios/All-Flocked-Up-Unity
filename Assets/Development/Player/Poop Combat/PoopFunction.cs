@@ -25,14 +25,15 @@ public class PoopFunction : MonoBehaviour
         }
     }
 
-    public void FirePoop(Vector3 target)
+    //Update to accept pigeon velocity - JK Oct23
+    public void FirePoop(Vector3 target, Vector3 playerVelocity)
     {
         if (projectilePool.Count > 0)
         {
             var projectile = projectilePool.Dequeue();
             projectile.transform.position = spawnPoint.position;
             projectile.gameObject.SetActive(true);
-            projectile.Launch(target, currentPoopType, this);
+            projectile.Launch(target, currentPoopType, this, playerVelocity);
         }
     }
 

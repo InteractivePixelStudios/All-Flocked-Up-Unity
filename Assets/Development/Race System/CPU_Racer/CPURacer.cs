@@ -1,15 +1,13 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.Experimental.GraphView;
-using Unity.VisualScripting;
-using System.Net;
+
 
 public class CPURacer : MonoBehaviour 
 {
     public List<RaceCheckpoint> targetLocation;
     public int index;
+    public int totalCheckpoints;
     [SerializeField] private RaceCheckpoint currentLocation;
     [SerializeField] private RaceBase raceBase;
     [SerializeField] private NavMeshAgent navAgentComponent;
@@ -63,25 +61,21 @@ public class CPURacer : MonoBehaviour
 
         }
 
-        if(index > targetLocation.Count)
+        if(index > targetLocation.Count-1)
         {
             //Set placing in race finish
+            StopMoving();
         }
     }
 
     //sets the location to move to
     public void SetMoveToLocation(int index)
     {
-        for(int num = index; num < targetLocation.Count;num++)
+        int num;
+        for (num = index; num < targetLocation.Count;num++)
         {
-           // Debug.Log(targetLocation[num].name); Debug.Log(currentLocation);
+            // Debug.Log(targetLocation[num].name); Debug.Log(currentLocation);
             MoveToLocation(targetLocation[num]);
-
-
-        }
-        if(index > targetLocation.Count)
-        {
-            Debug.Log("Racer Finished");
         }
 
     }
@@ -91,7 +85,14 @@ public class CPURacer : MonoBehaviour
 
         navAgentComponent.SetDestination(currentLocation.transform.position);
     }
-
+    //Stops nav agent movement
+    private void StopMoving()
+    {
+        navAgentComponent.isStopped = true;
+        navAgentComponent.speed = 0;
+        //says obsolete...it lies...it works... actually setting isStopped only stops movement and doesnt cancel velocity LOL...why unity
+        navAgentComponent.Stop();
+    }
     public void NextCheckpoint()
     {
         index += 1 ;
@@ -163,7 +164,7 @@ public class CPURacer : MonoBehaviour
     //gets the checkpoints for the race and orders them
     private void GetCheckpoints()
     {
-        raceBase.activeCheckpoints.ForEach(checkpoint => { targetLocation.Add(checkpoint); });
+        raceBase.activeCheckpoints.ForEach(checkpoint => { targetLocation.Add(checkpoint); totalCheckpoints++; });
     }
     //Sets the racer stats to global current variables
     private void SetRacerStats()

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using System.Linq;
 
 //this is what holds all of the race info... to create a race, create>scriptableObjects>races and make a race data
 //then fill in info
@@ -48,8 +49,8 @@ public class RaceData : ScriptableObject
             }
 
         }
-        startLine.SetRotationToCheckpoint(checkpointSpawns[0]);
-        Debug.Log(startLine);
+        startLine.SetRotationToCheckpoint(checkpointSpawns.LastOrDefault());
+        //Debug.Log(startLine);
         return startLine;
 
     }

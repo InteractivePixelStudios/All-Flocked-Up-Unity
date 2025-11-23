@@ -39,11 +39,12 @@ public class UI_RaceFail : MonoBehaviour
     {
         Destroy(this.gameObject);
         race.ResetRace();
-        
+
     }
 
     private void CloseRace()
     {
        Destroy(this.gameObject);
+        race.StartPlayerMove();
     }
 }

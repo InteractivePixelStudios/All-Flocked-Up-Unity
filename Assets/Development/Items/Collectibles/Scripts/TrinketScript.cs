@@ -11,12 +11,12 @@ public class TrinketScript : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerRef = other.gameObject;
-            CollectTrinket();
+            CollectTrinket(value);
         }
     }
 
-    private void CollectTrinket()
+    private void CollectTrinket(int amt)
     {
-        //Add when trinket & inv complete
+        playerRef.GetComponent<PlayerWingventory>().AddTrinketToInv(amt);
     }
 }

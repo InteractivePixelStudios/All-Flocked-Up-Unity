@@ -21,8 +21,7 @@ public class UI_RaceReward: MonoBehaviour
 
     [SerializeField] private ScrollRect nameTextBox;
     [SerializeField] private ScrollRect timeTextBox;
-    [SerializeField]private float offset = 0.2f;
-    [SerializeField]private float startY = 0f;
+
     [SerializeField] private float currentY = 0f;
 
     [SerializeField] private GameObject textPrefab;
@@ -35,40 +34,39 @@ public class UI_RaceReward: MonoBehaviour
         acceptRewardButton.onClick.AddListener(AcceptReward);
         raceBase = FindFirstObjectByType<RaceBase>();
         GetReward();
-        Task.Delay(2000);
         UpdateStandings();
-        //UpdateRaceBestTime();
+        UpdateRaceBestTime();
+
     }
 
-    private void Update()
-    {
-        if (racerList.Count > 3) offset = 0.15f;
-    }
     public void GetRaceStandings(GameObject racer,float time)
     {
-        racerList.Add(racer,time);
-        Debug.Log("AddedToDictionary");
+        if (!racerList.ContainsKey(racer))
+        {
+            racerList.Add(racer, time);
+            Debug.Log($"Added {racer.name} to dictionary");
+        }
     }
 
     private void UpdateStandings()
     {
-        foreach(var racer in racerList)
+        float startY = -40f;
+        float offset = racerList.Count > 3 ? 40f : 20f;
+
+        foreach (var racer in racerList)
         {
-            int i = 0;
-            CreateRacerText(racerList.ElementAt(i).ToString(),0f,offset);
-            CreateTimeText(racerList.ElementAt(i).Key.ToString(),0f,offset);
-            i++;
+            Debug.Log(racer.Key.name);
+            CreateRacerText(racer.Key.name, startY, offset);
+            CreateTimeText(racer.Value.ToString(), startY, offset);
+            startY -= offset;
         }
     }
 
     // Update is called once per frame
     public void GetReward()
     {
-
-            Debug.Log("RewardInfo");
             raceNameText.SetText(raceBase.raceData.raceName);
-            raceRewardText.SetText(raceBase.raceData.raceRewards.ToString());
-        
+            raceRewardText.SetText(raceBase.raceData.raceRewards.ToString()); 
     }
     //compares best race time with given and updates if faster
     private void UpdateRaceBestTime()
@@ -87,6 +85,7 @@ public class UI_RaceReward: MonoBehaviour
         Destroy(raceBase.currentRaceGiver.GetComponent<RaceGiver>());
         GiveRaceRewards();
         Destroy(this.gameObject);
+        raceBase.StartPlayerMove();
     }
 
     private TextMeshProUGUI CreateRacerText(string text, float startY, float offset)
@@ -119,8 +118,9 @@ public class UI_RaceReward: MonoBehaviour
 
     private TextMeshProUGUI CreateTimeText(string racerTime,float startY, float offset)
     {
-        TextMeshProUGUI timeText = timeTextBox.AddComponent<TextMeshProUGUI>();
-        RectTransform textTransform = timeText.GetComponent<RectTransform>();
+        GameObject textObject = Instantiate(textPrefab, timeTextBox.content);
+        TextMeshProUGUI timeText = textObject.GetComponent<TextMeshProUGUI>();
+        RectTransform textTransform = textObject.GetComponent<RectTransform>();
 
         SetTimeTextTransform(textTransform, startY, offset);
         SetTimeText(timeText, racerTime);

@@ -9,8 +9,11 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask dialogueLayer;
     public LayerMask trashLayer;
     public LayerMask raceLayer;
+    public LayerMask nestLayer;
+    public LayerMask shopLayer;
     public QuestLog questLog; // assign in Inspector
     public UI_CanvasController canvasController;
+    public bool gamePaused;
 
     void Update()
     {
@@ -69,6 +72,20 @@ public class PlayerInteraction : MonoBehaviour
                     Debug.Log(hit.ToString() + "RaceGiver");
                 }
             }
+
+
+            if (Physics.Raycast(transform.position, transform.forward, out hit, interactionRange, nestLayer))
+            {
+                var nestObj = hit.collider.GetComponentInParent<NestBase>();
+                nestObj?.InteractWithNest();
+            }
+
+            if (Physics.Raycast(transform.position, transform.forward, out hit, interactionRange, shopLayer))
+            {
+                var shopObj = hit.collider.GetComponentInParent<ShopLocation>();
+                var box = hit.collider as BoxCollider ?? hit.collider.GetComponentInParent<BoxCollider>();
+                shopObj?.InteractWithShop(box);
+            }
         }
         //TAB for quest log...will change this later to new input system
        else if (Input.GetKeyDown(KeyCode.Tab))
@@ -83,10 +100,75 @@ public class PlayerInteraction : MonoBehaviour
 
         
         RaycastHit lookHit;
-        if (Physics.Raycast(transform.position, transform.forward, out lookHit, 6f, npcLayer))
+        if (Physics.Raycast(transform.position, transform.forward, out lookHit, interactionRange, npcLayer))
         {
             var questNPC = lookHit.collider.GetComponentInParent<IQuestInteraction>();
             questNPC?.LookAtNPC();
         }
+
+        else if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (canvasController.activeWingventory== null)
+            {
+                Debug.Log("QuestLog Opened?");
+                canvasController.OpenWingventory();
+            }
+            else canvasController.CloseWingventory();
+        }
+
+        else if (Input.GetKeyDown(KeyCode.O))
+        {
+            if (!gamePaused && canvasController.activePauseMenu == null)
+            {
+                Debug.Log("GamePaused?");
+                canvasController.PauseGame();
+            }
+            else canvasController.ResumeGame();
+        }
+
+        else if (Input.GetKeyDown(KeyCode.F10))
+        {
+            if(canvasController.activeBugReporter == null)
+            {
+                canvasController.OpenBugReporter();
+                Debug.Log("BugReporterOpened");
+            }
+            else
+            {
+                canvasController.CloseBugReporter();
+                Debug.Log("BugReporterClosed");
+            }
+
+        }
+
+        else if (Input.GetKeyDown(KeyCode.F9))
+        {
+            if(canvasController.activeBugReporter == null)
+            {
+                canvasController.OpenDebugMenu();
+                Debug.Log("DebugMenuOpened");
+            }
+            else
+            {
+                canvasController.CloseDebugMenu();
+                Debug.Log("DebugMenuClosed");
+            }
+        }
+
+        else if (Input.GetKeyDown(KeyCode.M))
+        {
+            if(canvasController.activeMapCanvas == null)
+            {
+                canvasController.OpenMainMap();
+                Debug.Log("MapOpened");
+            }
+            else
+            {
+                canvasController.CloseMainMap();
+                Debug.Log("MapClosed");
+            }
+        }
+
+
     }
 }

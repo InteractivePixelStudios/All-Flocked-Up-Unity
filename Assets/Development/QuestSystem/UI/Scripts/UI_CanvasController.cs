@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UI_CanvasController : MonoBehaviour
@@ -43,18 +45,44 @@ public class UI_CanvasController : MonoBehaviour
     [Header("RaceCanvas")]
     [SerializeField] private UI_RaceGiver raceGiverCanvas;
     public UI_RaceGiver raceGiverInstance;
-
     [SerializeField] private UI_RaceReward raceRewardCanvas;
     public UI_RaceReward raceRewardInstance;
-    public Dictionary<GameObject, float> standings = new Dictionary<GameObject, float>();
-   
-
+    public Dictionary<GameObject, float> standings = new();
     [SerializeField] private UI_RaceFail raceFailCanvas;
     public UI_RaceFail raceFailInstance;
-
     [SerializeField] private UI_RaceCountdown raceCountdownCanvas;
     public UI_RaceCountdown activeCountdownInstance;
+    [Header("Wingventory")]
+    [SerializeField] private WingventoryCanvas wingventoryCanvas;
+    public WingventoryCanvas activeWingventory;
+    [Header("NestMenu")]
+    [SerializeField] private UI_NestMenu nestMenuCanvas;
+    public UI_NestMenu activeNestInstance;
+    [Header("ShopUI")]
+    [SerializeField] private ShopConfirmUI shopUICanvas;
+    public ShopConfirmUI activeShopCanvas;
+    public ShopLocation shopLocationRef;
+    [Header("MainMenu")]
+    [SerializeField] private UI_MainMenu mainMenuCanvas;
+    public UI_MainMenu activeMainMenu;
+    public Transform mainMenuSpawnPoint;
+    [Header("PauseMenu")]
+    [SerializeField] private UI_PauseMenu pauseMenuCanvas;
+    public UI_PauseMenu activePauseMenu;
+    [Header("BugReporter")]
+    [SerializeField] private UI_BugReporter bugReporterCanvas;
+    public UI_BugReporter activeBugReporter;
+    [Header("DebugMenu")]
+    [SerializeField] private UI_DebugMenu debugMenuCanvas;
+    public UI_DebugMenu activeDebugMenu;
+    [Header("MainMap")]
+    [SerializeField] private UI_MainMap mainMapCanvas;
+    public UI_MainMap activeMapCanvas;
 
+    private void Start()
+    {
+        SpawnMainMenu();
+    }
     //cursor on
     public void ShowPlayerCursor()
     {
@@ -249,6 +277,7 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenRaceRewards()
     {
         raceRewardInstance = Instantiate(raceRewardCanvas);
+        SendStandings();
         ShowPlayerCursor();
     }
     //race rewards canvas
@@ -259,6 +288,7 @@ public class UI_CanvasController : MonoBehaviour
             Destroy(raceRewardInstance);
             raceRewardInstance = null;
             HidePlayerCursor();
+            
         }
     }
     //race fail canvas
@@ -286,14 +316,179 @@ public class UI_CanvasController : MonoBehaviour
 
     public void CollectRaceStandings(GameObject racer, float time)
     {
-        standings.Add(racer, time);
+        if (!standings.ContainsKey(racer))
+        {
+            standings.Add(racer, time);
+            Debug.Log("Added to CC");
+        }
         //raceRewardInstance.racerList.Add
     }
 
     public void SendStandings()
     {
 
-        raceRewardInstance.racerList.Equals(standings);
+        foreach(var racer in  standings)
+        {
+            raceRewardInstance.GetRaceStandings(racer.Key, racer.Value);
+        }
+            
+    }
+
+    public void OpenWingventory()
+    {
+        activeWingventory = Instantiate(wingventoryCanvas);
+        ShowPlayerCursor();
+    }
+
+    public void CloseWingventory()
+    {
+        if(activeWingventory != null)
+        {
+            Destroy(activeWingventory);
+            activeWingventory = null;
+            HidePlayerCursor();
+        }
+    }
+
+    public void OpenNestMenu()
+    {
+        activeNestInstance = Instantiate(nestMenuCanvas);
+        activeNestInstance.canvasController = this; 
+        ShowPlayerCursor();
+    }
+
+    public void CloseNestMenu()
+    {
+        if(activeNestInstance != null)
+        {
+            Destroy(activeNestInstance);
+            activeNestInstance = null;
+            HidePlayerCursor();
+        }
+
+    }
+
+    public void OpenShopUI(ShopItem item)
+    {
+        activeShopCanvas = Instantiate(shopUICanvas);
+        activeShopCanvas.currentItem = item;
+        activeShopCanvas.canvasController = this;
+        ShowPlayerCursor();
+    }
+
+    public void CloseShopUI()
+    {
+        if(shopUICanvas != null)
+        {
+            Destroy(activeShopCanvas);
+            activeShopCanvas = null;
+            HidePlayerCursor();
+        }
+    }
+
+    public void PauseGame()
+    {
+        if(activePauseMenu== null)
+        {
+            activePauseMenu =Instantiate(pauseMenuCanvas);
+            ShowPlayerCursor() ;
+            Time.timeScale = 0;
+            
+        }
+    }
+
+    public void ResumeGame()
+    {
+        if(activePauseMenu!= null)
+        {
+            Time.timeScale = 1;
+            activePauseMenu.ClosePauseUI();
+            Destroy(activePauseMenu);
+            activePauseMenu = null;
+            HidePlayerCursor() ;
+        }
+    }
+
+    public void SpawnMainMenu()
+    {
+        if (activeMainMenu == null)
+        {
+            activeMainMenu = Instantiate(mainMenuCanvas,mainMenuSpawnPoint);
+            ShowPlayerCursor();
+            Debug.Log("Spawned");
+        }
+        Debug.Log("Called");
+    }
+
+    public void DestroyMainMenu()
+    {
+        if(activeMainMenu != null)
+        {
+            Destroy(activeMainMenu);
+            activeMainMenu = null;
+            HidePlayerCursor();
+        }
+    }
+
+    public void OpenBugReporter()
+    {
+        if (activeBugReporter == null)
+        {
+            activeBugReporter = Instantiate(bugReporterCanvas);
+            ShowPlayerCursor();
+            Time.timeScale = 0;
+        }
+    }
+
+    public void CloseBugReporter()
+    {
+        if(activeBugReporter != null)
+        {
+            Destroy(activeBugReporter);
+            activeBugReporter = null;
+            HidePlayerCursor();
+            Time.timeScale = 1;
+        }
+    }
+
+    public void OpenDebugMenu()
+    {
+        if(activeDebugMenu == null)
+        {
+            activeDebugMenu = Instantiate(debugMenuCanvas);
+            ShowPlayerCursor();
+        }
+    }
+
+    public void CloseDebugMenu()
+    {
+        if(activeDebugMenu != null)
+        {
+            Destroy(activeDebugMenu);
+            activeDebugMenu = null;
+            HidePlayerCursor();
+        }
+    }
+
+    public void OpenMainMap()
+    {
+        if(activeMapCanvas == null)
+        {
+            activeMapCanvas = Instantiate(mainMapCanvas);
+            ShowPlayerCursor();
+            Time.timeScale = 0;
+        }
+    }
+
+    public void CloseMainMap()
+    {
+        if(activeMapCanvas != null)
+        {
+            Destroy(activeMapCanvas.gameObject);
+            activeMapCanvas = null;
+            HidePlayerCursor();
+            Time.timeScale = 1;
+        }
     }
 
 }

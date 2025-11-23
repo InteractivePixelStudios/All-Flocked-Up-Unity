@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PoopProjectile : MonoBehaviour
@@ -19,17 +20,27 @@ public class PoopProjectile : MonoBehaviour
 
     private float lifeTimer;
 
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    public void Launch(Vector3 target, PoopType type, PoopFunction functionSource)
+    public void Launch(Vector3 target, PoopType type, PoopFunction functionSource, Vector3 playerVelocity)
     {
         poopType = type;
         source = functionSource;
-        Vector3 direction = (target = transform.position).normalized; // Calculate direction to target
-        rb.linearVelocity = direction * speed; //remember to update logic to be half player speed
+
+        Vector3 direction = (target - transform.position).normalized;
+
+        float launchSpeed = playerVelocity.magnitude * 0.5f; // Launch speed is half the player's speed
+
+        if (launchSpeed <= 0.1f)
+        {
+            launchSpeed = speed; // Fallback to default speed if player is stationary
+        }
+
+        rb.linearVelocity = direction * launchSpeed;
         lifeTimer = maxLifetime; // Reset lifetime timer
     }
 

@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7780446952010763403}
+  - component: {fileID: 4382811627409917156}
   - component: {fileID: 2792325253372394076}
   - component: {fileID: 3339651685778319831}
   - component: {fileID: 3500975039304132011}
@@ -32,11 +33,27 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.17108, y: 0, z: 13.49822}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4382811627409917156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3943473761783896074}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca212caab0f3852438d2c0ed5273dd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 0}
+  itemName: Bean
+  itemDescription: DRANKIN BEANSSSSSS
+  cost: 1
 --- !u!114 &2792325253372394076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54,24 +71,14 @@ MonoBehaviour:
   consumableType: 0
   hasReaction: 0
   reactionType: 0
-  isHealth: 0
+  positiveEffectValue: 0
+  positiveModifier: 0
+  negativeEffectValue: 0
+  negativeModifier: 0
   playerHealth: {fileID: 0}
-  healthToRegen: 0
-  healthToLose: 0
-  isStamina: 0
-  staminaToRegen: 0
-  staminaToLose: 0
-  isPoop: 0
-  poopToRegen: 0
-  poopToLose: 0
-  isCustom: 0
-  healthModifier: 0
-  staminaModifier: 0
-  poopModifier: 0
-  groundSpeedModifier: 0
+  playerStamina: {fileID: 0}
   canFly: 0
   canPoop: 0
-  flightSpeedModifier: 0
   consumableParticles: {fileID: 0}
 --- !u!33 &3339651685778319831
 MeshFilter:

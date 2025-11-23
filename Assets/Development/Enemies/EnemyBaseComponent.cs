@@ -17,7 +17,7 @@ public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
 
     void Update()
     {
-       if( Input.GetKey(KeyCode.I))
+       if( Input.GetKey(KeyCode.P))
         {
          TakeDamage(currentHealth);
         }

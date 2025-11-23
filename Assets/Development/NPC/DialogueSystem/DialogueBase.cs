@@ -1,14 +1,10 @@
 using System;
-using UnityEditor.Experimental.GraphView;
+
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using System.Collections.Generic;
-using JetBrains.Annotations;
-using System.Linq;
-using Unity.Mathematics;
 using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 
 public class DialogueBase : MonoBehaviour
 {

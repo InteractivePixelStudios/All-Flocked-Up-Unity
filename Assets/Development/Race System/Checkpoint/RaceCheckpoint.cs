@@ -34,7 +34,7 @@ public class RaceCheckpoint : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //this triggers early ....why me....activeCheckpoints get removed when hit so try to save count on Start but still nothing
-        if (checkpointNumber >= num)raceBase.AddRacerToCompleted(other.gameObject);
+        if (checkpointNumber >= num)raceBase.AddRacerToCompleted(other.gameObject, this);
 
         if (other.gameObject.CompareTag("Player"))
         {
