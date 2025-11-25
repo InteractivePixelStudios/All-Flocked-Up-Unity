@@ -26,7 +26,7 @@ public class Audio_PlayerFootstepSurfaceDetection : MonoBehaviour // REMINDER - 
             if (surfaceComponent != null)
             {
                 surfaceType = surfaceComponent.surface;
-                Debug.Log("Detected surface type: " + surfaceType.ToString());
+                //Debug.Log("Detected surface type: " + surfaceType.ToString());
             }
         }
 
