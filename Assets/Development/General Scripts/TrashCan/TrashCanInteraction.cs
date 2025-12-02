@@ -12,6 +12,7 @@ public class TrashCanInteraction : MonoBehaviour
     [SerializeField] private UI_CanvasController canvasController;
 
     [SerializeField] private int regenAmt;
+    [SerializeField] private int poopRegen;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -71,7 +72,8 @@ public class TrashCanInteraction : MonoBehaviour
         {
             looted = true;
             ToggleParticles(looted);
-            FillPlayerStats();
+            FillPlayerPoop();
+            CloseUI();
         }
     }
 
@@ -82,6 +84,7 @@ public class TrashCanInteraction : MonoBehaviour
             looted = true;
             ToggleParticles(looted);
             FillPlayerStats();
+            CloseUI();
         }
     }
 
@@ -106,6 +109,22 @@ public class TrashCanInteraction : MonoBehaviour
     private void FillPlayerStats()
     {
         playerRef.GetComponent<PlayerHealth>().Heal(regenAmt);
+        playerRef.GetComponent<StaminaSystem>().RegenStamina() ;
+    }
+
+    private void FillPlayerPoop()
+    {
+        playerRef.GetComponent<PlayerHealth>().Heal(regenAmt);
+        playerRef.GetComponent<PoopSystem>().GainPoop(poopRegen);
+    }
+
+    private void CloseUI()
+    {
+        if (this != null)
+        {
+            ShowPlayer();
+            Destroy(this.gameObject);
+        }
     }
 
     

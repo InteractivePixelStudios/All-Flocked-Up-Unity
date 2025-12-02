@@ -23,7 +23,7 @@ public class S_DayNightCycle : MonoBehaviour
     public event Action OnDayStart;
     public event Action OnNightStart;
     
-    private bool isDay = false;
+    public bool isDay = false;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

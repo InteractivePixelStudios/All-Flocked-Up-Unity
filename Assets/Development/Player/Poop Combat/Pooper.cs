@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,13 +19,17 @@ public class Pooper : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction aimAction;
     private InputAction poopAction;
+    private GameObject player;
 
-    #region Setup & Init
+    float spinTime = 0f;
+    float spinDuration = 1f;
+
+    // #region Setup & Init
 
     //Switching to new input system - JK Oct/23
-    private void Awake()
+    private void Start()
     {
-        playerInput = GetComponent<PlayerInput>();
+        playerInput = GetComponentInParent<PlayerInput>();
         Debug.Log($"PlayerInput: {playerInput != null}");
 
         //Set up input actions
@@ -42,7 +47,15 @@ public class Pooper : MonoBehaviour
             poopAction.performed += OnPoopPerformed;
         }
     }
-        private void OnDestroy()
+
+    private void Update()
+    {
+        if (spinTime < spinDuration)
+        {
+            spinTime += Time.deltaTime;
+        }
+    }
+    private void OnDestroy()
     {
         //Unsubscribe from input action events
         aimAction.started -= OnAimStarted;
@@ -50,12 +63,16 @@ public class Pooper : MonoBehaviour
         poopAction.performed -= OnPoopPerformed;
     }
 
-    #endregion
+    //#endregion
     #region Input Callbacks
     private void OnAimStarted(InputAction.CallbackContext ctx)
     {
         isAiming = true;
         Debug.Log("Aiming started");
+        Quaternion start = transform.rotation;
+        Quaternion end = Quaternion.Euler(0f, transform.eulerAngles.y + 180f, 0f);
+
+        transform.rotation = Quaternion.Slerp(start,end,spinTime);
         //Show aiming UI here if needed
     }
 
@@ -63,6 +80,9 @@ public class Pooper : MonoBehaviour
     {
         isAiming = false;
         Debug.Log("Aiming canceled");
+        Quaternion start = transform.rotation;
+        Quaternion end = Quaternion.Euler(0f, transform.eulerAngles.y - 180f, 0f);
+        transform.rotation = Quaternion.Slerp(start, end, spinTime);
         //Hide aiming UI here if needed
     }
 
@@ -78,42 +98,10 @@ public class Pooper : MonoBehaviour
 
     #endregion
 
-    ////We should probably use the new input system for better control, but for not using old input system
-    //private void Update()
-    //{
-    //    HandleAimInput();
-
-    //    if (isAiming)
-    //    {
-    //        //arcRenderer.ShowArc();
-
-    //        if(Input.GetMouseButtonDown(0)) //Left click to poop
-    //        {
-    //            TryPooping();
-    //        }
-    //        else
-    //        {
-    //            //arcRenderer.HideArc();
-    //        }
-    //    }
-    //}
-
-    //private void HandleAimInput()
-    //{
-    //    if (Input.GetMouseButtonDown(1)) //Right click
-    //    {
-    //        isAiming = true;
-    //        //show UI reticle or similar aiming UI - temp code added for Arc Renderer above
-    //    }
-
-    //    if (Input.GetMouseButtonUp(1))
-    //    {
-    //        isAiming = false;
-    //    }
-    //}
 
     private void TryPooping()
     {
+        Debug.Log("PoopCalled");
         if (poopSystem.TryPoop())
         {
             Vector3 target = GetTarget();
@@ -121,6 +109,7 @@ public class Pooper : MonoBehaviour
             //Get player velocity from pigeon rigidbody
             Vector3 playerVelocity = pigeon.linearVelocity;
             poopFunction.FirePoop(target, playerVelocity);
+            Debug.Log("Pooping");
         }
     }
 
@@ -135,5 +124,6 @@ public class Pooper : MonoBehaviour
 
         return cam.transform.position + cam.transform.forward * maxRange;
     }
+
 
 }

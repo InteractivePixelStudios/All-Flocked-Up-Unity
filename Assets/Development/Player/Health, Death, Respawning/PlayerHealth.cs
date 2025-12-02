@@ -86,7 +86,7 @@ public class PlayerHealth : MonoBehaviour
         }
 
         // Spawn respawnCanvasPrefab as a child of playerCanvas and assign it to respawnCanvasInstance
-        if (playerCanvas != null && respawnCanvasPrefab != null)
+        if (respawnCanvasPrefab != null && respawnCanvasInstance == null)
         {
             respawnCanvasInstance = Instantiate(respawnCanvasPrefab, playerCanvas.transform);
         }

@@ -382,11 +382,23 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
 
     public void OnDeath(bool isDead)
     {
-
+        Destroy(gameObject);
     }
 
     public void TakeDamage(int damage)
     {
+        currentState = EnemyState.Retreat;
+    }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            var player = collision.gameObject;
+            if (player != null)
+            {
+                player.GetComponent<PlayerHealth>().TakeDamage(50);
+            }
+        }
     }
 }

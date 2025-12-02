@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class ObjectResizer : MonoBehaviour
 {
@@ -8,10 +9,12 @@ public class ObjectResizer : MonoBehaviour
     [SerializeField] private float maxDistance =1f;
     [SerializeField] private bool contacted = false;
     [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private float distance;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         mesh = GetComponent<Transform>();
+        mesh.localScale = Vector3.one * (distance*2);
 
     }
 
@@ -35,7 +38,7 @@ public class ObjectResizer : MonoBehaviour
 
             foreach (var collider in colliders)
             {
-                float distance = Vector3.Distance(this.transform.position, collider.transform.position);
+                distance = Vector3.Distance(this.transform.position, collider.transform.position);
 
                 if (distance >= 0)
                 {

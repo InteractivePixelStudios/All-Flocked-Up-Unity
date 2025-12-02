@@ -19,10 +19,13 @@ public class UI_MainMenu : MonoBehaviour
     private bool settingsOpen;
     private bool controlsOpen;
     private GameObject playerRef;
+    private CameraController cameraRef;
     [SerializeField] private Transform playerSpawnPoint;
     [SerializeField] private GameObject saveWindowPrefab;
     [SerializeField] private GameObject currentSaveWindow;
     private string savePath;
+    private bool menuOpen;
+    [SerializeField] private Vector3 cameraOffset;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,8 +40,24 @@ public class UI_MainMenu : MonoBehaviour
         quitButton.onClick.AddListener(QuitGame);
         canvasController = FindFirstObjectByType<UI_CanvasController>();
         playerRef = FindFirstObjectByType<PlayerFlightMovement>().gameObject;
-        playerRef.transform.position = playerSpawnPoint.transform.position;
+        cameraRef = FindFirstObjectByType<CameraController>();
+        menuOpen = true;
+        playerRef.transform.position = playerSpawnPoint.transform.position ;
         playerRef.transform.rotation  = playerSpawnPoint.transform.rotation;
+        cameraRef.transform.forward = playerSpawnPoint.transform.forward;
+        cameraRef.transform.position = playerRef.transform.position+ cameraOffset;
+        playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
+        playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
+        cameraRef.enabled = false;
+    }
+
+    private void Update()
+    {
+        if (menuOpen)
+        {
+            cameraRef.transform.forward = playerSpawnPoint.transform.forward;
+        }
+        else return;
     }
 
     protected void OnSettingsOpen()
@@ -84,6 +103,9 @@ public class UI_MainMenu : MonoBehaviour
     {
         Destroy(this.gameObject);
         canvasController.DestroyMainMenu();
+        playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
+        playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
+        cameraRef.enabled = true;
     }
 
     protected void CheckForSavedGame()
@@ -115,6 +137,9 @@ public class UI_MainMenu : MonoBehaviour
         currentSaveWindow = Instantiate(saveWindowPrefab,canvasObj.transform);
         var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
         comp.isSaving = false;
+
+        playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
+        playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
     }
 
     protected void QuitGame()
