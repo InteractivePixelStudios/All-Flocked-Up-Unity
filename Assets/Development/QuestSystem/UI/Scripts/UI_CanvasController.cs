@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UI_CanvasController : MonoBehaviour
 {
@@ -411,7 +412,7 @@ public class UI_CanvasController : MonoBehaviour
 
     public void SpawnMainMenu()
     {
-        if (activeMainMenu == null)
+        if (activeMainMenu == null  && SceneManager.GetActiveScene().name == "Cootorial Island")
         {
             activeMainMenu = Instantiate(mainMenuCanvas,mainMenuSpawnPoint);
             ShowPlayerCursor();
