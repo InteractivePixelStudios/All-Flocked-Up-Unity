@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4457524516648712304}
   - component: {fileID: 6041258932369723987}
   - component: {fileID: 7780268532563822453}
-  - component: {fileID: 6433890348347312991}
   - component: {fileID: 2475919307233097260}
   - component: {fileID: 7484760183340064428}
+  - component: {fileID: 5860797765124390049}
   m_Layer: 0
   m_Name: InteractableTrashCan
   m_TagString: Untagged
@@ -56,6 +56,7 @@ MonoBehaviour:
   trashParticles: {fileID: 2475919307233097260}
   canvasController: {fileID: 0}
   regenAmt: 0
+  poopRegen: 0
 --- !u!33 &6041258932369723987
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -63,7 +64,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4311400982581332165}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -4672457192409575820, guid: 9fdbbcf489c9d2b4e953f615444467c1, type: 3}
 --- !u!23 &7780268532563822453
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -109,29 +110,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &6433890348347312991
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4311400982581332165}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!198 &2475919307233097260
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -147,9 +125,9 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -4932,3 +4910,24 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &5860797765124390049
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4311400982581332165}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.6584921, y: 0.6584921, z: 0.91683984}
+  m_Center: {x: -0.0014900118, y: -0.00000013411045, z: 0.45841986}
