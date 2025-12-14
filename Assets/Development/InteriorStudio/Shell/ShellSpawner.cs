@@ -134,4 +134,14 @@ public class ShellSpawner : MonoBehaviour
         frontWall.GetComponent<MeshRenderer>().material = frontMaterial;
         backWall.GetComponent<MeshRenderer>().material = backMaterial;
     }
+
+    public void ResizeRoom()
+    {
+        frontWall.transform.localScale = roomSize;
+        backWall.transform.localScale = roomSize;
+        leftWall.transform.localScale = roomSize;
+        rightWall.transform.localScale = roomSize;
+        floorPlane.transform.localScale = roomSize;
+        ceilPlane.transform.localScale = roomSize;
+    }
 }
