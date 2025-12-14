@@ -1,11 +1,14 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PerchableObject_Tree : MonoBehaviour, I_Perchable
 {
     public GameObject playerRef;
     [SerializeField] private bool isPerching;
+    public bool isHiding;
     [SerializeField] private GameObject[] topHideSpots;
     [SerializeField] private GameObject[] branchPerchSpots;
+    int currentIndex;
     [SerializeField] private Vector3 playerOffset  = new Vector3(0,0,0);
     [SerializeField] private SphereCollider perchSphere;
     [SerializeField] private SphereCollider hideColliders;
@@ -30,7 +33,11 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
     public void StartPerch()
     {
         isPerching = true;
-        playerRef.transform.position = topHideSpots[0].transform.position + playerOffset;
+        if (isHiding)
+        {
+            playerRef.transform.position = topHideSpots[currentIndex].transform.position + playerOffset;
+        }
+        else playerRef.transform.position = branchPerchSpots[currentIndex].transform.position + playerOffset;
     }
 
     public void StopPerch()
@@ -41,30 +48,46 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
 
     public void UpdatePerch()
     {
-        playerRef.transform.position = topHideSpots[0].transform.position+ playerOffset;
+        if (isHiding)
+        {
+            playerRef.transform.position = topHideSpots[currentIndex].transform.position + playerOffset;
+        }else playerRef.transform.position = branchPerchSpots[currentIndex].transform.position+ playerOffset;
     }
 
     public void MovePosition()
     {
-
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            currentIndex++;
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            currentIndex--;
+            if(currentIndex < 0)
+            {
+                currentIndex = 0;
+            }
+        }
     }
 
     protected void ShowPrompt()
     {
-        if(currentPrompt == null)
+        if (currentPrompt == null)
         {
             currentPrompt = Instantiate<UI_PerchPrompt>(promptPrefab);
             isPromptShown = true;
         }
+        else return;
     }
 
     protected void HidePrompt()
     {
-        if(currentPrompt != null)
+        if (currentPrompt != null)
         {
             Destroy(currentPrompt);
-            isPromptShown=false;
+            isPromptShown = false;
         }
+        else return;
     }
 
     protected void ToggleMeshCollidersOn()
@@ -87,9 +110,8 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
         {
             if (playerRef == null)
             {
-                //ToggleMeshCollidersOff();
+
                 playerRef = perchSphere.gameObject;
-                //StartPerch();
             }
         }
     }
@@ -113,6 +135,7 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
             if (playerRef != null)
             {
                 playerRef = null;
+
             }
         }
     }

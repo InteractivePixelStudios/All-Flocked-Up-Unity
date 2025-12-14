@@ -10,6 +10,7 @@ public class PlayerPerchSystem : MonoBehaviour
     [SerializeField] private bool isReady;
     [SerializeField] private float checkDistance = 5f;
 
+
     void Update()
     {
         RaycastHit hit;
@@ -21,6 +22,12 @@ public class PlayerPerchSystem : MonoBehaviour
                 case PerchableObject_Tree:
                     ShowPrompt("Tree");
                     isReady = true;
+                    var check = hit.collider.CompareTag("HideSpot");
+                    if (check)
+                    {
+                      var tree =currentPerchPoint as PerchableObject_Tree;
+                        tree.isHiding = true;
+                    }
                     break;
                 case PerchableObject_Bush:
                     ShowPrompt("Bush");
@@ -63,13 +70,19 @@ public class PlayerPerchSystem : MonoBehaviour
 
     private void ShowPrompt(string obj)
     {
-        prompt = Instantiate<UI_PerchPrompt>(promptPrefab);
-        prompt.promptText.SetText(obj);
+        if (prompt == null)
+        {
+            prompt = Instantiate<UI_PerchPrompt>(promptPrefab);
+            prompt.promptText.SetText(obj);
+        }
     }
 
     private void HidePrompt()
     {
-        Destroy(prompt);
+        if(prompt!= null)
+        {
+            Destroy(prompt);
+        }
     }
 
 

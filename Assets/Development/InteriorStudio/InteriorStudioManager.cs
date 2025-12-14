@@ -13,7 +13,6 @@ public class InteriorStudioManager : EditorWindow
     [Header("Room Info")]
     public Vector3 roomSize = new Vector3();
     string interiorName = "";
-    [SerializeField]ShellSpawner shellSpawnerPrefab;
     [SerializeField] List<ShellSpawner> shells = new();
     ShellSpawner currentShell;
     [Header("Interior List")]
@@ -21,6 +20,7 @@ public class InteriorStudioManager : EditorWindow
     [SerializeField] private int indexer;
     int currentIndex;
     [Header("Prefabs")]
+    [SerializeField] ShellSpawner shellSpawnerPrefab;
     [SerializeField] EntranceSpawner entranceSpawner;
     [SerializeField] EntranceSpawner currentEntrance;
     [SerializeField] ExitSpawner exitSpawner;
@@ -168,8 +168,17 @@ public class InteriorStudioManager : EditorWindow
         EditorGUILayout.PropertyField(rightMat);
         EditorGUILayout.PropertyField(floorMat);
         EditorGUILayout.PropertyField(ceilMat);
+        DrawDeleteButton();
         obj.ApplyModifiedProperties();
 
+    }
+
+    void DrawDeleteButton()
+    {
+        if (GUILayout.Button("Destroy Interior"))
+        {
+            DestroyAndRemoveInterior(interiorName);
+        }
     }
 
     void DrawButtons()
@@ -194,10 +203,6 @@ public class InteriorStudioManager : EditorWindow
                 EditorGUILayout.HelpBox("Click where the exit should be.", MessageType.Warning);
             }else isPlacingExit=false;
         }
-        if (GUILayout.Button("Destroy Interior"))
-        {
-            DestroyAndRemoveInterior(interiorName);
-        }
         if (GUILayout.Button("Update Locations"))
         {
             UpdateLocations();
@@ -206,6 +211,10 @@ public class InteriorStudioManager : EditorWindow
         {
             SendMaterialsToShell();
             currentShell.UpdateMaterials();
+        }
+        if(GUILayout.Button("Resize Interior Shell"))
+        {
+            ResizeShell();
         }
     }
 
@@ -292,6 +301,12 @@ public class InteriorStudioManager : EditorWindow
         currentShell.rightMaterial = rightMaterial;
         currentShell.floorMaterial = floorMaterial;
         currentShell.ceilMaterial=ceilMaterial;
+    }
+
+    void ResizeShell()
+    {
+        currentShell.roomSize = roomSize;
+        currentShell.ResizeRoom();
     }
 
 
