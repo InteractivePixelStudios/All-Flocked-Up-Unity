@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class StatManager : Singleton<StatManager>
 {
+    StatInfo _stats;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
