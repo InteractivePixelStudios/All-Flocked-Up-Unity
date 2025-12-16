@@ -32,6 +32,16 @@ public class BorderHawkSpawner : MonoBehaviour
 
     }
 
+    private void ShowWarning()
+    {
+
+    }
+
+    private void HideWarning()
+    {
+
+    }
+
     async void DestroyHawk()
     {
         if(spawnedHawk != null)
