@@ -31,7 +31,7 @@ public class AmbienceLogic_Bird : MonoBehaviour
         int randomNumber = Random.Range(0, treesInArea.Count); // Random index based on number of trees in area.
         GameObject selectedTree = treesInArea[randomNumber]; // Keep track of which tree was selected.
         Debug.DrawLine(transform.position, selectedTree.transform.position, Color.red, 999f); // Temp for visualization
-        FMODVisualizerObject.transform.position = selectedTree.transform.position; // Move visualizer to selected tree position
+        MoveVisualizerToTree(selectedTree); // Move visualizer to selected tree position
         Debug.Log("Selected tree for bird chirp: " + selectedTree.name);
 
         int randomChirpClip = Random.Range(0, numberOfBirds); // Random bird chirp clip.
@@ -39,7 +39,7 @@ public class AmbienceLogic_Bird : MonoBehaviour
         StartCoroutine(PlayBirdChirp(selectedTree, randomChirpClip)); // Play the bird chirp at the
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other) // One time trigger.
     {
         if (other.CompareTag("Tree"))
         {
@@ -74,7 +74,17 @@ public class AmbienceLogic_Bird : MonoBehaviour
 
         inst.release();
 
-        yield return new WaitForSeconds(Random.Range(1f, 5f)); // Small delay before allowing another chirp.
+        yield return new WaitForSeconds(Random.Range(2f, 4f)); // Small delay before allowing another chirp - low for testing.
         isBirdChirping = false;
+    }
+
+    private void MoveVisualizerToTree(GameObject tree)
+    {
+        Debug.Log("Moving FMOD visualizer to tree: " + tree.name);
+        if (FMODVisualizerObject != null && tree != null)
+        {
+            FMODVisualizerObject.transform.position = tree.transform.position;
+            Debug.Log("FMOD visualizer moved to position: " + tree.transform.position);
+        }
     }
 }
