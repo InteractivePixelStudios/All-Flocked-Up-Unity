@@ -13,6 +13,11 @@ public class PlayerPerchSystem : MonoBehaviour
 
     void Update()
     {
+        if (isReady && Input.GetKeyDown(KeyCode.E))
+        {
+            InteractWithPerch(currentPerchPoint);
+            Debug.Log("InteractWithPerch");
+        }
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, checkDistance, perchLayer))
         {
@@ -37,11 +42,6 @@ public class PlayerPerchSystem : MonoBehaviour
                     ShowPrompt(hit.collider.name);
                     isReady = true;
                     break;
-            }
-            if (isReady && Input.GetKeyDown(KeyCode.X))
-            {
-                InteractWithPerch(currentPerchPoint);
-                Debug.Log("InteractWithPerch");
             }
 
         }

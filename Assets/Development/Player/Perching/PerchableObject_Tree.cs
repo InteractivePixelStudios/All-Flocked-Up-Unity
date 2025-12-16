@@ -115,15 +115,16 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
             }
         }
     }
-    void OnCollisionEnter(Collision hideColliders)
-    {
-        if (hideColliders.gameObject.CompareTag("Player") && playerRef!=null)
-        {
-            Debug.Log("Hit the Collider");
 
-                ToggleMeshCollidersOff();
-                StartPerch();
-            
+    void OnTriggerStay(Collider perchSphere)
+    {
+        if (perchSphere.gameObject.CompareTag("Player"))
+        {
+            if (playerRef == null)
+            {
+
+                playerRef = perchSphere.gameObject;
+            }
         }
     }
 
