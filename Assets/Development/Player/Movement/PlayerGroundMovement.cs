@@ -10,9 +10,12 @@ public class PlayerGroundMovement : MonoBehaviour
     Rigidbody playerBody;
     StaminaSystem playerStamina;
     PlayerFlightMovement playerFlightMovement;
+    PlayerStealthSystem playerStealthComponent;
     static GroundCheck groundCheck;
     Transform cameraRef;
 
+    [Header("Additional Requirements")]
+    [SerializeField] GameObject crouchVinete;
 
     // movement variables
     [Header("Movement Speed: ")]
@@ -59,6 +62,7 @@ public class PlayerGroundMovement : MonoBehaviour
     { 
         playerBody = GetComponent<Rigidbody>();
         playerStamina = GetComponent<StaminaSystem>();
+        playerStealthComponent = GetComponent<PlayerStealthSystem>();
 
         stepRayUpper.transform.localPosition = new Vector3(stepRayUpper.transform.localPosition.x, stepHeight, stepRayUpper.transform.localPosition.z);
     }
@@ -193,8 +197,11 @@ public class PlayerGroundMovement : MonoBehaviour
 
         if (!crouching)
         {
+            crouchVinete.SetActive(true);
             crouching = true;
             currentMaxSpeed = crouchSpeed;
+            playerStealthComponent.ToggleStealthOn();
+            Debug.Log("Crouched");
         }
     }
 
@@ -202,8 +209,11 @@ public class PlayerGroundMovement : MonoBehaviour
     {
         if (crouching)
         {
+            crouchVinete.SetActive(false);
             crouching = false;
             currentMaxSpeed = maxSpeed;
+            playerStealthComponent.ToggleStealthOff();
+            Debug.Log("UnCrouched");
         }
     }
 

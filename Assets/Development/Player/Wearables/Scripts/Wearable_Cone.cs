@@ -8,6 +8,7 @@ public class Wearable_Cone : Wearable_Base
 
     public override void SetOffset()
     {
+        wornObject = this.gameObject;
         var comp = GetComponent<WearableObject>();
         objectOffset = comp.offset;
         rotationOffset = comp.rotOffset;

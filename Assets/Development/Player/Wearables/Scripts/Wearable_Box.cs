@@ -8,6 +8,7 @@ public class Wearable_Box : Wearable_Base
 
     public override void SetOffset()
     {
+        wornObject = this.gameObject;
         var comp = wornObject.GetComponent<WearableObject>();
         objectOffset = comp.offset;
         rotationOffset = comp.rotOffset;

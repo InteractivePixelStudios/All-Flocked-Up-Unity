@@ -11,6 +11,8 @@ public class Wearable_Base : MonoBehaviour
     [SerializeField] private LayerMask wearableLayer;
     public GameObject attachPoint;
     [SerializeField] private float grabDistance;
+    [SerializeField] private float forwadForce;
+    [SerializeField] private float verticalForce;
 
     [SerializeField] private PlayerStealthSystem playerRef;
 
@@ -24,6 +26,10 @@ public class Wearable_Base : MonoBehaviour
         if (wornObject != null)
         {
             UpdatePosition();
+        }
+        if (Input.GetKeyDown(KeyCode.R) && isGrabbed)
+        {
+            RemoveObject();
         }
     }
 
@@ -54,12 +60,12 @@ public class Wearable_Base : MonoBehaviour
         if(wearable != null)
         {
             isGrabbed = true;
-            wornObject = wearable;
+            wearable.transform.position = attachPoint.transform.position + offset;
+            wearable.transform.rotation = attachPoint.transform.rotation* rotationOffset;
             wearable.transform.SetParent(attachPoint.transform, false);
-            wornObject.transform.position = attachPoint.transform.localPosition + offset;
-            wornObject.transform.rotation = attachPoint.transform.localRotation* rotationOffset;
-            wornObject.GetComponent<Rigidbody>().useGravity = false;
-            wornObject.GetComponent<BoxCollider>().enabled = false;
+            wearable.GetComponent<Rigidbody>().useGravity = false;
+            wearable.GetComponent<BoxCollider>().enabled = false;
+            wornObject = wearable;
             Debug.Log("Grabbed");
             GiveStealth();
         }
@@ -80,9 +86,12 @@ public class Wearable_Base : MonoBehaviour
         if(wornObject != null)
         {
             isGrabbed = false;
+            wornObject.transform.position += new Vector3(0, 1, 0);
             wornObject.transform.SetParent(null, true);
-            wornObject.GetComponent<Rigidbody>().useGravity = true;
+            var rb = wornObject.GetComponent<Rigidbody>();
+            rb.useGravity = true;
             wornObject.GetComponent<BoxCollider>().enabled = true;
+            rb.linearVelocity = new Vector3(forwadForce,verticalForce, 0).normalized;
             wornObject = null;
             RemoveStealth();
         }
@@ -90,15 +99,11 @@ public class Wearable_Base : MonoBehaviour
 
     protected void GiveStealth()
     {
-        playerRef.stealthModifier = 2;
-        playerRef.radiusModifier = 2f;
         playerRef.ToggleStealthOn();
     }
 
     protected void RemoveStealth()
     {
-        playerRef.stealthModifier = 0;
-        playerRef.radiusModifier = 0f;
         playerRef.ToggleStealthOff();
     }
 }

@@ -13,6 +13,7 @@ public class PlayerStealthSystem : MonoBehaviour
     public float radiusModifier;
     public const float radiusModifierBase = 8f;
     [SerializeField] private bool isStealthToggled;
+    [SerializeField] private bool isActivated;
     [SerializeField] private bool isTimedBonus;
     [SerializeField] private float currentTimer;
     public float maxTimer;
@@ -21,7 +22,12 @@ public class PlayerStealthSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentStealth = baseStealth;
+        //currentStealth = baseStealth;
+    }
+
+    public int GetStealth()
+    {
+        return currentStealth;
     }
 
     // Update is called once per frame
@@ -40,33 +46,50 @@ public class PlayerStealthSystem : MonoBehaviour
         {
             
         }
-        if (!isStealthToggled)
+        if (isStealthToggled && !isActivated)
         {
+            isActivated = true;
             GiveStealthAttribute(radiusModifier,stealthModifier);
+            Debug.Log("Toggled");
         }
-        else if (isStealthToggled) { RemoveStealthAttribute(radiusModifier, stealthModifier); }
+        else if (!isStealthToggled && isActivated) { isActivated = false; RemoveStealthAttribute(radiusModifier, stealthModifier); Debug.Log("ToggleOFF"); }
         else return;
     }
 
     private void SetStealth(int modifier)
     {
         maxStealth = baseStealth + modifier;
-        if (currentStealth!=maxStealth)
+        if (currentStealth != maxStealth)
         {
             currentStealth = maxStealth;
         }
+        else return;
     }
 
     private void IncreaseModifier(int modifier)
     {
-        stealthModifier += modifier;
-        SetStealth(modifier);
+        Debug.Log("IncModCalled");
+        if (stealthModifier != currentStealth)
+        {
+            Debug.Log(stealthModifier + "+" + modifier + "+" + currentStealth );
+            stealthModifier += modifier;
+            SetStealth(stealthModifier);
+        }
+        else return;
+
     }
 
     private void DecreaseModifier(int modifier)
     {
-        stealthModifier+= modifier;
-        SetStealth(modifier);
+        Debug.Log("DecModCalled");
+        if (stealthModifier == modifier)
+        {
+            Debug.Log(stealthModifier + "+" + modifier + "+" + currentStealth);
+            stealthModifier -= modifier;
+            SetStealth(stealthModifier);
+        }
+        else return;
+
     }
 
     private void GainStealth(int modifier)
@@ -77,7 +100,7 @@ public class PlayerStealthSystem : MonoBehaviour
 
     private void LoseStealth(int modifier)
     {
-        maxStealth = baseStealth + modifier;
+        maxStealth -= modifier;
         currentStealth = maxStealth;
     }
 
@@ -110,16 +133,27 @@ public class PlayerStealthSystem : MonoBehaviour
 
     private void GiveStealthAttribute(float radModifier,int stealthMod)
     {
-        IncreaseModifier(stealthMod);
-        DecreaseRadius(radModifier);
-        GainStealth(stealthMod);
+        if (isActivated)
+        {
+            GainStealth(stealthMod);
+            //IncreaseModifier(stealthMod);
+            IncreaseRadius(radModifier);
+            Debug.Log("GiveCalled");
+        }
+
+
     }
 
     private void RemoveStealthAttribute(float radModifier,int stealthMod)
     {
-        DecreaseModifier(stealthMod);
-        IncreaseRadius(radModifier);
-        LoseStealth(stealthMod);
+        if (!isActivated)
+        {
+            LoseStealth(stealthMod);
+            //DecreaseModifier(stealthMod);
+            DecreaseRadius(radModifier);
+            Debug.Log("RemoveCalled");
+        }
+
     }
 
     public void TimedStealthBonus(int bonus, float time)

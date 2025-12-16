@@ -91,9 +91,10 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     comp.LookForObject();
                     comp.attachPoint = attachPoint;
+                    Debug.Log("Attached");
                 }
-                else if (comp.isGrabbed) { comp.RemoveObject(); }
-                else return;
+                else if (comp.isGrabbed) { comp.RemoveObject(); Debug.Log("remove"); }
+                else Debug.Log("skipped"); return;
             }
         }
         //TAB for quest log...will change this later to new input system

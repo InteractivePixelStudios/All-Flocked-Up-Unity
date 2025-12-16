@@ -8,6 +8,7 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
     private enum EnemyState { Patrolling, Chasing, Dive, Roll, Stop, Hit, Retreat,Perch }
     private EnemyState currentState = EnemyState.Patrolling;
     private GameObject player;
+    private PlayerStealthSystem playerStealth;
     private Rigidbody birdRB;
     public Vector3 takeOffForce;
     [Header("Detection")]
@@ -41,6 +42,7 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
     {
         birdRB = GetComponent<Rigidbody>(); 
         player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        playerStealth = player.GetComponent<PlayerStealthSystem>();
         birdRB.useGravity = false;
         birdRB.linearDamping = 0.2f;
     }
@@ -72,7 +74,7 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
         switch (currentState)
         {
             case EnemyState.Patrolling:
-                if (distanceToPlayer < detectionRange)
+                if (playerStealth.GetStealth()<10&&distanceToPlayer < detectionRange)
                     currentState = EnemyState.Chasing;
                 else if (isHit)
                     currentState = EnemyState.Hit;
@@ -173,7 +175,7 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
         switch (currentState)
         {
             case EnemyState.Patrolling:
-                if (distanceToPlayer < detectionRange)
+                if (playerStealth.GetStealth() < 10 && distanceToPlayer < detectionRange)
                     currentState = EnemyState.Chasing;
                 else if (isHit)
                     currentState = EnemyState.Hit;
