@@ -95,17 +95,22 @@ public class VehicleBase :MonoBehaviour
 
     protected void ChooseNextDirection(Waypoint node)
     {
+        if (node == null)
+            return;
         connections.Clear();
-
-        foreach (var connection in node.connections)
-            connections.Add(connection);
+        connections.AddRange(node.connections);
 
         if (connections.Count == 0 && node.nextWaypoint != null)
         {
             connections.Add(new WaypointConnection { node = node.nextWaypoint });
 
         }
-        else Destroy(this.gameObject);
+        if (connections.Count == 0)
+            return;
+        //else if(connections.Count == 0 && node.nextWaypoint == null)
+        //{
+        //    Destroy(this.gameObject);
+        //}
         
         int randomIndex = Random.Range(0, connections.Count);
         Waypoint nextNode = connections[randomIndex].node;

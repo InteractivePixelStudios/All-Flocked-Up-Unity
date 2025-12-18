@@ -148,19 +148,23 @@ public class TrafficManager : MonoBehaviour
         }
     }
 
-    private void SpawnCarsAtWaypoints()
+    private async void SpawnCarsAtWaypoints()
     {
 
-        for(int i = 0; i < numberOfCars; i++)
+        for(int i = 0; i <= numberOfCars; i++)
         {
             var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)]);
             vehicles.Add(car);
-            var randomIndex = Random.Range(0,waypoints.Count);
-            var transform = waypoints[randomIndex].transform.position;
-            car.transform.position = transform; 
-            car.currentNode = waypoints[randomIndex];
+            if (car != null)
+            {
+                var randomIndex = Random.Range(0, waypoints.Count - 1);
+                Transform waypoint = waypoints[randomIndex].transform;
+                car.transform.position= waypoint.position;
+                car.currentNode = waypoints[randomIndex];
+            }
         }
         Debug.Log("CarsSpawned");
+        await Task.Yield();
     }
 
 
