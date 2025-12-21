@@ -50,6 +50,7 @@ public class Waypoint : MonoBehaviour
             Handles.DrawLine(nextWaypoint.transform.position, nextWaypoint.transform.position + rightArm * arrowSize);
             Handles.DrawLine(nextWaypoint.transform.position, nextWaypoint.transform.position + leftArm * arrowSize);
         }
+
 #endif
     }
 }

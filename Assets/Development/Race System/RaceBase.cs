@@ -210,6 +210,7 @@ public class RaceBase : MonoBehaviour
     private void SetStartLine()
     {
         Debug.Log(currentRaceStartingLine.name);
+        currentRaceStartingLine.gameObject.SetActive(true);
     }
 
     private void MovePlayerToStartLine()
@@ -232,6 +233,7 @@ public class RaceBase : MonoBehaviour
                 currentRacerList[i].transform.rotation = raceStartLine.transform.rotation;
                 row2offset += gap;
                 currentRacerList[i].SetMoveToLocation(1);
+                Debug.Log("SET RACER LOC1");
             }
             else
             {
@@ -239,7 +241,9 @@ public class RaceBase : MonoBehaviour
                 currentRacerList[i].transform.rotation = raceStartLine.transform.rotation;
                 offset += gap;
                 currentRacerList[i].SetMoveToLocation(1);
+                Debug.Log("SET RACER LOC2");
             }
+            Debug.Log("SET RACER LOC");
         }
     }
 

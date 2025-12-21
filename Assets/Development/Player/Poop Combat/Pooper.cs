@@ -27,6 +27,11 @@ public class Pooper : MonoBehaviour
     // #region Setup & Init
 
     //Switching to new input system - JK Oct/23
+
+    public bool GetIsAiming()
+    {
+        return isAiming;
+    }
     private void Start()
     {
         playerInput = GetComponentInParent<PlayerInput>();

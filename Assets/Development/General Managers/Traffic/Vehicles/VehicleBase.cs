@@ -105,13 +105,27 @@ public class VehicleBase :MonoBehaviour
             connections.Add(new WaypointConnection { node = node.nextWaypoint });
 
         }
+        if(node.nextWaypoint == null)
+        {
+            node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count)];
+        }
+        if (node.branches.Count>0)
+        {
+            var chance = Random.Range(0, 1);
+            if (chance != 0)
+            {
+                node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count)];
+            }
+            
+        }
+        if(connections.Count ==0 && node.branches.Count == 0 && node.nextWaypoint == null)
+        {
+            Destroy(this.gameObject);
+        }
+
         if (connections.Count == 0)
             return;
-        //else if(connections.Count == 0 && node.nextWaypoint == null)
-        //{
-        //    Destroy(this.gameObject);
-        //}
-        
+
         int randomIndex = Random.Range(0, connections.Count);
         Waypoint nextNode = connections[randomIndex].node;
         if (nextNode == null)
