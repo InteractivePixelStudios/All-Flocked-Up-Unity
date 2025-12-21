@@ -10,6 +10,7 @@ public class RaceGiver : MonoBehaviour
     void Start()
     {
         race = FindFirstObjectByType<RaceBase>();
+        canvasController = FindFirstObjectByType<UI_CanvasController>();
     }
 
     //called by PlayerInteraction... spawns the race giver canvas

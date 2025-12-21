@@ -17,21 +17,27 @@ public class Traffic_StopSign : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isStopped && currentTime > 0)
+        if (stoppedVehicle != null)
         {
-            currentTime-=Time.deltaTime;
-            stoppedVehicle.isStopped = true;
-        } if(!isStopped || currentTime < 0)
-        {
-            isStopped = false;
-            stoppedVehicle.isStopped = false;
-            StartMoveAfterDelay();
-            currentTime = stopDelay;
+
+            if (isStopped && currentTime > 0)
+            {
+                currentTime -= Time.deltaTime;
+                stoppedVehicle.isStopped = true;
+            }
+            if (!isStopped || currentTime < 0)
+            {
+                isStopped = false;
+                stoppedVehicle.isStopped = false;
+                StartMoveAfterDelay();
+                currentTime = stopDelay;
+            }
+            if (!this.isActiveAndEnabled)
+            {
+                stoppedVehicle.isStopped = false;
+            }
         }
-        if (!this.isActiveAndEnabled)
-        {
-            stoppedVehicle.isStopped = false;
-        }
+        else return;
     }
 
     private void OnTriggerEnter(Collider other)

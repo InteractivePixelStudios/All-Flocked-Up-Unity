@@ -11,6 +11,7 @@ public class TrafficManager : MonoBehaviour
     [SerializeField] private List<TrafficLightChanger> groupALights;
     [SerializeField] private List<TrafficLightChanger> groupBLights;
     [SerializeField] private List<Waypoint> waypoints;
+    private int lastIndex;
     [SerializeField] private int numberOfCars;
     [SerializeField] private List<VehicleBase> vehicleTypes = new();
     [SerializeField] private List<VehicleBase> vehicles;
@@ -155,12 +156,23 @@ public class TrafficManager : MonoBehaviour
         {
             var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)]);
             vehicles.Add(car);
+            ;
             if (car != null)
             {
                 var randomIndex = Random.Range(0, waypoints.Count - 1);
-                Transform waypoint = waypoints[randomIndex].transform;
-                car.transform.position= waypoint.position;
-                car.currentNode = waypoints[randomIndex];
+                if (randomIndex != lastIndex)
+                {
+                    Transform waypoint = waypoints[randomIndex].transform;
+                    car.transform.position = waypoint.position;
+                    car.currentNode = waypoints[randomIndex];
+                }
+                else
+                {
+                    randomIndex++;
+                    Transform waypoint = waypoints[randomIndex].transform;
+                    car.transform.position = waypoint.position;
+                    car.currentNode = waypoints[randomIndex];
+                }
             }
         }
         Debug.Log("CarsSpawned");

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,6 +12,8 @@ public class PlayerFlightMovement : MonoBehaviour
 
     bool isFlying = false;
     bool gliding = true;
+    bool flapUp = false;
+    bool isDiving = false;
 
     [Header("Flight Speeds: ")]
     [SerializeField] float baseGlideSpeed = 400f;
@@ -33,6 +36,21 @@ public class PlayerFlightMovement : MonoBehaviour
 
     InputAction moveAction;
     InputAction flapAction;
+
+    public bool GetIsGliding()
+    {
+        return gliding;
+    }
+
+    public bool GetFlapUp()
+    {
+        return flapUp;
+    }
+
+    public bool GetIsDiving()
+    {
+        return isDiving;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -175,7 +193,10 @@ public class PlayerFlightMovement : MonoBehaviour
         {
             if (playerStamina.UseStamina(flapStaminaAmount))
                 playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
-        }
+            flapUp = true;
+            Task.Delay(200);
+            flapUp = false;
+        }flapUp = false;
     }
 
     public void InitiateFlight()
