@@ -29,7 +29,11 @@ public class PlayerStealthSystem : MonoBehaviour
     {
         return currentStealth;
     }
-
+    
+    public bool GetIsStealthToggled()
+    {
+        return isStealthToggled;
+    }
     // Update is called once per frame
     void Update()
     {

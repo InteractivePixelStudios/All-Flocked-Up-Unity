@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -28,6 +29,7 @@ public class PlayerGroundMovement : MonoBehaviour
     [SerializeField]float currentMaxSpeed;
     float currentSpeed;
 
+
     [Header("Counter Movement: ")]
     [SerializeField] float counterMovement = 0.175f;
     [SerializeField] float threshold = 0.01f;
@@ -57,6 +59,26 @@ public class PlayerGroundMovement : MonoBehaviour
     InputAction jumpAction;
     InputAction sprintAction;
     InputAction crouchAction;
+
+    public float GetSpeedForward()
+    {
+        return z;
+    }
+
+    public float GetSpeedSide()
+    {
+        return x;
+    }
+
+    public bool GetIsJumping()
+    {
+        return isJumping;
+    }
+
+    public bool GetIsFlying()
+    {
+        return isFlying;
+    }
 
     private void Awake()
     { 

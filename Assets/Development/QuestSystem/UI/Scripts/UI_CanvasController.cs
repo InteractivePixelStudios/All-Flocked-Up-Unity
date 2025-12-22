@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UI_CanvasController : MonoBehaviour
 {
@@ -262,6 +263,7 @@ public class UI_CanvasController : MonoBehaviour
     {
         raceGiverInstance = Instantiate(raceGiverCanvas);
         ShowPlayerCursor();
+        Time.timeScale = 0;
     }
     //race giver canvas
     public void CloseRaceGiver()
@@ -271,6 +273,7 @@ public class UI_CanvasController : MonoBehaviour
             raceGiverInstance.CloseRaceGiver();
             raceGiverInstance = null;
             HidePlayerCursor();
+            Time.timeScale = 1;
         }
     }
     //race rewards canavas
@@ -279,6 +282,7 @@ public class UI_CanvasController : MonoBehaviour
         raceRewardInstance = Instantiate(raceRewardCanvas);
         SendStandings();
         ShowPlayerCursor();
+        Time.timeScale = 0;
     }
     //race rewards canvas
     public void CloseRaceRewards()
@@ -288,7 +292,8 @@ public class UI_CanvasController : MonoBehaviour
             Destroy(raceRewardInstance);
             raceRewardInstance = null;
             HidePlayerCursor();
-            
+            Time.timeScale = 1;
+
         }
     }
     //race fail canvas
@@ -297,6 +302,7 @@ public class UI_CanvasController : MonoBehaviour
         raceFailInstance = Instantiate(raceFailCanvas);
         SendStandings();
         ShowPlayerCursor() ;
+        Time.timeScale = 0;
     }
     //race fail canvas
     public void CloseRaceFail()
@@ -306,6 +312,7 @@ public class UI_CanvasController : MonoBehaviour
             Destroy(raceFailInstance);
             raceFailInstance = null;
             HidePlayerCursor();
+            Time.timeScale = 1;
         }
     }
 
@@ -411,7 +418,7 @@ public class UI_CanvasController : MonoBehaviour
 
     public void SpawnMainMenu()
     {
-        if (activeMainMenu == null)
+        if (activeMainMenu == null  && SceneManager.GetActiveScene().name == "Cootorial Island")
         {
             activeMainMenu = Instantiate(mainMenuCanvas,mainMenuSpawnPoint);
             ShowPlayerCursor();

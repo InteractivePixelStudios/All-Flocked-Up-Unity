@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Perchable_Bush_1
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 62fa65a3a41bfb8448b4468024cfe710, type: 3}
+      propertyPath: m_Layer
+      value: 27
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -80,6 +84,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b02caf7f6fd1cf4fa5e922a34f75192, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerRef: {fileID: 0}
+  isPerching: 0
 --- !u!135 &7523483613182095859
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -90,12 +96,12 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
