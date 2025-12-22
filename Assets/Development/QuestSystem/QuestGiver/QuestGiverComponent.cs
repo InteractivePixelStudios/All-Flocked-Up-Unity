@@ -39,6 +39,7 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
         }
         else
         {
+            
             //ADD QUEST GIVER UI HERE TO DISPLAY THE QUESTS. CALL AcceptQuest() from UI ACCEPT BUTTON.
             Debug.Log($"Offer Quest: {quest.questName}");
             

@@ -47,7 +47,7 @@ public class UI_QuestGiver : MonoBehaviour
 
     private void AddQuestToLog()
     {
-      currentquestGiver.InteractWithNPC(questLog);
+        currentquestGiver.AcceptQuest(questLog, currentquestGiver.quests[0],currentquestGiver);
         CloseQuestGiverUI();
     }
 

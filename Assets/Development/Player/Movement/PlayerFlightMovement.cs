@@ -14,6 +14,7 @@ public class PlayerFlightMovement : MonoBehaviour
     bool gliding = true;
     bool flapUp = false;
     bool isDiving = false;
+    bool isSlowFlap = false;
 
     [Header("Flight Speeds: ")]
     [SerializeField] float baseGlideSpeed = 400f;
@@ -50,6 +51,11 @@ public class PlayerFlightMovement : MonoBehaviour
     public bool GetIsDiving()
     {
         return isDiving;
+    }
+
+    public bool GetIsSlowFlap()
+    {
+        return isSlowFlap;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -146,6 +152,7 @@ public class PlayerFlightMovement : MonoBehaviour
         {
             if (gliding)
                 gliding = false;
+            isSlowFlap = true;
             Vector3 tempVel = playerBody.linearVelocity;
             Debug.Log(tempVel);
             playerBody.linearVelocity = new Vector3(Mathf.Clamp(tempVel.x - (stallDownSpeed * Time.deltaTime), 0, 10000), tempVel.y, Mathf.Clamp(tempVel.z - (stallDownSpeed * Time.deltaTime), 0, 10000));
@@ -158,6 +165,7 @@ public class PlayerFlightMovement : MonoBehaviour
         }
         else
         {
+            isSlowFlap = false;
             if (!gliding)
                 gliding = true;
 
@@ -175,6 +183,7 @@ public class PlayerFlightMovement : MonoBehaviour
                     meshTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, meshTransform.eulerAngles.z));
             }
         }
+        Debug.Log(isSlowFlap);
     }
 
     void ForwardGlide()
@@ -187,16 +196,20 @@ public class PlayerFlightMovement : MonoBehaviour
         }
     }
 
-    void FlapUp()
+    async void FlapUp()
     {
         if (isFlying)
         {
             if (playerStamina.UseStamina(flapStaminaAmount))
+            {
                 playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
-            flapUp = true;
-            Task.Delay(200);
-            flapUp = false;
-        }flapUp = false;
+                flapUp = true;
+                await Task.Delay(500);
+                flapUp = false;
+
+            }
+            
+        }
     }
 
     public void InitiateFlight()
