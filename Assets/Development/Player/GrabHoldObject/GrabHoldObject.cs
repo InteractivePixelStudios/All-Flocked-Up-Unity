@@ -9,10 +9,11 @@ public class GrabHoldObject : MonoBehaviour
     [SerializeField] private LayerMask grabLayer;
     [SerializeField] private Vector3 grabOffset;
     [SerializeField] private bool isHoldingObject = false;
+    [SerializeField] private PlayerPeckComponent peckComp;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        peckComp = GetComponent<PlayerPeckComponent>();
     }
 
     // Update is called once per frame
@@ -20,6 +21,7 @@ public class GrabHoldObject : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F) && !isHoldingObject)
         {
+            peckComp.Peck();
             TryGrabObject();
 
         }
