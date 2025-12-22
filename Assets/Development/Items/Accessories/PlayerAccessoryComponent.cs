@@ -8,7 +8,7 @@ public class PlayerAccessoryComponent : MonoBehaviour
 {
     public AccessoryList list;
     [SerializeField] private List<AccessoryBase> accessories;
-    [SerializeField] private List<AccessoryBase> currentEquippedAccessories = new();
+    public List<AccessoryBase> currentEquippedAccessories = new();
     [SerializeField] private AccessoryBase currentItem;
     [SerializeField] protected Vector3 accessoryOffset;
 

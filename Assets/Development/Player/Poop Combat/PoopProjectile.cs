@@ -16,7 +16,6 @@ public class PoopProjectile : MonoBehaviour
     private PoopType poopType;
 
     [SerializeField] private float speed = 15f; //temporary, this should be half of the player speed
-    [SerializeField] private float maxLifetime = 5f; //also adjust with testing
 
     private float lifeTimer;
 
@@ -41,34 +40,39 @@ public class PoopProjectile : MonoBehaviour
         }
 
         rb.linearVelocity = direction * launchSpeed;
-        lifeTimer = maxLifetime; // Reset lifetime timer
+
     }
 
     private void Update()
     {
-        lifeTimer -= Time.deltaTime;
-        if (lifeTimer <= 0f)
-        {
-            ReturnToPool();
-        }
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        source?.HandleHitEffects(poopType, collision.contacts[0].point); // Trigger hit effects
+        //source?.HandleHitEffects(poopType, collision.contacts[0].point); // Trigger hit effects
 
-        if (collision.gameObject.TryGetComponent<IPoopable>(out var poopable))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            poopable.OnPoopHit(poopType);
+            //poopable.OnPoopHit(poopType);
+            Debug.Log("EnemyHit");
+        }
+        if (collision.gameObject.CompareTag("NPC"))
+        {
+            Debug.Log("NPCHit");
+        }
+        if (collision.gameObject.CompareTag("Vehicle"))
+        {
+            var vehicle = collision.gameObject.GetComponent<VehicleScript>();
+            //Add Honk
+            Debug.Log("CarHit");
+        }
+        if (!collision.gameObject.CompareTag("Player"))
+        {
+            Destroy(gameObject);
         }
 
-        ReturnToPool();
     }
 
-    private void ReturnToPool()
-    {
-        rb.linearVelocity = Vector3.zero; // Stop the projectile
-        gameObject.SetActive(false); // Deactivate the projectile
-        source?.ReturnProjectileToPool(this);
-    }
+
 }

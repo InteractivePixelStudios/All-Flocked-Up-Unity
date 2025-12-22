@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class StaminaSystem : MonoBehaviour
@@ -5,7 +6,7 @@ public class StaminaSystem : MonoBehaviour
     [Header("Stamina Stats")]
     [SerializeField] float currentStamina;
     [SerializeField] float MaxStamina = 10;
-    [SerializeField] float staminaRegenSpeed;
+    [SerializeField] float staminaRegenSpeed = .5f;
 
     bool regenStamina = false;
 

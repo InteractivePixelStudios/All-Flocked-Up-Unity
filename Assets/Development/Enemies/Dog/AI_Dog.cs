@@ -9,6 +9,7 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
     [Header("Patrol")]
     public Transform[] patrolPoints;
     public GameObject player;
+    private PlayerStealthSystem playerStealth;
     public float patrolSpeed = 3f;
     public float chaseSpeed = 5f;
     [Header("Detection")]
@@ -40,6 +41,7 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
     void Start()
     {
         player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        playerStealth = player.GetComponent<PlayerStealthSystem>();
         animator = GetComponent<Animator>();
         FindWaypoints();
     }
@@ -52,7 +54,7 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
         switch (currentState)
         {
             case EnemyState.Patrolling:
-                if (distanceToPlayer < detectionRange)
+                if (playerStealth.GetStealth() < 10 && distanceToPlayer < detectionRange)
                     currentState = EnemyState.Chasing;
                 else if (isHit)
                     currentState = EnemyState.Hit;

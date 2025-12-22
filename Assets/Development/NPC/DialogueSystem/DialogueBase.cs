@@ -33,6 +33,10 @@ public class DialogueBase : MonoBehaviour
    [SerializeField] private int currentTextSpeed;
     public int textSpeed=>currentTextSpeed=500;// this speed is in ms
 
+    public bool GetIsTyping()
+    {
+        return typerComplete;
+    }
 
     void Start()
     {

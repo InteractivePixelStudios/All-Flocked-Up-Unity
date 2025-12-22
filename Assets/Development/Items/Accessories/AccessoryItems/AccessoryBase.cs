@@ -17,10 +17,17 @@ public class AccessoryBase : MonoBehaviour
     [SerializeField] private GameObject currentItem;
 
     [SerializeField] protected List<Mesh> meshList;
+    public int poopStatBonus;
+    public int staminaStatBonus;
+    public int healthStatBonus;
+    [SerializeField] private PlayerStealthSystem stealthComponent;
+    [SerializeField] private int stealthBonus;
+    [SerializeField] private float stealthRadiusBonus;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         itemMesh = GetComponent<MeshFilter>();
+        stealthComponent = FindFirstObjectByType<PlayerStealthSystem>();
         SetItemState();
     }
 
@@ -85,6 +92,20 @@ public class AccessoryBase : MonoBehaviour
     private void SetTransform()
     {
         transform.localPosition = accessoryTransform.position;
+    }
+
+    private void GiveStealthBonus()
+    {
+        stealthComponent.stealthModifier = 2;
+        stealthComponent.radiusModifier = 2f;
+        stealthComponent.ToggleStealthOn();
+    }
+
+    private void RemoveStealthBonus()
+    {
+        stealthComponent.stealthModifier = 0;
+        stealthComponent.radiusModifier = 0f;
+        stealthComponent.ToggleStealthOff();
     }
 
 
