@@ -7,6 +7,7 @@ public class PerchableObject_Bush : MonoBehaviour, I_Perchable
     public GameObject playerRef;
     [SerializeField] private bool isPerching;
     Vector3 offset = new Vector3(0, 1, 0);
+    [SerializeField] IconToggle icon;
 
     void Update()
     {
@@ -51,6 +52,7 @@ public class PerchableObject_Bush : MonoBehaviour, I_Perchable
             if(playerRef == null)
             {
                 playerRef = other.gameObject;
+                icon.ShowIcon();
             }
         }
     }
@@ -62,6 +64,7 @@ public class PerchableObject_Bush : MonoBehaviour, I_Perchable
             if (playerRef != null)
             {
                 playerRef = null;
+                icon.HideIcon();
             }
         }
     }
