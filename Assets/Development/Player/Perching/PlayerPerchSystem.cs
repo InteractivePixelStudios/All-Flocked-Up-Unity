@@ -79,9 +79,9 @@ public class PlayerPerchSystem : MonoBehaviour
 
     private void HidePrompt()
     {
-        if(prompt!= null)
+        if(prompt != null)
         {
-            Destroy(prompt);
+            Destroy(prompt.gameObject);
         }
     }
 
