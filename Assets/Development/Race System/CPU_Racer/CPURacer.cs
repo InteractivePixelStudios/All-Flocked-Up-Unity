@@ -33,8 +33,7 @@ public class CPURacer : MonoBehaviour
     //on load
     public void Awake()
     {
-        
-        Debug.Log("Loading");
+
     }
     //on start
     public void Start()
@@ -91,7 +90,8 @@ public class CPURacer : MonoBehaviour
         navAgentComponent.isStopped = true;
         navAgentComponent.speed = 0;
         //says obsolete...it lies...it works... actually setting isStopped only stops movement and doesnt cancel velocity LOL...why unity
-        navAgentComponent.Stop();
+        navAgentComponent.isStopped = true;
+        body.linearVelocity = new Vector3(0,0,0);
     }
     public void NextCheckpoint()
     {

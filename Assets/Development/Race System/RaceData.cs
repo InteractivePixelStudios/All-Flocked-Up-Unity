@@ -49,7 +49,7 @@ public class RaceData : ScriptableObject
             }
 
         }
-        startLine.SetRotationToCheckpoint(checkpointSpawns[0]);
+        startLine.SetRotationToCheckpoint(checkpointSpawns.LastOrDefault());
         //Debug.Log(startLine);
         return startLine;
 

@@ -251,7 +251,7 @@ public class RaceBase : MonoBehaviour
         var racers = raceData.numberOfCPURacers;
         for (int i = racers; i > 0; i--)
         {
-            CPURacer racer = Instantiate(racerPrefab);
+            CPURacer racer = Instantiate(racerPrefab,raceStartLine.transform.position,raceStartLine.transform.rotation);
             currentRacerList.Add(racer);
             Debug.Log(racer.transform.position);
             
