@@ -10,22 +10,23 @@ public class IconToggle : MonoBehaviour
     {
         iconRenderer = GetComponentInChildren<SpriteRenderer>();
         iconRenderer.sprite = icon;
+        HideIcon();
 
     }
 
-    void ShowIcon()
+    public void ShowIcon()
     {
-        if(!isActive)
-        {
+
             isActive = true;
-        }
+            iconRenderer.enabled = true;
+        
     }
 
-    void HideIcon()
+    public void HideIcon()
     {
-        if (isActive)
-        {
+
             isActive = false;
-        }
+            iconRenderer.enabled = false;
+        
     }
 }

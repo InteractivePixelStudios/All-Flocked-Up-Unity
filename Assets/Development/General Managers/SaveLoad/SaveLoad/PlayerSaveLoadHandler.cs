@@ -35,6 +35,13 @@ public class PlayerSaveLoadHandler : MonoBehaviour
         saveData.trinkets = player.GetComponent<PlayerWingventory>().playerTrinketQuantity;
         saveData.lastSaved = System.DateTime.Now;
         saveData.version = SaveLoadBase.currentVersion;
+        //saveData.poop = player.GetComponent<PoopSystem>();
+        saveData.stamina = player.GetComponent<StaminaSystem>().GetCurrentStamina();
+        saveData.inventory = player.GetComponent<PlayerWingventory>().inventory;
+        saveData.activeQuests = player.GetComponent<QuestLog>().activeQuests;
+        saveData.completedQuests = player.GetComponent<QuestLog>().completedQuests;
+        saveData.completedRaces = FindAnyObjectByType<RaceBase>().completedRaces;
+        saveData.timeOfDay = FindAnyObjectByType<S_DayNightCycle>().timeOfDay;
         SaveSlotManager.SaveToSlot(saveSlot, saveData, true);
 
         Debug.Log($"Autosaved to slot {saveSlot} at {saveData.lastSaved}");

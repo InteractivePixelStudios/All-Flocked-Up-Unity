@@ -16,6 +16,7 @@ public class QuestLog : MonoBehaviour
     private bool questTimerStarted;
     public float currentTime;
     [SerializeField] private UI_CanvasController canvasController;
+    [SerializeField]private PlayerNavArrow arrowPointer ;
 
     //checks if quest in timed and shows the timer when  quest started
     private void GetIsQuestTimed(QuestDetails quest, QuestRuntimeInstance instance)
@@ -95,6 +96,7 @@ public class QuestLog : MonoBehaviour
         hasQuest = true;
         currentQuestGiver = questGiver;
         GetIsQuestTimed(questData, instance);
+        arrowPointer.EnablePointerArrow();
         
     }
     //updates the quest Objective... call this on quest mechanics or anytime you want to complete an objective... send the objectiveID and number of times completed (usually 1 but can be other if needed)
