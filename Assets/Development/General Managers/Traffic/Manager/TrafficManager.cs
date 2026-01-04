@@ -18,12 +18,6 @@ public class TrafficManager : MonoBehaviour
     public float timer;
 
 
-
-
-    private void Awake()
-    {
-        
-    }
     async void Start()
     {
         InitLights();
@@ -152,34 +146,21 @@ public class TrafficManager : MonoBehaviour
     private async void SpawnCarsAtWaypoints()
     {
 
-        for(int i = 0; i <= numberOfCars; i++)
+        for(int i = 0; i < numberOfCars; i++)
         {
-            var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)]);
-            vehicles.Add(car);
-            ;
-            if (car != null)
-            {
                 var randomIndex = Random.Range(0, waypoints.Count - 1);
                 if (randomIndex != lastIndex)
                 {
                     Transform waypoint = waypoints[randomIndex].transform;
+                    var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)],waypoint.position,waypoint.rotation);
+                    vehicles.Add(car);
                     car.transform.position = waypoint.position;
                     car.currentNode = waypoints[randomIndex];
+                    Debug.Log(waypoint.position);
+                    Debug.Log(car.transform.position);
                 }
-                else
-                {
-                    randomIndex++;
-                    Transform waypoint = waypoints[randomIndex].transform;
-                    car.transform.position = waypoint.position;
-                    car.currentNode = waypoints[randomIndex];
-                }
-            }
         }
         Debug.Log("CarsSpawned");
         await Task.Yield();
     }
-
-
-
-
 }

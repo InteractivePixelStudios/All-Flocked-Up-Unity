@@ -80,7 +80,232 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: MaleNPC_SkeletonScaleFix(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Mesh_grp
+      parentName: MaleNPC_SkeletonScaleFix(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Mesh_DEF
+      parentName: MaleNPC_Mesh_grp
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 9.77738, y: 9.77738, z: 9.77738}
+    - name: MaleNPC_DEFskel_grp
+      parentName: MaleNPC_SkeletonScaleFix(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 9.839815, y: 9.839815, z: 9.839815}
+    - name: MaleNPC_Center_Pelvis_DEF
+      parentName: MaleNPC_DEFskel_grp
+      position: {x: -0, y: 0.09721447, z: -0.00284543}
+      rotation: {x: 0.5680266, y: -0.42112443, z: -0.5680266, w: 0.42112443}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Center_Spine1_DEF
+      parentName: MaleNPC_Center_Pelvis_DEF
+      position: {x: -0.008313769, y: -0.0007316269, z: 1.2184036e-19}
+      rotation: {x: 0, y: 0, z: 0.18324408, w: 0.98306745}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Center_Spine2_DEF
+      parentName: MaleNPC_Center_Spine1_DEF
+      position: {x: -0.014564323, y: 0.0011567578, z: 3.0753624e-19}
+      rotation: {x: 0, y: 0, z: 0.1018869, w: 0.99479604}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Center_Chest_DEF
+      parentName: MaleNPC_Center_Spine2_DEF
+      position: {x: -0.009656197, y: 0.0016263607, z: -2.7229698e-19}
+      rotation: {x: 0, y: -0, z: -0.095781036, w: 0.99540246}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Center_Neck1_DEF
+      parentName: MaleNPC_Center_Chest_DEF
+      position: {x: -0.022890087, y: -0.0004301035, z: -3.464328e-19}
+      rotation: {x: 0, y: -0, z: -0.21409318, w: 0.97681326}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Center_Neck2_DEF
+      parentName: MaleNPC_Center_Neck1_DEF
+      position: {x: -0.0025622665, y: 0.00034363542, z: 2.0035771e-19}
+      rotation: {x: 0, y: 0, z: 0.07097155, w: 0.99747837}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Center_Neck3_DEF
+      parentName: MaleNPC_Center_Neck2_DEF
+      position: {x: -0.0024636926, y: -0.000031327105, z: -0.00007667974}
+      rotation: {x: -0.010897179, y: 0.0062486324, z: 0.05869832, w: 0.9981967}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Center_Head_DEF
+      parentName: MaleNPC_Center_Neck3_DEF
+      position: {x: -0.004644119, y: -0.000043547345, z: -1.9338194e-17}
+      rotation: {x: 0, y: 0, z: 0.02860804, w: 0.9995907}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Center_HeadTip_DEF
+      parentName: MaleNPC_Center_Head_DEF
+      position: {x: -0.023274707, y: 0.0007311462, z: 1.7165068e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Collar_DEF
+      parentName: MaleNPC_Center_Chest_DEF
+      position: {x: -0.015644928, y: 0.0005282528, z: 0.003680732}
+      rotation: {x: -0.4280138, y: 0.52467173, z: 0.52816653, w: 0.5124099}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Shoulder_DEF
+      parentName: MaleNPC_Left_Collar_DEF
+      position: {x: -0.011883448, y: -0.00034728544, z: -0.00044921192}
+      rotation: {x: -0.019739486, y: 0.033178765, z: 0.006764514, w: 0.99923164}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Elbow_DEF
+      parentName: MaleNPC_Left_Shoulder_DEF
+      position: {x: -0.02399583, y: 0.002056076, z: 0.0004423534}
+      rotation: {x: 0.09911073, y: 0.017887028, z: -0.030529456, w: 0.9944471}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Wrist_DEF
+      parentName: MaleNPC_Left_Elbow_DEF
+      position: {x: -0.030684054, y: 2.6645352e-17, z: 1.11022296e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Cup_DEF
+      parentName: MaleNPC_Left_Wrist_DEF
+      position: {x: -0.0031592017, y: -0.00043728016, z: -0.0009661414}
+      rotation: {x: -0.069183305, y: -0.032352064, z: 0.0010809272, w: 0.99707866}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Mitten1_DEF
+      parentName: MaleNPC_Left_Cup_DEF
+      position: {x: -0.0023612916, y: -0.000033043427, z: -0.0000709288}
+      rotation: {x: -0.042658217, y: -0.018295903, z: 0.03112845, w: 0.99843705}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Mitten2_DEF
+      parentName: MaleNPC_Left_Mitten1_DEF
+      position: {x: -0.0053402707, y: 0.0000014797449, z: -0.000017068262}
+      rotation: {x: -0.01350574, y: -0.005308901, z: -0.0005325908, w: 0.99989456}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Mitten3_DEF
+      parentName: MaleNPC_Left_Mitten2_DEF
+      position: {x: -0.00465848, y: 8.298194e-18, z: -3.0813937e-17}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Thumb_DEF
+      parentName: MaleNPC_Left_Wrist_DEF
+      position: {x: -0.0037340012, y: 0.00011080936, z: 0.0023936902}
+      rotation: {x: 0.622989, y: 0.1908371, z: -0.25964335, w: 0.71277726}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Thumb2_DEF
+      parentName: MaleNPC_Left_Thumb_DEF
+      position: {x: -0.004275474, y: -0.0001499271, z: 0.000007733523}
+      rotation: {x: -0.0008999701, y: 0.0028334395, z: 0.055879917, w: 0.9984331}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Thumb3_DEF
+      parentName: MaleNPC_Left_Thumb2_DEF
+      position: {x: -0.003784449, y: 1.8429464e-18, z: -1.5224231e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Collar_DEF
+      parentName: MaleNPC_Center_Chest_DEF
+      position: {x: -0.015644455, y: 0.00052820885, z: -0.0036807298}
+      rotation: {x: 0.5246717, y: 0.42801386, z: -0.51240987, w: 0.5281666}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Shoulder_DEF
+      parentName: MaleNPC_Right_Collar_DEF
+      position: {x: 0.011883366, y: 0.00034696967, z: 0.00044921102}
+      rotation: {x: -0.019738758, y: 0.03317868, z: 0.006774126, w: 0.9992316}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Elbow_DEF
+      parentName: MaleNPC_Right_Shoulder_DEF
+      position: {x: 0.0239954, y: -0.0020564655, z: -0.00044235683}
+      rotation: {x: 0.09911023, y: 0.017885441, z: -0.030542085, w: 0.9944468}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Wrist_DEF
+      parentName: MaleNPC_Right_Elbow_DEF
+      position: {x: 0.030684391, y: 0.00000018339354, z: -0.000000009393433}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Cup_DEF
+      parentName: MaleNPC_Right_Wrist_DEF
+      position: {x: 0.0031592094, y: 0.00043733645, z: 0.0009661347}
+      rotation: {x: -0.069183305, y: -0.032352064, z: 0.0010809272, w: 0.99707866}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Mitten1_DEF
+      parentName: MaleNPC_Right_Cup_DEF
+      position: {x: 0.0023612815, y: 0.000033013795, z: 0.00007093}
+      rotation: {x: -0.042658217, y: -0.018295903, z: 0.03112845, w: 0.99843705}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Mitten2_DEF
+      parentName: MaleNPC_Right_Mitten1_DEF
+      position: {x: 0.005340291, y: -0.0000014752789, z: 0.00001707331}
+      rotation: {x: -0.01350574, y: -0.005308901, z: -0.0005325908, w: 0.99989456}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Mitten3_DEF
+      parentName: MaleNPC_Right_Mitten2_DEF
+      position: {x: 0.004658538, y: 0.000000009378837, z: -0.000000008360344}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Thumb_DEF
+      parentName: MaleNPC_Right_Wrist_DEF
+      position: {x: 0.0037340268, y: -0.00011081039, z: -0.002393685}
+      rotation: {x: 0.6229877, y: 0.19083826, z: -0.25964448, w: 0.7127776}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Thumb2_DEF
+      parentName: MaleNPC_Right_Thumb_DEF
+      position: {x: 0.004275504, y: 0.00014993516, z: -0.000007778695}
+      rotation: {x: -0.0009002981, y: 0.0028356158, z: 0.055880196, w: 0.9984331}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Thumb3_DEF
+      parentName: MaleNPC_Right_Thumb2_DEF
+      position: {x: 0.0037844193, y: -6.4173156e-10, z: 0.0000000421146}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Hip_DEF
+      parentName: MaleNPC_Center_Pelvis_DEF
+      position: {x: 0.004092093, y: 0.0033367353, z: 0.009874528}
+      rotation: {x: -0.19014955, y: 0.9816376, z: 0.0015702464, w: 0.01511216}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Knee2_DEF
+      parentName: MaleNPC_Left_Hip_DEF
+      position: {x: -0.0394202, y: -0.0000006751819, z: -0.00025308438}
+      rotation: {x: -0.00012157914, y: -0.00528775, z: 0.1105627, w: 0.99385506}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Ankle_DEF
+      parentName: MaleNPC_Left_Knee2_DEF
+      position: {x: -0.045998886, y: -2.7755574e-18, z: 6.661338e-18}
+      rotation: {x: -0.010236118, y: 0.01774057, z: -0.6107009, w: 0.7915964}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Foot_DEF
+      parentName: MaleNPC_Left_Ankle_DEF
+      position: {x: -0.015810093, y: -3.330669e-18, z: 6.661338e-18}
+      rotation: {x: 4.2214964e-17, y: 3.6916176e-16, z: -0.13104777, w: 0.99137604}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Left_Toe_DEF
+      parentName: MaleNPC_Left_Foot_DEF
+      position: {x: -0.009670352, y: 5.5511148e-18, z: -2.220446e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Hip_DEF
+      parentName: MaleNPC_Center_Pelvis_DEF
+      position: {x: 0.0040921397, y: 0.0033367493, z: -0.010127702}
+      rotation: {x: -0.19014959, y: 0.9816376, z: -0.0015702735, w: -0.015112432}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Knee2_DEF
+      parentName: MaleNPC_Right_Hip_DEF
+      position: {x: -0.03941246, y: 1.1508391e-17, z: -4.0023594e-17}
+      rotation: {x: 0.00012158312, y: 0.0052879476, z: 0.11056272, w: 0.99385506}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Ankle_DEF
+      parentName: MaleNPC_Right_Knee2_DEF
+      position: {x: -0.045998912, y: -1.498801e-17, z: -4.440892e-18}
+      rotation: {x: 0.010236346, y: -0.017740985, z: -0.6107009, w: 0.7915965}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Foot_DEF
+      parentName: MaleNPC_Right_Ankle_DEF
+      position: {x: -0.015810106, y: 2.1094237e-17, z: 3.2309216e-10}
+      rotation: {x: 0.0000000013981241, y: 0.000000010576823, z: -0.13104756, w: 0.9913761}
+      scale: {x: 1, y: 1, z: 1}
+    - name: MaleNPC_Right_Toe_DEF
+      parentName: MaleNPC_Right_Foot_DEF
+      position: {x: -0.009670307, y: 2.220446e-18, z: -8.881784e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -95,9 +320,9 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 3
+  animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 1
+  avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
