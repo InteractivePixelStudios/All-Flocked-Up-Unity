@@ -19,6 +19,7 @@ public class VehicleBase :MonoBehaviour
     [SerializeField] private bool isMoving;
     [SerializeField] private List<WaypointConnection> connections = new();
     [SerializeField] protected float detectObjectRange=2f;
+    public TrafficManager manager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
@@ -74,7 +75,7 @@ public class VehicleBase :MonoBehaviour
 
     protected virtual void TriggerCollisions()
     {
-        StopVehicle();
+        //StopVehicle();
         HonkHorn();
         if (!navAgent.isStopped)
         {
@@ -112,6 +113,7 @@ public class VehicleBase :MonoBehaviour
         if(connections.Count ==0 && node.branches.Count == 0 && node.nextWaypoint == null)
         {
             Destroy(this.gameObject);
+            manager.RemoveVehicleFromList(this);
         }
 
         if (connections.Count == 0)

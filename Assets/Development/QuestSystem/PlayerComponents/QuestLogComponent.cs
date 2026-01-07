@@ -195,4 +195,12 @@ public class QuestLog : MonoBehaviour
             
         }
     }
+
+    public void TrackQuest(QuestRuntimeInstance instance)
+    {
+        if (instance != null)
+        {
+
+        }
+    }
 }
