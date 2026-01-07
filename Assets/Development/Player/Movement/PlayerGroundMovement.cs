@@ -62,7 +62,10 @@ public class PlayerGroundMovement : MonoBehaviour
 
     public float GetSpeedForward()
     {
-        return z;
+        if (z != 0)
+            return Mathf.Abs(z);
+        else
+            return Mathf.Abs(x);
     }
 
     public float GetSpeedSide()
@@ -177,22 +180,21 @@ public class PlayerGroundMovement : MonoBehaviour
         // Counteract sliding and sloppy movement
         CounterMovement(x, z, mag);
 
+        if (z != 0)
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y - 90 + (90 * z + 45 * x * z), rotationLerpSpeed), transform.eulerAngles.z);
+        else
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y + (90 * x), rotationLerpSpeed), transform.eulerAngles.z);
+
         // check whether adding speed will bring player over max speed
         if (x > 0 && xMag > currentMaxSpeed) x = 0;
         if (x < 0 && xMag < -currentMaxSpeed) x = 0;
         if (z > 0 && yMag > currentMaxSpeed) z = 0;
         if (z < 0 && yMag < -currentMaxSpeed) z = 0;
 
-        if (x == 0)
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y * z, rotationLerpSpeed), transform.eulerAngles.z);
-        else
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y + (90 / (z+x) * ), rotationLerpSpeed), transform.eulerAngles.z);
 
         //Apply forces to playerBody
-        playerBody.AddForce(new Vector3(0, cameraRef.forward.y, 0) * z * currentSpeed * Time.deltaTime);
-        playerBody.AddForce(new Vector3(0, cameraRef.right.y, 0) * x * currentSpeed * Time.deltaTime);
-
-        //playerBody.rotation = Quaternion.Euler(transform.right * x + transform.forward * z);
+        playerBody.AddForce(transform.forward * Mathf.Abs(z) * currentSpeed * Time.deltaTime);
+        playerBody.AddForce(transform.forward * Mathf.Abs(x) * currentSpeed * Time.deltaTime);
     }
 
     void Jump()
