@@ -88,7 +88,7 @@ MonoBehaviour:
   isStopped: 0
   isMoving: 0
   connections: []
-  detectObjectRange: 0
+  detectObjectRange: 10
 --- !u!65 &6618512199702343465
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -166,10 +166,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5542504100494569997}
     m_Modifications:
-    - target: {fileID: -7511558181221131132, guid: 24a6d104ceaa70b44952cc2715f0284e, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 8290782892783832528, guid: 798f93a3cc3d56947ab0e1e8a834953d, type: 3}
     - target: {fileID: -8679921383154817045, guid: d49afb36398ea10429bf40318edf2006, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -218,6 +214,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 24a6d104ceaa70b44952cc2715f0284e, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8290782892783832528, guid: 798f93a3cc3d56947ab0e1e8a834953d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
