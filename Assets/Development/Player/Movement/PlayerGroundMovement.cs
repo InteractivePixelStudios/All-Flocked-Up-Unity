@@ -183,14 +183,16 @@ public class PlayerGroundMovement : MonoBehaviour
         if (z > 0 && yMag > currentMaxSpeed) z = 0;
         if (z < 0 && yMag < -currentMaxSpeed) z = 0;
 
+        if (x == 0)
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y * z, rotationLerpSpeed), transform.eulerAngles.z);
+        else
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y + (90 / (z+x) * ), rotationLerpSpeed), transform.eulerAngles.z);
 
-        if (z > 0)
-        {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y, rotationLerpSpeed), transform.eulerAngles.z);
-        }
         //Apply forces to playerBody
-        playerBody.AddForce(transform.forward * z * currentSpeed * Time.deltaTime);
-        playerBody.AddForce(transform.right * x * currentSpeed * Time.deltaTime);      
+        playerBody.AddForce(new Vector3(0, cameraRef.forward.y, 0) * z * currentSpeed * Time.deltaTime);
+        playerBody.AddForce(new Vector3(0, cameraRef.right.y, 0) * x * currentSpeed * Time.deltaTime);
+
+        //playerBody.rotation = Quaternion.Euler(transform.right * x + transform.forward * z);
     }
 
     void Jump()
@@ -223,7 +225,6 @@ public class PlayerGroundMovement : MonoBehaviour
             crouching = true;
             currentMaxSpeed = crouchSpeed;
             playerStealthComponent.ToggleStealthOn();
-            Debug.Log("Crouched");
         }
     }
 
@@ -235,7 +236,6 @@ public class PlayerGroundMovement : MonoBehaviour
             crouching = false;
             currentMaxSpeed = maxSpeed;
             playerStealthComponent.ToggleStealthOff();
-            Debug.Log("UnCrouched");
         }
     }
 
