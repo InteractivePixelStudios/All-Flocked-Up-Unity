@@ -13,6 +13,8 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     [SerializeField] private string dialogueStartLineID;
     [SerializeField] private string retriggerDialogueLineID;
     private bool isRetrigger;
+    [SerializeField] private GameObject homeLocation;
+    [SerializeField] private QuestGiver questGiverComp;
     //on load
     public void Awake()
     {
@@ -21,10 +23,12 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     //on start
     public void Start()
     {
+        questGiverComp = GetComponent<QuestGiver>();
         navAgentComponent = GetComponent<NavMeshAgent>();
         dialogue = FindFirstObjectByType<DialogueBase>();
         canvasController = FindFirstObjectByType<UI_CanvasController>();
         Debug.Log("NPC LOADED");
+        homeLocation = FindFirstObjectByType<LargeNest>().gameObject;
     }
 
     public void Update()
@@ -33,6 +37,12 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         {
             MoveToLocation();
         }
+        if(questGiverComp.hasQuest == false || questGiverComp == null)
+        {
+            targetLocation = homeLocation.transform;
+            isMoving = true;
+        }
+
     }    
 
     //use this to add "Look at" effects like a prompt or something

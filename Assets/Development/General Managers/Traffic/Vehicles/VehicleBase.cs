@@ -19,6 +19,7 @@ public class VehicleBase :MonoBehaviour
     [SerializeField] private bool isMoving;
     [SerializeField] private List<WaypointConnection> connections = new();
     [SerializeField] protected float detectObjectRange=2f;
+    public TrafficManager manager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
@@ -36,7 +37,6 @@ public class VehicleBase :MonoBehaviour
         {
             MoveVehicleToLocation();
         }
-        CheckForCollisions();
 
         if (currentNode == null)
         {
@@ -73,21 +73,13 @@ public class VehicleBase :MonoBehaviour
         //Debug.Log("Stopping");
     }
 
-    protected virtual void CheckForCollisions()
+    protected virtual void TriggerCollisions()
     {
-        RaycastHit hit;
-        int combinedMask = trafficLayer | playerLayer | enemyLayer;
-
-        if (Physics.Raycast(transform.position, transform.forward, out hit, detectObjectRange, combinedMask))
+        //StopVehicle();
+        HonkHorn();
+        if (!navAgent.isStopped)
         {
-            StopVehicle();
-            HonkHorn();
-            Debug.DrawLine(transform.position, hit.point, Color.yellow);
-        }
-        else
-        {
-            if (!navAgent.isStopped)
-                MoveVehicleToLocation();
+            MoveVehicleToLocation();
         }
     }
 
@@ -105,22 +97,23 @@ public class VehicleBase :MonoBehaviour
             connections.Add(new WaypointConnection { node = node.nextWaypoint });
 
         }
-        if(node.nextWaypoint == null)
-        {
-            node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count)];
-        }
+        //if(node.nextWaypoint == null)
+        //{
+        //    node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count-1)];
+        //}
         if (node.branches.Count>0)
         {
             var chance = Random.Range(0, 1);
             if (chance != 0)
             {
-                node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count)];
+                node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count-1)];
             }
             
         }
         if(connections.Count ==0 && node.branches.Count == 0 && node.nextWaypoint == null)
         {
             Destroy(this.gameObject);
+            manager.RemoveVehicleFromList(this);
         }
 
         if (connections.Count == 0)

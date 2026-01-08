@@ -16,6 +16,12 @@ public class PlayerInteraction : MonoBehaviour
     public UI_CanvasController canvasController;
     public bool gamePaused;
     [SerializeField] private GameObject attachPoint;
+    private bool isWingventoryOpen;
+
+    public bool GetIsWingventoryOpen()
+    {
+        return isWingventoryOpen;
+    }
 
     void Update()
     {
@@ -117,11 +123,16 @@ public class PlayerInteraction : MonoBehaviour
 
         else if (Input.GetKeyDown(KeyCode.I))
         {
-            if (canvasController.activeWingventory== null)
+            if (canvasController.activeWingventory == null)
             {
                 canvasController.OpenWingventory();
+                isWingventoryOpen = true;
             }
-            else canvasController.CloseWingventory();
+            else
+            {
+                canvasController.CloseWingventory();
+                isWingventoryOpen = false;
+            }
         }
 
         else if (Input.GetKeyDown(KeyCode.O))

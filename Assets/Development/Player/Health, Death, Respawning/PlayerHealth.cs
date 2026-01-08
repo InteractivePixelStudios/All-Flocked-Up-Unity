@@ -18,9 +18,11 @@ public class PlayerHealth : MonoBehaviour
 
     [Header("Components")]
     public Rigidbody rb;
+    private RagdollController ragdoll;
 
     void Start()
     {
+        ragdoll = GetComponent<RagdollController>();
         if (currentHealth <= 0)
         {
             currentHealth = maxHealth; // Initialize current health to max health if not set
@@ -75,6 +77,7 @@ public class PlayerHealth : MonoBehaviour
     private void Die()
     {
         isDead = true;
+        ragdoll.ToggleRagdollOn();
         // Add any additional death logic here, such as playing a death animation or sound
         Debug.Log("Player has died.");
 

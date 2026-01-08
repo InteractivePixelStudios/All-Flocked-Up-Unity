@@ -14,10 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questName: Nightin-Galavant
   questID: Q004
-  questLogDescription: 
-  trackerDescription: 
-  isMainQuest: 0
+  questLogDescription: Follow the Fireflies
+  trackerDescription: Follow the Fireflies
+  isMainQuest: 1
   stagesToComplete: 0
+  isQuestTimed: 0
+  questTime: 0
   autoAcceptQuest: 0
   autoCompleteQuest: 0
-  stages: []
+  stages:
+  - stageName: Follow the Trail
+    stageDescription: Follow the trail of fireflies
+    objectivesToComplete:
+    - objectiveName: Follow
+      objectiveDescription: Follow
+      objectiveType: Q_Location
+      objectiveID: 401
+      quantityToComplete: 0
+      isOptional: 0
+      bonusEXP: 0
+    expReward: 0
+    trinketReward: 0

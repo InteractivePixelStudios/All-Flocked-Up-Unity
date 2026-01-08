@@ -30,13 +30,26 @@ public class BikeScript : VehicleBase
         base.navAgent.isStopped = true;
     }
 
-    protected override void CheckForCollisions()
+    protected override void TriggerCollisions()
     {
-        base.CheckForCollisions();
+        base.TriggerCollisions();
     }
 
     protected override void HonkHorn()
     {
         //add horn SFX/possible headlight VFX? 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player") ||
+    other.gameObject.CompareTag("Vehicle") ||
+    other.gameObject.CompareTag("Enemy") ||
+    other.gameObject.CompareTag("NPC"))
+        {
+
+            TriggerCollisions();
+
+        }
     }
 }

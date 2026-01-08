@@ -13,22 +13,17 @@ public class AnimController : MonoBehaviour
     [SerializeField] private DialogueBase dialogueBaseComp;
     [SerializeField] private PlayerStealthSystem stealthComp;
     [SerializeField] private PlayerWingventory wingventoryComp;
+    [SerializeField] private PlayerPeckComponent peckComp;
     [SerializeField] private PlayerInteraction interactionComp;
 
     [Header("Parameters")]
-    [SerializeField] private string peckTrigger = "PeckTrigger";
-    private bool peck ;
-    [SerializeField] private string landTrigger = "LandTrigger";
-    private bool land ; 
-    [SerializeField] private string flapTrigger = "FlapTrigger";
+    private bool isPecking => peckComp.GetIsPecking();
     private bool flapUp => flightMoveComp.GetFlapUp();
-    [SerializeField] private string diveTrigger = "DiveTrigger";
-    private bool dive => flightMoveComp.GetIsDiving();
-    [SerializeField] private string poopTrigger = "PoopTrigger";
-    private bool poop;
+    private bool isDiving => flightMoveComp.GetIsDiving();
+
+    private bool isPooping;
     [SerializeField] private float forwardSpeed=> groundMoveComp.GetSpeedForward();
     [SerializeField] private float sideSpeed => groundMoveComp.GetSpeedSide();
-    [SerializeField] private float altitude;
     [SerializeField] private bool isGliding =>flightMoveComp.GetIsGliding();
     [SerializeField] private bool isFlying => groundMoveComp.GetIsFlying();
     [SerializeField] private bool isAiming=> poopComp.GetIsAiming();
@@ -36,8 +31,8 @@ public class AnimController : MonoBehaviour
     [SerializeField] private bool isTalking => dialogueBaseComp.GetIsTyping();
     [SerializeField] private bool isGrounded => groundCheckComp.IsGrounded();
     [SerializeField] private bool isJumping => groundMoveComp.GetIsJumping();
-    [SerializeField] private bool isSlowFlap;
-    [SerializeField] private bool isLeftWingCheck;
+    [SerializeField] private bool isSlowFlap => flightMoveComp.GetIsSlowFlap();
+    [SerializeField] private bool isLeftWingCheck => interactionComp.GetIsWingventoryOpen();
     [SerializeField] private bool isRightWingCheck;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -52,6 +47,7 @@ public class AnimController : MonoBehaviour
         stealthComp =  GetComponent<PlayerStealthSystem>();
         interactionComp = GetComponent<PlayerInteraction>();
         wingventoryComp = GetComponent<PlayerWingventory>();
+        peckComp = GetComponent<PlayerPeckComponent>();
     }
 
     // Update is called once per frame
@@ -60,21 +56,19 @@ public class AnimController : MonoBehaviour
         ToggleIsGrounded();
         playerAnimator.SetFloat("Speed", GetSpeed());
         playerAnimator.SetFloat("SideSpeed",GetSideSpeed());
-        playerAnimator.SetFloat("Altitude",GetAltitude());
         ToggleAim();
         ToggleStealth();
         ToggleIsTalking();
         ToggleIsFlying();
         ToggleIsGliding();
         ToggleIsJumping();
-        //TogglePoopTrigger();
-        //TogglePeckTrigger();
+        TogglePoopTrigger();
+        TogglePeckTrigger();
         ToggleLeftWing();
         ToggleRightWing();
-        //ToggleDiveTrigger();
-        //ToggleFlapTrigger();
+        ToggleDiveTrigger();
+        ToggleFlapTrigger();
         ToggleSlowFlap();
-        Debug.Log(forwardSpeed + sideSpeed);
     }
 
     private float GetSpeed()
@@ -88,10 +82,6 @@ public class AnimController : MonoBehaviour
         return sideSpeed;
     }
 
-    private float GetAltitude()
-    {
-        return altitude;
-    }
 
     private bool GetIsAiming()
     {
@@ -176,43 +166,47 @@ public class AnimController : MonoBehaviour
         playerAnimator.SetBool("isSlowFlap",GetIsSlowFlap());
     }
 
-    private void GetPeckTrigger()
+    private bool GetPeckTrigger()
     {
-
+        return isPecking;
     }
+
 
     private void TogglePeckTrigger()
     {
-        playerAnimator.SetTrigger(peckTrigger);
+
+            playerAnimator.SetBool("isPecking",GetPeckTrigger());
+       
+
     }
 
-    private void GetFlapTrigger()
+    private bool GetFlapTrigger()
     {
-
+        return flapUp;
     }
 
     private void ToggleFlapTrigger()
     {
-        playerAnimator.SetTrigger(flapTrigger);
+        playerAnimator.SetBool("isFlap", GetFlapTrigger());
     }
 
-    private void GetDiveTrigger()
+    private bool GetDiveTrigger()
     {
-
+        return isDiving;
     }
 
     private void ToggleDiveTrigger()
     {
-        playerAnimator.SetTrigger(diveTrigger);
+        playerAnimator.SetBool("isDiving",GetDiveTrigger());
     }
 
-    private void GetPoopTrigger()
+    private bool GetPoopTrigger()
     {
-
+        return isPooping;
     }
     private void TogglePoopTrigger()
     {
-        playerAnimator.SetTrigger(poopTrigger);
+        playerAnimator.SetBool("isPooping", GetPoopTrigger());
     }
 
     private bool GetIsRightWing()
@@ -222,7 +216,7 @@ public class AnimController : MonoBehaviour
 
     private void ToggleRightWing()
     {
-
+        playerAnimator.SetBool("isRightWingCheck",GetIsRightWing());
     }
 
     private bool GetIsLeftWing()
@@ -232,6 +226,6 @@ public class AnimController : MonoBehaviour
 
     private void ToggleLeftWing()
     {
-
+        playerAnimator.SetBool("isLeftWingCheck",GetIsLeftWing());
     }
 }

@@ -122,6 +122,7 @@ public class UI_CanvasController : MonoBehaviour
         ShowPlayerCursor();
         activeGiverInstance = Instantiate(questGiverCanvas);
         activeGiverInstance.currentquestGiver = questGiver;
+        activeGiverInstance.UpdateUIText(questGiver.quests[0].questName, questGiver.quests[0].questLogDescription,"Change to rewards!");
         
     }
 
