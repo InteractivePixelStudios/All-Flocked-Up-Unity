@@ -122,6 +122,7 @@ public class UI_CanvasController : MonoBehaviour
         ShowPlayerCursor();
         activeGiverInstance = Instantiate(questGiverCanvas);
         activeGiverInstance.currentquestGiver = questGiver;
+        activeGiverInstance.UpdateUIText(questGiver.quests[0].questName, questGiver.quests[0].questLogDescription,"Change to rewards!");
         
     }
 
@@ -263,6 +264,7 @@ public class UI_CanvasController : MonoBehaviour
     {
         raceGiverInstance = Instantiate(raceGiverCanvas);
         ShowPlayerCursor();
+        Time.timeScale = 0;
     }
     //race giver canvas
     public void CloseRaceGiver()
@@ -272,6 +274,7 @@ public class UI_CanvasController : MonoBehaviour
             raceGiverInstance.CloseRaceGiver();
             raceGiverInstance = null;
             HidePlayerCursor();
+            Time.timeScale = 1;
         }
     }
     //race rewards canavas
@@ -280,6 +283,7 @@ public class UI_CanvasController : MonoBehaviour
         raceRewardInstance = Instantiate(raceRewardCanvas);
         SendStandings();
         ShowPlayerCursor();
+        Time.timeScale = 0;
     }
     //race rewards canvas
     public void CloseRaceRewards()
@@ -289,7 +293,8 @@ public class UI_CanvasController : MonoBehaviour
             Destroy(raceRewardInstance);
             raceRewardInstance = null;
             HidePlayerCursor();
-            
+            Time.timeScale = 1;
+
         }
     }
     //race fail canvas
@@ -298,6 +303,7 @@ public class UI_CanvasController : MonoBehaviour
         raceFailInstance = Instantiate(raceFailCanvas);
         SendStandings();
         ShowPlayerCursor() ;
+        Time.timeScale = 0;
     }
     //race fail canvas
     public void CloseRaceFail()
@@ -307,6 +313,7 @@ public class UI_CanvasController : MonoBehaviour
             Destroy(raceFailInstance);
             raceFailInstance = null;
             HidePlayerCursor();
+            Time.timeScale = 1;
         }
     }
 

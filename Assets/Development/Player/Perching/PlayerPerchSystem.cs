@@ -5,14 +5,18 @@ public class PlayerPerchSystem : MonoBehaviour
 {
     [SerializeField] private LayerMask perchLayer;
     [SerializeField] private I_Perchable currentPerchPoint;
-    [SerializeField] private UI_PerchPrompt prompt;
-    [SerializeField] private UI_PerchPrompt promptPrefab;
+    [SerializeField] private IconToggle icon;
     [SerializeField] private bool isReady;
     [SerializeField] private float checkDistance = 5f;
 
 
     void Update()
     {
+        if (isReady && Input.GetKeyDown(KeyCode.E))
+        {
+            InteractWithPerch(currentPerchPoint);
+            Debug.Log("InteractWithPerch");
+        }
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, checkDistance, perchLayer))
         {
@@ -20,7 +24,6 @@ public class PlayerPerchSystem : MonoBehaviour
             switch (currentPerchPoint)
             {
                 case PerchableObject_Tree:
-                    ShowPrompt("Tree");
                     isReady = true;
                     var check = hit.collider.CompareTag("HideSpot");
                     if (check)
@@ -30,22 +33,15 @@ public class PlayerPerchSystem : MonoBehaviour
                     }
                     break;
                 case PerchableObject_Bush:
-                    ShowPrompt("Bush");
                     isReady = true;
                     break;
                 case PerchableObject_General:
-                    ShowPrompt(hit.collider.name);
                     isReady = true;
                     break;
             }
-            if (isReady && Input.GetKeyDown(KeyCode.X))
-            {
-                InteractWithPerch(currentPerchPoint);
-                Debug.Log("InteractWithPerch");
-            }
 
         }
-        else { HidePrompt(); isReady = false; }
+        else {  isReady = false; }
     }
 
     private void InteractWithPerch(I_Perchable currentPerchPoint)
@@ -64,24 +60,7 @@ public class PlayerPerchSystem : MonoBehaviour
         }
         finally
         {
-            HidePrompt();
-        }
-    }
-
-    private void ShowPrompt(string obj)
-    {
-        if (prompt == null)
-        {
-            prompt = Instantiate<UI_PerchPrompt>(promptPrefab);
-            prompt.promptText.SetText(obj);
-        }
-    }
-
-    private void HidePrompt()
-    {
-        if(prompt!= null)
-        {
-            Destroy(prompt);
+            
         }
     }
 

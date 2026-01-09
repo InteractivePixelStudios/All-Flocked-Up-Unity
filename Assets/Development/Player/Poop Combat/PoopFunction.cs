@@ -12,6 +12,8 @@ public class PoopFunction : MonoBehaviour
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private PoopProjectile projectilePrefab;
     [SerializeField] private int poolSize = 10; //adjust as needed
+    [SerializeField] float forwardVelocity = 10f;
+    [SerializeField] private float verticalVelocity = 5f;
 
 
 
@@ -22,6 +24,15 @@ public class PoopFunction : MonoBehaviour
             var projectile = Instantiate(projectilePrefab,spawnPoint.transform.position,spawnPoint.transform.rotation);
             projectile.Launch(target, currentPoopType, this, playerVelocity);
         
+    }
+
+    public void FireGroundPoop()
+    {
+
+        var projectile = Instantiate(projectilePrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
+        projectile.GetComponent<Rigidbody>().AddForce(spawnPoint.forward * forwardVelocity + Vector3.up * verticalVelocity, ForceMode.Impulse);
+        Debug.Log(projectile.transform.position);
+
     }
 
     public void HandleHitEffects(PoopType type, Vector3 position)

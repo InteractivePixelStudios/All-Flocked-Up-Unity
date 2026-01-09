@@ -6,6 +6,7 @@ public class RespawnController : MonoBehaviour
     [Header("Respawn Components")]
     [SerializeField] private TextMeshProUGUI respawnText; // UI text to display respawn information
     [SerializeField] private GameObject player; // Reference to the player GameObject
+    [SerializeField] private RagdollController ragdoll;
 
     [Header("Respawn Nest Configuration")]
     [SerializeField] private GameObject[] respawnNests; // Array of respawn nests
@@ -14,6 +15,7 @@ public class RespawnController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        ragdoll = GetComponent<RagdollController>();
         if (player == null)
         {
             player = GameObject.FindGameObjectWithTag("Player"); // Find the player GameObject by tag if not assigned
@@ -63,6 +65,7 @@ public class RespawnController : MonoBehaviour
             Debug.LogWarning("No respawn nests available!");
             return; // No nests to respawn to
         }
+        ragdoll.ToggleRagdollOff();
         player.transform.position = respawnNests[currentNestIndex].transform.position; // Move player to the current nest position
         player.transform.rotation = respawnNests[currentNestIndex].transform.rotation; // Match the rotation of the nest
         player.GetComponent<PlayerHealth>().currentHealth = player.GetComponent<PlayerHealth>().maxHealth; // Reset player's health

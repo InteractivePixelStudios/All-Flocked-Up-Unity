@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -28,6 +29,7 @@ public class PlayerGroundMovement : MonoBehaviour
     [SerializeField]float currentMaxSpeed;
     float currentSpeed;
 
+
     [Header("Counter Movement: ")]
     [SerializeField] float counterMovement = 0.175f;
     [SerializeField] float threshold = 0.01f;
@@ -57,6 +59,29 @@ public class PlayerGroundMovement : MonoBehaviour
     InputAction jumpAction;
     InputAction sprintAction;
     InputAction crouchAction;
+
+    public float GetSpeedForward()
+    {
+        if (z != 0)
+            return Mathf.Abs(z);
+        else
+            return Mathf.Abs(x);
+    }
+
+    public float GetSpeedSide()
+    {
+        return x;
+    }
+
+    public bool GetIsJumping()
+    {
+        return isJumping;
+    }
+
+    public bool GetIsFlying()
+    {
+        return isFlying;
+    }
 
     private void Awake()
     { 
@@ -155,6 +180,11 @@ public class PlayerGroundMovement : MonoBehaviour
         // Counteract sliding and sloppy movement
         CounterMovement(x, z, mag);
 
+        if (z != 0)
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y - 90 + (90 * z + 45 * x * z), rotationLerpSpeed), transform.eulerAngles.z);
+        else
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y + (90 * x), rotationLerpSpeed), transform.eulerAngles.z);
+
         // check whether adding speed will bring player over max speed
         if (x > 0 && xMag > currentMaxSpeed) x = 0;
         if (x < 0 && xMag < -currentMaxSpeed) x = 0;
@@ -162,13 +192,9 @@ public class PlayerGroundMovement : MonoBehaviour
         if (z < 0 && yMag < -currentMaxSpeed) z = 0;
 
 
-        if (z > 0)
-        {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y, rotationLerpSpeed), transform.eulerAngles.z);
-        }
         //Apply forces to playerBody
-        playerBody.AddForce(transform.forward * z * currentSpeed * Time.deltaTime);
-        playerBody.AddForce(transform.right * x * currentSpeed * Time.deltaTime);      
+        playerBody.AddForce(transform.forward * Mathf.Abs(z) * currentSpeed * Time.deltaTime);
+        playerBody.AddForce(transform.forward * Mathf.Abs(x) * currentSpeed * Time.deltaTime);
     }
 
     void Jump()
@@ -201,7 +227,6 @@ public class PlayerGroundMovement : MonoBehaviour
             crouching = true;
             currentMaxSpeed = crouchSpeed;
             playerStealthComponent.ToggleStealthOn();
-            Debug.Log("Crouched");
         }
     }
 
@@ -213,7 +238,6 @@ public class PlayerGroundMovement : MonoBehaviour
             crouching = false;
             currentMaxSpeed = maxSpeed;
             playerStealthComponent.ToggleStealthOff();
-            Debug.Log("UnCrouched");
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class SaveData
@@ -12,6 +13,13 @@ public class SaveData
     public Vector3 position;
     public int trinkets;
     public DateTime lastSaved;
+    public int poop;
+    public float stamina;
+    public Dictionary<GameObject, int> inventory = new();
+    public List<QuestRuntimeInstance> activeQuests = new();
+    public List<QuestDetails> completedQuests = new();
+    public List<RaceData> completedRaces = new();
+    public float timeOfDay;
 
     public SaveData()
     {

@@ -12,9 +12,8 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
     [SerializeField] private Vector3 playerOffset  = new Vector3(0,0,0);
     [SerializeField] private SphereCollider perchSphere;
     [SerializeField] private SphereCollider hideColliders;
-    [SerializeField] private UI_PerchPrompt currentPrompt;
-    [SerializeField] private UI_PerchPrompt promptPrefab;
     [SerializeField] private bool isPromptShown;
+    [SerializeField] IconToggle icon;
 
     void Update()
     {
@@ -70,25 +69,6 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
         }
     }
 
-    protected void ShowPrompt()
-    {
-        if (currentPrompt == null)
-        {
-            currentPrompt = Instantiate<UI_PerchPrompt>(promptPrefab);
-            isPromptShown = true;
-        }
-        else return;
-    }
-
-    protected void HidePrompt()
-    {
-        if (currentPrompt != null)
-        {
-            Destroy(currentPrompt);
-            isPromptShown = false;
-        }
-        else return;
-    }
 
     protected void ToggleMeshCollidersOn()
     {
@@ -112,18 +92,22 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
             {
 
                 playerRef = perchSphere.gameObject;
+               
             }
+            icon.ShowIcon();
         }
     }
-    void OnCollisionEnter(Collision hideColliders)
-    {
-        if (hideColliders.gameObject.CompareTag("Player") && playerRef!=null)
-        {
-            Debug.Log("Hit the Collider");
 
-                ToggleMeshCollidersOff();
-                StartPerch();
-            
+    void OnTriggerStay(Collider perchSphere)
+    {
+        if (perchSphere.gameObject.CompareTag("Player"))
+        {
+            if (playerRef == null)
+            {
+
+                playerRef = perchSphere.gameObject;
+            }
+            icon.ShowIcon();
         }
     }
 
@@ -135,8 +119,10 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
             if (playerRef != null)
             {
                 playerRef = null;
+                
 
             }
+            icon.HideIcon();
         }
     }
 }

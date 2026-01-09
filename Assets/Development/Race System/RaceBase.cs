@@ -210,6 +210,7 @@ public class RaceBase : MonoBehaviour
     private void SetStartLine()
     {
         Debug.Log(currentRaceStartingLine.name);
+        currentRaceStartingLine.gameObject.SetActive(true);
     }
 
     private void MovePlayerToStartLine()
@@ -228,17 +229,19 @@ public class RaceBase : MonoBehaviour
         {
             if (i >= currentRacerList.Count / 2)
             {
-                currentRacerList[i].transform.position = raceStartLine.transform.position + row2offset;
+                currentRacerList[i].transform.position = raceStartLine.transform.position  + row2offset;
                 currentRacerList[i].transform.rotation = raceStartLine.transform.rotation;
                 row2offset += gap;
                 currentRacerList[i].SetMoveToLocation(1);
+                Debug.Log("SET RACER LOC1" + currentRacerList[i].transform.position);
             }
-            else
+            else if(i < currentRacerList.Count / 2)
             {
                 currentRacerList[i].transform.position = raceStartLine.transform.position + offset;
                 currentRacerList[i].transform.rotation = raceStartLine.transform.rotation;
                 offset += gap;
                 currentRacerList[i].SetMoveToLocation(1);
+                Debug.Log("SET RACER LOC2");
             }
         }
     }
@@ -248,10 +251,12 @@ public class RaceBase : MonoBehaviour
         var racers = raceData.numberOfCPURacers;
         for (int i = racers; i > 0; i--)
         {
-            CPURacer racer = Instantiate(racerPrefab);
+            CPURacer racer = Instantiate(racerPrefab,raceStartLine.transform.position,raceStartLine.transform.rotation);
             currentRacerList.Add(racer);
-            SetStartingRacerLocation();
+            Debug.Log(racer.transform.position);
+            
         }
+        SetStartingRacerLocation();
         MovePlayerToStartLine();
     }
 

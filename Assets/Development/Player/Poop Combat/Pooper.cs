@@ -23,12 +23,26 @@ public class Pooper : MonoBehaviour
 
     float spinTime = 0f;
     float spinDuration = 1f;
+    PlayerGroundMovement groundComp;
+    [SerializeField]bool isFlying;
 
     // #region Setup & Init
 
     //Switching to new input system - JK Oct/23
+
+    public bool GetIsAiming()
+    {
+        return isAiming;
+    }
+
+    bool GetIsFlying()
+    {
+        isFlying = groundComp.GetIsFlying();
+        return isFlying;
+    }
     private void Start()
     {
+        groundComp = GetComponent<PlayerGroundMovement>();
         playerInput = GetComponentInParent<PlayerInput>();
         Debug.Log($"PlayerInput: {playerInput != null}");
 
@@ -50,6 +64,7 @@ public class Pooper : MonoBehaviour
 
     private void Update()
     {
+        
         if (spinTime < spinDuration)
         {
             spinTime += Time.deltaTime;
@@ -90,26 +105,34 @@ public class Pooper : MonoBehaviour
     {
         Debug.Log("Poop action performed");
 
-        if (isAiming)
-        {
-            TryPooping();
-        }
+                TryPooping(GetIsFlying());
+            
+        
     }
 
     #endregion
 
 
-    private void TryPooping()
+    private void TryPooping(bool isFlying)
     {
-        Debug.Log("PoopCalled");
+        if (isFlying)
+        {
+            Debug.Log("FlyingPoopCalled");
+            if (poopSystem.TryPoop())
+            {
+                Vector3 target = GetTarget();
+
+                //Get player velocity from pigeon rigidbody
+                Vector3 playerVelocity = pigeon.linearVelocity;
+                poopFunction.FirePoop(target, playerVelocity);
+            }
+        }else
         if (poopSystem.TryPoop())
         {
-            Vector3 target = GetTarget();
-
-            //Get player velocity from pigeon rigidbody
-            Vector3 playerVelocity = pigeon.linearVelocity;
-            poopFunction.FirePoop(target, playerVelocity);
-            Debug.Log("Pooping");
+            if (isAiming)
+            {
+                poopFunction.FireGroundPoop();
+            }
         }
     }
 
