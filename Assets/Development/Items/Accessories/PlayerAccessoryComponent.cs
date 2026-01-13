@@ -9,7 +9,9 @@ public class PlayerAccessoryComponent : MonoBehaviour
     public AccessoryList list;
     [SerializeField] private List<AccessoryBase> accessories;
     public List<AccessoryBase> currentEquippedAccessories = new();
-    [SerializeField] private AccessoryBase currentItem;
+    public AccessoryBase currentItem;
+    public string currentItemName => currentItem.GetName();
+    public string currentItemDesc =>currentItem.GetDescription();
     [SerializeField] protected Vector3 accessoryOffset;
 
     [SerializeField] protected Transform headSlot;
@@ -20,6 +22,18 @@ public class PlayerAccessoryComponent : MonoBehaviour
     {
 
 
+    }
+
+    public string SendItemName()
+    {
+        Debug.Log("Called");
+        return currentItemName;
+    }
+
+    public string SendItemDesc()
+    {
+        Debug.Log("DescCalled");
+        return currentItemDesc;
     }
     public void EquipAccessory(AccessoryBase accessory, bool isEquip, EAccessoryItems state, Transform slot)
     {

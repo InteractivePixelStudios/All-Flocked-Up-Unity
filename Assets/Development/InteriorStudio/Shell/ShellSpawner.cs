@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -145,3 +146,4 @@ public class ShellSpawner : MonoBehaviour
         ceilPlane.transform.localScale = roomSize;
     }
 }
+#endif

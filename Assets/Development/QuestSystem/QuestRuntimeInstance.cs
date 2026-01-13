@@ -145,4 +145,9 @@ public class QuestRuntimeInstance
    
         Debug.Log("Call Quest Failed");
     }
+
+    public void GiveItemReward()
+    {
+        questLog.AddItemsToInventory(questData.itemRewards);
+    }
 }
