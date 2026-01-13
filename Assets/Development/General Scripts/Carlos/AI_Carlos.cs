@@ -1,10 +1,6 @@
-using NUnit.Framework;
-using System.Threading.Tasks;
+
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.VisualScripting;
-using System.Net;
-using UnityEditor.Experimental.GraphView;
 
 public class AI_Carlos : MonoBehaviour
 {

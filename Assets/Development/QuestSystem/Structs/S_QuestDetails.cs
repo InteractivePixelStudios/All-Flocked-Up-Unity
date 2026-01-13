@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "NewQuest", menuName = "Quests/Quest")]
 public class QuestDetails : ScriptableObject
@@ -20,4 +22,6 @@ public class QuestDetails : ScriptableObject
     public bool autoCompleteQuest;
 
     public StageDetails[] stages;
+
+    public List<GameObject> itemRewards = new();
 }
