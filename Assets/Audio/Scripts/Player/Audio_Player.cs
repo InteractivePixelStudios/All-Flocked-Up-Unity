@@ -12,6 +12,11 @@ public class Audio_Player : MonoBehaviour // REMINDER - Clean this damn script u
     [SerializeField] EventReference poopEvent; // Assign in Inspector
     [SerializeField] EventReference splatEvent; // Assign in Inspector
 
+    [Header("FMOD Instances")] //Used to control audio playback and early cancellation
+    private EventInstance footstepInstance;
+    private EventInstance wingFlapInstance;
+    private EventInstance poopInstance;
+    private EventInstance splatInstance;
 
     [SerializeField] LayerMask surfaceDetectionLayers; // Layers to detect surfaces on
     [SerializeField] float raycastDistance = 1.5f; // Distance for raycast
@@ -31,11 +36,19 @@ public class Audio_Player : MonoBehaviour // REMINDER - Clean this damn script u
         if (!TryGetGround(out RaycastHit tempHit))
         {
             Debug.Log("No ground detected.");
+            KillAudioEarly(footstepInstance);
+            return;
         }
         else
         {
             Debug.Log("Ground detected: " + tempHit.collider.name);
         }
+    }
+
+    private void KillAudioEarly(EventInstance instance)
+    {
+        instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        instance.release();
     }
 
     private bool TryGetGround(out RaycastHit hit)
@@ -73,38 +86,38 @@ public class Audio_Player : MonoBehaviour // REMINDER - Clean this damn script u
             }
         }
 
-        EventInstance inst = RuntimeManager.CreateInstance(footstepEvent);
-        inst.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
-        inst.setParameterByName("Surface", (float)surfaceType);
+        EventInstance footstepInstance = RuntimeManager.CreateInstance(footstepEvent);
+        footstepInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+        footstepInstance.setParameterByName("Surface", (float)surfaceType);
 
-        inst.start();
-        inst.release();
+        footstepInstance.start();
+        footstepInstance.release();
     }
 
     public void WingFlap()
     {
-        EventInstance inst = RuntimeManager.CreateInstance(wingFlapEvent);
-        //inst.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+        EventInstance wingFlapInstance = RuntimeManager.CreateInstance(wingFlapEvent);
+        //wingFlapInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
 
-        inst.start();
-        inst.release();
+        wingFlapInstance.start();
+        wingFlapInstance.release();
     }
 
     public void Poop()
     {
-        EventInstance inst = RuntimeManager.CreateInstance(poopEvent);
-        //inst.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+        EventInstance poopInstance = RuntimeManager.CreateInstance(poopEvent);
+        //poopInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
 
-        inst.start();
-        inst.release();
+        poopInstance.start();
+        poopInstance.release();
     }
 
     public void Splat()
     {
-        EventInstance inst = RuntimeManager.CreateInstance(wingFlapEvent);
-        //inst.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+        EventInstance splatInstance = RuntimeManager.CreateInstance(splatEvent);
+        //splatInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
 
-        inst.start();
-        inst.release();
+        splatInstance.start();
+        splatInstance.release();
     }
 }
