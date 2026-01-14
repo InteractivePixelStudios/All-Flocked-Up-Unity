@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6674931015174386993}
   - component: {fileID: 809685556278437565}
   - component: {fileID: 8245298546425248696}
+  - component: {fileID: 2837977841739229981}
   - component: {fileID: 2035228350106880387}
   m_Layer: 6
   m_Name: Main Camera
@@ -179,6 +180,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2837977841739229981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955666931451239080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nonRigidbodyVelocity: 0
+  attenuationObject: {fileID: 955666931451239080}
 --- !u!114 &2035228350106880387
 MonoBehaviour:
   m_ObjectHideFlags: 0
