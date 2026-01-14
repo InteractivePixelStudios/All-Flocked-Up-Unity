@@ -1,5 +1,6 @@
 using System.Drawing;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GrabHoldObject : MonoBehaviour
 {
@@ -10,33 +11,45 @@ public class GrabHoldObject : MonoBehaviour
     [SerializeField] private Vector3 grabOffset;
     [SerializeField] private bool isHoldingObject = false;
     [SerializeField] private PlayerPeckComponent peckComp;
+
+    InputAction grabAction;
+    PlayerInput playerInput;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         peckComp = GetComponent<PlayerPeckComponent>();
+        playerInput = GetComponentInParent<PlayerInput>();
+
+        grabAction = playerInput.actions.FindAction("Grab");
+
+        if(grabAction != null )
+        {
+            grabAction.performed += GrabObject;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void GrabObject(InputAction.CallbackContext ctx)
     {
-        if (Input.GetKeyDown(KeyCode.F) && !isHoldingObject)
+        if (!isHoldingObject)
         {
             peckComp.Peck();
             TryGrabObject();
 
         }
-        else if (Input.GetKeyDown(KeyCode.G) && isHoldingObject)
+        else if (isHoldingObject)
         {
 
             ReleaseGrabbedObject();
         }
-        else if (isHoldingObject)
+        else 
         {
             HoldGrabbedObject(grabbedObject, grabOffset);
 
         }
-        else return;
+        
     }
+
+
 
     private void TryGrabObject()
     {

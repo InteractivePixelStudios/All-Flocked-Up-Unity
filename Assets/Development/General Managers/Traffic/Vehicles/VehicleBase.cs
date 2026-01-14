@@ -10,7 +10,7 @@ public class VehicleBase :MonoBehaviour
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [SerializeField] protected NavMeshAgent navAgent;
-    [SerializeField] private float vehicleSpeed;
+    [SerializeField] private float vehicleSpeed => navAgent.speed;
     [SerializeField] protected float detectRadius=2f;
     [SerializeField] protected LayerMask playerLayer;
     [SerializeField] protected LayerMask enemyLayer;
@@ -54,6 +54,7 @@ public class VehicleBase :MonoBehaviour
     protected virtual void SetMoveToLocation(Waypoint location)
     {
         currentNode = location;
+        navAgent.speed = 3.5f;
     }
 
     //call this to run like wind
@@ -77,6 +78,7 @@ public class VehicleBase :MonoBehaviour
     {
         //StopVehicle();
         HonkHorn();
+        navAgent.speed = 2;
         if (!navAgent.isStopped)
         {
             MoveVehicleToLocation();
@@ -97,19 +99,23 @@ public class VehicleBase :MonoBehaviour
             connections.Add(new WaypointConnection { node = node.nextWaypoint });
 
         }
-        //if(node.nextWaypoint == null)
-        //{
-        //    node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count-1)];
-        //}
-        if (node.branches.Count>0)
+        if (connections.Count == 0 && node.nextWaypoint == null)
         {
-            var chance = Random.Range(0, 1);
-            if (chance != 0)
+            if (node.branches.Count > 0)
             {
-                node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count-1)];
+                node.nextWaypoint = node.branches[0];
             }
             
         }
+        //if (node.branches.Count>0)
+        //{
+        //    var chance = Random.Range(0, 1);
+        //    if (chance != 0)
+        //    {
+        //        node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count-1)];
+        //    }
+            
+        //}
         if(connections.Count ==0 && node.branches.Count == 0 && node.nextWaypoint == null)
         {
             Destroy(this.gameObject);
@@ -132,5 +138,8 @@ public class VehicleBase :MonoBehaviour
     protected virtual void HonkHorn()
     {
         //add horn SFX/possible headlight VFX? 
+        Debug.Log("HONNKKKKKKKKKKKK");
     }
+
+
 }

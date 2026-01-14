@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public class UI_QuestLog : MonoBehaviour
 {
@@ -42,6 +43,7 @@ public class UI_QuestLog : MonoBehaviour
         }
         GetCurrentQuests();
         trackQuestButton.onClick.AddListener(()=>TrackQuest(currentQuest));
+        HideRewardImages(currentQuest);
     }
 
     public void TrackQuest(QuestRuntimeInstance questID)
@@ -68,6 +70,7 @@ public class UI_QuestLog : MonoBehaviour
             trinkets += item.trinketReward;
             exp += item.expReward;
         }
+        ShowRewardImages(currentQuest);
     }
 
     private void UpdateCurrentObjectives(QuestRuntimeInstance quest)
@@ -78,7 +81,7 @@ public class UI_QuestLog : MonoBehaviour
         {
             foreach(ObjectiveDetails objectives in item.objectivesToComplete)
             {
-                var entry = Instantiate(objectiveEntryPrefab);
+                var entry = Instantiate(objectiveEntryPrefab,objectivesBox.content.transform.position,objectivesBox.content.transform.rotation );
                 entry.transform.SetParent(objectivesBox.content.transform, false);
                 entry.transform.localPosition += new Vector3(0, offset, 0);
                 offset -= 50f;
@@ -131,6 +134,37 @@ public class UI_QuestLog : MonoBehaviour
     public void CloseQuestLog()
     {
         Destroy(this.gameObject);
+    }
+
+    private void HideRewardImages(QuestRuntimeInstance quest)
+    {
+        if (quest.questData.itemRewards[0] != null) reward1.enabled = false;
+        if (quest.questData.itemRewards[1] != null) reward2.enabled = false;
+        if (quest.questData.itemRewards[2] != null) reward3.enabled = false;
+        if (quest.questData.itemRewards[3] != null) reward4.enabled = false;
+        else
+        {
+            reward1.enabled = false;
+            reward2.enabled = false;
+            reward3.enabled = false;
+            reward4.enabled = false;
+        }
+
+    }
+
+    private void ShowRewardImages(QuestRuntimeInstance quest)
+    {
+        if (quest.questData.itemRewards[0]!=null) reward1.enabled = true;
+        if (quest.questData.itemRewards[1] != null) reward2.enabled = true;
+        if (quest.questData.itemRewards[2] != null) reward3.enabled = true;
+        if (quest.questData.itemRewards[3] != null) reward4.enabled = true;
+        else
+        {
+            reward1.enabled = true;
+            reward2.enabled = true;
+            reward3.enabled = true;
+            reward4.enabled = true;
+        }
     }
 
 }

@@ -14,10 +14,15 @@ public class TrafficLightTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(!this.isActiveAndEnabled)
+        if (!redLightBox.enabled)
         {
-            stoppedVehicle.isStopped = false;
+            if (stoppedVehicle != null)
+            {
+                stoppedVehicle.isStopped = false;
+                StartMoveAfterLight();
+            }
         }
+        else return;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,6 +37,7 @@ public class TrafficLightTrigger : MonoBehaviour
     public void StartMoveAfterLight()
     {
         stoppedVehicle.MoveVehicleToLocation();
+        stoppedVehicle = null;
     }
 
 }

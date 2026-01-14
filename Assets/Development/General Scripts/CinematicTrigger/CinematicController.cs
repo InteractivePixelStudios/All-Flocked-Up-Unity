@@ -29,8 +29,4 @@ public class CinematicController : MonoBehaviour
         Destroy(FindFirstObjectByType<CreditRoll>().gameObject);
     }
 
-    private void OnDestroy()
-    {
-        
-    }
 }

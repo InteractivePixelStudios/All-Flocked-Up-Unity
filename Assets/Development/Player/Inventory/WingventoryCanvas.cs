@@ -60,6 +60,12 @@ public class WingventoryCanvas : MonoBehaviour
         GetPlayerInv();
         SpawnItemButton();
         GoCenterPage();
+        Time.timeScale = 0;
+    }
+
+    private void OnDestroy()
+    {
+        Time.timeScale = 1;
     }
 
     // Update is called once per frame
