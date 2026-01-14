@@ -40,16 +40,13 @@ public class BusScript : VehicleBase
         //add horn SFX/possible headlight VFX? 
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void SendCollisions()
     {
-        if (other.gameObject.CompareTag("Player") ||
-    other.gameObject.CompareTag("Vehicle") ||
-    other.gameObject.CompareTag("Enemy") ||
-    other.gameObject.CompareTag("NPC"))
-        {
+        TriggerCollisions();
+    }
 
-            TriggerCollisions();
-
-        }
+    public void SpeedUp()
+    {
+        base.navAgent.speed = 4f;
     }
 }

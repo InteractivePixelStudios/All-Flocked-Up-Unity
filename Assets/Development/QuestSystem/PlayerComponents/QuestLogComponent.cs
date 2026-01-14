@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -201,6 +202,18 @@ public class QuestLog : MonoBehaviour
         if (instance != null)
         {
 
+        }
+    }
+
+    public void AddItemsToInventory(List<GameObject> items)
+    {
+        var inventory = GetComponentInParent<PlayerWingventory>();
+        foreach( var reward in items)
+        {
+            if (reward != null) 
+            {
+                inventory.AddItemToInv(reward, 1);
+            }
         }
     }
 }

@@ -37,6 +37,16 @@ public class AccessoryBase : MonoBehaviour
 
     }
 
+    public string GetName()
+    {
+        return accessoryName;
+    }
+
+    public string GetDescription()
+    {
+        return accessoryDescription;
+    }
+
 
     protected void SetItemState()
     {

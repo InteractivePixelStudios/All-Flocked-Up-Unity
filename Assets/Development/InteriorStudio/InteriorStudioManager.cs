@@ -2,10 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using System.Linq;
-using UnityEditor.TerrainTools;
-using UnityEditor.UI;
+
 
 [ExecuteInEditMode]
 public class InteriorStudioManager : EditorWindow
