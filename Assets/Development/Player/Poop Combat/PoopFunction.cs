@@ -8,7 +8,7 @@ public class PoopFunction : MonoBehaviour
     //Trigger audio on shoot and hit
 
     [Header("Script References")]
-    [SerializeField] private Audio_Player audioPlayer;
+    private Audio_Player audioPlayer;
 
     [Header("Poop Settings")]
     [SerializeField] private PoopType currentPoopType;
@@ -37,25 +37,24 @@ public class PoopFunction : MonoBehaviour
     //Update to accept pigeon velocity - JK Oct23
     public void FirePoop(Vector3 target, Vector3 playerVelocity)
     {
-
+        SoundCaller(currentPoopType, soundIndex = 0); // Added by Isaiah PM.
         var projectile = Instantiate(projectilePrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
         projectile.Launch(target, currentPoopType, this, playerVelocity);
-        SoundCaller(currentPoopType, soundIndex = 0); // Added by Isaiah PM.
     }
 
     public void FireGroundPoop()
     {
+        SoundCaller(currentPoopType, soundIndex = 0); // Added by Isaiah PM.
         var projectile = Instantiate(projectilePrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
         projectile.GetComponent<Rigidbody>().AddForce(spawnPoint.forward * forwardVelocity + Vector3.up * verticalVelocity, ForceMode.Impulse);
         Debug.Log(projectile.transform.position);
-        SoundCaller(currentPoopType, soundIndex = 0); // Added by Isaiah PM.
     }
 
     public void HandleHitEffects(PoopType type, Vector3 position)
     {
+        SoundCaller(type, soundIndex = 1); // Added by Isaiah PM.
         if (type.splatVFX) Instantiate(type.splatVFX, position, Quaternion.identity);
         if (type.splatSFX) Debug.Log("Play poop splat sound here"); // Delegate to AudioManager
-        SoundCaller(type, soundIndex = 1); // Added by Isaiah PM.
     }
 
     //Method added by Isaiah PM.

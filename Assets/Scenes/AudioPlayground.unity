@@ -4075,13 +4075,73 @@ PrefabInstance:
       value: -25.325523
       objectReference: {fileID: 0}
     - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: poopEvent.Path
+      value: event:/Poops/Player_Poops
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: raycastDistance
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: splatEvent.Path
+      value: event:/Splats/Player_Splats
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: wingFlapEvent.Path
+      value: event:/Wingflaps/Player_Wingflaps
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: poopEvent.Guid.Data1
+      value: 1796020849
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: poopEvent.Guid.Data2
+      value: 1336446462
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: poopEvent.Guid.Data3
+      value: -1567428713
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: poopEvent.Guid.Data4
+      value: 1060673333
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: splatEvent.Guid.Data1
+      value: 1965529891
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: splatEvent.Guid.Data2
+      value: 1116207704
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: splatEvent.Guid.Data3
+      value: -958216022
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: splatEvent.Guid.Data4
+      value: -1593549837
       objectReference: {fileID: 0}
     - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: surfaceDetectionOrigin
       value: 
       objectReference: {fileID: 693261624}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: wingFlapEvent.Guid.Data1
+      value: -1351930368
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: wingFlapEvent.Guid.Data2
+      value: 1246639671
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: wingFlapEvent.Guid.Data3
+      value: 1664382870
+      objectReference: {fileID: 0}
+    - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: wingFlapEvent.Guid.Data4
+      value: -2121684890
+      objectReference: {fileID: 0}
     - target: {fileID: 6323546355963899339, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: surfaceDetectionLayers.m_Bits
       value: 4294967295
@@ -10300,6 +10360,27 @@ MonoBehaviour:
       Data3: 134290610
       Data4: -1955566084
     Path: event:/Footsteps/Player_Footsteps
+  wingFlapEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  poopEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  splatEvent:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   surfaceDetectionLayers:
     serializedVersion: 2
     m_Bits: 4294967295

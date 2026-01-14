@@ -97,6 +97,31 @@ MonoBehaviour:
   - Name: Desktop
     Value: 19168
   Exists: 1
+--- !u!114 &-5429039590755107636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Player_Splats/RandomSplat
+  m_EditorClassIdentifier: 
+  Name: RandomSplat
+  StudioPath: 
+  Min: 0
+  Max: 0
+  Default: 0
+  ID:
+    data1: 1677900866
+    data2: 322448417
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
+  Exists: 1
 --- !u!114 &-5143672944282135813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,10 +191,10 @@ MonoBehaviour:
   Path: C:/Users/Gaunter/Desktop/GFG/AllFlockedUp/Build/Desktop/Player.bank
   Name: Player
   StudioPath: bank:/Player
-  lastModified: 638996114228960688
+  lastModified: 639039961713355001
   FileSizes:
   - Name: Desktop
-    Value: 40960
+    Value: 135872
   Exists: 1
 --- !u!114 &-103524617529129139
 MonoBehaviour:
@@ -223,13 +248,16 @@ MonoBehaviour:
   - {fileID: -103524617529129139}
   - {fileID: -5143672944282135813}
   - {fileID: -5578105645543368097}
+  - {fileID: 2816401946356421987}
+  - {fileID: 108074164352376888}
+  - {fileID: 4639774802783634351}
   EditorParameters: []
   MasterBanks:
   - {fileID: 2005686705804803662}
   StringsBanks:
   - {fileID: 2696772141618963732}
   cacheVersion: 131848
-  cacheTime: 639039044194051248
+  cacheTime: 639039961713355001
   SerializableEventsDict:
   - key: event:/ItemPickup
     index: 0
@@ -241,6 +269,65 @@ MonoBehaviour:
     index: 3
   - key: event:/Ambience/WorldBirds
     index: 4
+  - key: event:/Wingflaps/Player_Wingflaps
+    index: 5
+  - key: event:/Splats/Player_Splats
+    index: 6
+  - key: event:/Poops/Player_Poops
+    index: 7
+--- !u!114 &108074164352376888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Splats/Player_Splats
+  m_EditorClassIdentifier: 
+  Path: event:/Splats/Player_Splats
+  Guid:
+    Data1: 1965529891
+    Data2: 1116207704
+    Data3: -958216022
+    Data4: -1593549837
+  Banks:
+  - {fileID: -2529222740908888837}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -5429039590755107636}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &1336711016367594940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Player_Poops/NormalPoop
+  m_EditorClassIdentifier: 
+  Name: NormalPoop
+  StudioPath: 
+  Min: 0
+  Max: 0
+  Default: 0
+  ID:
+    data1: 4248391851
+    data2: 3104323414
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
+  Exists: 1
 --- !u!114 &2005686705804803662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,7 +343,7 @@ MonoBehaviour:
   Path: C:/Users/Gaunter/Desktop/GFG/AllFlockedUp/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639039044194041184
+  lastModified: 639039950862233938
   FileSizes:
   - Name: Desktop
     Value: 1524
@@ -276,10 +363,63 @@ MonoBehaviour:
   Path: C:/Users/Gaunter/Desktop/GFG/AllFlockedUp/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639039044194051248
+  lastModified: 639039950862233938
   FileSizes:
   - Name: Desktop
-    Value: 1348
+    Value: 1630
+  Exists: 1
+--- !u!114 &2816401946356421987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Wingflaps/Player_Wingflaps
+  m_EditorClassIdentifier: 
+  Path: event:/Wingflaps/Player_Wingflaps
+  Guid:
+    Data1: -1351930368
+    Data2: 1246639671
+    Data3: 1664382870
+    Data4: -2121684890
+  Banks:
+  - {fileID: -2529222740908888837}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 3128557802287896923}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &3128557802287896923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Player_Wingflaps/Parameter 1
+  m_EditorClassIdentifier: 
+  Name: Parameter 1
+  StudioPath: 
+  Min: 0
+  Max: 0
+  Default: 0
+  ID:
+    data1: 2318954888
+    data2: 426250642
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
   Exists: 1
 --- !u!114 &4191931129786832302
 MonoBehaviour:
@@ -316,6 +456,34 @@ MonoBehaviour:
   - Value J
   - Value K
   Exists: 1
+--- !u!114 &4639774802783634351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Poops/Player_Poops
+  m_EditorClassIdentifier: 
+  Path: event:/Poops/Player_Poops
+  Guid:
+    Data1: 1796020849
+    Data2: 1336446462
+    Data3: -1567428713
+    Data4: 1060673333
+  Banks:
+  - {fileID: -2529222740908888837}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 1336711016367594940}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &5961697556764809125
 MonoBehaviour:
   m_ObjectHideFlags: 0

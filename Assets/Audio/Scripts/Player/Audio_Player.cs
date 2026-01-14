@@ -83,18 +83,28 @@ public class Audio_Player : MonoBehaviour // REMINDER - Clean this damn script u
 
     public void WingFlap()
     {
-        // Placeholder for wing flap sound logic
+        EventInstance inst = RuntimeManager.CreateInstance(wingFlapEvent);
+        //inst.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+
+        inst.start();
+        inst.release();
     }
 
     public void Poop()
     {
-        // Placeholder for poop sound logic
-        Debug.Log("Poop sound called");
+        EventInstance inst = RuntimeManager.CreateInstance(poopEvent);
+        //inst.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+
+        inst.start();
+        inst.release();
     }
 
     public void Splat()
     {
-        // Placeholder for fart sound logic
-        Debug.Log("Splat sound called");
+        EventInstance inst = RuntimeManager.CreateInstance(wingFlapEvent);
+        //inst.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+
+        inst.start();
+        inst.release();
     }
 }
