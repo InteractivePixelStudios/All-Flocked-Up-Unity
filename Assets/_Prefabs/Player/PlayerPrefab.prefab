@@ -1371,6 +1371,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5032810491348856936}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6323546355963899339}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 858650213962111848}
     - targetCorrespondingSourceObject: {fileID: -305959869301618021, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4071117194366693463}
@@ -1425,7 +1431,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 5820954870242084694, guid: f03d16541a9d71b439753f3d68b9430f, type: 3}
+  arrowPrefab: {fileID: 0}
   arrowSpawnPoint: {fileID: 8299280514109986732}
+  isEnabled: 0
 --- !u!114 &1984731541646420339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1610,6 +1618,7 @@ MonoBehaviour:
   logMenuEvents: {fileID: 0}
   currentTime: 0
   canvasController: {fileID: 0}
+  arrowPointer: {fileID: 0}
 --- !u!114 &7090866481989506578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1975,6 +1984,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projector: {fileID: 0}
   moveComp: {fileID: 0}
+--- !u!114 &6323546355963899339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608166696854051247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1a022da13c8e934cbe55bb063f30e55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  footstepEvent:
+    Guid:
+      Data1: -365079154
+      Data2: 1306255037
+      Data3: 134290610
+      Data4: -1955566084
+    Path: event:/Footsteps/Player_Footsteps
+  surfaceDetectionLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  raycastDistance: 1.5
+  surfaceDetectionOrigin: {fileID: 8952464106424959765}
+--- !u!114 &858650213962111848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608166696854051247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 981a831ef2f24c14ab9e0b0551615fae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8952464106424959765 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
