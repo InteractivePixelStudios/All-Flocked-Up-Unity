@@ -215,12 +215,14 @@ public class PlayerFlightMovement : MonoBehaviour
     public void InitiateFlight()
     {
         isFlying = true;
+        GetComponent<VFXController>().ToggleStreakOn();
         FlapUp();
     }
 
     void ReturnToWalkState()
     {
         isFlying = false;
+        GetComponent<VFXController>().ToggleStreakOff();
         meshTransform.localRotation = Quaternion.Euler(Vector3.zero);
         GetComponent<PlayerGroundMovement>().InitiateWalkState();
     }

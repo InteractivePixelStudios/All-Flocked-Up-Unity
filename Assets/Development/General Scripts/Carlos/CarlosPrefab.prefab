@@ -149,13 +149,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2126632626510687484}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.658, y: 1.29, z: -0}
+  m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 1.29, z: 0.658001}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5622296146329466790}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 3372182055231470277}
+  m_Father: {fileID: 7313392418887644125}
+  m_LocalEulerAnglesHint: {x: -90, y: -90, z: 0}
 --- !u!1 &2412673891293356358
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,7 +189,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7313392418887644125}
-  - {fileID: 6499969845099221311}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &7914439501706136678
@@ -205,17 +205,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   targetPos: {x: 0, y: 0, z: 0}
+  lookOffset: {x: 0, y: 0, z: 0}
   playerDetected: 0
+  lockTimer: 3
   aimLocked: 0
   bulletPrefab: {fileID: 8866406584833741094, guid: fe66529822314c449b5586213582d781, type: 3}
-  bulletCount: 20
+  bulletCount: 5
   bulletIndex: 0
   bulletPool: []
-  bulletSpawnPoint: {fileID: 0}
-  gunPrefab: {fileID: 6221065353006235414, guid: 88dd0f718d027994f877fc5ee2dd8129, type: 3}
+  bulletSpawnPoint: {fileID: 2430510494449560066}
+  gunPrefab: {fileID: 5860798486863236800, guid: 85f6382ca3a34f642abf0736a7d170c1, type: 3}
   gunSpawnPoint: {fileID: 2126632626510687484}
-  shootDistance: 20
-  shootForce: {x: 1000, y: 0, z: 0}
+  spawnedGun: {fileID: 0}
+  shootDistance: 200
+  shootForce: 10
+  shootTimer: 2
 --- !u!135 &610202300919136513
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -237,6 +241,37 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 7.65
   m_Center: {x: 0, y: 0.85, z: 0}
+--- !u!1 &2430510494449560066
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3372182055231470277}
+  m_Layer: 0
+  m_Name: TestBulletSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3372182055231470277
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2430510494449560066}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.76, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6499969845099221311}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2699317449113108001
 GameObject:
   m_ObjectHideFlags: 0
@@ -357,15 +392,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3079578140550209590}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8359927981540596383}
   - {fileID: 4885718784813713661}
+  - {fileID: 6499969845099221311}
   m_Father: {fileID: 5622296146329466790}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &7081267041528788661
 Animator:
   serializedVersion: 7
@@ -375,9 +411,9 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3079578140550209590}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6155c5f3c9d92104fae4f558226646e1, type: 2}
+  m_CullingMode: 2
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -955,7 +991,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -5162368709878155971, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
+  - {fileID: 2100000, guid: 068f1ec38f97dc046a5cd59fa97ab434, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
