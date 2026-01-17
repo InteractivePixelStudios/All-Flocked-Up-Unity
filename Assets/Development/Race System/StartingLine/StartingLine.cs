@@ -5,6 +5,11 @@ public class StartingLine : MonoBehaviour
 {
     public string raceID;
 
+    private void Start()
+    {
+        GetComponentInChildren<MeshRenderer>().enabled = false;
+    }
+
     public void SetRotationToCheckpoint(RaceCheckpoint checkpoint)
     {
 

@@ -33,6 +33,7 @@ public class RaceData : ScriptableObject
             }
             else continue;
         }
+        checkpointSpawns.OrderBy(cpoint => cpoint.checkpointNumber);
 
     }
 
@@ -49,7 +50,7 @@ public class RaceData : ScriptableObject
             }
 
         }
-        startLine.SetRotationToCheckpoint(checkpointSpawns.LastOrDefault());
+       // startLine.SetRotationToCheckpoint(checkpointSpawns.Last());
         //Debug.Log(startLine);
         return startLine;
 

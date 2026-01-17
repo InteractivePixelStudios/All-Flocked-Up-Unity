@@ -13,6 +13,14 @@ public class RaceCheckpoint : MonoBehaviour
     private void Start()
     {
         num = raceBase.activeCheckpoints.Count;
+        GetComponent<MeshRenderer>().enabled = false;
+        GetComponent<SphereCollider>().enabled = false;
+    }
+
+    public void ShowCheckpoint()
+    {
+        GetComponent<MeshRenderer>().enabled = true;
+        GetComponent<SphereCollider>().enabled = true;
     }
     //calls UpdateCheckpoints on raceBase
     private void TriggerCheckpoint()
