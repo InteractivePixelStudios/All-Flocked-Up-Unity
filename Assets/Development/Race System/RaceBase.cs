@@ -108,7 +108,7 @@ public class RaceBase : MonoBehaviour
         //raceData.checkpointSpawns = activeCheckpoints;
         foreach (var checkpoint in raceData.checkpointSpawns)
         {
-            //checkpointTransforms.Add(checkpoint.transform);
+            checkpointTransforms.Add(checkpoint.transform);
             activeCheckpoints.Add(checkpoint);
         }
         activeCheckpoints = activeCheckpoints.OrderBy(cpoint => cpoint.checkpointNumber).ToList();
@@ -129,6 +129,7 @@ public class RaceBase : MonoBehaviour
         GetCheckpointLocationAndClear();
         Debug.Log("Race Started");
         canvasController.CloseRaceGiver();
+        raceStartLine.SetRotationToCheckpoint(activeCheckpoints[0]);
         Debug.Log("canvasClosed");
         checkpointIndex = 1;
         SetStartLine();
@@ -146,10 +147,9 @@ public class RaceBase : MonoBehaviour
 
     private void SpawnCheckpoints()
     {
-        foreach (var transform in checkpointTransforms)
+        foreach (var checkpoint in activeCheckpoints)
         {
-            var checkpoint = Instantiate(checkpointPrefab, transform.position, transform.rotation);
-            activeCheckpoints.Add(checkpoint);
+            checkpoint.ShowCheckpoint();
         }
         lastCheckpoint = activeCheckpoints[activeCheckpoints.Count - 1];
     }
@@ -210,7 +210,7 @@ public class RaceBase : MonoBehaviour
     private void SetStartLine()
     {
         Debug.Log(currentRaceStartingLine.name);
-        currentRaceStartingLine.gameObject.SetActive(true);
+        currentRaceStartingLine.GetComponentInChildren<MeshRenderer>().enabled = true;
     }
 
     private void MovePlayerToStartLine()

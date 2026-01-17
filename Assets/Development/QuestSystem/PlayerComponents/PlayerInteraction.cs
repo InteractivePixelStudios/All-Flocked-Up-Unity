@@ -91,6 +91,15 @@ public class PlayerInteraction : MonoBehaviour
                 var questNPC = hit.collider.GetComponentInParent<IQuestInteraction>();
                 if (questNPC != null)
                 {
+                Debug.Log("DialogueFirst");
+                var NPC = hit.collider.gameObject.GetComponent<NPCBase>();
+                if (NPC.dialogueFirst == true)
+                {
+                    Debug.Log("DialogueFirst");
+                    canvasController.OpenDialogue();
+                    NPC.InteractWithNPCDialogue();
+                    Debug.Log("DialogueFirst");
+                }else
                     canvasController.ShowQuestGiver(hit.collider.GetComponentInParent<QuestGiver>());
                 }
             }

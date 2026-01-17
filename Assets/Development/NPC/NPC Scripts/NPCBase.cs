@@ -15,6 +15,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     private bool isRetrigger;
     [SerializeField] private GameObject homeLocation;
     [SerializeField] private QuestGiver questGiverComp;
+    public bool dialogueFirst;
     //on load
     public void Awake()
     {
