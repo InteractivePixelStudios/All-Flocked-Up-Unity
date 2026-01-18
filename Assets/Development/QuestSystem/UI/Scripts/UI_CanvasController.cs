@@ -226,7 +226,11 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenDialogue()
     {
 
-        dialogueCanvas.gameObject.SetActive(true);
+        if(activeDialogueInstance == null)
+        {
+            activeDialogueInstance = Instantiate(dialogueCanvas);
+            ShowPlayerCursor();
+        }
 
     }
     //dialogue response options transfer
@@ -242,10 +246,11 @@ public class UI_CanvasController : MonoBehaviour
     //dialogue canvas
     public void CloseDialogue()
     {
-        if(dialogueCanvas != null || dialogueCanvas.isActiveAndEnabled)
+        if(activeDialogueInstance != null)
         {
             //activeDialogueInstance.DestroyDialogue();
-            dialogueCanvas.gameObject.SetActive(false);
+            Destroy(activeDialogueInstance);
+
         }
     }
     //trash canvas
