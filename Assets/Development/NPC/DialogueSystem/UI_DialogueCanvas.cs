@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 
 public class UI_DialogueCanvas : MonoBehaviour
@@ -11,6 +13,7 @@ public class UI_DialogueCanvas : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private Image dialogueImage;
+    [SerializeField] private Image dialogueImage2;
     [SerializeField] private DialogueBase dialogueBase;
     [SerializeField] private ScrollRect responseBox;
     [SerializeField] private Button buttonPrefab;
@@ -29,7 +32,6 @@ public class UI_DialogueCanvas : MonoBehaviour
     }
     void Start()
     {
-        dialogueCanvas.gameObject.SetActive(false);
         textSpeed=dialogueBase.textSpeed;
     }
     void Update()
@@ -44,11 +46,23 @@ public class UI_DialogueCanvas : MonoBehaviour
         }
     }
 
-    public void UpdateDialogueUI(string name,string dialogue, Image image)
+    public void UpdateDialogueUI(string name,string dialogue, Sprite image)
     {
         dialogueText.SetText(dialogue);
         nameText.SetText(name);
-        dialogueImage.material = image.material;
+        if (name == "Peep")
+        {
+            dialogueImage.gameObject.SetActive(true);
+            dialogueImage2.gameObject.SetActive(false);
+            dialogueImage.sprite = image;
+            
+        }
+        else 
+        {
+            dialogueImage.gameObject.SetActive(false);
+            dialogueImage2.gameObject.SetActive(true);
+            dialogueImage2.sprite = image; 
+        }
     }
 
     public void ClearDialogueCanvas()
