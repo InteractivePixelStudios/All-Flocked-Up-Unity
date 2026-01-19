@@ -24,7 +24,10 @@ public class GrabHoldObject : MonoBehaviour
 
         if(grabAction != null )
         {
-            grabAction.performed += GrabObject;
+            grabAction.performed += CallGrab;
+            grabAction.started += CallHold;
+            grabAction.canceled += CallRelease;
+
         }
     }
 
@@ -47,6 +50,16 @@ public class GrabHoldObject : MonoBehaviour
 
         }
         
+    }
+
+    private void CallGrab(InputAction.CallbackContext ctx)
+    {
+        if (!isHoldingObject)
+        {
+            peckComp.Peck();
+            TryGrabObject();
+
+        }
     }
 
 
@@ -90,12 +103,27 @@ public class GrabHoldObject : MonoBehaviour
 
     }
 
+    private void CallHold(InputAction.CallbackContext ctx)
+    {
+        HoldGrabbedObject(grabbedObject, grabOffset);
+    }
+
     private void HoldGrabbedObject(GameObject Object, Vector3 offset)
     {
         if(grabbedObject != null)
         {
             Object.transform.localPosition = Vector3.zero;
             Object.transform.rotation = grabPoint.transform.rotation;
+            Object.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        }
+    }
+
+    private void CallRelease(InputAction.CallbackContext ctx)
+    {
+        if (isHoldingObject)
+        {
+
+            ReleaseGrabbedObject();
         }
     }
 
@@ -104,6 +132,7 @@ public class GrabHoldObject : MonoBehaviour
         isHoldingObject = false;
         grabbedObject.transform.SetParent(null, true);
         grabbedObject.GetComponent<Rigidbody>().useGravity = true;
+        grabbedObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         grabbedObject.GetComponent<BoxCollider>().enabled = true;
         grabbedObject = null;
 
