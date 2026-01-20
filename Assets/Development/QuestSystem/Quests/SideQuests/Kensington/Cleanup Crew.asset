@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25da5333b879d2d45a8d16915869372e, type: 3}
+  m_Name: Cleanup Crew
+  m_EditorClassIdentifier: 
+  questName: Cleanup Crew
+  questID: S001
+  questLogDescription: Clean up some trash
+  trackerDescription: Clean up some trash
+  isMainQuest: 0
+  stagesToComplete: 1
+  isQuestTimed: 0
+  questTime: 0
+  autoAcceptQuest: 0
+  autoCompleteQuest: 0
+  stages:
+  - stageName: Trash 10 Items
+    stageDescription: Find items around the city and drop them into a garbage can
+    objectivesToComplete:
+    - objectiveName: Trash 10 Items
+      objectiveDescription: Find items around the city and drop them into a garbage
+        can
+      objectiveType: 
+      objectiveID: 
+      quantityToComplete: 10
+      isOptional: 0
+      bonusEXP: 0
+    expReward: 0
+    trinketReward: 0
+  itemRewards: []
