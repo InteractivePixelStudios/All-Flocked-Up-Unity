@@ -37,17 +37,16 @@ public class PoopFunction : MonoBehaviour
     //Update to accept pigeon velocity - JK Oct23
     public void FirePoop(Vector3 target, Vector3 playerVelocity)
     {
-        SoundCaller(currentPoopType, soundIndex = 0); // Added by Isaiah PM.
         var projectile = Instantiate(projectilePrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
         projectile.Launch(target, currentPoopType, this, playerVelocity);
+        SoundCaller(currentPoopType, soundIndex = 0); // Added by Isaiah PM.
     }
 
     public void FireGroundPoop()
     {
-        SoundCaller(currentPoopType, soundIndex = 0); // Added by Isaiah PM.
         var projectile = Instantiate(projectilePrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
         projectile.GetComponent<Rigidbody>().AddForce(spawnPoint.forward * forwardVelocity + Vector3.up * verticalVelocity, ForceMode.Impulse);
-        Debug.Log(projectile.transform.position);
+        SoundCaller(currentPoopType, soundIndex = 0); // Added by Isaiah PM.
     }
 
     public void HandleHitEffects(PoopType type, Vector3 position)

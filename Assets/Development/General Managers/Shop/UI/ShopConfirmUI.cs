@@ -51,7 +51,7 @@ public class ShopConfirmUI : MonoBehaviour
 
     }
 
-    private void CloseWindow()
+    public void CloseWindow()
     {
         canvasController.CloseShopUI();
         Destroy(this.gameObject);

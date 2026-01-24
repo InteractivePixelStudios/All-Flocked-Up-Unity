@@ -381,11 +381,15 @@ public class UI_CanvasController : MonoBehaviour
 
     }
 
-    public void OpenShopUI(ShopItem item)
+    public void OpenShopUI(ShopItem item, ShopLocation location)
     {
         activeShopCanvas = Instantiate(shopUICanvas);
+        shopLocationRef = location;
+        activeShopCanvas.transform.SetParent(shopLocationRef.transform);
+        activeShopCanvas.transform.localPosition = Vector3.zero + new Vector3(0,1.5f,0);
         activeShopCanvas.currentItem = item;
         activeShopCanvas.canvasController = this;
+        shopLocationRef = location;
         ShowPlayerCursor();
     }
 
