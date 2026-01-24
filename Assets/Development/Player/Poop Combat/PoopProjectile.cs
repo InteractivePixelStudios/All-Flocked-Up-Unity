@@ -19,6 +19,8 @@ public class PoopProjectile : MonoBehaviour
 
     private float lifeTimer;
 
+    [SerializeField] private PoopSplatDecal decalPrefab;
+
 
     private void Awake()
     {
@@ -43,6 +45,26 @@ public class PoopProjectile : MonoBehaviour
 
     }
 
+    private void SpawnPoopDecal(Vector3 position, Vector3 hit)
+    {
+        PoopSplatDecal spawned;
+        if (hit.y >= 1)
+        {
+
+            spawned = Instantiate(decalPrefab, position, Quaternion.Euler(90, 0, 0));
+        }
+        else if (hit.x >= 1)
+        {
+
+            spawned = Instantiate(decalPrefab, position, Quaternion.Euler(0, 90, 0));
+        }
+        else if (hit.z <= 0)
+        {
+            spawned = Instantiate(decalPrefab, position, Quaternion.Euler(0, 0, 0));
+        }
+        else return;
+    }
+
     private void Update()
     {
 
@@ -50,6 +72,9 @@ public class PoopProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        var hit = collision.GetContact(0).normal;
+        Debug.Log(hit);
+        SpawnPoopDecal(transform.position,hit);
         //source?.HandleHitEffects(poopType, collision.contacts[0].point); // Trigger hit effects
 
         if (collision.gameObject.CompareTag("Enemy"))

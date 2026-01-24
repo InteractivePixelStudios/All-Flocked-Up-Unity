@@ -52,8 +52,11 @@ public class ShopLocation : ShopManager
                 currentBoughtItem = items[index];
                 Debug.Log(currentBoughtItem);
                 Debug.Log(items[index]);
-                canvasController.OpenShopUI(currentBoughtItem);
-                canvasController.shopLocationRef = this.GetComponent<ShopLocation>(); 
+                if(canvasController.activeShopCanvas != null)
+                {
+                    canvasController.activeShopCanvas.CloseWindow();
+                }
+                canvasController.OpenShopUI(currentBoughtItem, this);
             }
             index++;
         }
