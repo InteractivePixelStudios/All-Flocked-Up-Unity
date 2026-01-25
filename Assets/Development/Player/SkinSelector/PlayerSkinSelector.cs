@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 
 public class PlayerSkinSelector : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class PlayerSkinSelector : MonoBehaviour
     Material currentMertial;
     int skinIndex;
 
-    [SerializeField] private Camera cam;
+    [SerializeField] private CinemachineCamera cam;
     [SerializeField] private CameraController controller;
     [SerializeField] private GameObject camLocation;
     [SerializeField] private GameObject backdropPrefab;
@@ -20,11 +21,8 @@ public class PlayerSkinSelector : MonoBehaviour
 
     private void Start()
     {
-        if (cam == null)
-        {
-            cam = Camera.main;
-        }
-        controller = cam.GetComponent<CameraController>();
+
+        cam.GetComponent<CinemachineInputAxisController>().enabled = false;
         isSelecting = true;
         SpawnBackdrop();
         PivotCamera();
@@ -44,10 +42,12 @@ public class PlayerSkinSelector : MonoBehaviour
     {
         if (isSelecting)
         {
+            cam.GetComponent<CinemachineOrbitalFollow>().enabled = false;
             cam.transform.position = camLocation.transform.position;
             cam.transform.rotation = camLocation.transform.rotation;
-            controller.enabled = false;
+
         }
+        
     }
 
 
@@ -97,6 +97,8 @@ public class PlayerSkinSelector : MonoBehaviour
     public void ConfirmSelection()
     {
         isSelecting = false;
-        controller.enabled = true;
+        cam.GetComponent<CinemachineInputAxisController>().enabled = true;
+        cam.GetComponent<CinemachineOrbitalFollow>().enabled = true;
+
     }
 }

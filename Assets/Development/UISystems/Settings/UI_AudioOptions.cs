@@ -1,6 +1,7 @@
 using FMODUnity;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_AudioOptions : UI_SettingsMenu
@@ -18,6 +19,13 @@ public class UI_AudioOptions : UI_SettingsMenu
     [SerializeField] private TMP_Dropdown outputDropdown;
     [SerializeField] private FMODEventMixerBehaviour mixerRef;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+
+    public void SetFirstAudioButton()
+    {
+        EventSystem.current.SetSelectedGameObject(mainVolSlider.gameObject);
+    }
+
     void Start()
     {
         

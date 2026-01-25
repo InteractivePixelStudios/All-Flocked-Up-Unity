@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 
 public class UI_SaveWindow : MonoBehaviour
 {
@@ -25,6 +26,11 @@ public class UI_SaveWindow : MonoBehaviour
         confirmButton.onClick.AddListener(CloseConfirmWindow);
         cancelButton.onClick.AddListener(CancelConfirmWindow);
         InitSaveBox();
+    }
+
+    public void SetFirstSaveButton()
+    {
+        EventSystem.current.SetSelectedGameObject(confirmButton.gameObject);
     }
 
     private void InitSaveBox()

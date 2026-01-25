@@ -11,8 +11,8 @@ public class PlayerWingventory : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        var item = FindAnyObjectByType<ConsumableBase>();
-        AddItemToInv(item.gameObject, 1);
+        //var item = FindAnyObjectByType<ConsumableBase>();
+        //AddItemToInv(item.gameObject, 1);
     }
 
     // Update is called once per frame

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class UI_CanvasController : MonoBehaviour
@@ -80,22 +81,43 @@ public class UI_CanvasController : MonoBehaviour
     [SerializeField] private UI_MainMap mainMapCanvas;
     public UI_MainMap activeMapCanvas;
 
+    [SerializeField] private PlayerInput input;
+
     private void Start()
     {
+        input = FindFirstObjectByType<PlayerInput>();
         SpawnMainMenu();
+    }
+
+    public void SetPlayerMap()
+    {
+        input.SwitchCurrentActionMap("Player");
+    }
+
+    public void SetUIMap()
+    {
+        input.SwitchCurrentActionMap("UI");
     }
     //cursor on
     public void ShowPlayerCursor()
     {
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
+        if (Keyboard.current != null && Keyboard.current.wasUpdatedThisFrame)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+        SetUIMap();
         Debug.Log("Cursor Toggle ON");
     }
     //cursor off
     public void HidePlayerCursor()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        if (Keyboard.current != null && Keyboard.current.wasUpdatedThisFrame)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        SetPlayerMap();
         Debug.Log("Cursor Toggle OFF");
     }
 
@@ -119,6 +141,7 @@ public class UI_CanvasController : MonoBehaviour
     //quest giver canvas
     public void ShowQuestGiver(QuestGiver questGiver)
     {
+
         ShowPlayerCursor();
         activeGiverInstance = Instantiate(questGiverCanvas);
         activeGiverInstance.currentquestGiver = questGiver;
