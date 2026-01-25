@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class UI_VideoOptions : UI_SettingsMenu
 {
@@ -67,6 +68,11 @@ public class UI_VideoOptions : UI_SettingsMenu
         InitVsyncToggle();
 
         LoadSettings();
+    }
+
+    public void SetFirstVideoButton()
+    {
+        EventSystem.current.SetSelectedGameObject(resolDropdown.gameObject);
     }
 
     protected void LoadSettings()

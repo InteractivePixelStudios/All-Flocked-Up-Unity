@@ -1,6 +1,7 @@
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -49,6 +50,7 @@ public class UI_MainMenu : MonoBehaviour
         playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
         playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
         cameraRef.enabled = false;
+        EventSystem.current.SetSelectedGameObject(startButton.gameObject);
     }
 
     private void Update()

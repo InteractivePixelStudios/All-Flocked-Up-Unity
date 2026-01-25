@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using UnityEngine.EventSystems;
 
 public class UI_ControlsMenu : UI_PauseMenu
 {
@@ -45,6 +46,13 @@ public class UI_ControlsMenu : UI_PauseMenu
         InitMouseSensSlider();
         InitControllerSensSlider();
     }
+
+
+    public void SetFirstControlsButton()
+    {
+        EventSystem.current.SetSelectedGameObject(mouseSensSlider.gameObject);
+    }
+
 
     private void Update()
     {
