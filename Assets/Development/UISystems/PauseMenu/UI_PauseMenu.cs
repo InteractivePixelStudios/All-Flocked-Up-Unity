@@ -7,6 +7,7 @@ public class UI_PauseMenu : MonoBehaviour
     [SerializeField] protected GameObject mainCanvas;
     [SerializeField] protected GameObject settingsCanvas;
     [SerializeField] protected GameObject controlsCanvas;
+    [SerializeField] protected Button continueButton;
     [SerializeField] protected Button settingsButton;
     [SerializeField] protected Button controlsButton;
     [SerializeField] protected Button saveQuitButton;
@@ -22,13 +23,19 @@ public class UI_PauseMenu : MonoBehaviour
     {
         settingsCanvas.SetActive(false);
         controlsCanvas.SetActive(false);
+        continueButton.onClick.AddListener(Unpause);
         settingsButton.onClick.AddListener(OnSettingsOpen);
         controlsButton.onClick.AddListener(OnControlsOpen);
         saveQuitButton.onClick.AddListener(OnSaveAndQuit);
         EventSystem.current.SetSelectedGameObject(settingsButton.gameObject);
     }
 
-
+    public void Unpause()
+    {
+        var controller = FindFirstObjectByType<UI_CanvasController>();
+        controller.ResumeGame();
+        controller.HidePlayerCursor();
+    }
 
     protected virtual void OnSettingsOpen()
     {

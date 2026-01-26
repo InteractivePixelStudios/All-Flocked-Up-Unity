@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerPerchSystem : MonoBehaviour
 {
@@ -9,14 +10,20 @@ public class PlayerPerchSystem : MonoBehaviour
     [SerializeField] private bool isReady;
     [SerializeField] private float checkDistance = 5f;
 
+    PlayerInput playerInput;
+    InputAction interact;
+
+    private void Start()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        interact = playerInput.actions.FindAction("Interact");
+        interact.performed+= Perch;
+    }
+
 
     void Update()
     {
-        if (isReady && Input.GetKeyDown(KeyCode.E))
-        {
-            InteractWithPerch(currentPerchPoint);
-            Debug.Log("InteractWithPerch");
-        }
+
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.forward, out hit, checkDistance, perchLayer))
         {
@@ -42,6 +49,15 @@ public class PlayerPerchSystem : MonoBehaviour
 
         }
         else {  isReady = false; }
+    }
+
+    private void Perch(InputAction.CallbackContext ctx)
+    {
+        if (isReady )
+        {
+            InteractWithPerch(currentPerchPoint);
+            Debug.Log("InteractWithPerch");
+        }
     }
 
     private void InteractWithPerch(I_Perchable currentPerchPoint)
