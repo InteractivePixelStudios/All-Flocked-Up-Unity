@@ -243,6 +243,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Debug"",
+                    ""type"": ""Button"",
+                    ""id"": ""78a688bf-371d-4e39-97ac-4764d265ef73"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Report"",
+                    ""type"": ""Button"",
+                    ""id"": ""fa016642-c348-4920-86ae-41b6e08a5434"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -417,7 +435,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Gamepad"",
+                    ""groups"": "";Gamepad;Keyboard&Mouse"",
                     ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -428,7 +446,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
+                    ""groups"": "";Keyboard&Mouse;Gamepad"",
                     ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -804,6 +822,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Gamepad"",
                     ""action"": ""Dive"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""646f86e5-61e8-43f5-ab30-064f9e842362"",
+                    ""path"": ""<Keyboard>/f11"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Debug"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c2f45d4f-d297-4b4d-8089-7f7bcbe1f4e7"",
+                    ""path"": ""<Keyboard>/f10"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Report"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1408,6 +1448,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Grab = m_Player.FindAction("Grab", throwIfNotFound: true);
         m_Player_AirStall = m_Player.FindAction("AirStall", throwIfNotFound: true);
         m_Player_Dive = m_Player.FindAction("Dive", throwIfNotFound: true);
+        m_Player_Debug = m_Player.FindAction("Debug", throwIfNotFound: true);
+        m_Player_Report = m_Player.FindAction("Report", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1518,6 +1560,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Grab;
     private readonly InputAction m_Player_AirStall;
     private readonly InputAction m_Player_Dive;
+    private readonly InputAction m_Player_Debug;
+    private readonly InputAction m_Player_Report;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1598,6 +1642,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Dive => m_Wrapper.m_Player_Dive;
         /// <summary>
+        /// Provides access to the underlying input action "Player/Debug".
+        /// </summary>
+        public InputAction @Debug => m_Wrapper.m_Player_Debug;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Report".
+        /// </summary>
+        public InputAction @Report => m_Wrapper.m_Player_Report;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1674,6 +1726,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Dive.started += instance.OnDive;
             @Dive.performed += instance.OnDive;
             @Dive.canceled += instance.OnDive;
+            @Debug.started += instance.OnDebug;
+            @Debug.performed += instance.OnDebug;
+            @Debug.canceled += instance.OnDebug;
+            @Report.started += instance.OnReport;
+            @Report.performed += instance.OnReport;
+            @Report.canceled += instance.OnReport;
         }
 
         /// <summary>
@@ -1736,6 +1794,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Dive.started -= instance.OnDive;
             @Dive.performed -= instance.OnDive;
             @Dive.canceled -= instance.OnDive;
+            @Debug.started -= instance.OnDebug;
+            @Debug.performed -= instance.OnDebug;
+            @Debug.canceled -= instance.OnDebug;
+            @Report.started -= instance.OnReport;
+            @Report.performed -= instance.OnReport;
+            @Report.canceled -= instance.OnReport;
         }
 
         /// <summary>
@@ -2155,6 +2219,20 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDive(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Debug" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDebug(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Report" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnReport(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

@@ -22,6 +22,11 @@ public class PlayerSkinSelector : MonoBehaviour
     private void Start()
     {
 
+
+    }
+
+    public void StartSkinSelector()
+    {
         cam.GetComponent<CinemachineInputAxisController>().enabled = false;
         isSelecting = true;
         SpawnBackdrop();

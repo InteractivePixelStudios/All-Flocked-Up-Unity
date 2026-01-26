@@ -157,6 +157,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Debug",
+                    "type": "Button",
+                    "id": "78a688bf-371d-4e39-97ac-4764d265ef73",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Report",
+                    "type": "Button",
+                    "id": "fa016642-c348-4920-86ae-41b6e08a5434",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -331,7 +349,7 @@
                     "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Gamepad",
+                    "groups": ";Gamepad;Keyboard&Mouse",
                     "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -342,7 +360,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": ";Keyboard&Mouse;Gamepad",
                     "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -718,6 +736,28 @@
                     "processors": "",
                     "groups": ";Gamepad",
                     "action": "Dive",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "646f86e5-61e8-43f5-ab30-064f9e842362",
+                    "path": "<Keyboard>/f11",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Debug",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c2f45d4f-d297-4b4d-8089-7f7bcbe1f4e7",
+                    "path": "<Keyboard>/f10",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Report",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

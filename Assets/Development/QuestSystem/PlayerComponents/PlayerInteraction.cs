@@ -27,15 +27,19 @@ public class PlayerInteraction : MonoBehaviour
     private InputAction mapAction;
     private InputAction inventoryAction;
     private InputAction pauseAction;
+    private InputAction debugAction;
+    private InputAction reportAction;
 
     private void Start()
     {
-        playerInput = GetComponentInParent<PlayerInput>();
+        playerInput = GetComponent<PlayerInput>();
         interactAction = playerInput.actions.FindAction("Interact");
         questLogAction = playerInput.actions.FindAction("QuestLog");
         mapAction = playerInput.actions.FindAction("Map");
         inventoryAction = playerInput.actions.FindAction("Inventory");
         pauseAction = playerInput.actions.FindAction("Pause");
+        debugAction = playerInput.actions.FindAction("Debug");
+        reportAction = playerInput.actions.FindAction("Report");
 
         if (interactAction != null && questLogAction != null && mapAction != null && inventoryAction != null && pauseAction != null)
         {
@@ -45,6 +49,8 @@ public class PlayerInteraction : MonoBehaviour
             mapAction.performed += OpenMap;
             inventoryAction.performed += OpenInventory;
             pauseAction.performed += OpenPause;
+            debugAction.performed += OpenDebug;
+            reportAction.performed += OpenReport;
         }
     }
     public bool GetIsWingventoryOpen()
@@ -52,34 +58,31 @@ public class PlayerInteraction : MonoBehaviour
         return isWingventoryOpen;
     }
 
-    void Update()
+    public void OpenReport(InputAction.CallbackContext ctx)
     {
-        if (Input.GetKeyDown(KeyCode.F10))
+        if (canvasController.activeBugReporter == null)
         {
-            if (canvasController.activeBugReporter == null)
-            {
-                canvasController.OpenBugReporter();
-            }
-            else
-            {
-                canvasController.CloseBugReporter();
-            }
-
+            canvasController.OpenBugReporter();
         }
-
-        else if (Input.GetKeyDown(KeyCode.F9))
+        else
         {
-            if (canvasController.activeBugReporter == null)
-            {
-                canvasController.OpenDebugMenu();
-            }
-            else
-            {
-                canvasController.CloseDebugMenu();
-            }
+            canvasController.CloseBugReporter();
         }
-
     }
+
+    public void OpenDebug(InputAction.CallbackContext ctx)
+    {
+        if (canvasController.activeBugReporter == null)
+        {
+            canvasController.OpenDebugMenu();
+        }
+        else
+        {
+            canvasController.CloseDebugMenu();
+        }
+    }
+
+
 
     public void Interact(InputAction.CallbackContext ctx)
     {

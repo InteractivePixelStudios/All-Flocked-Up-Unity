@@ -117,6 +117,9 @@ public class UI_CanvasController : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         SetPlayerMap();
         Debug.Log("Cursor Toggle OFF");
     }
@@ -447,6 +450,7 @@ public class UI_CanvasController : MonoBehaviour
             activePauseMenu = null;
             HidePlayerCursor() ;
         }
+
     }
 
     public void SpawnMainMenu()
@@ -467,6 +471,7 @@ public class UI_CanvasController : MonoBehaviour
             Destroy(activeMainMenu);
             activeMainMenu = null;
             HidePlayerCursor();
+           // Object.FindFirstObjectByType<PlayerSkinSelector>().StartSkinSelector();
         }
     }
 
