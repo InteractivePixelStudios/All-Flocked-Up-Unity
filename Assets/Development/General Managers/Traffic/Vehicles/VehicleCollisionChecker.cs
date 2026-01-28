@@ -72,7 +72,7 @@ public class VehicleCollisionChecker : MonoBehaviour
                 }
             }
 
-            Debug.Log("CollisionFound");
+
 
         }
 

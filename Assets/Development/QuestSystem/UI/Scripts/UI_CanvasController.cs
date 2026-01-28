@@ -101,7 +101,7 @@ public class UI_CanvasController : MonoBehaviour
     //cursor on
     public void ShowPlayerCursor()
     {
-        if (Keyboard.current != null && Keyboard.current.wasUpdatedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.wasUpdatedThisFrame || Mouse.current.wasUpdatedThisFrame)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;

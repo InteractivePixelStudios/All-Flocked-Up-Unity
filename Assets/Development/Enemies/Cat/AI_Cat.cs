@@ -181,7 +181,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
         var transform = waypoints[randomIndex].transform.position;
         this.transform.position = transform;
         this.currentNode = waypoints[randomIndex];
-        Debug.Log("H");
+
     }
 
 

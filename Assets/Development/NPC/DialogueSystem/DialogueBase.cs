@@ -86,7 +86,7 @@ public class DialogueBase : MonoBehaviour
             retriggerDialogueLineID = dialogueLine.nextID;
             currentResponseOptions = dialogueLine.resposeOptions;
             currentBranchID = dialogueLine.branchID;
-            Debug.Log(lineData[3]);
+
             
         }
         if (dialogueList.Count > 0)
