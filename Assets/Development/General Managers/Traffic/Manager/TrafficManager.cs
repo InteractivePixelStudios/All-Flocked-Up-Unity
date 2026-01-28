@@ -157,11 +157,10 @@ public class TrafficManager : MonoBehaviour
                     car.transform.position = waypoint.position;
                     car.currentNode = waypoints[randomIndex];
                     car.manager = this;
-                    Debug.Log(waypoint.position);
-                    Debug.Log(car.transform.position);
+
                 }
         }
-        Debug.Log("CarsSpawned");
+
         await Task.Yield();
     }
 
@@ -182,9 +181,8 @@ public class TrafficManager : MonoBehaviour
             car.transform.position = waypoint.position;
             car.currentNode = waypoints[randomIndex];
             car.manager = this;
-            Debug.Log(waypoint.position);
-            Debug.Log(car.transform.position);
+
         }
-        Debug.Log("New Car Spawned");
+
     }
 }

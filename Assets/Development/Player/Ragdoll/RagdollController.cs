@@ -48,7 +48,7 @@ public class RagdollController : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.relativeVelocity.magnitude);
+
         if (collision.relativeVelocity.magnitude > 12)
         {
                 ToggleRagdollOn();

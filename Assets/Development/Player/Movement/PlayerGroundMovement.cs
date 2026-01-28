@@ -160,7 +160,6 @@ public class PlayerGroundMovement : MonoBehaviour
 
         x = moveAction.ReadValue<Vector2>().x;
         z = moveAction.ReadValue<Vector2>().y;
-        Debug.Log(x + " " + z);
 
         if (x == 0 && z == 0)
         {

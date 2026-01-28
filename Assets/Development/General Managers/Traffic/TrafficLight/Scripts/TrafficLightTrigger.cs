@@ -30,7 +30,7 @@ public class TrafficLightTrigger : MonoBehaviour
         if (other.gameObject.CompareTag("Vehicle")) { 
             stoppedVehicle = other.gameObject.GetComponent<VehicleBase>();
             stoppedVehicle.isStopped = true;
-            Debug.Log("triggerHit");
+
         }
     }
 
