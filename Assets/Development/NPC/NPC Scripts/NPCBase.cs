@@ -10,8 +10,9 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     public bool isMoving=false;
     private UI_CanvasController canvasController;
     [SerializeField] private DialogueBase dialogue;
-    [SerializeField] private string dialogueStartLineID;
+    [SerializeField] private List<string> dialogueStartLineID = new();
     [SerializeField] private string retriggerDialogueLineID;
+    int index;
     private bool isRetrigger;
     [SerializeField] private GameObject homeLocation;
     [SerializeField] private QuestGiver questGiverComp;
@@ -55,13 +56,21 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     //called from PlayerInteraction... opens and prints dialogue
     public void InteractWithNPCDialogue()
     {
+
         if (dialogue.isRetrigger)
         {
             dialogue.PrintDialogue(retriggerDialogueLineID);
-        } 
+        }
         else
-        dialogue.PrintDialogue(dialogueStartLineID);
-        dialogue.isRetrigger = true;
+        {
+            dialogue.PrintDialogue(dialogueStartLineID[index]);
+            index++;
+            if (index <= dialogueStartLineID.Count - 1)
+            {
+                dialogue.isRetrigger = true;
+                index = 0;
+            }
+        }
 
 
     }

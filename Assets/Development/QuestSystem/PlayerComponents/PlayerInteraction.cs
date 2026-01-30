@@ -88,35 +88,40 @@ public class PlayerInteraction : MonoBehaviour
     {
 
             RaycastHit hit;
-            Debug.DrawRay(transform.position + (transform.up / 2), transform.forward * interactionRange, Color.red);
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, npcLayer))
+            Debug.DrawRay(transform.position + (transform.up / 4), transform.forward * interactionRange, Color.red);
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, npcLayer))
             {
-                var questNPC = hit.collider.GetComponentInParent<IQuestInteraction>();
+            Debug.Log("Pressed");
+            var questNPC = hit.collider.GetComponentInParent<IQuestInteraction>();
                 if (questNPC != null)
                 {
-                Debug.Log("DialogueFirst");
+                Debug.Log("FoundNPC");
                 var NPC = hit.collider.gameObject.GetComponent<NPCBase>();
                 if (NPC.dialogueFirst == true)
                 {
-                    Debug.Log("DialogueFirst");
                     canvasController.OpenDialogue();
                     NPC.InteractWithNPCDialogue();
                     Debug.Log("DialogueFirst");
-                }else
+                    NPC.dialogueFirst = false;
+                }else if(NPC.dialogueFirst == false)
+                {
                     canvasController.ShowQuestGiver(hit.collider.GetComponentInParent<QuestGiver>());
+                }
+                  
                 }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, questLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, questLayer))
             {
                 var questInteractable = hit.collider.GetComponentInParent<Q_InteractComponent>();
                 if (questInteractable != null)
                 {
                     questInteractable.InteractWithObjective();
+                Debug.Log("InteractWithQuest");
                 }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, dialogueLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, dialogueLayer))
             {
                 var dialogueInteractable = hit.collider.GetComponentInParent<NPCBase>();
                 if (dialogueInteractable != null)
@@ -126,7 +131,7 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, trashLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, trashLayer))
             {
                 var trashInteractable = hit.collider.GetComponentInParent<TrashCanInteraction>();
                 if (trashInteractable != null)
@@ -135,7 +140,7 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, raceLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, raceLayer))
             {
                 var raceGiver = hit.collider.GetComponent<RaceGiver>();
                 if (raceGiver != null)
@@ -145,20 +150,27 @@ public class PlayerInteraction : MonoBehaviour
             }
 
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, nestLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, nestLayer))
             {
                 var nestObj = hit.collider.GetComponentInParent<NestBase>();
                 nestObj?.InteractWithNest();
+            Debug.Log("InteractWithNest");
+                var nestComp = nestObj.GetComponent<Q_InteractComponent>();
+            if(nestComp != null)
+            {
+                nestComp.InteractWithObjective();
+                Debug.Log("InteractWithQuest");
+            }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, shopLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, shopLayer))
             {
                 var shopObj = hit.collider.GetComponentInParent<ShopLocation>();
                 var box = hit.collider as BoxCollider ?? hit.collider.GetComponentInParent<BoxCollider>();
                 shopObj?.InteractWithShop(box);
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, wearableLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, wearableLayer))
             {
                 var wearableObj = hit.collider.gameObject;
                 var comp = wearableObj.GetComponent<Wearable_Base>();
@@ -173,7 +185,7 @@ public class PlayerInteraction : MonoBehaviour
             }
 
             RaycastHit lookHit;
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out lookHit, interactionRange, npcLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out lookHit, interactionRange, npcLayer))
             {
                 var questNPC = lookHit.collider.GetComponentInParent<IQuestInteraction>();
                 questNPC?.LookAtNPC();

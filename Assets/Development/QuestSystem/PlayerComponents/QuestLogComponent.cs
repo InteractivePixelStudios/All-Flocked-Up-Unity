@@ -79,7 +79,7 @@ public class QuestLog : MonoBehaviour
     //if playuer doesnt have quest already it creates QuestRuntimeInstance from QuestData and calls StartQuest() in that instance
     public void AcceptQuest(QuestDetails questData,QuestGiver questGiver)
     {
-        if (hasQuest) { return; }
+       // if (hasQuest) { return; }
         if (HasQuestOrCompleted(questData))
         {
             Debug.LogWarning($"Quest '{questData.questName}' already accepted or completed.");
@@ -108,7 +108,6 @@ public class QuestLog : MonoBehaviour
         {
             //throws an error when a quest is complete...stupid
                 quest.UpdateObjective(objectiveID, amount);
-            
         }
 
         CheckForCompletedQuests();
@@ -131,15 +130,22 @@ public class QuestLog : MonoBehaviour
             if (activeQuests[i].IsComplete)
             {
                 completedQuests.Add(activeQuests[i].questData);
+                canvasController.ShowQuestReward(activeQuests[i].questData);
+                canvasController.EndTimer();
                 activeQuests.RemoveAt(i);
+                currentQuestGiver.quests.RemoveAt(0);
                 hasQuest = false;
-                canvasController.ShowQuestReward();
+                arrowPointer.DestroyArrow();
+                currentQuestGiver.GetComponent<NPCBase>().dialogueFirst = true;
+            }
+            if(currentQuestGiver.quests.Count <= 0)
+            {
                 currentQuestGiver.gameObject.layer = LayerMask.NameToLayer("Dialogue");
                 Debug.Log(currentQuestGiver.gameObject.layer);
                 Destroy(currentQuestGiver);
-                canvasController.EndTimer();
-
+               
             }
+
         }
     }
 

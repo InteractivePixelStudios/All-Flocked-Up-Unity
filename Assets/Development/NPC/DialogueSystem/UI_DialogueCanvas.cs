@@ -21,6 +21,7 @@ public class UI_DialogueCanvas : MonoBehaviour
     public string[] responses;
     [SerializeField] private string responseReturnID;
     [SerializeField] private bool hasButtons = false;
+    UI_CanvasController canvasController;
 
     bool skipDialogue;
     public Action SkipLine { get; private set; }
@@ -28,6 +29,7 @@ public class UI_DialogueCanvas : MonoBehaviour
     {
         dialogueCanvas = GetComponent<Canvas>();
         dialogueBase = FindFirstObjectByType<DialogueBase>();
+        canvasController = FindFirstObjectByType<UI_CanvasController>();
         //dialogueImage = GetComponent<Image>();
     }
     void Start()
@@ -37,13 +39,13 @@ public class UI_DialogueCanvas : MonoBehaviour
     void Update()
     {
 
-        if(Input.GetMouseButtonDown(0))
-        {
-            if (responses != null)
-            {
-                // ProgressDialogueCanvas();
-            }
-        }
+        //if(Input.GetMouseButtonDown(0))
+        //{
+        //    if (responses != null)
+        //    {
+        //        // ProgressDialogueCanvas();
+        //    }
+        //}
     }
 
     public void UpdateDialogueUI(string name,string dialogue, Sprite image)
@@ -76,7 +78,7 @@ public class UI_DialogueCanvas : MonoBehaviour
 
     public void DestroyDialogue()
     {
-        this.gameObject.SetActive(false);
+        canvasController.CloseDialogue();
     }
 
 
@@ -114,9 +116,8 @@ public class UI_DialogueCanvas : MonoBehaviour
             startY -= offset;
             index++;
         }
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        hasButtons = true;  
+        hasButtons = true;
+        Cursor.visible = true ;
     }
 
     private void ResponseClicked(string option)
