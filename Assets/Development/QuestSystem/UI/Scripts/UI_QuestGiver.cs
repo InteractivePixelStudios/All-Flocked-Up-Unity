@@ -11,6 +11,7 @@ public class UI_QuestGiver : MonoBehaviour
 
     [SerializeField] Button acceptQuestButton;
     [SerializeField] Button cancelButton;
+    public UI_CanvasController canvasController;
 
     [SerializeField] TextMeshProUGUI questNameText;
     [SerializeField] TextMeshProUGUI questDescription;
@@ -21,6 +22,7 @@ public class UI_QuestGiver : MonoBehaviour
         questLog = FindFirstObjectByType<QuestLog>();
         acceptQuestButton.onClick.AddListener(AddQuestToLog);
         cancelButton.onClick.AddListener(CloseQuestGiverUI);
+        Debug.Log(currentquestGiver.quests[0].ToString());
         
     }
 
@@ -40,9 +42,8 @@ public class UI_QuestGiver : MonoBehaviour
 
     public void CloseQuestGiverUI()
     {
-        Destroy(this.gameObject);
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        canvasController.DestroyQuestGiver();
+
     }
 
     private void AddQuestToLog()

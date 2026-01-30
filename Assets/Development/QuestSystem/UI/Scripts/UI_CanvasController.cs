@@ -92,35 +92,37 @@ public class UI_CanvasController : MonoBehaviour
     public void SetPlayerMap()
     {
         input.SwitchCurrentActionMap("Player");
+        Debug.Log("PLAYERMAP");
     }
 
     public void SetUIMap()
     {
         input.SwitchCurrentActionMap("UI");
+        Debug.Log("UIMAP");
     }
     //cursor on
     public void ShowPlayerCursor()
     {
-        if (Keyboard.current != null && Keyboard.current.wasUpdatedThisFrame || Mouse.current.wasUpdatedThisFrame)
+        SetUIMap();
+        if (Mouse.current != null &&  Mouse.current.wasUpdatedThisFrame)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
         }
-        SetUIMap();
         Debug.Log("Cursor Toggle ON");
     }
     //cursor off
     public void HidePlayerCursor()
     {
-        if (Keyboard.current != null && Keyboard.current.wasUpdatedThisFrame)
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        SetPlayerMap();
+        //if (Mouse.current != null && Mouse.current.wasUpdatedThisFrame)
+        //{
+        //    Cursor.visible = false;
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //}
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        SetPlayerMap();
         Debug.Log("Cursor Toggle OFF");
     }
 
@@ -148,6 +150,7 @@ public class UI_CanvasController : MonoBehaviour
         ShowPlayerCursor();
         activeGiverInstance = Instantiate(questGiverCanvas);
         activeGiverInstance.currentquestGiver = questGiver;
+        activeGiverInstance.canvasController = this;
         activeGiverInstance.UpdateUIText(questGiver.quests[0].questName, questGiver.quests[0].questLogDescription,"Change to rewards!");
         
     }
@@ -157,15 +160,17 @@ public class UI_CanvasController : MonoBehaviour
     {
         if (questGiverCanvas != null)
         {
-            activeGiverInstance.CloseQuestGiverUI();
-            activeGiverInstance = null;
             HidePlayerCursor();
+            Destroy(activeGiverInstance.gameObject);
+            activeGiverInstance = null;
         }
     }
     //quest reward canvas
-    public void ShowQuestReward()
+    public void ShowQuestReward(QuestDetails quest)
     {
         activeRewardInstance=Instantiate(questRewardsCanvas);
+        activeRewardInstance.quest = quest;
+        activeRewardInstance.canvasController = this;
         ShowPlayerCursor();
     }
     //quest reward canvas
@@ -173,9 +178,9 @@ public class UI_CanvasController : MonoBehaviour
     {
         if (activeRewardInstance != null)
         {
-            activeRewardInstance.AcceptReward();
-            activeRewardInstance = null;
             HidePlayerCursor();
+            Destroy(activeRewardInstance.gameObject);
+            activeRewardInstance = null;
         }
     }
 
@@ -274,8 +279,10 @@ public class UI_CanvasController : MonoBehaviour
     {
         if(activeDialogueInstance != null)
         {
+            Debug.Log("DialogueCLosedFromCanvas");
+            HidePlayerCursor() ;
             //activeDialogueInstance.DestroyDialogue();
-            Destroy(activeDialogueInstance);
+            Destroy(activeDialogueInstance.gameObject);
 
         }
     }
