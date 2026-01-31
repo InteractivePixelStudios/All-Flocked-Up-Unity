@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization;
 
 public class UI_QuestGiver : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class UI_QuestGiver : MonoBehaviour
         
     }
 
-    public void UpdateUIText(string name, string description, string rewards)
+    public void UpdateUIText(LocalizedString name, LocalizedString description, LocalizedString rewards)
     {
         SetQuestNameText(name);
         SetQuestDescriptionText(description);
@@ -52,18 +53,18 @@ public class UI_QuestGiver : MonoBehaviour
         CloseQuestGiverUI();
     }
 
-    public void SetQuestNameText(string name)
+    public void SetQuestNameText(LocalizedString name)
     {
-        questNameText.SetText(name);
+        name.StringChanged += value => questNameText.text = value;
     }
 
-    public void SetQuestDescriptionText(string description)
+    public void SetQuestDescriptionText(LocalizedString description)
     {
-        questDescription.SetText(description);
+        description.StringChanged += value => questDescription.text = value;
     }
 
-    public void SetRewardsText(string rewards)
+    public void SetRewardsText(LocalizedString rewards)
     {
-        rewardsText.SetText(rewards);
+        rewards.StringChanged += value => rewardsText.text = value;
     }
 }
