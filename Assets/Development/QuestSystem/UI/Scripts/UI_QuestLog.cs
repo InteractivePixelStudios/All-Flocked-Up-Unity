@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEngine.Localization;
 
 public class UI_QuestLog : MonoBehaviour
 {
@@ -33,6 +34,9 @@ public class UI_QuestLog : MonoBehaviour
     [SerializeField] private Image reward3;
     [SerializeField] private Image reward4;
     [SerializeField] private Button trackQuestButton;
+
+    LocalizedString boundQuestName;
+    LocalizedString boundQuestDescription;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -57,11 +61,37 @@ public class UI_QuestLog : MonoBehaviour
         UpdateQuestInfoPanel(currentQuestID);
     }
 
+    void BindLocalizedText(
+    ref LocalizedString current,
+    TextMeshProUGUI label,
+    LocalizedString loc)
+    {
+        if (current != null)
+            current.StringChanged -= OnStringChanged;
+
+        current = loc;
+        current.StringChanged += OnStringChanged;
+
+        void OnStringChanged(string value)
+        {
+            label.text = value;
+        }
+    }
+
     public void UpdateQuestInfoPanel(string questID)
     {
         questLog.activeQuests.ForEach(quest => { if (quest.questID == questID) { currentQuestID = quest.questID; currentQuest = quest; } });
-        questNameText.SetText(currentQuest.questData.questName);
-        questDescriptionText.SetText(currentQuest.questData.questLogDescription);
+        BindLocalizedText(
+            ref boundQuestName,
+            questNameText,
+            currentQuest.questData.questName
+        );
+
+        BindLocalizedText(
+            ref boundQuestDescription,
+            questDescriptionText,
+            currentQuest.questData.questLogDescription
+        );
         UpdateCurrentObjectives(currentQuest);
         int trinkets = 0;
         int exp = 0;
@@ -76,7 +106,7 @@ public class UI_QuestLog : MonoBehaviour
     private void UpdateCurrentObjectives(QuestRuntimeInstance quest)
     {
         float offset=-50f;
-        List<string> strings = new List<string>();
+        List<LocalizedString> strings = new List<LocalizedString>();
         foreach (StageDetails item in quest.questData.stages)
         {
             foreach(ObjectiveDetails objectives in item.objectivesToComplete)

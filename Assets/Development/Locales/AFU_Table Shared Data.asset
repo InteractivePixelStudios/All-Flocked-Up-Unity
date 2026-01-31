@@ -14,9 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TableCollectionName: AFU_Table
   m_TableCollectionNameGuidString: 0be063e14638ff84aa6dd2667e69ef6e
-  m_Entries: []
+  m_Entries:
+  - m_Id: 369140974931968
+    m_Key: Font
+    m_Metadata:
+      m_Items: []
+  - m_Id: 631034784698368
+    m_Key: FontMaterial
+    m_Metadata:
+      m_Items: []
   m_Metadata:
-    m_Items: []
+    m_Items:
+    - rid: 1991509831308017889
+    - rid: 1991509845445967993
   m_KeyGenerator:
     rid: 1991509803045486855
   references:
@@ -26,3 +36,51 @@ MonoBehaviour:
       type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
       data:
         m_CustomEpoch: 1769737948992
+    - rid: 1991509831308017889
+      type: {class: AssetTypeMetadata, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries:
+        - m_KeyId: 369140974931968
+          m_TableCodes:
+          - chr
+          - ar
+          - zh-Hans
+          - da
+          - en
+          - fr
+          - de
+          - he
+          - hi
+          - it
+          - ja
+          - ko
+          - pl
+          - ru
+          - es
+          - sv
+        m_TypeString: TMPro.TMP_FontAsset, Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral,
+          PublicKeyToken=null
+    - rid: 1991509845445967993
+      type: {class: AssetTypeMetadata, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries:
+        - m_KeyId: 631034784698368
+          m_TableCodes:
+          - ar
+          - chr
+          - zh-Hans
+          - da
+          - en
+          - fr
+          - de
+          - he
+          - hi
+          - it
+          - ja
+          - ko
+          - pl
+          - ru
+          - es
+          - sv
+        m_TypeString: UnityEngine.Material, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
