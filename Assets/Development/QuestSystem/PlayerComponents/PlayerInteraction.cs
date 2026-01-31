@@ -1,4 +1,7 @@
+using JetBrains.Annotations;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 public class PlayerInteraction : MonoBehaviour
@@ -18,36 +21,107 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private GameObject attachPoint;
     private bool isWingventoryOpen;
 
+    private PlayerInput playerInput;
+    private InputAction interactAction;
+    private InputAction questLogAction;
+    private InputAction mapAction;
+    private InputAction inventoryAction;
+    private InputAction pauseAction;
+    private InputAction debugAction;
+    private InputAction reportAction;
+
+    private void Start()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        interactAction = playerInput.actions.FindAction("Interact");
+        questLogAction = playerInput.actions.FindAction("QuestLog");
+        mapAction = playerInput.actions.FindAction("Map");
+        inventoryAction = playerInput.actions.FindAction("Inventory");
+        pauseAction = playerInput.actions.FindAction("Pause");
+        debugAction = playerInput.actions.FindAction("Debug");
+        reportAction = playerInput.actions.FindAction("Report");
+
+        if (interactAction != null && questLogAction != null && mapAction != null && inventoryAction != null && pauseAction != null)
+        {
+            //use started / cancelled for grab/hold
+            interactAction.performed += Interact;
+            questLogAction.performed += OpenQuestLog;
+            mapAction.performed += OpenMap;
+            inventoryAction.performed += OpenInventory;
+            pauseAction.performed += OpenPause;
+            debugAction.performed += OpenDebug;
+            reportAction.performed += OpenReport;
+        }
+    }
     public bool GetIsWingventoryOpen()
     {
         return isWingventoryOpen;
     }
 
-    void Update()
+    public void OpenReport(InputAction.CallbackContext ctx)
     {
-        if (Input.GetKeyDown(KeyCode.E)) // test input. Change later
+        if (canvasController.activeBugReporter == null)
         {
+            canvasController.OpenBugReporter();
+        }
+        else
+        {
+            canvasController.CloseBugReporter();
+        }
+    }
+
+    public void OpenDebug(InputAction.CallbackContext ctx)
+    {
+        if (canvasController.activeBugReporter == null)
+        {
+            canvasController.OpenDebugMenu();
+        }
+        else
+        {
+            canvasController.CloseDebugMenu();
+        }
+    }
+
+
+
+    public void Interact(InputAction.CallbackContext ctx)
+    {
+
             RaycastHit hit;
-            Debug.DrawRay(transform.position + (transform.up/2), transform.forward * interactionRange, Color.red);
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, npcLayer))
+            Debug.DrawRay(transform.position + (transform.up / 4), transform.forward * interactionRange, Color.red);
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, npcLayer))
             {
-                var questNPC = hit.collider.GetComponentInParent<IQuestInteraction>();
+            Debug.Log("Pressed");
+            var questNPC = hit.collider.GetComponentInParent<IQuestInteraction>();
                 if (questNPC != null)
+                {
+                Debug.Log("FoundNPC");
+                var NPC = hit.collider.gameObject.GetComponent<NPCBase>();
+                if (NPC.dialogueFirst == true)
+                {
+                    canvasController.OpenDialogue();
+                    NPC.InteractWithNPCDialogue();
+                    Debug.Log("DialogueFirst");
+                    NPC.dialogueFirst = false;
+                }else if(NPC.dialogueFirst == false)
                 {
                     canvasController.ShowQuestGiver(hit.collider.GetComponentInParent<QuestGiver>());
                 }
+                  
+                }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, questLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, questLayer))
             {
                 var questInteractable = hit.collider.GetComponentInParent<Q_InteractComponent>();
                 if (questInteractable != null)
                 {
                     questInteractable.InteractWithObjective();
+                Debug.Log("InteractWithQuest");
                 }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, dialogueLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, dialogueLayer))
             {
                 var dialogueInteractable = hit.collider.GetComponentInParent<NPCBase>();
                 if (dialogueInteractable != null)
@@ -57,7 +131,7 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, trashLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, trashLayer))
             {
                 var trashInteractable = hit.collider.GetComponentInParent<TrashCanInteraction>();
                 if (trashInteractable != null)
@@ -66,7 +140,7 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, raceLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, raceLayer))
             {
                 var raceGiver = hit.collider.GetComponent<RaceGiver>();
                 if (raceGiver != null)
@@ -76,20 +150,27 @@ public class PlayerInteraction : MonoBehaviour
             }
 
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, nestLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, nestLayer))
             {
                 var nestObj = hit.collider.GetComponentInParent<NestBase>();
                 nestObj?.InteractWithNest();
+            Debug.Log("InteractWithNest");
+                var nestComp = nestObj.GetComponent<Q_InteractComponent>();
+            if(nestComp != null)
+            {
+                nestComp.InteractWithObjective();
+                Debug.Log("InteractWithQuest");
+            }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out hit, interactionRange, shopLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, shopLayer))
             {
                 var shopObj = hit.collider.GetComponentInParent<ShopLocation>();
                 var box = hit.collider as BoxCollider ?? hit.collider.GetComponentInParent<BoxCollider>();
                 shopObj?.InteractWithShop(box);
             }
 
-            if(Physics.Raycast(transform.position + (transform.up / 2), transform.forward,out hit,interactionRange, wearableLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, wearableLayer))
             {
                 var wearableObj = hit.collider.gameObject;
                 var comp = wearableObj.GetComponent<Wearable_Base>();
@@ -102,9 +183,16 @@ public class PlayerInteraction : MonoBehaviour
                 else if (comp.isGrabbed) { comp.RemoveObject(); Debug.Log("remove"); }
                 else Debug.Log("skipped"); return;
             }
+
+            RaycastHit lookHit;
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out lookHit, interactionRange, npcLayer))
+            {
+                var questNPC = lookHit.collider.GetComponentInParent<IQuestInteraction>();
+                questNPC?.LookAtNPC();
+            }
         }
-        //TAB for quest log...will change this later to new input system
-       else if (Input.GetKeyDown(KeyCode.Tab))
+
+        void OpenQuestLog(InputAction.CallbackContext ctx)
         {
             if (canvasController.activeLogInstance == null)
             {
@@ -113,15 +201,19 @@ public class PlayerInteraction : MonoBehaviour
             else canvasController.DestroyQuestLog();
         }
 
-        
-        RaycastHit lookHit;
-        if (Physics.Raycast(transform.position + (transform.up / 2), transform.forward, out lookHit, interactionRange, npcLayer))
+        void OpenMap(InputAction.CallbackContext ctx)
         {
-            var questNPC = lookHit.collider.GetComponentInParent<IQuestInteraction>();
-            questNPC?.LookAtNPC();
+            if (canvasController.activeMapCanvas == null)
+            {
+                canvasController.OpenMainMap();
+            }
+            else
+            {
+                canvasController.CloseMainMap();
+            }
         }
 
-        else if (Input.GetKeyDown(KeyCode.I))
+        void OpenInventory(InputAction.CallbackContext ctx)
         {
             if (canvasController.activeWingventory == null)
             {
@@ -135,7 +227,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
 
-        else if (Input.GetKeyDown(KeyCode.O))
+        void OpenPause(InputAction.CallbackContext ctx)
         {
             if (!gamePaused && canvasController.activePauseMenu == null)
             {
@@ -143,44 +235,5 @@ public class PlayerInteraction : MonoBehaviour
             }
             else canvasController.ResumeGame();
         }
-
-        else if (Input.GetKeyDown(KeyCode.F10))
-        {
-            if(canvasController.activeBugReporter == null)
-            {
-                canvasController.OpenBugReporter();
-            }
-            else
-            {
-                canvasController.CloseBugReporter();
-            }
-
-        }
-
-        else if (Input.GetKeyDown(KeyCode.F9))
-        {
-            if(canvasController.activeBugReporter == null)
-            {
-                canvasController.OpenDebugMenu();
-            }
-            else
-            {
-                canvasController.CloseDebugMenu();
-            }
-        }
-
-        else if (Input.GetKeyDown(KeyCode.M))
-        {
-            if(canvasController.activeMapCanvas == null)
-            {
-                canvasController.OpenMainMap();
-            }
-            else
-            {
-                canvasController.CloseMainMap();
-            }
-        }
-
-
     }
-}
+

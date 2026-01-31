@@ -1,6 +1,7 @@
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -48,7 +49,8 @@ public class UI_MainMenu : MonoBehaviour
         cameraRef.transform.position = playerRef.transform.position+ cameraOffset;
         playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
         playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
-        cameraRef.enabled = false;
+        //cameraRef.enabled = false;
+        EventSystem.current.SetSelectedGameObject(startButton.gameObject);
     }
 
     private void Update()
@@ -101,11 +103,12 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void StartNewGame()
     {
-        Destroy(this.gameObject);
-        canvasController.DestroyMainMenu();
+
         playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
         playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
-        cameraRef.enabled = true;
+        canvasController.DestroyMainMenu();
+        //cameraRef.enabled = true;
+
     }
 
     protected void CheckForSavedGame()

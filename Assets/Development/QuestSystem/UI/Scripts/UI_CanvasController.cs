@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class UI_CanvasController : MonoBehaviour
@@ -80,20 +81,46 @@ public class UI_CanvasController : MonoBehaviour
     [SerializeField] private UI_MainMap mainMapCanvas;
     public UI_MainMap activeMapCanvas;
 
+    [SerializeField] private PlayerInput input;
+
     private void Start()
     {
+        input = FindFirstObjectByType<PlayerInput>();
         SpawnMainMenu();
+    }
+
+    public void SetPlayerMap()
+    {
+        input.SwitchCurrentActionMap("Player");
+        Debug.Log("PLAYERMAP");
+    }
+
+    public void SetUIMap()
+    {
+        input.SwitchCurrentActionMap("UI");
+        Debug.Log("UIMAP");
     }
     //cursor on
     public void ShowPlayerCursor()
     {
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
+        SetUIMap();
+        if (Mouse.current != null &&  Mouse.current.wasUpdatedThisFrame)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
+        }
         Debug.Log("Cursor Toggle ON");
     }
     //cursor off
     public void HidePlayerCursor()
     {
+        SetPlayerMap();
+        //if (Mouse.current != null && Mouse.current.wasUpdatedThisFrame)
+        //{
+        //    Cursor.visible = false;
+        //    Cursor.lockState = CursorLockMode.Locked;
+        //}
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         Debug.Log("Cursor Toggle OFF");
@@ -119,9 +146,11 @@ public class UI_CanvasController : MonoBehaviour
     //quest giver canvas
     public void ShowQuestGiver(QuestGiver questGiver)
     {
+
         ShowPlayerCursor();
         activeGiverInstance = Instantiate(questGiverCanvas);
         activeGiverInstance.currentquestGiver = questGiver;
+        activeGiverInstance.canvasController = this;
         activeGiverInstance.UpdateUIText(questGiver.quests[0].questName, questGiver.quests[0].questLogDescription,"Change to rewards!");
         
     }
@@ -131,15 +160,17 @@ public class UI_CanvasController : MonoBehaviour
     {
         if (questGiverCanvas != null)
         {
-            activeGiverInstance.CloseQuestGiverUI();
-            activeGiverInstance = null;
             HidePlayerCursor();
+            Destroy(activeGiverInstance.gameObject);
+            activeGiverInstance = null;
         }
     }
     //quest reward canvas
-    public void ShowQuestReward()
+    public void ShowQuestReward(QuestDetails quest)
     {
         activeRewardInstance=Instantiate(questRewardsCanvas);
+        activeRewardInstance.quest = quest;
+        activeRewardInstance.canvasController = this;
         ShowPlayerCursor();
     }
     //quest reward canvas
@@ -147,9 +178,9 @@ public class UI_CanvasController : MonoBehaviour
     {
         if (activeRewardInstance != null)
         {
-            activeRewardInstance.AcceptReward();
-            activeRewardInstance = null;
             HidePlayerCursor();
+            Destroy(activeRewardInstance.gameObject);
+            activeRewardInstance = null;
         }
     }
 
@@ -226,7 +257,11 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenDialogue()
     {
 
-        dialogueCanvas.gameObject.SetActive(true);
+        if(activeDialogueInstance == null)
+        {
+            activeDialogueInstance = Instantiate(dialogueCanvas);
+            ShowPlayerCursor();
+        }
 
     }
     //dialogue response options transfer
@@ -242,10 +277,13 @@ public class UI_CanvasController : MonoBehaviour
     //dialogue canvas
     public void CloseDialogue()
     {
-        if(dialogueCanvas != null || dialogueCanvas.isActiveAndEnabled)
+        if(activeDialogueInstance != null)
         {
+            Debug.Log("DialogueCLosedFromCanvas");
+            HidePlayerCursor() ;
             //activeDialogueInstance.DestroyDialogue();
-            dialogueCanvas.gameObject.SetActive(false);
+            Destroy(activeDialogueInstance.gameObject);
+
         }
     }
     //trash canvas
@@ -376,11 +414,15 @@ public class UI_CanvasController : MonoBehaviour
 
     }
 
-    public void OpenShopUI(ShopItem item)
+    public void OpenShopUI(ShopItem item, ShopLocation location)
     {
         activeShopCanvas = Instantiate(shopUICanvas);
+        shopLocationRef = location;
+        activeShopCanvas.transform.SetParent(shopLocationRef.transform);
+        activeShopCanvas.transform.localPosition = Vector3.zero + new Vector3(0,1.5f,0);
         activeShopCanvas.currentItem = item;
         activeShopCanvas.canvasController = this;
+        shopLocationRef = location;
         ShowPlayerCursor();
     }
 
@@ -415,6 +457,7 @@ public class UI_CanvasController : MonoBehaviour
             activePauseMenu = null;
             HidePlayerCursor() ;
         }
+
     }
 
     public void SpawnMainMenu()
@@ -435,6 +478,7 @@ public class UI_CanvasController : MonoBehaviour
             Destroy(activeMainMenu);
             activeMainMenu = null;
             HidePlayerCursor();
+           // Object.FindFirstObjectByType<PlayerSkinSelector>().StartSkinSelector();
         }
     }
 

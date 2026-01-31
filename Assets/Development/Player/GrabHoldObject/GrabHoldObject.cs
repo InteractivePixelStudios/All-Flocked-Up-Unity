@@ -1,5 +1,6 @@
 using System.Drawing;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GrabHoldObject : MonoBehaviour
 {
@@ -10,33 +11,58 @@ public class GrabHoldObject : MonoBehaviour
     [SerializeField] private Vector3 grabOffset;
     [SerializeField] private bool isHoldingObject = false;
     [SerializeField] private PlayerPeckComponent peckComp;
+
+    InputAction grabAction;
+    PlayerInput playerInput;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         peckComp = GetComponent<PlayerPeckComponent>();
+        playerInput = GetComponentInParent<PlayerInput>();
+
+        grabAction = playerInput.actions.FindAction("Grab");
+
+        if(grabAction != null )
+        {
+            grabAction.performed += CallGrab;
+            grabAction.started += CallHold;
+            grabAction.canceled += CallRelease;
+
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    void GrabObject(InputAction.CallbackContext ctx)
     {
-        if (Input.GetKeyDown(KeyCode.F) && !isHoldingObject)
+        if (!isHoldingObject)
         {
             peckComp.Peck();
             TryGrabObject();
 
         }
-        else if (Input.GetKeyDown(KeyCode.G) && isHoldingObject)
+        else if (isHoldingObject)
         {
 
             ReleaseGrabbedObject();
         }
-        else if (isHoldingObject)
+        else 
         {
             HoldGrabbedObject(grabbedObject, grabOffset);
 
         }
-        else return;
+        
     }
+
+    private void CallGrab(InputAction.CallbackContext ctx)
+    {
+        if (!isHoldingObject)
+        {
+            peckComp.Peck();
+            TryGrabObject();
+
+        }
+    }
+
+
 
     private void TryGrabObject()
     {
@@ -77,12 +103,27 @@ public class GrabHoldObject : MonoBehaviour
 
     }
 
+    private void CallHold(InputAction.CallbackContext ctx)
+    {
+        HoldGrabbedObject(grabbedObject, grabOffset);
+    }
+
     private void HoldGrabbedObject(GameObject Object, Vector3 offset)
     {
         if(grabbedObject != null)
         {
             Object.transform.localPosition = Vector3.zero;
             Object.transform.rotation = grabPoint.transform.rotation;
+            Object.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        }
+    }
+
+    private void CallRelease(InputAction.CallbackContext ctx)
+    {
+        if (isHoldingObject)
+        {
+
+            ReleaseGrabbedObject();
         }
     }
 
@@ -91,6 +132,7 @@ public class GrabHoldObject : MonoBehaviour
         isHoldingObject = false;
         grabbedObject.transform.SetParent(null, true);
         grabbedObject.GetComponent<Rigidbody>().useGravity = true;
+        grabbedObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         grabbedObject.GetComponent<BoxCollider>().enabled = true;
         grabbedObject = null;
 

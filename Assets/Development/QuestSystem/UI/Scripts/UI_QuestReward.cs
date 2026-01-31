@@ -9,24 +9,23 @@ public class UI_QuestReward : MonoBehaviour
     [SerializeField] Button acceptReward;
     [SerializeField] TextMeshProUGUI questName;
     [SerializeField] TextMeshProUGUI rewardText;
+    public UI_CanvasController canvasController;
+    public QuestDetails quest;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         acceptReward.onClick.AddListener(AcceptReward);
+        SetQuestNameText(quest.questName);
+        SetRewardText(quest.itemRewards.ToString());
 
     }
 
-    public void OpenQuestRewardsUI()
-    {
-        questRewardCanvas.SetActive(true);
-    }
     public void AcceptReward()
     {
-        Destroy(questRewardCanvas);
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        canvasController.DestroyQuestReward();
+
     }
 
     public void SetQuestNameText(string name)

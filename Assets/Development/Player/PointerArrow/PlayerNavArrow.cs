@@ -47,7 +47,7 @@ public class PlayerNavArrow : MonoBehaviour
         spawnedArrow.transform.rotation = Quaternion.LookRotation(direction);
     }
 
-    private void DestroyArrow()
+    public void DestroyArrow()
     {
         isEnabled = false;
         Destroy(spawnedArrow.gameObject);

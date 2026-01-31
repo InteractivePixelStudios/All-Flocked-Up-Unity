@@ -79,15 +79,12 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
     {
         log.AcceptQuest(quest,questGiver);
 
-        if (quest.autoCompleteQuest && log.IsQuestCompleted(quest))
+        if ( log.IsQuestCompleted(quest) )//&& quest.autoCompleteQuest)
         {
             log.MarkQuestTurnedIn(quest);
             Debug.Log("Quest auto-completed and turned in.");
            
         }
-        else
-        {
-            Debug.Log("Quest accepted.");
-        }
+
     }
 }

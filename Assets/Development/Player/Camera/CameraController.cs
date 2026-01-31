@@ -54,8 +54,8 @@ public class CameraController : MonoBehaviour
     {
         Vector3 tempPos = transform.forward * -cameraDistanceFromPlayer;
 
-        tempPos -= transform.right * x * Time.deltaTime;
-        tempPos -= transform.up * y * Time.deltaTime;
+        tempPos -= transform.right * x * (Time.deltaTime /4);
+        tempPos -= transform.up * y * (Time.deltaTime/4);
 
         transform.position = player.transform.position + tempPos;
         transform.LookAt(player);

@@ -14,7 +14,7 @@ public class DialogueBase : MonoBehaviour
 
     [SerializeField] private string currentDialogueName;
     [SerializeField] private string currentDialogueText;
-    [SerializeField] private Image currentDialogueImage;
+    [SerializeField] private Sprite currentDialogueImage;
     [SerializeField] private string currentContinueStatus;
     public string currentBranchID;
     public string[] currentResponseOptions;
@@ -26,12 +26,14 @@ public class DialogueBase : MonoBehaviour
     [SerializeField]private List<DialogueLineData> dialogueList = new List<DialogueLineData>();
     public DialogueLineData currentDialogueLineData;
 
+    [SerializeField] private List<Sprite> birdImageList = new();
+
 
     [SerializeField]private string retriggerDialogueLineID;
     public bool isRetrigger;
 
    [SerializeField] private int currentTextSpeed;
-    public int textSpeed=>currentTextSpeed=500;// this speed is in ms
+    public int textSpeed=>currentTextSpeed=100;// this speed is in ms
 
     public bool GetIsTyping()
     {
@@ -79,6 +81,7 @@ public class DialogueBase : MonoBehaviour
             currentDialogueLineID = dialogueLine.dialogueID;
             currentContinueStatus = dialogueLine.dialogueContinue;
             currentDialogueName = dialogueLine.dialogueSpeaker;
+            currentDialogueImage = FindBirdImage(dialogueLine.dialogueImage);
             currentDialogueText = dialogueLine.dialogueText;
             retriggerDialogueLineID = dialogueLine.nextID;
             currentResponseOptions = dialogueLine.resposeOptions;
@@ -97,8 +100,15 @@ public class DialogueBase : MonoBehaviour
             currentBranchID=currentDialogueLineData.branchID;
 
         }
-        TypeText(textSpeed);
-        SendResponseOptions();
+        //TypeText(textSpeed);
+        //SendResponseOptions();
+    }
+
+    //Finds the sprite with the given name
+    private Sprite FindBirdImage(string imageName)
+    {
+        return birdImageList.Find(image => image.name == imageName);
+
     }
     //returns the desired dialogueLineData based on the given string ID
     public DialogueLineData GetDialogueLineByID(string id)
@@ -119,6 +129,7 @@ public class DialogueBase : MonoBehaviour
         currentDialogueLineID = line.dialogueID;
         currentDialogueName = line.dialogueSpeaker;
         currentDialogueText = line.dialogueText;
+        currentDialogueImage = FindBirdImage(line.dialogueImage);
         currentContinueStatus = line.dialogueContinue;
         currentResponseOptions = line.resposeOptions;
     }
@@ -129,7 +140,7 @@ public class DialogueBase : MonoBehaviour
         typerComplete = false;
         SetCurrentDialogue(dialogueLineID);
 
-        if (canvasController != null && canvasController.dialogueCanvas != null)
+        if (canvasController.activeDialogueInstance != null)
         {
             TypeText(textSpeed);
 
@@ -166,7 +177,7 @@ public class DialogueBase : MonoBehaviour
     //calls the function from the dialogue canvas
     public void ClearDialogue()
     {
-        canvasController.dialogueCanvas.ClearDialogueCanvas();
+        canvasController.activeDialogueInstance.ClearDialogueCanvas();
         isRetrigger = true;
     }
 
@@ -193,7 +204,7 @@ public class DialogueBase : MonoBehaviour
             
             Debug.Log(temp);
             temp += item; 
-            canvasController.dialogueCanvas.UpdateDialogueUI(
+            canvasController.activeDialogueInstance.UpdateDialogueUI(
             currentDialogueName,
             temp,
             currentDialogueImage);
@@ -218,7 +229,7 @@ public class DialogueBase : MonoBehaviour
         typerComplete = ready;
         if (typerComplete)
         {
-            canvasController.dialogueCanvas.GetResponseOptions();
+            canvasController.activeDialogueInstance.GetResponseOptions();
             
         }
         

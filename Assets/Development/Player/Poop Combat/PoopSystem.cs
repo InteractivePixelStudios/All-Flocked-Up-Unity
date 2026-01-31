@@ -13,7 +13,7 @@ public class PoopSystem : MonoBehaviour
 
     private int currentPoop;
     [SerializeField] private float cooldownTimer = 1.5f;
-    [SerializeField] private float updateItemsTimer = 30f;
+    [SerializeField] private float updateItemsTimer = 2f;
 
     public bool CanPoop => cooldownTimer <= 0f && currentPoop > 0;
 

@@ -35,11 +35,8 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            TakeDamage(10); // For testing, press R to take 10 damage
-            Debug.Log("Current Health: " + currentHealth);
-        }
+
+
     }
 
     public void Heal(int amount)

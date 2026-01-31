@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class UI_AccessOptions : UI_SettingsMenu
 {
@@ -12,6 +13,13 @@ public class UI_AccessOptions : UI_SettingsMenu
     [SerializeField] private TMP_Dropdown languageDropdown;
     [SerializeField] private Toggle highContrastToggle;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+
+    public void SetFirstAccessButton()
+    {
+        EventSystem.current.SetSelectedGameObject(cbModeDropdown.gameObject);
+    }
+
     void Start()
     {
         InitCBModeDD();

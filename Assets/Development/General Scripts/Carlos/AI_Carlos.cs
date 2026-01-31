@@ -1,16 +1,12 @@
-using NUnit.Framework;
-using System.Threading.Tasks;
+
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.VisualScripting;
-using System.Net;
-using UnityEditor.Experimental.GraphView;
 
 public class AI_Carlos : MonoBehaviour
 {
     [SerializeField] private GameObject player;
     [SerializeField] private Vector3 targetPos;
-    [SerializeField] private Vector3 lookOffset = new Vector3(-90, 0, 0);
+    [SerializeField] private Vector3 lookOffset = new Vector3(0, 0, 0);
     [SerializeField] private bool playerDetected;
     [SerializeField] private float lockTimer = 3f;
     [SerializeField] private bool aimLocked;
@@ -23,7 +19,7 @@ public class AI_Carlos : MonoBehaviour
     [SerializeField] private GameObject gunSpawnPoint;
     [SerializeField] private GameObject spawnedGun;
     [SerializeField] private float shootDistance;
-    [SerializeField] private Vector3 shootForce;
+    [SerializeField] private float shootForce;
     [SerializeField] private float shootTimer = 2;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -45,13 +41,14 @@ public class AI_Carlos : MonoBehaviour
         {
             DetectPlayer();
             LookAtPlayer();
+            AimAtPlayer();
         }
     }
 
 
     private void DetectPlayer()
     {
-        targetPos = player.transform.position + lookOffset;
+        targetPos = player.transform.position - lookOffset;
     }
     private void LookAtPlayer()
     {
@@ -76,14 +73,14 @@ public class AI_Carlos : MonoBehaviour
 
     private void AimAtPlayer()
     {
+        var direction = targetPos - spawnedGun.transform.position;
+        //spawnedGun.transform.LookAt(direction);
         if (shootTimer >= 0) { shootTimer -= Time.deltaTime; }
         if (player!=null && aimLocked && spawnedGun!=null)
         {
-            var direction = targetPos - spawnedGun.transform.position;
-            spawnedGun.transform.LookAt(direction);
             if (bulletPool.Count > 0 && shootTimer<=0)
             {
-                Shoot();
+                Shoot(direction);
                 shootTimer = 2;
             }
             else if (bulletPool.Count<= 0)
@@ -94,13 +91,13 @@ public class AI_Carlos : MonoBehaviour
         }
     }
 
-    private void Shoot()
+    private void Shoot(Vector3 dir)
     {
         if (player != null && aimLocked && gunPrefab != null && bulletIndex >= 0)
         {
             bulletPool[bulletIndex - 1].gameObject.SetActive(true);
-            Vector3 offset = new Vector3(0, 0, -1);
-            bulletPool[bulletIndex - 1].gameObject.GetComponent<Rigidbody>().AddForceAtPosition(shootForce, bulletPool[bulletIndex - 1].gameObject.transform.position - offset);
+            Vector3 offset = new Vector3(0, 0, 0);
+            bulletPool[bulletIndex - 1].gameObject.GetComponent<Rigidbody>().AddForce(dir * shootForce, ForceMode.Impulse);
             bulletPool.RemoveAt(bulletIndex - 1);
             bulletIndex--;
             
