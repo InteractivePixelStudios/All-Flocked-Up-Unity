@@ -148954,17 +148954,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8474415085025489093, guid: f9feb85a003ec4e409afdc3d57523566, type: 3}
   m_PrefabInstance: {fileID: 4073798998301497719}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2020712615 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4361392428415887811, guid: f9feb85a003ec4e409afdc3d57523566, type: 3}
-  m_PrefabInstance: {fileID: 4073798998301497719}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2020712614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2020712617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148977,9 +148966,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe12e722426265a42a1e70f1b3898e8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questLogDocument: {fileID: 2020712615}
-  questLogComponent: {fileID: 0}
-  tempName: 
 --- !u!1001 &2020722870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -160084,9 +160070,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2683314690187272511, guid: 27ecc67c54a441f43aea34ae30ebb858, type: 3}
+      propertyPath: DIALOGUEFILENAME
+      value: DialogueSpreadsheet.csv
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683314690187272511, guid: 27ecc67c54a441f43aea34ae30ebb858, type: 3}
       propertyPath: canvasController
       value: 
       objectReference: {fileID: 1284045337}
+    - target: {fileID: 2683314690187272511, guid: 27ecc67c54a441f43aea34ae30ebb858, type: 3}
+      propertyPath: currentDialogueText.m_TableReference.m_TableCollectionName
+      value: GUID:16bec568f3680914b892c4018b766c2f
+      objectReference: {fileID: 0}
+    - target: {fileID: 2683314690187272511, guid: 27ecc67c54a441f43aea34ae30ebb858, type: 3}
+      propertyPath: currentDialogueLineData.dialogueText.m_TableReference.m_TableCollectionName
+      value: GUID:16bec568f3680914b892c4018b766c2f
+      objectReference: {fileID: 0}
     - target: {fileID: 3706685912494431992, guid: 27ecc67c54a441f43aea34ae30ebb858, type: 3}
       propertyPath: m_LocalPosition.x
       value: -29.53948

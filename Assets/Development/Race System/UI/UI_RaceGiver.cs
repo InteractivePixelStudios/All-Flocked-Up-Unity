@@ -26,7 +26,10 @@ public class UI_RaceGiver : MonoBehaviour
     private void GetRaceInfo()
     {
         Debug.Log("RaceInfo");
-        raceNameText.SetText(raceBase.raceData.raceName);
+        raceBase.raceData.raceName.GetLocalizedStringAsync().Completed += handle =>
+        {
+            raceNameText.SetText(handle.Result);
+        };
         raceTimeText.SetText(raceBase.raceData.raceTime.ToString());
     }
 

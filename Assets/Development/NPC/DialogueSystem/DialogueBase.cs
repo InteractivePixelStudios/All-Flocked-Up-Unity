@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEngine.Localization;
+using System.Linq;
 
 public class DialogueBase : MonoBehaviour
 {
@@ -13,11 +15,11 @@ public class DialogueBase : MonoBehaviour
     [SerializeField] private string currentDialogueLineID;
 
     [SerializeField] private string currentDialogueName;
-    [SerializeField] private string currentDialogueText;
+    [SerializeField] private LocalizedString currentDialogueText;
     [SerializeField] private Sprite currentDialogueImage;
     [SerializeField] private string currentContinueStatus;
     public string currentBranchID;
-    public string[] currentResponseOptions;
+    public LocalizedString[] currentResponseOptions;
     public string responseReturnID;
     [SerializeField] private UI_CanvasController canvasController;
     [SerializeField] private bool typerComplete {  get; set; }
@@ -48,12 +50,12 @@ public class DialogueBase : MonoBehaviour
     //loads the CSV and adds each line as a string into importedLines, trims each line into lineData and sets the currentDialogueLine based on currentDialogueIndex
     public void LoadDialogueSheet()
     {
-        string filePath = Path.Combine(Application.streamingAssetsPath, "DialogueSpreadsheet.csv");
-        if (!File.Exists(filePath)) { Debug.Log("FileNotFound"); return; }
+        string filePath = Path.Combine(Application.streamingAssetsPath, DIALOGUEFILENAME);
+        if (!File.Exists(filePath)) { Debug.Log("File not found: " + filePath); return; }
 
         string[] importedLines = File.ReadAllLines(filePath);
-        Debug.Log(importedLines.Length);
 
+        Debug.Log(importedLines.Length);
         for (int i = currentDialogueIndex; i < importedLines.Length; i++)
         {
             string line = importedLines[i].Trim();
@@ -66,11 +68,19 @@ public class DialogueBase : MonoBehaviour
             {
                 dialogueID = lineData[0],
                 dialogueSpeaker = lineData[1],
-                dialogueText = lineData[2],
+                dialogueText = new LocalizedString
+                {
+                    TableReference = "AFU_Dialogue",
+                    TableEntryReference = lineData[0]
+                },
                 dialogueImage = lineData[3],
                 dialogueContinue = lineData[4],
                 nextID = lineData[5],
-                resposeOptions = lineData[6].Split('|'),
+                resposeOptions = lineData[6].Split('|').Select(option => new LocalizedString
+                {
+                    TableReference = "AFU_Dialogue",  
+                    TableEntryReference = option        
+                }).ToArray(),
                 branchID = lineData[7]
 
 
@@ -198,21 +208,25 @@ public class DialogueBase : MonoBehaviour
     //waits 2s after text done to show buttons
     public async void TypeText(int speed)
     {
-        string temp = "";
-        foreach (var item in currentDialogueText.AsSpan().ToArray())
-        {
-            
-            Debug.Log(temp);
-            temp += item; 
-            canvasController.activeDialogueInstance.UpdateDialogueUI(
-            currentDialogueName,
-            temp,
-            currentDialogueImage);
-            //Add narrative sounds / function call here
-            await Task.Delay(speed);
+        typerComplete = false;
 
+        string resolvedText = await currentDialogueText.GetLocalizedStringAsync().Task;
+
+
+        string temp = "";
+        foreach (char c in resolvedText)
+        {
+            temp += c;
+
+            canvasController.activeDialogueInstance.UpdateDialogueUI(
+                currentDialogueName,
+                temp,
+                currentDialogueImage
+            );
+
+            await Task.Delay(speed);
         }
-        
+
         await Task.Delay(2000);
         ShowResponseButtons(true);
     }
