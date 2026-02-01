@@ -65,8 +65,11 @@ public class UI_RaceReward: MonoBehaviour
     // Update is called once per frame
     public void GetReward()
     {
-            raceNameText.SetText(raceBase.raceData.raceName);
-            raceRewardText.SetText(raceBase.raceData.raceRewards.ToString()); 
+        raceBase.raceData.raceName.GetLocalizedStringAsync().Completed += handle =>
+        {
+            raceNameText.SetText(handle.Result);
+        };
+        raceRewardText.SetText(raceBase.raceData.raceRewards.ToString()); 
     }
     //compares best race time with given and updates if faster
     private void UpdateRaceBestTime()

@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using System.Collections.Generic;
+using UnityEngine.Localization;
 
 
 public class UI_DialogueCanvas : MonoBehaviour
@@ -18,7 +19,7 @@ public class UI_DialogueCanvas : MonoBehaviour
     [SerializeField] private ScrollRect responseBox;
     [SerializeField] private Button buttonPrefab;
     [SerializeField] private int textSpeed = 1;
-    public string[] responses;
+    public LocalizedString[] responses;
     [SerializeField] private string responseReturnID;
     [SerializeField] private bool hasButtons = false;
     UI_CanvasController canvasController;
@@ -100,7 +101,7 @@ public class UI_DialogueCanvas : MonoBehaviour
     public void GetResponseOptions()
     {
         DestroyCurrentOptionButtons();
-        responses = new string[dialogueBase.currentResponseOptions.Length];
+        responses = new LocalizedString[dialogueBase.currentResponseOptions.Length];
         dialogueBase.currentResponseOptions.CopyTo(responses.AsSpan());
         Debug.Log("UISpawnResponseButtons");
         float startY = 0f;
@@ -138,7 +139,7 @@ public class UI_DialogueCanvas : MonoBehaviour
         hasButtons = false;
     }
 
-    private Button CreateResponseButton(string text, string branchOption, float startY,float offset)
+    private Button CreateResponseButton(LocalizedString text, string branchOption, float startY,float offset)
     {
         Button response = Instantiate(buttonPrefab, responseBox.transform);
         RectTransform buttonTransform = response.GetComponent<RectTransform>();
@@ -159,10 +160,16 @@ public class UI_DialogueCanvas : MonoBehaviour
 
     }
 
-    private void SetButtonText(Button button, string text)
+    private void SetButtonText(Button button, LocalizedString text)
     {
         var labelText = button.GetComponentInChildren<TextMeshProUGUI>();
-        if (labelText != null) labelText.SetText(text);
+        if (labelText != null)
+        {
+            text.GetLocalizedStringAsync().Completed += handle =>
+            {
+                labelText.SetText(handle.Result);
+            };
+        }
     }
 
 }

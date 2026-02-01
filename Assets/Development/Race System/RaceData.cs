@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using System.Linq;
+using UnityEngine.Localization;
 
 //this is what holds all of the race info... to create a race, create>scriptableObjects>races and make a race data
 //then fill in info
@@ -12,8 +13,8 @@ public class RaceData : ScriptableObject
     public string raceID;
     public float raceTime;
     public bool raceActive;
-    public string raceName;
-    public string raceDescription;
+    public LocalizedString raceName;
+    public LocalizedString raceDescription;
     public int raceRewards;
     public List<Transform> checkpointLocations = new();
     public List< RaceCheckpoint>  checkpointSpawns = new();

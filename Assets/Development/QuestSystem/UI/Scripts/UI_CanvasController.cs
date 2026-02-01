@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Localization;
 
 public class UI_CanvasController : MonoBehaviour
 {
@@ -265,7 +266,7 @@ public class UI_CanvasController : MonoBehaviour
 
     }
     //dialogue response options transfer
-    public void SendResponseOptions(string[] responses)
+    public void SendResponseOptions(LocalizedString[] responses)
     {
         activeDialogueInstance.responses = responses;
     }

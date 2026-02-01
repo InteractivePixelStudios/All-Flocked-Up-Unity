@@ -31,7 +31,10 @@ public class UI_RaceFail : MonoBehaviour
 
     private void GetRaceInfo()
     {
-        raceNameText.SetText(race.raceData.raceName);
+        race.raceData.raceName.GetLocalizedStringAsync().Completed += handle =>
+        {
+            raceNameText.SetText(handle.Result);
+        };
         raceStatusText.SetText("Race Failed!");
     }
 
