@@ -78,7 +78,7 @@ public class DialogueBase : MonoBehaviour
                 nextID = lineData[5],
                 resposeOptions = lineData[6].Split('|').Select(option => new LocalizedString
                 {
-                    TableReference = "AFU_Dialogue",  
+                    TableReference = "AFU_DialogueResponses",  
                     TableEntryReference = option        
                 }).ToArray(),
                 branchID = lineData[7]

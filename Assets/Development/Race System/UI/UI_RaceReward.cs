@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class UI_RaceReward: MonoBehaviour
@@ -25,6 +26,7 @@ public class UI_RaceReward: MonoBehaviour
     [SerializeField] private float currentY = 0f;
 
     [SerializeField] private GameObject textPrefab;
+    [SerializeField] private List<string> racerNames = new();
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -56,7 +58,9 @@ public class UI_RaceReward: MonoBehaviour
         foreach (var racer in racerList)
         {
             Debug.Log(racer.Key.name);
-            CreateRacerText(racer.Key.name, startY, offset);
+            var randInt = Random.Range(0, racerList.Count);
+            var name = racerNames[randInt];
+            CreateRacerText(name, startY, offset);
             CreateTimeText(racer.Value.ToString(), startY, offset);
             startY -= offset;
         }
@@ -65,10 +69,17 @@ public class UI_RaceReward: MonoBehaviour
     // Update is called once per frame
     public void GetReward()
     {
-        raceBase.raceData.raceName.GetLocalizedStringAsync().Completed += handle =>
+        LocalizedString localizedString = new LocalizedString
+        {
+            TableReference = "AFU_Races",
+            TableEntryReference = raceBase.currentRaceGiver.raceData.name
+        };
+
+        localizedString.GetLocalizedStringAsync().Completed += handle =>
         {
             raceNameText.SetText(handle.Result);
         };
+
         raceRewardText.SetText(raceBase.raceData.raceRewards.ToString()); 
     }
     //compares best race time with given and updates if faster
