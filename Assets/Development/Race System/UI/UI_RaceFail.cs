@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class UI_RaceFail : MonoBehaviour
@@ -31,7 +32,17 @@ public class UI_RaceFail : MonoBehaviour
 
     private void GetRaceInfo()
     {
-        raceNameText.SetText(race.raceData.raceName);
+        LocalizedString localizedString = new LocalizedString
+        {
+            TableReference = "AFU_Races",
+            TableEntryReference = race.currentRaceGiver.raceData.name
+        };
+
+        localizedString.GetLocalizedStringAsync().Completed += handle =>
+        {
+            raceNameText.SetText(handle.Result);
+        };
+
         raceStatusText.SetText("Race Failed!");
     }
 

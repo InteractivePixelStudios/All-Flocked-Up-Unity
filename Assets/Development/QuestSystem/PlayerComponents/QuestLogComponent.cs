@@ -13,7 +13,6 @@ public class QuestLog : MonoBehaviour
     [SerializeField] private UI_QuestReward questRewardUI;
     public bool hasQuest = false;
     public QuestGiver currentQuestGiver;
-    public QuestLogMenuEvents logMenuEvents;
     private bool questTimerStarted;
     public float currentTime;
     [SerializeField] private UI_CanvasController canvasController;

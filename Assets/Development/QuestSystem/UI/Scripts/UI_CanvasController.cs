@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.Localization;
 
 public class UI_CanvasController : MonoBehaviour
 {
@@ -151,7 +152,7 @@ public class UI_CanvasController : MonoBehaviour
         activeGiverInstance = Instantiate(questGiverCanvas);
         activeGiverInstance.currentquestGiver = questGiver;
         activeGiverInstance.canvasController = this;
-        activeGiverInstance.UpdateUIText(questGiver.quests[0].questName, questGiver.quests[0].questLogDescription,"Change to rewards!");
+        activeGiverInstance.UpdateUIText(questGiver.quests[0].questName, questGiver.quests[0].questLogDescription, questGiver.quests[0].questName); // change last one to rewards
         
     }
 
@@ -265,7 +266,7 @@ public class UI_CanvasController : MonoBehaviour
 
     }
     //dialogue response options transfer
-    public void SendResponseOptions(string[] responses)
+    public void SendResponseOptions(LocalizedString[] responses)
     {
         activeDialogueInstance.responses = responses;
     }

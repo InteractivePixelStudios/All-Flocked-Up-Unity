@@ -15,10 +15,29 @@ MonoBehaviour:
   raceID: Race002
   raceTime: 60
   raceActive: 0
-  raceName: Rooftop Ride
-  raceDescription: Who's up there?
+  raceName:
+    m_TableReference:
+      m_TableCollectionName: GUID:e7eb3cf68d6433a4a89e12ac2db0a47d
+    m_TableEntryReference:
+      m_KeyId: 519308234752
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  raceDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:e7eb3cf68d6433a4a89e12ac2db0a47d
+    m_TableEntryReference:
+      m_KeyId: 545900122112
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   raceRewards: 10
   checkpointLocations: []
   checkpointSpawns: []
   numberOfCPURacers: 0
   startLine: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []

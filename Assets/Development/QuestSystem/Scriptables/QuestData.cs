@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Localization;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 //Allows you to create QuestData scriptable objects. Inherits from scriptable object class and  holds the questID, info, and array of objectives (S_ObjectiveDetails)
@@ -10,8 +11,8 @@ using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 public class QuestData : ScriptableObject
 {
     public string questID;
-    public string questTitle;
-    [TextArea] public string questDescription;
+    public LocalizedString questTitle;
+    [TextArea] public LocalizedString questDescription;
 
     public ObjectiveDetails[] objectives;
 

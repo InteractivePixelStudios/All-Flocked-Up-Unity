@@ -15,10 +15,34 @@ MonoBehaviour:
   raceID: Race004
   raceTime: 60
   raceActive: 0
-  raceName: Race'Em Jr.
-  raceDescription: Small Legs Go Fast
-  raceRewards: 20
+  raceName:
+    m_TableReference:
+      m_TableCollectionName: GUID:e7eb3cf68d6433a4a89e12ac2db0a47d
+    m_TableEntryReference:
+      m_KeyId: 613923344384
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  raceDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:e7eb3cf68d6433a4a89e12ac2db0a47d
+    m_TableEntryReference:
+      m_KeyId: 639919640576
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  raceRewards: 5
   checkpointLocations: []
-  checkpointSpawns: []
+  checkpointSpawns:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   numberOfCPURacers: 3
   startLine: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []

@@ -12,10 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25da5333b879d2d45a8d16915869372e, type: 3}
   m_Name: Coo-Torial Part Deux_D
   m_EditorClassIdentifier: 
-  questName: Coo-Torial Part Deux
+  questName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+    m_TableEntryReference:
+      m_KeyId: 23956563087360
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   questID: Q1-2D
-  questLogDescription: 'Learn some things! '
-  trackerDescription: 'Learn some things! '
+  questLogDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+    m_TableEntryReference:
+      m_KeyId: 24014159269888
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  trackerDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+    m_TableEntryReference:
+      m_KeyId: 24041824899072
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   isMainQuest: 1
   stagesToComplete: 1
   isQuestTimed: 0
@@ -23,11 +47,43 @@ MonoBehaviour:
   autoAcceptQuest: 0
   autoCompleteQuest: 0
   stages:
-  - stageName: CAT ATTACK!
-    stageDescription: POOP ON THAT CAT
+  - stageName:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 24069222092800
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    stageDescription:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 24123664158720
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     objectivesToComplete:
-    - objectiveName: STINKY KITTY
-      objectiveDescription: Get that cat away from your new home
+    - objectiveName:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 24154865586176
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      objectiveDescription:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 24184083107840
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
       objectiveType: Q_Kill
       objectiveID: Q1-2_Obj4
       quantityToComplete: 1
@@ -36,3 +92,6 @@ MonoBehaviour:
     expReward: 0
     trinketReward: 0
   itemRewards: []
+  references:
+    version: 2
+    RefIds: []

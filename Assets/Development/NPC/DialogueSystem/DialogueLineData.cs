@@ -1,16 +1,17 @@
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization;
 [System.Serializable]
 public class DialogueLineData 
 {
     public string dialogueID;
     public string dialogueSpeaker;
-    public string dialogueText;
+    public LocalizedString dialogueText;
     public string dialogueImage;
     public string dialogueContinue;
     public string nextID;
-    public string[] resposeOptions;
+    public LocalizedString[] resposeOptions;
     public string branchID;
 }
 
