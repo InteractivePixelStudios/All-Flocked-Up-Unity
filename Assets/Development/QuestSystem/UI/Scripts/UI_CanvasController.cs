@@ -5,9 +5,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Localization;
+using Unity.Cinemachine;
+using UnityEngine.AI;
+using System.Linq;
 
 public class UI_CanvasController : MonoBehaviour
 {
+    [SerializeField] private GameObject player;
+    [SerializeField] private CinemachineCamera cam;
+    [SerializeField] private List<NavMeshAgent> enemies;
+
     [Header("TimerCanvas")]
     [SerializeField] private UI_QuestTimer timerCanvas;
     public UI_QuestTimer activeTimerInstance;
@@ -81,24 +88,66 @@ public class UI_CanvasController : MonoBehaviour
     [Header("MainMap")]
     [SerializeField] private UI_MainMap mainMapCanvas;
     public UI_MainMap activeMapCanvas;
-
+    [Header("LanguageSelect")]
+    [SerializeField] private UI_LanguageSelector languageSelectPrefab;
+    public UI_LanguageSelector activeLanguageCanvas;
+    [Header("PlayerInputComponent")]
     [SerializeField] private PlayerInput input;
 
     private void Start()
     {
         input = FindFirstObjectByType<PlayerInput>();
+        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        var agents = FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
+        foreach (var agent in agents)
+        {
+            enemies.Add(agent);  
+        }
+
         SpawnMainMenu();
+        OpenLanguageSelect(); //remove after testing
+    }
+
+    public void FreezeEnemies()
+    {
+        
+        foreach (var enemy in enemies)
+        {
+            if(enemy.gameObject != null)
+            {
+                enemy.enabled = false;
+            }
+            else enemies.Remove(enemy);
+        }
+    }
+
+    public void ResumeEnemy()
+    {
+        foreach (var enemy in enemies)
+        {
+            if (enemy.gameObject != null)
+            {
+                enemy.enabled = true;
+            }
+            else enemies.Remove(enemy);
+        }
     }
 
     public void SetPlayerMap()
     {
         input.SwitchCurrentActionMap("Player");
+        player.GetComponent<PlayerGroundMovement>().enabled = true;
+        player.GetComponent<PlayerFlightMovement>().enabled = true;
+        ResumeEnemy();
         Debug.Log("PLAYERMAP");
     }
 
     public void SetUIMap()
     {
         input.SwitchCurrentActionMap("UI");
+        player.GetComponent<PlayerGroundMovement>().enabled = false;
+        player.GetComponent<PlayerFlightMovement>().enabled = false;
+        FreezeEnemies();
         Debug.Log("UIMAP");
     }
     //cursor on
@@ -542,6 +591,25 @@ public class UI_CanvasController : MonoBehaviour
             HidePlayerCursor();
             Time.timeScale = 1;
         }
+    }
+
+    public void OpenLanguageSelect()
+    {
+        activeLanguageCanvas = Instantiate(languageSelectPrefab);
+        if(activeLanguageCanvas != null)
+        {
+            ShowPlayerCursor();
+        }
+    }
+
+    public void CloseLanguageSelect()
+    {
+        if(activeLanguageCanvas != null)
+        {
+            HidePlayerCursor();
+            Destroy(activeLanguageCanvas.gameObject);
+        }
+
     }
 
 }

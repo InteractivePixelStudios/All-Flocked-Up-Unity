@@ -16,7 +16,10 @@ public class VFXController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        featherParticles.Play();
+        if (collision.relativeVelocity.magnitude > 10)
+        {
+            featherParticles.Play();
+        }
     }
 
     public void ToggleStreakOn()

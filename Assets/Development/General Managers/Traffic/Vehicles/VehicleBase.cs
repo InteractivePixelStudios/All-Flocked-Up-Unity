@@ -20,12 +20,16 @@ public class VehicleBase :MonoBehaviour
     [SerializeField] private List<WaypointConnection> connections = new();
     [SerializeField] protected float detectObjectRange=2f;
     public TrafficManager manager;
+
+    bool isLeftTurn;
+    bool isRightTurn;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
         navAgent = GetComponent<NavMeshAgent>();
         MoveVehicleToLocation();
     }
+
 
     // Update is called once per frame
     protected virtual void Update()
@@ -49,6 +53,21 @@ public class VehicleBase :MonoBehaviour
             ChooseNextDirection(currentNode);
         }
 
+    }
+
+    public bool GetIsMoving()
+    {
+        return isMoving;
+    }
+
+    public bool GetIsLeftTurn()
+    {
+        return isLeftTurn;
+    }
+
+    public bool GetIsRightTurn()
+    {
+        return isRightTurn;
     }
 
     protected virtual void SetMoveToLocation(Waypoint location)
