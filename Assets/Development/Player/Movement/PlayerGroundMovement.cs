@@ -16,6 +16,8 @@ public class PlayerGroundMovement : MonoBehaviour
     static GroundCheck groundCheck;
     Transform cameraRef;
 
+    [SerializeField] private PlayerInput input;
+
     [Header("Additional Requirements")]
     [SerializeField] GameObject crouchVinete;
 
@@ -112,6 +114,8 @@ public class PlayerGroundMovement : MonoBehaviour
         sprintAction = InputSystem.actions.FindAction("Sprint");
         crouchAction = InputSystem.actions.FindAction("Crouch");
 
+        input = GetComponent<PlayerInput>();
+
         PlayerInput();
     }
 
@@ -205,9 +209,10 @@ public class PlayerGroundMovement : MonoBehaviour
 
     void Jump()
     {
+        if (input.currentActionMap != input.actions.FindActionMap("Player")) return;
+
         //if (isFlying)
         if (playerStateController.CurrentState != PlayerState.GroundMove)
-
             return;
 
         // check if player is on the ground to jump
