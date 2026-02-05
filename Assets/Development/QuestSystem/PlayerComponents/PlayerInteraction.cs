@@ -29,10 +29,20 @@ public class PlayerInteraction : MonoBehaviour
     private InputAction pauseAction;
     private InputAction debugAction;
     private InputAction reportAction;
+    bool uiOn;
 
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
+        InitInputs();
+    }
+    private void Update()
+    {
+        if (playerInput.currentActionMap == playerInput.actions.FindActionMap("UI") &&!uiOn) { uiOn = true; InitInputs(); Debug.Log("REINIT"); }
+        else return;
+    }
+    void InitInputs()
+    {
         interactAction = playerInput.actions.FindAction("Interact");
         questLogAction = playerInput.actions.FindAction("QuestLog");
         mapAction = playerInput.actions.FindAction("Map");
@@ -52,6 +62,7 @@ public class PlayerInteraction : MonoBehaviour
             debugAction.performed += OpenDebug;
             reportAction.performed += OpenReport;
         }
+        
     }
     public bool GetIsWingventoryOpen()
     {
@@ -67,6 +78,7 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             canvasController.CloseBugReporter();
+            uiOn = false;
         }
     }
 
@@ -79,6 +91,7 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             canvasController.CloseDebugMenu();
+            uiOn = false;
         }
     }
 
@@ -198,8 +211,8 @@ public class PlayerInteraction : MonoBehaviour
             {
                 canvasController.ShowQuestLog();
             }
-            else canvasController.DestroyQuestLog();
-        }
+            else canvasController.DestroyQuestLog(); uiOn = false;
+    }
 
         void OpenMap(InputAction.CallbackContext ctx)
         {
@@ -209,8 +222,8 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                canvasController.CloseMainMap();
-            }
+                canvasController.CloseMainMap(); uiOn = false;
+        }
         }
 
         void OpenInventory(InputAction.CallbackContext ctx)
@@ -224,8 +237,9 @@ public class PlayerInteraction : MonoBehaviour
             {
                 canvasController.CloseWingventory();
                 isWingventoryOpen = false;
+                uiOn = false;
             }
-        }
+    }
 
         void OpenPause(InputAction.CallbackContext ctx)
         {
@@ -233,7 +247,7 @@ public class PlayerInteraction : MonoBehaviour
             {
                 canvasController.PauseGame();
             }
-            else canvasController.ResumeGame();
-        }
+            else canvasController.ResumeGame(); uiOn = false;
+    }
     }
 

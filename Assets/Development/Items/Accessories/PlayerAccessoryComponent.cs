@@ -14,9 +14,9 @@ public class PlayerAccessoryComponent : MonoBehaviour
     public string currentItemDesc =>currentItem.GetDescription();
     [SerializeField] protected Vector3 accessoryOffset;
 
-    [SerializeField] protected Transform headSlot;
-    [SerializeField] protected Transform neckSlot;
-    [SerializeField] protected Transform monocleSlot;
+    [SerializeField] protected GameObject headSlot;
+    [SerializeField] protected GameObject neckSlot;
+    [SerializeField] protected GameObject monocleSlot;
 
     private void Start()
     {
@@ -35,13 +35,17 @@ public class PlayerAccessoryComponent : MonoBehaviour
         Debug.Log("DescCalled");
         return currentItemDesc;
     }
-    public void EquipAccessory(AccessoryBase accessory, bool isEquip, EAccessoryItems state, Transform slot)
+    public void EquipAccessory(AccessoryBase accessory, bool isEquip, EAccessoryItems state, GameObject slot)
     {
         currentItem = Instantiate(accessory);
-        currentItem.accessoryTransform = slot;
+        currentItem.isEquip = isEquip;
         currentItem.itemState = state;
+        currentItem.transform.SetParent(slot.transform, false);
+        currentItem.transform.position = slot.transform.position;
+        currentItem.transform.rotation = slot.transform.rotation;
         currentEquippedAccessories.Add(currentItem);
         currentItem.transform.localPosition += accessoryOffset;
+        
         
     }
 
@@ -49,6 +53,7 @@ public class PlayerAccessoryComponent : MonoBehaviour
     {
         if (currentEquippedAccessories.Contains(accessory))
         {
+            accessory.isEquip = isEquip;
             currentEquippedAccessories.Remove(accessory);
             Destroy(accessory);
         }

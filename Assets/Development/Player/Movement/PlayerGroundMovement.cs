@@ -104,8 +104,7 @@ public class PlayerGroundMovement : MonoBehaviour
         cameraRef = Camera.main.transform;
         groundCheck = GetComponentInChildren<GroundCheck>();
         playerFlightMovement = GetComponent<PlayerFlightMovement>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
 
         currentMaxSpeed = maxSpeed;
 
