@@ -33,7 +33,7 @@ public class UI_QuestReward : MonoBehaviour
     {
         name.StringChanged += value =>
         {
-            questName.text = value;
+            questName.SetText(value);
         };
     }
 

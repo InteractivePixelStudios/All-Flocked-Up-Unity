@@ -15,6 +15,8 @@ public class UI_PauseMenu : MonoBehaviour
     [SerializeField] protected bool controlsOpen;
     [SerializeField] protected GameObject saveWindowPrefab;
     [SerializeField] protected GameObject currentSaveWindow;
+    [SerializeField] private RectTransform scrollPanel;
+    [SerializeField] protected Vector3 scrollStartPosition;
 
 
 
@@ -28,8 +30,28 @@ public class UI_PauseMenu : MonoBehaviour
         controlsButton.onClick.AddListener(OnControlsOpen);
         saveQuitButton.onClick.AddListener(OnSaveAndQuit);
         EventSystem.current.SetSelectedGameObject(settingsButton.gameObject);
+        scrollStartPosition = scrollPanel.transform.position;
     }
 
+    void ScrollCanvasUp()
+    {
+
+        Vector2 pos = scrollPanel.anchoredPosition;
+        pos.y = Mathf.Lerp(pos.y, scrollPanel.anchoredPosition.y + 2000f, Time.unscaledDeltaTime * 1.5f);
+        scrollPanel.anchoredPosition = pos;
+
+    }
+
+    void ScrollCanvasDown()
+    {
+        Vector2 pos = scrollPanel.anchoredPosition;
+        pos.y = Mathf.Lerp(pos.y, scrollStartPosition.y, Time.unscaledDeltaTime * 1.5f);
+        scrollPanel.anchoredPosition = pos;
+
+
+
+
+    }
     public void Unpause()
     {
         var controller = FindFirstObjectByType<UI_CanvasController>();
@@ -42,15 +64,16 @@ public class UI_PauseMenu : MonoBehaviour
         if (!settingsOpen)
         {
             settingsOpen = true;
-            mainCanvas.SetActive(false);
+            ScrollCanvasUp();
             settingsCanvas.SetActive(true);
             settingsCanvas.GetComponent<UI_SettingsMenu>().SetFirstSettingsButton();
+            Debug.Log("Open");
 
         }
         else
         {
             settingsOpen = false;
-            mainCanvas.SetActive(true);
+            ScrollCanvasDown();
             settingsCanvas.SetActive(false);
             EventSystem.current.SetSelectedGameObject(settingsButton.gameObject);
         }
