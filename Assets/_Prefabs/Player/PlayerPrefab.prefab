@@ -892,12 +892,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8831510433227098962}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0.194, z: -0.242}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 0, y: 0.48167902, z: -0.6008888}
+  m_LocalScale: {x: 2.4828815, y: 2.4828815, z: 2.4828815}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8952464106424959765}
+  m_Father: {fileID: 3875354736271577363}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1001 &7882916956589649140
 PrefabInstance:
@@ -1004,7 +1004,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -139.27
+      value: -139.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1012,7 +1012,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 342.28
+      value: 339.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1521,9 +1521,6 @@ PrefabInstance:
       addedObject: {fileID: 1590545607276878289}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6833759070502345426}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2661298874268454584}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
@@ -1552,7 +1549,13 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
       addedObject: {fileID: 149617979076266393}
+    - targetCorrespondingSourceObject: {fileID: 5656298244435621357, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6833759070502345426}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4018456047112751113}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2902479062585475685}
@@ -2611,6 +2614,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
   m_PrefabInstance: {fileID: 8914650961509115134}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4018456047112751113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608166696854051247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d6535cc080c7dc42b0423f388d87f95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2902479062585475685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2730,14 +2745,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb0fe9caf4787f42b581e19af1ad8cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  input: {fileID: 0}
   crouchVinete: {fileID: 1934229752313466859, guid: 34a4cbccf64e8cc4483da4857170c78a, type: 3}
-  moveSpeed: 500
-  maxSpeed: 10
-  crouchSpeed: 5
-  sprintSpeed: 15
+  moveSpeed: 400
+  maxSpeed: 4
+  crouchSpeed: 2
+  sprintSpeed: 6
   jumpHeight: 150
   currentMaxSpeed: 0
-  counterMovement: 0.175
+  counterMovement: 0.3
   threshold: 0.01
   stepRayUpper: {fileID: 2500670945299072242}
   stepRayLower: {fileID: 2458748855200337666}
@@ -2760,15 +2776,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshTransform: {fileID: 3875354736271577363}
-  baseGlideSpeed: 400
+  baseGlideSpeed: 300
   maxDownwardVelocity: -3
-  flapUpHeight: 5
+  flapUpHeight: 1
   flapStaminaAmount: 2
   rotateSpeed: 80
-  glideDownSpeed: 600
+  glideDownSpeed: 350
   glideDownDropSpeed: 1
   stallDownSpeed: 0.00001
   tiltSpeed: 100
+  diveSpeed: 100
+  stallTime: 0.5
+  stallHeight: 1
 --- !u!114 &3684135063570159860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2789,7 +2808,7 @@ MonoBehaviour:
     m_Bits: 33554432
   grabOffset: {x: 0, y: 0, z: 0}
   isHoldingObject: 0
-  peckComp: {fileID: 0}
+  peckComp: {fileID: 2084127831683015086}
 --- !u!114 &5256277540902806047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2808,7 +2827,6 @@ MonoBehaviour:
   questRewardUI: {fileID: 0}
   hasQuest: 0
   currentQuestGiver: {fileID: 0}
-  logMenuEvents: {fileID: 0}
   currentTime: 0
   canvasController: {fileID: 0}
   arrowPointer: {fileID: 2902479062585475685}
@@ -2832,6 +2850,7 @@ MonoBehaviour:
   respawnCanvasPrefab: {fileID: 7144571349346881106, guid: a7afa39afeeb21b4c954129c1e324f98, type: 3}
   respawnCanvasInstance: {fileID: 0}
   rb: {fileID: 4585154954453579094}
+  canvasController: {fileID: 0}
 --- !u!114 &1838661733868436487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2897,9 +2916,9 @@ MonoBehaviour:
   currentEquippedAccessories: []
   currentItem: {fileID: 0}
   accessoryOffset: {x: 0, y: 0, z: 0}
-  headSlot: {fileID: 8988307341082137951}
-  neckSlot: {fileID: 1590545607276878289}
-  monocleSlot: {fileID: 2272326430613247002}
+  headSlot: {fileID: 6197911558244718780}
+  neckSlot: {fileID: 5635981566747612132}
+  monocleSlot: {fileID: 6399358809199908467}
 --- !u!114 &4441602835408521351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2943,7 +2962,7 @@ MonoBehaviour:
   maxPoop: 5
   poopCooldown: 2
   poopBonus: 0
-  accessoryComponent: {fileID: 0}
+  accessoryComponent: {fileID: 5682136442268613181}
   cooldownTimer: 1.5
   updateItemsTimer: 30
 --- !u!114 &7749742485669867956
@@ -2984,6 +3003,9 @@ MonoBehaviour:
     m_Bits: 2097152
   maxRange: 20
   pigeon: {fileID: 4585154954453579094}
+  mesh: {fileID: 8980140932581513020}
+  spinTime: 3
+  spinDuration: 0.5
   isFlying: 0
 --- !u!54 &4585154954453579094
 Rigidbody:
@@ -3614,6 +3636,11 @@ CharacterJoint:
 --- !u!4 &8952464106424959765 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
+  m_PrefabInstance: {fileID: 8914650961509115134}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8980140932581513020 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 515923051870630850, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
   m_PrefabInstance: {fileID: 8914650961509115134}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &9133529499305646688 stripped

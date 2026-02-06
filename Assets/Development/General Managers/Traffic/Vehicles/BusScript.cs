@@ -30,7 +30,7 @@ public class BusScript : VehicleBase
         base.navAgent.isStopped = true;
     }
 
-    protected override void TriggerCollisions()
+    public override void TriggerCollisions()
     {
         base.TriggerCollisions();
     }

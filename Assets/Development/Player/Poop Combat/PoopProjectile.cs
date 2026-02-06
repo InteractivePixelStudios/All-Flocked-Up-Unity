@@ -72,6 +72,7 @@ public class PoopProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        var obj = collision.gameObject;
         var hit = collision.GetContact(0).normal;
         Debug.Log(hit);
         SpawnPoopDecal(transform.position,hit);
@@ -80,16 +81,18 @@ public class PoopProjectile : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             //poopable.OnPoopHit(poopType);
+            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
             Debug.Log("EnemyHit");
         }
         if (collision.gameObject.CompareTag("NPC"))
         {
+            obj.GetComponent<NPCBase>().HitReact();
             Debug.Log("NPCHit");
         }
         if (collision.gameObject.CompareTag("Vehicle"))
         {
             var vehicle = collision.gameObject.GetComponent<VehicleScript>();
-            //Add Honk
+            vehicle.TriggerCollisions();
             Debug.Log("CarHit");
         }
         if (!collision.gameObject.CompareTag("Player"))

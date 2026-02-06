@@ -194,7 +194,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
     {
         isHit = true;
         animator.SetTrigger("isHit");
-        TakeDamage(1);
+        TakeDamage(10);
         await Task.Delay(1000);
         isHit = false;
         currentState = EnemyState.Retreat;
@@ -226,8 +226,11 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
     {
 
         var spawnedCollider = swatColliderParent.AddComponent<SphereCollider>();
-        var comp = spawnedCollider.AddComponent<KickComponent>();
-        comp.damage = 1;
+        var comp = spawnedCollider.AddComponent<KickComponent>(); //used as damage comp
+        comp.damage = 10;
+        spawnedCollider.includeLayers = LayerMask.GetMask("Player");
+        spawnedCollider.isTrigger = true;
+        spawnedCollider.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         //animator.SetTrigger("isKicking");
         swatCooldown = 3f;
         await Task.Delay(3000);
@@ -235,7 +238,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
         Destroy(comp);
     }
 
-    protected void Pounce()
+    protected async void Pounce()
     {
         var rb = GetComponent<Rigidbody>();
         rb.linearVelocity = Vector3.zero;
@@ -243,13 +246,23 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
         dirToPlayer.y = 0;
         Vector3 force = dirToPlayer * pounceForce.z + Vector3.up * pounceForce.y;
         rigidbodyComp.AddForce(force,ForceMode.Impulse);
+        var spawnedCollider = swatColliderParent.AddComponent<SphereCollider>();
+        spawnedCollider.includeLayers = LayerMask.GetMask("Player");
+        spawnedCollider.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        spawnedCollider.isTrigger = true;
+        var comp = spawnedCollider.AddComponent<KickComponent>(); //used as damage comp
+        comp.damage = 10;
+        swatCooldown = 3f;
+        await Task.Delay(3000);
+        Destroy(spawnedCollider);
+        Destroy(comp);
     }
 
 
 
     public void TakeDamage(int damage)
     {
-
+        
 
     }
 

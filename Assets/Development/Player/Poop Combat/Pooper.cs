@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,6 +15,7 @@ public class Pooper : MonoBehaviour
     //[SeralizeField] private PoopArcRenderer arcRenderer; option for visualizing the arc, not yet implemented
 
     [SerializeField] private Rigidbody pigeon;
+    [SerializeField] private GameObject mesh;
 
     private bool isAiming = false; // Track if the player is currently aiming
     private PlayerInput playerInput;
@@ -21,8 +23,11 @@ public class Pooper : MonoBehaviour
     private InputAction poopAction;
     private GameObject player;
 
-    float spinTime = 0f;
-    float spinDuration = 1f;
+    bool isTurning;
+    Quaternion startRot;
+    Quaternion endRot;
+    [SerializeField]float spinTime = 0f;
+    [SerializeField]float spinDuration = 1f;
     PlayerGroundMovement groundComp;
     [SerializeField]bool isFlying;
 
@@ -64,11 +69,18 @@ public class Pooper : MonoBehaviour
 
     private void Update()
     {
+        if (!isTurning) return;
         
-        if (spinTime < spinDuration)
+        spinTime += Time.deltaTime / spinDuration;
+
+        float easeTime = Mathf.SmoothStep(0f, 1f, spinTime);
+        mesh.transform.rotation = Quaternion.Slerp(startRot, endRot, easeTime);
+        if (spinTime >= 1f)
         {
-            spinTime += Time.deltaTime;
+            mesh.transform.localRotation = endRot;
+            isTurning = false;
         }
+
     }
     private void OnDestroy()
     {
@@ -84,20 +96,23 @@ public class Pooper : MonoBehaviour
     {
         isAiming = true;
         Debug.Log("Aiming started");
-        Quaternion start = transform.rotation;
-        Quaternion end = Quaternion.Euler(0f, transform.eulerAngles.y + 180f, 0f);
+        startRot = mesh.transform.localRotation;
+        endRot = startRot * Quaternion.Euler(0f, 180f, 0f);
 
-        transform.rotation = Quaternion.Slerp(start,end,spinTime);
+        spinTime = 0f;
+        isTurning = true;
         //Show aiming UI here if needed
+
     }
 
     private void OnAimCanceled(InputAction.CallbackContext ctx)
     {
         isAiming = false;
         Debug.Log("Aiming canceled");
-        Quaternion start = transform.rotation;
-        Quaternion end = Quaternion.Euler(0f, transform.eulerAngles.y - 180f, 0f);
-        transform.rotation = Quaternion.Slerp(start, end, spinTime);
+        startRot = mesh.transform.localRotation;
+        endRot = startRot * Quaternion.Euler(0f, -180f, 0f);
+        spinTime = 0f;
+        isTurning = true;
         //Hide aiming UI here if needed
     }
 
