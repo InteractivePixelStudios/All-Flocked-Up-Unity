@@ -15,11 +15,15 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask nestLayer;
     public LayerMask shopLayer;
     public LayerMask wearableLayer;
+    public LayerMask perchLayer;
     public QuestLog questLog; // assign in Inspector
     public UI_CanvasController canvasController;
     public bool gamePaused;
     [SerializeField] private GameObject attachPoint;
     private bool isWingventoryOpen;
+    public PlayerPerchSystem perchComp;
+    public I_Perchable currentPerchPoint;
+    bool perchInteracted;
 
     private PlayerInput playerInput;
     private InputAction interactAction;
@@ -40,6 +44,11 @@ public class PlayerInteraction : MonoBehaviour
     {
         if (playerInput.currentActionMap == playerInput.actions.FindActionMap("UI") &&!uiOn) { uiOn = true; InitInputs(); Debug.Log("REINIT"); }
         else return;
+    }
+
+    public bool ReturnInteractPerformed()
+    {
+        return interactAction.inProgress;
     }
     void InitInputs()
     {
@@ -203,7 +212,39 @@ public class PlayerInteraction : MonoBehaviour
                 var questNPC = lookHit.collider.GetComponentInParent<IQuestInteraction>();
                 questNPC?.LookAtNPC();
             }
+
+
+        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, perchLayer))
+        {
+            Debug.Log("PerchSeen");
+            currentPerchPoint = hit.collider.GetComponentInParent<I_Perchable>();
+            Debug.Log(currentPerchPoint);
+            perchComp.isReady = true;
+            perchInteracted = true;
+            switch (currentPerchPoint)
+            {
+                case PerchableObject_Tree:
+                    Debug.Log("Ima Tree");
+                    var tree = currentPerchPoint as PerchableObject_Tree;
+                    tree.isPerching = true;
+                    currentPerchPoint.StartPerch();
+                    var check = hit.collider.CompareTag("HideSpot");
+                    if (check)
+                    {
+                        tree.isHiding = true;
+                    }
+                    break;
+                case PerchableObject_Bush:
+                    perchComp.Perch(currentPerchPoint);
+                    break;
+                case PerchableObject_General:
+                    perchComp.Perch(currentPerchPoint);
+                    break;
+            }
+
         }
+        else { perchComp.isReady = false; perchInteracted = false; }
+    }
 
         void OpenQuestLog(InputAction.CallbackContext ctx)
         {

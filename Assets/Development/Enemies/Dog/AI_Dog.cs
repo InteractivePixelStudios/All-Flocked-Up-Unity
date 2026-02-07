@@ -204,6 +204,9 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
         var spawnedCollider = biteColliderParent.AddComponent<SphereCollider>();
         var comp = spawnedCollider.AddComponent<KickComponent>();
         comp.damage = 1;
+        spawnedCollider.includeLayers = LayerMask.GetMask("Player");
+        spawnedCollider.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        spawnedCollider.isTrigger = true;
         //animator.SetTrigger("isBiting");
         biteCooldown = 3f;
         await Task.Delay(3000);

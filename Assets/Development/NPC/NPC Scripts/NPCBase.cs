@@ -87,7 +87,10 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         navAgentComponent.SetDestination(targetLocation.position);
     }
 
+    public void HitReact()
+    {
 
+    }
 
 
 }

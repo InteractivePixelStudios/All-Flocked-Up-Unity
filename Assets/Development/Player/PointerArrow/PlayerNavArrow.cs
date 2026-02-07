@@ -29,16 +29,17 @@ public class PlayerNavArrow : MonoBehaviour
         return destination;
     }
 
-    public void EnablePointerArrow()
+    public void EnablePointerArrow(GameObject destination)
     {
         isEnabled = true;
-        SpawnArrow();
+        SpawnArrow(destination);
     }
 
-    private void SpawnArrow()
+    private void SpawnArrow(GameObject destination)
     {
         spawnedArrow = Instantiate(arrowPrefab, arrowSpawnPoint.transform.position,arrowSpawnPoint.transform.rotation);
         spawnedArrow.transform.SetParent(arrowSpawnPoint.transform,true);
+        SetDestination(destination);
     }
 
     void RotateArrow()

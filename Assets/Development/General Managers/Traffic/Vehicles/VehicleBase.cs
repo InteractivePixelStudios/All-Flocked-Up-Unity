@@ -93,7 +93,7 @@ public class VehicleBase :MonoBehaviour
         //Debug.Log("Stopping");
     }
 
-    protected virtual void TriggerCollisions()
+    public virtual void TriggerCollisions()
     {
         //StopVehicle();
         HonkHorn();

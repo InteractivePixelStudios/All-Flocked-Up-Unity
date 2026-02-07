@@ -83,13 +83,17 @@ public class CPURacer : MonoBehaviour
         raceBase = FindFirstObjectByType<RaceBase>();
         SetRacerStats();
         GetCheckpoints();
-        isMoving = true;
+        if (raceBase.countdownComplete)
+        {
+            isMoving = true;
+        }else isMoving = false;
 
 
     }
     //raycasts for groundcheck and obstacle detection... if has targetlocation and isMoving then it moves
     public void Update()
     {
+        if(!raceBase.countdownComplete) { return; }
         if (wantsToFly)
         {
             RacerFly();
@@ -333,6 +337,7 @@ public class CPURacer : MonoBehaviour
     public void StartMoving()
     {
         isMoving = true;
+        Debug.Log("RacerMOVE");
     }
 
     public void ToggleNavCompOn()
