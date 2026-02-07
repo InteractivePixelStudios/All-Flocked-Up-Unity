@@ -4,56 +4,36 @@ using UnityEngine.InputSystem;
 
 public class PlayerPerchSystem : MonoBehaviour
 {
-    [SerializeField] private LayerMask perchLayer;
-    [SerializeField] private I_Perchable currentPerchPoint;
+    public I_Perchable currentPerchPoint;
     [SerializeField] private IconToggle icon;
-    [SerializeField] private bool isReady;
+    public bool isReady;
+    bool isPerching;
     [SerializeField] private float checkDistance = 5f;
+    public bool moveLeft;
+    public bool moveRight;
+    float x;
 
     PlayerInput playerInput;
-    InputAction interact;
+    InputAction moveAction;
 
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
-        interact = playerInput.actions.FindAction("Interact");
-        interact.performed+= Perch;
+        moveAction = playerInput.actions.FindAction("Move");
+
     }
 
 
     void Update()
     {
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, checkDistance, perchLayer))
-        {
-            hit.collider.TryGetComponent<I_Perchable>(out currentPerchPoint);
-            switch (currentPerchPoint)
-            {
-                case PerchableObject_Tree:
-                    isReady = true;
-                    var check = hit.collider.CompareTag("HideSpot");
-                    if (check)
-                    {
-                      var tree =currentPerchPoint as PerchableObject_Tree;
-                        tree.isHiding = true;
-                    }
-                    break;
-                case PerchableObject_Bush:
-                    isReady = true;
-                    break;
-                case PerchableObject_General:
-                    isReady = true;
-                    break;
-            }
+        if (isPerching && x < 0f) { currentPerchPoint.MovePosition(x); }
 
-        }
-        else {  isReady = false; }
     }
 
-    private void Perch(InputAction.CallbackContext ctx)
+    public void Perch(I_Perchable currentPerchPoint)
     {
-        if (isReady )
+        if (isReady)
         {
             InteractWithPerch(currentPerchPoint);
             Debug.Log("InteractWithPerch");

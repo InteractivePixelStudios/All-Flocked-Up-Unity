@@ -410,7 +410,12 @@ public class UI_CanvasController : MonoBehaviour
 
     public void OpenCountdownCanvas()
     {
-        activeCountdownInstance = Instantiate(raceCountdownCanvas);
+        if (activeCountdownInstance == null)
+        {
+            activeCountdownInstance = Instantiate(raceCountdownCanvas);
+            Debug.Log("Countdown");
+        }
+        else return;
     }
 
     public void CollectRaceStandings(GameObject racer, float time)

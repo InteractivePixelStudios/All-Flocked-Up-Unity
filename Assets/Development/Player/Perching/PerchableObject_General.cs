@@ -6,6 +6,7 @@ public class PerchableObject_General : MonoBehaviour, I_Perchable
     [SerializeField] private bool isPerching;
     [SerializeField] private GameObject perchPoint;
     [SerializeField] private GameObject placementMesh;
+    bool jumpCheck => playerRef.GetComponent<PlayerGroundMovement>().GetIsFlying();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,7 +18,7 @@ public class PerchableObject_General : MonoBehaviour, I_Perchable
     {
         if (isPerching)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (jumpCheck)
             {
                 StopPerch();
                 playerRef.GetComponent<Rigidbody>().linearVelocity = new Vector3(1, 1, 0);
@@ -43,7 +44,7 @@ public class PerchableObject_General : MonoBehaviour, I_Perchable
         playerRef.transform.position = perchPoint.transform.position;
     }
 
-    public void MovePosition()
+    public void MovePosition(float x)
     {
         //not needed for General Perching... maybe use later?
     }

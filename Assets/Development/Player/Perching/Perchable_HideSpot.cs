@@ -16,7 +16,7 @@ public class Perchable_HideSpot : MonoBehaviour
     void Update()
     {
         treeRef.isHiding = readyToHide;
-        if(readyToHide && Input.GetKeyUp(KeyCode.E))
+        if(readyToHide && playerRef.GetComponent<PlayerInteraction>().ReturnInteractPerformed())
         {
             treeRef.StartPerch();
         }
