@@ -32,6 +32,7 @@ public class PerchableObject_General : MonoBehaviour, I_Perchable
     {
         isPerching = true;
         playerRef.transform.position = perchPoint.transform.position;
+        playerRef.GetComponentInChildren<IconToggle>().HideIcon();
     }
 
     public void StopPerch()
@@ -58,6 +59,7 @@ public class PerchableObject_General : MonoBehaviour, I_Perchable
                 playerRef = other.gameObject;
                 StartPerch();
             }
+            playerRef.GetComponentInChildren<IconToggle>().ShowIcon();
         }
     }
 
@@ -69,6 +71,7 @@ public class PerchableObject_General : MonoBehaviour, I_Perchable
             {
                 playerRef = null;
             }
+            playerRef.GetComponentInChildren<IconToggle>().HideIcon();
         }
     }
 }

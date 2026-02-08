@@ -30,6 +30,7 @@ public class PerchableObject_Bush : MonoBehaviour, I_Perchable
     {
         isPerching = true;
         playerRef.transform.position = transform.position - offset;
+        playerRef.GetComponentInChildren<IconToggle>().HideIcon();
     }
 
     public void StopPerch()
@@ -54,7 +55,7 @@ public class PerchableObject_Bush : MonoBehaviour, I_Perchable
             if(playerRef == null)
             {
                 playerRef = other.gameObject;
-                icon.ShowIcon();
+                playerRef.GetComponentInChildren<IconToggle>().ShowIcon();
             }
         }
     }
@@ -66,7 +67,7 @@ public class PerchableObject_Bush : MonoBehaviour, I_Perchable
             if (playerRef != null)
             {
                 playerRef = null;
-                icon.HideIcon();
+                playerRef.GetComponentInChildren<IconToggle>().HideIcon();
             }
         }
     }
