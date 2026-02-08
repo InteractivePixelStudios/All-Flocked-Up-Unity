@@ -39,6 +39,7 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
     public void StartPerch()
     {
         currentIndex = 0;
+        playerRef.GetComponentInChildren<IconToggle>().HideIcon();
         if (isHiding || branchPerchSpots.Length ==0)
         {
             playerRef.transform.position = topHideSpots[currentIndex].transform.position + playerOffset;
@@ -103,7 +104,7 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
                 perchComp =  playerRef.GetComponent<PlayerPerchSystem>();
                
             }
-            icon.ShowIcon();
+            playerRef.GetComponentInChildren<IconToggle>().ShowIcon();
         }
     }
 
@@ -125,6 +126,7 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
     {
         if (perchSphere.gameObject.CompareTag("Player"))
         {
+            playerRef.GetComponentInChildren<IconToggle>().HideIcon();
             if (playerRef != null)
             {
                 playerRef = null;
@@ -132,7 +134,6 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
                 
 
             }
-            icon.HideIcon();
         }
     }
 }

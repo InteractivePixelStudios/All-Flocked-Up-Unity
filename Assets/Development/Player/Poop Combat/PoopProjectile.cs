@@ -20,6 +20,7 @@ public class PoopProjectile : MonoBehaviour
     private float lifeTimer;
 
     [SerializeField] private PoopSplatDecal decalPrefab;
+    [SerializeField] private ParticleSystem splashParticle;
 
 
     private void Awake()
@@ -65,6 +66,7 @@ public class PoopProjectile : MonoBehaviour
         else return;
     }
 
+
     private void Update()
     {
 
@@ -76,6 +78,7 @@ public class PoopProjectile : MonoBehaviour
         var hit = collision.GetContact(0).normal;
         Debug.Log(hit);
         SpawnPoopDecal(transform.position,hit);
+        Instantiate(splashParticle,transform.position,Quaternion.identity* Quaternion.Euler(-90,0,0));
         //source?.HandleHitEffects(poopType, collision.contacts[0].point); // Trigger hit effects
 
         if (collision.gameObject.CompareTag("Enemy"))
