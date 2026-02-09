@@ -616,6 +616,7 @@ public class UI_CanvasController : MonoBehaviour
         {
             HidePlayerCursor();
             Destroy(activeLanguageCanvas.gameObject);
+            
         }
 
     }
