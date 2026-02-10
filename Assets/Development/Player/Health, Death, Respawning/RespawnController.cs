@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RespawnController : MonoBehaviour
 {
@@ -9,8 +10,13 @@ public class RespawnController : MonoBehaviour
     [SerializeField] private RagdollController ragdoll;
 
     [Header("Respawn Nest Configuration")]
-    [SerializeField] private GameObject[] respawnNests; // Array of respawn nests
+    [SerializeField] private NestBase[] respawnNests; // Array of respawn nests
     [SerializeField] private int currentNestIndex = 0; // Index of the current respawn nest
+
+    [Header("Buttons")]
+    [SerializeField] private Button nextButton;
+    [SerializeField] private Button prevButton;
+    [SerializeField] private Button respawnButton;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -20,21 +26,17 @@ public class RespawnController : MonoBehaviour
         {
             player = GameObject.FindGameObjectWithTag("Player"); // Find the player GameObject by tag if not assigned
         }
-        respawnNests = GameObject.FindGameObjectsWithTag("Nest");
+        respawnNests = FindObjectsByType<NestBase>(FindObjectsSortMode.None);
+        nextButton.onClick.AddListener(NextNest);
+        prevButton.onClick.AddListener(PreviousNest);
+        respawnButton.onClick.AddListener(RespawnPlayer);
         NextNest(); // Initialize to the first nest
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetAxis("Horizontal") > 0.5f)
-        {
-            NextNest();
-        }
-        else if (Input.GetAxis("Horizontal") < -0.5f)
-        {
-            PreviousNest();
-        }
+
     }
 
     public void NextNest()

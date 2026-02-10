@@ -8,7 +8,8 @@ public class IconToggle : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        iconRenderer = GetComponentInChildren<SpriteRenderer>();
+       
+        iconRenderer = GetComponent<SpriteRenderer>();
         iconRenderer.sprite = icon;
         HideIcon();
 
