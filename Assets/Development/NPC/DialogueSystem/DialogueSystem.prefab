@@ -48,19 +48,35 @@ MonoBehaviour:
   startDialogueIndex: 1
   currentDialogueLineID: 
   currentDialogueName: 
-  currentDialogueText: 
+  currentDialogueText:
+    m_TableReference:
+      m_TableCollectionName: GUID:16bec568f3680914b892c4018b766c2f
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   currentDialogueImage: {fileID: 0}
   currentContinueStatus: 
   currentBranchID: 
   currentResponseOptions: []
   responseReturnID: 
   canvasController: {fileID: 0}
-  DIALOGUEFILENAME: DialogueSpreadsheet
+  DIALOGUEFILENAME: DialogueSpreadsheet.csv
   dialogueList: []
   currentDialogueLineData:
     dialogueID: 
     dialogueSpeaker: 
-    dialogueText: 
+    dialogueText:
+      m_TableReference:
+        m_TableCollectionName: GUID:16bec568f3680914b892c4018b766c2f
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     dialogueImage: 
     dialogueContinue: 
     nextID: 
@@ -105,3 +121,6 @@ MonoBehaviour:
   retriggerDialogueLineID: 
   isRetrigger: 0
   currentTextSpeed: 0
+  references:
+    version: 2
+    RefIds: []

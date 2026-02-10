@@ -16,9 +16,10 @@ public class Perchable_HideSpot : MonoBehaviour
     void Update()
     {
         treeRef.isHiding = readyToHide;
-        if(readyToHide && Input.GetKeyUp(KeyCode.E))
+        if(readyToHide && playerRef.GetComponent<PlayerInteraction>().ReturnInteractPerformed())
         {
             treeRef.StartPerch();
+            playerRef.GetComponentInChildren<IconToggle>().HideIcon();
         }
     }
     void OnCollisionEnter(Collision hideColliders)
@@ -27,6 +28,7 @@ public class Perchable_HideSpot : MonoBehaviour
         {
             playerRef = hideColliders.gameObject;
             readyToHide = true;
+            playerRef.GetComponentInChildren<IconToggle>().ShowIcon();
         }
     }
 
