@@ -106,10 +106,11 @@ public class UI_CanvasController : MonoBehaviour
         {
             enemies.Add(agent);  
         }
-
-        SpawnMainMenu();
-        OpenLanguageSelect(); //remove after testing
+        HidePlayerCursor();
+        //SpawnMainMenu();
+        //OpenLanguageSelect(); //remove after testing
     }
+
 
     public void FreezeEnemies()
     {
@@ -157,7 +158,7 @@ public class UI_CanvasController : MonoBehaviour
     public void ShowPlayerCursor()
     {
         SetUIMap();
-        if (Mouse.current != null &&  Mouse.current.wasUpdatedThisFrame)
+        if (Mouse.current != null && Mouse.current.wasUpdatedThisFrame)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
@@ -458,6 +459,7 @@ public class UI_CanvasController : MonoBehaviour
     {
         activeNestInstance = Instantiate(nestMenuCanvas);
         activeNestInstance.canvasController = this; 
+        activeNestInstance.playerStats = player.GetComponent<PlayerCounter>();    
         ShowPlayerCursor();
     }
 
@@ -518,27 +520,6 @@ public class UI_CanvasController : MonoBehaviour
 
     }
 
-    public void SpawnMainMenu()
-    {
-        if (activeMainMenu == null  && SceneManager.GetActiveScene().name == "Cootorial Island")
-        {
-            activeMainMenu = Instantiate(mainMenuCanvas,mainMenuSpawnPoint);
-            ShowPlayerCursor();
-            Debug.Log("Spawned");
-        }
-        Debug.Log("Called");
-    }
-
-    public void DestroyMainMenu()
-    {
-        if(activeMainMenu != null)
-        {
-            Destroy(activeMainMenu.gameObject);
-            activeMainMenu = null;
-            HidePlayerCursor();
-           // Object.FindFirstObjectByType<PlayerSkinSelector>().StartSkinSelector();
-        }
-    }
 
     public void OpenBugReporter()
     {
@@ -624,7 +605,10 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenRespawn()
     {
         activeRespawnCanvas = Instantiate(respawnCanvasPrefab);
-        ShowPlayerCursor() ;
+        if(activeRespawnCanvas != null)
+        {
+            ShowPlayerCursor();
+        }
     }
 
     public void CloseRespawn()
