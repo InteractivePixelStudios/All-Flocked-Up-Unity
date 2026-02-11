@@ -188,8 +188,8 @@ public class PlayerFlightMovement : MonoBehaviour
                 gliding = false;
             isSlowFlap = true;
             Vector3 tempVel = playerBody.linearVelocity;
-            Debug.Log(tempVel);
-            playerBody.linearVelocity = new Vector3(Mathf.Clamp(tempVel.x - (stallDownSpeed * Time.deltaTime), 0, 10000), tempVel.y, Mathf.Clamp(tempVel.z - (stallDownSpeed * Time.deltaTime), 0, 10000));
+            
+            playerBody.linearVelocity -= transform.forward * stallDownSpeed * Time.deltaTime;
 
             Vector3 currentAngle = meshTransform.eulerAngles + new Vector3(forwardMovement, 0, 0) * tiltSpeed * Time.deltaTime;
 
