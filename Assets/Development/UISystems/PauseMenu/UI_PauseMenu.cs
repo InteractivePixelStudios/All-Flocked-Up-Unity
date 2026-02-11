@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,40 +17,19 @@ public class UI_PauseMenu : MonoBehaviour
     [SerializeField] protected GameObject saveWindowPrefab;
     [SerializeField] protected GameObject currentSaveWindow;
     [SerializeField] private RectTransform scrollPanel;
-    [SerializeField] protected Vector3 scrollStartPosition;
 
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        settingsCanvas.SetActive(false);
+
         controlsCanvas.SetActive(false);
         continueButton.onClick.AddListener(Unpause);
         settingsButton.onClick.AddListener(OnSettingsOpen);
         controlsButton.onClick.AddListener(OnControlsOpen);
         saveQuitButton.onClick.AddListener(OnSaveAndQuit);
-        EventSystem.current.SetSelectedGameObject(settingsButton.gameObject);
-        scrollStartPosition = scrollPanel.transform.position;
-    }
-
-    void ScrollCanvasUp()
-    {
-
-        Vector2 pos = scrollPanel.anchoredPosition;
-        pos.y = Mathf.Lerp(pos.y, scrollPanel.anchoredPosition.y + 2000f, Time.unscaledDeltaTime * 1.5f);
-        scrollPanel.anchoredPosition = pos;
-
-    }
-
-    void ScrollCanvasDown()
-    {
-        Vector2 pos = scrollPanel.anchoredPosition;
-        pos.y = Mathf.Lerp(pos.y, scrollStartPosition.y, Time.unscaledDeltaTime * 1.5f);
-        scrollPanel.anchoredPosition = pos;
-
-
-
+        EventSystem.current.SetSelectedGameObject(continueButton.gameObject);
 
     }
     public void Unpause()
@@ -64,8 +44,8 @@ public class UI_PauseMenu : MonoBehaviour
         if (!settingsOpen)
         {
             settingsOpen = true;
-            ScrollCanvasUp();
-            settingsCanvas.SetActive(true);
+            //mainCanvas.SetActive(false);
+            //settingsCanvas.SetActive(true);
             settingsCanvas.GetComponent<UI_SettingsMenu>().SetFirstSettingsButton();
             Debug.Log("Open");
 
@@ -73,9 +53,10 @@ public class UI_PauseMenu : MonoBehaviour
         else
         {
             settingsOpen = false;
-            ScrollCanvasDown();
-            settingsCanvas.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(settingsButton.gameObject);
+            //mainCanvas.SetActive(true);
+            //settingsCanvas.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(continueButton.gameObject);
+
         }
     }
 

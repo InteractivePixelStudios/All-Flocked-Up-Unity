@@ -19,6 +19,16 @@ public class PlayerSkinSelector : MonoBehaviour
     [SerializeField] private GameObject canvasPrefab;
     [SerializeField] private GameObject spawnedCanvas;
 
+    public Material GetCurrentMaterial()
+    {
+        return currentMertial;
+    }
+
+    public void SetLoadedMaterial(Material loaded)
+    {
+        currentMertial = loaded;
+    }
+
     private void Start()
     {
 
