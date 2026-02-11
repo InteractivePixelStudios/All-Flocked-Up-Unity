@@ -50,16 +50,17 @@ public class UI_MainMenu : MonoBehaviour
         playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
         playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
         //cameraRef.enabled = false;
-        EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+        //EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+        canvasController.ShowPlayerCursor();
     }
 
     private void Update()
     {
-        if (menuOpen)
-        {
-            cameraRef.transform.forward = playerSpawnPoint.transform.forward;
-        }
-        else return;
+        //if (menuOpen)
+        //{
+        //    cameraRef.transform.forward = playerSpawnPoint.transform.forward;
+        //}
+        //else return;
     }
 
     protected void OnSettingsOpen()
@@ -106,7 +107,9 @@ public class UI_MainMenu : MonoBehaviour
 
         playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
         playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
-        canvasController.DestroyMainMenu();
+        Debug.Log("Loading Scene");
+        canvasController.HidePlayerCursor();
+        SceneManager.LoadScene("TutorialIsland");
         //cameraRef.enabled = true;
 
     }

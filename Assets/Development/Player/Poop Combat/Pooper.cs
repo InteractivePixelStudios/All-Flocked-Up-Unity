@@ -8,6 +8,7 @@ public class Pooper : MonoBehaviour
 {
     [SerializeField] private PoopSystem poopSystem;
     [SerializeField] private PoopFunction poopFunction;
+    public PoopType poopType;
     [SerializeField] private Camera cam;
     [SerializeField] private LayerMask poopableLayer;
     [SerializeField] private float maxRange = 20f; //Adjust as needed for gameplay
@@ -65,6 +66,7 @@ public class Pooper : MonoBehaviour
             aimAction.canceled += OnAimCanceled;
             poopAction.performed += OnPoopPerformed;
         }
+        poopType = poopFunction.currentPoopType;
     }
 
     private void Update()
@@ -139,6 +141,7 @@ public class Pooper : MonoBehaviour
 
                 //Get player velocity from pigeon rigidbody
                 Vector3 playerVelocity = pigeon.linearVelocity;
+                poopFunction.currentPoopType = poopType;
                 poopFunction.FirePoop(target, playerVelocity);
             }
         }else

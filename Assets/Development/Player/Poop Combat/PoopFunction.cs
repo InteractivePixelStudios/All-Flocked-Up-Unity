@@ -11,7 +11,7 @@ public class PoopFunction : MonoBehaviour
     private Audio_Player audioPlayer;
 
     [Header("Poop Settings")]
-    [SerializeField] private PoopType currentPoopType;
+    public PoopType currentPoopType;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private PoopProjectile projectilePrefab;
     [SerializeField] private int poolSize = 10; //adjust as needed
