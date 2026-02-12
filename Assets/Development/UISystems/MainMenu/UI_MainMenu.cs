@@ -134,7 +134,9 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void LoadGame()
     {
+        mainCanvas.SetActive(false);
         GameObject canvasObj = new GameObject("SaveWindowCanvas");
+        canvasObj.transform.SetParent(transform, false);
         Canvas canvas = canvasObj.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvasObj.AddComponent<CanvasScaler>();
@@ -144,8 +146,12 @@ public class UI_MainMenu : MonoBehaviour
         var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
         comp.isSaving = false;
 
-        playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
-        playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
+    }
+
+    public void CloseSaveWindow()
+    {
+        Destroy(currentSaveWindow);
+        mainCanvas.SetActive(true);
     }
 
     protected void QuitGame()

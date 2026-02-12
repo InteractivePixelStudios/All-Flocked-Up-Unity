@@ -106,7 +106,12 @@ public class UI_CanvasController : MonoBehaviour
         {
             enemies.Add(agent);  
         }
-        HidePlayerCursor();
+        if(SceneManager.GetActiveScene().name != "MainMenu")
+        {
+            ShowPlayerCursor();
+            HidePlayerCursor();
+        }
+
         //SpawnMainMenu();
         //OpenLanguageSelect(); //remove after testing
     }
@@ -595,7 +600,6 @@ public class UI_CanvasController : MonoBehaviour
     {
         if(activeLanguageCanvas != null)
         {
-            HidePlayerCursor();
             Destroy(activeLanguageCanvas.gameObject);
             
         }
