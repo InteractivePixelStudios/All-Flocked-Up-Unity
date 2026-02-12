@@ -2,6 +2,8 @@ using System.Collections;
 using System.Net;
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.PlayerLoop;
 enum E_ConsumableType {Health, Stamina,Poop,Custom }
 enum E_ReactionType { Health, Stamina,Poop,Speed,Flight,FlySpeed,Custom }
 public class ConsumableBase : MonoBehaviour
@@ -18,10 +20,13 @@ public class ConsumableBase : MonoBehaviour
     [SerializeField] private int positiveModifier;
     [SerializeField] private int negativeEffectValue;
     [SerializeField] private int negativeModifier;
+    [SerializeField] private List<PoopType> poopTypeList = new();
+    [SerializeField] private PoopType poopTypeToGive;
     //[Header("Health")]
     //[SerializeField] private bool isHealth;
     [SerializeField] PlayerHealth playerHealth;
     [SerializeField] StaminaSystem playerStamina;
+    [SerializeField] private Pooper playerPoop;
     //[SerializeField] private int healthToRegen;
     //[SerializeField] private int healthToLose;
     //[Header("Stamina")]
@@ -50,6 +55,8 @@ public class ConsumableBase : MonoBehaviour
     {
         consumableMesh = GetComponent<MeshFilter>().sharedMesh;
         consumableParticles = GetComponent<ParticleSystem>();
+        playerPoop = FindFirstObjectByType<Pooper>();
+        playerRef = playerPoop.gameObject;
     }
 
     //trigger checks if player and sets the playerRef, then calls effect and destroy
@@ -57,7 +64,7 @@ public class ConsumableBase : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            playerRef = other.gameObject;
+            //playerRef = other.gameObject;
             ConsumableEffect(consumableType);
             Destroy(gameObject);
         }
@@ -166,12 +173,24 @@ public class ConsumableBase : MonoBehaviour
     //poop effect
     private void PoopEffect(int poop,int poopMod, bool canPoop)
     {
-        if (poopMod > 0)
+        playerPoop = playerRef.GetComponent<Pooper>();
+        if (playerPoop != null)
         {
-
+            foreach( var type in poopTypeList )
+            {
+                if(type == poopTypeToGive)
+                {
+                    playerPoop.poopType = poopTypeToGive;
+                    Debug.Log("Poop Type = " + type);
+                }
+            }
         }
-        else
-            Debug.Log("");
+        //if (poopMod > 0)
+        //{
+
+        //}
+        //else
+        //    Debug.Log("");
     }
     //custom effect
     private void CustomEffect(int health, int healthMod,  bool canFly, bool canPoop)

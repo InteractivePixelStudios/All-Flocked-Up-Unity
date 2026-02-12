@@ -13,6 +13,7 @@ public class UI_SaveWindow : MonoBehaviour
     [SerializeField] private GameObject confirmWindow;
     [SerializeField] private Button confirmButton;
     [SerializeField] private Button cancelButton;
+    [SerializeField] private Button closeWindowButton;
 
     [SerializeField] private GameObject saveSlotPrefab;
     private UI_SaveSlot pendingSlot;
@@ -20,11 +21,13 @@ public class UI_SaveWindow : MonoBehaviour
     public bool isSaving = true;
     public bool isQuitting = false;
     public string savePath;
+    [SerializeField] private GameObject warningPanel;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         confirmButton.onClick.AddListener(CloseConfirmWindow);
         cancelButton.onClick.AddListener(CancelConfirmWindow);
+        closeWindowButton.onClick.AddListener(CloseWindow);
         InitSaveBox();
     }
 
@@ -74,6 +77,20 @@ public class UI_SaveWindow : MonoBehaviour
     {
         confirmWindow.SetActive(false);
     }
+
+    public async void ShowWarning()
+    {
+        warningPanel.SetActive(true);
+        await Task.Delay(2000);
+        warningPanel.SetActive(false);
+    }
+
+    void CloseWindow()
+    {
+        var menu = FindFirstObjectByType<UI_MainMenu>();
+        menu.CloseSaveWindow();
+    }
+    
 
     public async void DestroyWindow()
     {

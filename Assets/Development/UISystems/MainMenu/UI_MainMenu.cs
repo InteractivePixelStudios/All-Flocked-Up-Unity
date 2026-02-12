@@ -50,16 +50,17 @@ public class UI_MainMenu : MonoBehaviour
         playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
         playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
         //cameraRef.enabled = false;
-        EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+        //EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+        canvasController.ShowPlayerCursor();
     }
 
     private void Update()
     {
-        if (menuOpen)
-        {
-            cameraRef.transform.forward = playerSpawnPoint.transform.forward;
-        }
-        else return;
+        //if (menuOpen)
+        //{
+        //    cameraRef.transform.forward = playerSpawnPoint.transform.forward;
+        //}
+        //else return;
     }
 
     protected void OnSettingsOpen()
@@ -106,7 +107,9 @@ public class UI_MainMenu : MonoBehaviour
 
         playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
         playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
-        canvasController.DestroyMainMenu();
+        Debug.Log("Loading Scene");
+        canvasController.HidePlayerCursor();
+        SceneManager.LoadScene("TutorialIsland");
         //cameraRef.enabled = true;
 
     }
@@ -131,7 +134,9 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void LoadGame()
     {
+        mainCanvas.SetActive(false);
         GameObject canvasObj = new GameObject("SaveWindowCanvas");
+        canvasObj.transform.SetParent(transform, false);
         Canvas canvas = canvasObj.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvasObj.AddComponent<CanvasScaler>();
@@ -141,8 +146,12 @@ public class UI_MainMenu : MonoBehaviour
         var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
         comp.isSaving = false;
 
-        playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
-        playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
+    }
+
+    public void CloseSaveWindow()
+    {
+        Destroy(currentSaveWindow);
+        mainCanvas.SetActive(true);
     }
 
     protected void QuitGame()

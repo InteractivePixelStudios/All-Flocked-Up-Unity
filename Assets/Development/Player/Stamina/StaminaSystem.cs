@@ -10,6 +10,11 @@ public class StaminaSystem : MonoBehaviour
 
     bool regenStamina = false;
 
+    public void SetMaxStamina(float stamina)
+    {
+
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,6 +33,10 @@ public class StaminaSystem : MonoBehaviour
                 regenStamina = false;
             }
         }
+    }
+    public void AddMaxStamina(float value)
+    {
+        MaxStamina += value;
     }
 
     public bool UseStamina(float amount)

@@ -17,6 +17,16 @@ public class PoopSystem : MonoBehaviour
 
     public bool CanPoop => cooldownTimer <= 0f && currentPoop > 0;
 
+    public int GetMaxPoop()
+    {
+        return maxPoop;
+    }
+
+    public void SetMaxPoop(int poop)
+    {
+        maxPoop = poop;
+    }
+
     private void Awake()
     {
         currentPoop = maxPoop;
@@ -37,6 +47,11 @@ public class PoopSystem : MonoBehaviour
             updateItemsTimer -= Time.deltaTime;
         }
         else GetCurrentAccessories() ;
+    }
+
+    public void AddMaxPoop(int value)
+    {
+        maxPoop += value;
     }
 
     public void GainPoop(int poop)
