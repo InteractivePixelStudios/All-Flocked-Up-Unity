@@ -63,9 +63,11 @@ MonoBehaviour:
   saveData:
     version: 
     playerName: 
+    sceneName: 
     level: 0
     health: 0
     position: {x: 0, y: 0, z: 0}
+    rotation: {x: 0, y: 0, z: 0, w: 0}
     trinkets: 0
     poop: 0
     stamina: 0
@@ -73,6 +75,7 @@ MonoBehaviour:
     completedQuests: []
     completedRaces: []
     timeOfDay: 0
+    playerSkin: {fileID: 0}
   saveImage: {fileID: 3045955586369477804}
   playerNameText: {fileID: 2764856053127375684}
   lastSaveText: {fileID: 1661767944203068640}
@@ -183,10 +186,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: No translation found for 'PlayerNameSave' in AFU_StringTable
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d31ec7b42a11148498b4d4e09c144c02, type: 2}
+  m_sharedMaterial: {fileID: -1391874764785519141, guid: d31ec7b42a11148498b4d4e09c144c02, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -499,9 +502,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_HighlightedColor: {r: 0.74203235, g: 0.9528302, b: 0.5438323, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0.7411765, g: 0.95294124, b: 0.54509807, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -662,10 +665,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: No translation found for 'LastSaveText' in AFU_StringTable
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d31ec7b42a11148498b4d4e09c144c02, type: 2}
+  m_sharedMaterial: {fileID: -1391874764785519141, guid: d31ec7b42a11148498b4d4e09c144c02, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -89,6 +89,7 @@ public class UI_SaveSlot : MonoBehaviour
             else
             {
                 Debug.LogWarning($"No save found for slot {slotInfo.slotIndex}");
+                saveWindow.ShowWarning();
             }
         }
     }

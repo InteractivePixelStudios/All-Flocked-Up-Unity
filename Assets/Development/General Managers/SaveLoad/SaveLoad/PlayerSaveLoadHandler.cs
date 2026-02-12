@@ -84,6 +84,8 @@ public class PlayerSaveLoadHandler : MonoBehaviour
 
     public void ApplyLoadedData()
     {
-
+        LoadPlayerData();
+        player.GetComponent<PlayerGroundMovement>().enabled = true;
+        player.GetComponent<PlayerFlightMovement>().enabled = true;
     }
 }
