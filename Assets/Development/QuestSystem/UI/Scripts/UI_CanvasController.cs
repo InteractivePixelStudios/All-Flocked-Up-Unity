@@ -106,7 +106,7 @@ public class UI_CanvasController : MonoBehaviour
         {
             enemies.Add(agent);  
         }
-        if(SceneManager.GetActiveScene().name != "MainMenu")
+        if (SceneManager.GetActiveScene().name != "MainMenu")
         {
             ShowPlayerCursor();
             HidePlayerCursor();
