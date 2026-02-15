@@ -1,6 +1,6 @@
 /* ======================================================================================== */
 /* FMOD Core API - C# wrapper.                                                              */
-/* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2025.                               */
+/* Copyright (c), Firelight Technologies Pty, Ltd. 2004-2026.                               */
 /*                                                                                          */
 /* For more detail visit:                                                                   */
 /* https://fmod.com/docs/2.03/api/core-api.html                                             */
@@ -19,9 +19,21 @@ namespace FMOD
     */
     public partial class VERSION
     {
-        public const int    number = 0x00020308;
+        public const int number = 0x00020312;
+
+        /*
+            Define FMOD_DEBUG or FMOD_LOGGING to select appropriate libraries
+        */
+#if FMOD_DEBUG
+        public const string suffix = "D";
+#elif FMOD_LOGGING || DEVELOPMENT_BUILD
+        public const string suffix = "L";
+#else
+        public const string suffix = "";
+#endif
+
 #if !UNITY_2021_3_OR_NEWER
-        public const string dll    = "fmod";
+        public const string dll = "fmod" + suffix;
 #endif
     }
 
@@ -233,6 +245,7 @@ namespace FMOD
         TYPE_FILE               = 0x00000200,
         TYPE_CODEC              = 0x00000400,
         TYPE_TRACE              = 0x00000800,
+        TYPE_VIRTUAL            = 0x00001000,
 
         DISPLAY_TIMESTAMPS      = 0x00010000,
         DISPLAY_LINENUMBERS     = 0x00020000,
@@ -437,7 +450,7 @@ namespace FMOD
 
     public enum OPENSTATE : int
     {
-        READY = 0,
+        READY,
         LOADING,
         ERROR,
         CONNECTING,
@@ -595,13 +608,14 @@ namespace FMOD
         SIDECHAIN,
         SEND,
         SEND_SIDECHAIN,
+        PREALLOCATED,
 
         MAX,
     }
 
     public enum TAGTYPE : int
     {
-        UNKNOWN = 0,
+        UNKNOWN,
         ID3V1,
         ID3V2,
         VORBISCOMMENT,
@@ -618,7 +632,7 @@ namespace FMOD
 
     public enum TAGDATATYPE : int
     {
-        BINARY = 0,
+        BINARY,
         INT,
         FLOAT,
         STRING,
@@ -1359,6 +1373,10 @@ namespace FMOD
         {
             return FMOD5_System_CreateDSPByType(this.handle, type, out dsp.handle);
         }
+        public RESULT createDSPConnection(DSPCONNECTION_TYPE type, out DSPConnection connection)
+        {
+            return FMOD5_System_CreateDSPConnection(this.handle, type, out connection.handle);
+        }
         public RESULT createChannelGroup(string name, out ChannelGroup channelgroup)
         {
             using (StringHelper.ThreadSafeEncoding encoder = StringHelper.GetFreeHelper())
@@ -1657,6 +1675,8 @@ namespace FMOD
         private static extern RESULT FMOD5_System_CreateDSP                 (IntPtr system, ref DSP_DESCRIPTION description, out IntPtr dsp);
         [DllImport(VERSION.dll)]
         private static extern RESULT FMOD5_System_CreateDSPByType           (IntPtr system, DSP_TYPE type, out IntPtr dsp);
+        [DllImport(VERSION.dll)]
+        private static extern RESULT FMOD5_System_CreateDSPConnection       (IntPtr system, DSPCONNECTION_TYPE type, out IntPtr connection);
         [DllImport(VERSION.dll)]
         private static extern RESULT FMOD5_System_CreateChannelGroup        (IntPtr system, byte[] name, out IntPtr channelgroup);
         [DllImport(VERSION.dll)]
@@ -3270,6 +3290,10 @@ namespace FMOD
         {
             return FMOD5_DSP_AddInput(this.handle, input.handle, out connection.handle, type);
         }
+        public RESULT addInputPreallocated(DSP input, DSPConnection connection)
+        {
+            return FMOD5_DSP_AddInput(this.handle, input.handle, out connection.handle, DSPCONNECTION_TYPE.PREALLOCATED);
+        }
         public RESULT disconnectFrom(DSP target, DSPConnection connection)
         {
             return FMOD5_DSP_DisconnectFrom(this.handle, target.handle, connection.handle);
@@ -3467,6 +3491,8 @@ namespace FMOD
         private static extern RESULT FMOD5_DSP_AddInput                  (IntPtr dsp, IntPtr input, IntPtr zero, DSPCONNECTION_TYPE type);
         [DllImport(VERSION.dll)]
         private static extern RESULT FMOD5_DSP_AddInput                  (IntPtr dsp, IntPtr input, out IntPtr connection, DSPCONNECTION_TYPE type);
+        [DllImport(VERSION.dll)]
+        private static extern RESULT FMOD5_DSP_AddInputPreallocated      (IntPtr dsp, IntPtr input, out IntPtr connection);
         [DllImport(VERSION.dll)]
         private static extern RESULT FMOD5_DSP_DisconnectFrom            (IntPtr dsp, IntPtr target, IntPtr connection);
         [DllImport(VERSION.dll)]
