@@ -48,8 +48,8 @@ public class UI_HudController : MonoBehaviour
         poopComp = playerRef.GetComponent<PoopSystem>();
         startHealth = healthComp.maxHealth;
         currentHealth = healthComp.currentHealth;
-        startStamina = staminaComp.GetCurrentStamina();
         currentStamina = staminaComp.GetCurrentStamina();
+        startStamina = staminaComp.GetMaxStamina() ;
         startPoop = poopComp.GetMaxPoop();
         currentPoop = poopComp.GetCurrentPoop();
         UpdateHealth();

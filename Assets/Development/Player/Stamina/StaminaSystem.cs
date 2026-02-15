@@ -15,6 +15,8 @@ public class StaminaSystem : MonoBehaviour
 
     }
 
+    public float GetMaxStamina() {  return MaxStamina; }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
