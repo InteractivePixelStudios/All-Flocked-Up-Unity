@@ -17,6 +17,11 @@ public class PoopSystem : MonoBehaviour
 
     public bool CanPoop => cooldownTimer <= 0f && currentPoop > 0;
 
+    public int GetCurrentPoop()
+    {
+        return currentPoop;
+    }
+
     public int GetMaxPoop()
     {
         return maxPoop;

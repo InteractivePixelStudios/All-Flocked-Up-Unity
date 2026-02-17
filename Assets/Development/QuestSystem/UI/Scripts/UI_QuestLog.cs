@@ -13,6 +13,7 @@ public class UI_QuestLog : MonoBehaviour
     [SerializeField] private QuestLog questLog;
     [SerializeField]private List<QuestRuntimeInstance> instanceList = new();
     [SerializeField] private UI_QuestEntry entryPrefab;
+    [SerializeField] private UI_SideQuestEntry sideEntryPrefab;
     [SerializeField] private UI_QuestLogEntryObjectives objectiveEntryPrefab;
 
 
@@ -23,7 +24,7 @@ public class UI_QuestLog : MonoBehaviour
 
     [Header("SideQuestBox")]
     [SerializeField] private ScrollRect sideQuestBox;
-    [SerializeField] private List<UI_QuestEntry> sideQuestButtons = new();
+    [SerializeField] private List<UI_SideQuestEntry> sideQuestButtons = new();
 
     [Header("QuestInfoPanel")]
     [SerializeField] private TextMeshProUGUI questNameText;
@@ -133,32 +134,32 @@ public class UI_QuestLog : MonoBehaviour
                 button.questName = tempQuestData.questName;
                 button.questID = tempQuestData.questID;
                 button.log = this;
-                AddToQuestBoxes(true, button);
+                AddToQuestBox(button);
             }else if(tempQuestData != null && !tempQuestData.isMainQuest)
             {
-                var button = Instantiate(entryPrefab);
+                var button = Instantiate(sideEntryPrefab);
                 sideQuestButtons.Add(button);
                 button.questName = tempQuestData.questName;
                 button.questID = tempQuestData.questID;
                 button.log = this;
-                AddToQuestBoxes(true, button);
+                AddToSideQuestBox(button);
             }
 
 
         }
     }
 
-    private void AddToQuestBoxes(bool isMain, UI_QuestEntry button)
+    private void AddToQuestBox( UI_QuestEntry button)
     {
-        if (isMain)
-        {
+
             button.transform.SetParent(mainQuestBox.transform, false);
-        }
-        else
-        {
-            button.transform.SetParent(sideQuestBox.transform, false);
-        }
+
         Debug.Log("Added To Box");
+    }
+
+    private void AddToSideQuestBox(UI_SideQuestEntry button)
+    {
+        button.transform.SetParent(sideQuestBox.transform, false);
     }
 
     public void CloseQuestLog()

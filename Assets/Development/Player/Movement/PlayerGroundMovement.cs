@@ -325,7 +325,7 @@ public class PlayerGroundMovement : MonoBehaviour
         {
             playerBody.AddForce(transform.right * (moveSpeed * Time.deltaTime * -mag.x * counterMovement));
         }
-        if (Mathf.Abs(mag.y) > threshold && Mathf.Abs(y) < 0.05f || (mag.y < -threshold && y > 0) || (mag.y > threshold && y < 0))
+        if (Mathf.Abs(mag.y) > threshold && Mathf.Abs(y) < 0.05f && Mathf.Abs(x) < 0.05f || (mag.y < threshold && y != 0))
         {
             playerBody.AddForce(transform.forward * (moveSpeed * Time.deltaTime * -mag.y * counterMovement));
         }
