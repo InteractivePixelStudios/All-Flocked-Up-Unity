@@ -31,22 +31,26 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]
     [SerializeField] protected Rigidbody rigidbodyComp;
+    [SerializeField] protected Enemy_AlertIcon icon;
     [SerializeField] protected Animator animator;
     [SerializeField] protected bool isHit;
     [SerializeField] protected bool isStopped;
     [SerializeField] protected bool isRetreating;
+    [SerializeField] protected bool canSeePlayer;
 
     private int currentPointIndex = 0;
     private enum EnemyState { Patrolling, Chasing, Swat, Pounce, Stop, Hit, Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
     public bool IsDead = false;
+    [SerializeField]bool isTutCat;
 
     void Start()
     {
         player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
         animator = GetComponent<Animator>();
+        icon = GetComponentInChildren<Enemy_AlertIcon>();
         FindWaypoints();
     }
 
@@ -54,6 +58,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
     {
         if (swatCooldown >= 0) swatCooldown -= Time.deltaTime;
         if (pounceCooldown >= 0) pounceCooldown -= Time.deltaTime;
+        if (canSeePlayer) { icon.gameObject.SetActive(true); icon.playerSeen = true; } else if(!canSeePlayer) { icon.playerSeen = false; icon.gameObject.SetActive(false); }
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float distanceToNode = Vector3.Distance(transform.position, currentNode.transform.position);
 
@@ -117,11 +122,13 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
         switch (currentState)
         {
             case EnemyState.Patrolling:
+                canSeePlayer = false;
                 MoveCatToLocation();
                 if (distanceToNode < 1f)
                     ChooseNextDirection(currentNode);
                 break;
             case EnemyState.Chasing:
+                canSeePlayer = true;
                 ChasePlayer();
                 break;
             case EnemyState.Swat:
@@ -161,6 +168,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
 
     private void FindWaypoints()
     {
+        if (isTutCat) return;
         var waypointsArray = FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
         foreach (var waypoint in waypointsArray)
         {
