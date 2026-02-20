@@ -96,6 +96,11 @@ public class UI_CanvasController : MonoBehaviour
     [Header("Health")]
     [SerializeField] private RespawnController respawnCanvasPrefab;
     public RespawnController activeRespawnCanvas;
+    [Header("LevelTransition")]
+    [SerializeField] private UI_LevelTransition levelTransitionPrefab;
+    public UI_LevelTransition activeLevelTransition;
+    public string cachedLevelName;
+    public LevelTransition transitionObj;
 
     private void Start()
     {
@@ -611,6 +616,7 @@ public class UI_CanvasController : MonoBehaviour
         activeRespawnCanvas = Instantiate(respawnCanvasPrefab);
         if(activeRespawnCanvas != null)
         {
+            activeRespawnCanvas.canvasController = this;
             ShowPlayerCursor();
         }
     }
@@ -620,6 +626,26 @@ public class UI_CanvasController : MonoBehaviour
         if(activeRespawnCanvas != null)
         {
             Destroy(activeRespawnCanvas.gameObject); 
+            HidePlayerCursor();
+        }
+    }
+
+    public void OpenLevelTransition()
+    {
+        if (activeLevelTransition == null)
+        {
+            activeLevelTransition = Instantiate(levelTransitionPrefab);
+            activeLevelTransition.sceneName = cachedLevelName;
+            activeLevelTransition.transitionObj = transitionObj;
+            ShowPlayerCursor() ;
+        }
+    }
+
+    public void CloseLevelTransition()
+    {
+        if (activeLevelTransition != null)
+        {
+            Destroy(activeLevelTransition.gameObject);
             HidePlayerCursor();
         }
     }
