@@ -35,6 +35,61 @@ MonoBehaviour:
   - Value J
   - Value K
   Exists: 1
+--- !u!114 &-8979997832267879801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Wingflaps/Player_Wingflaps
+  m_EditorClassIdentifier: 
+  Path: event:/Wingflaps/Player_Wingflaps
+  Guid:
+    Data1: -1351930368
+    Data2: 1246639671
+    Data3: 1664382870
+    Data4: -2121684890
+  Banks:
+  - {fileID: 6245889213501252793}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -7867623950449250748}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-8732018220470247719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/ItemPickup
+  m_EditorClassIdentifier: 
+  Path: event:/ItemPickup
+  Guid:
+    Data1: -1974806369
+    Data2: 1270287905
+    Data3: -1241348186
+    Data4: -957600871
+  Banks:
+  - {fileID: 591164384298374099}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-8004231005413089443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,6 +117,31 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 60047
+--- !u!114 &-7867623950449250748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Player_Wingflaps/Parameter 1
+  m_EditorClassIdentifier: 
+  Name: Parameter 1
+  StudioPath: 
+  Min: 0
+  Max: 0
+  Default: 0
+  ID:
+    data1: 2318954888
+    data2: 426250642
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
+  Exists: 1
 --- !u!114 &-7728631593694396444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,7 +170,99 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-7288074147252436691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/WorldBirds/Birds
+  m_EditorClassIdentifier: 
+  Name: Birds
+  StudioPath: 
+  Min: 0
+  Max: 10
+  Default: 0
+  ID:
+    data1: 4050494811
+    data2: 3022185989
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
+  - Value B
+  - Value C
+  - Value D
+  - Value E
+  - Value F
+  - Value G
+  - Value H
+  - Value I
+  - Value J
+  - Value K
+  Exists: 1
 --- !u!114 &-7238931286777563505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Player_Footsteps/Surface
+  m_EditorClassIdentifier: 
+  Name: Surface
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 0
+  ID:
+    data1: 169103654
+    data2: 3038382060
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Default
+  - Grass
+  - Metal
+  - Concrete
+  - Wood
+  Exists: 1
+--- !u!114 &-6032764263856006980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Splats/Player_Splats
+  m_EditorClassIdentifier: 
+  Path: event:/Splats/Player_Splats
+  Guid:
+    Data1: 1965529891
+    Data2: 1116207704
+    Data3: -958216022
+    Data4: -1593549837
+  Banks:
+  - {fileID: 6245889213501252793}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -281887107944519751}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-5636856588373885480
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,6 +319,90 @@ MonoBehaviour:
   MinDistance: 3
   MaxDistance: 50
   Length: 0
+--- !u!114 &-5184699676966940580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/WorldBirds
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/WorldBirds
+  Guid:
+    Data1: 82441270
+    Data2: 1083771153
+    Data3: 1765212841
+    Data4: -7537672
+  Banks:
+  - {fileID: 6756548285779738446}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -7288074147252436691}
+  MinDistance: 3
+  MaxDistance: 50
+  Length: 0
+--- !u!114 &-4942760936848228028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Footsteps/Player_Footsteps
+  m_EditorClassIdentifier: 
+  Path: event:/Footsteps/Player_Footsteps
+  Guid:
+    Data1: -365079154
+    Data2: 1306255037
+    Data3: 134290610
+    Data4: -1955566084
+  Banks:
+  - {fileID: 6245889213501252793}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -5636856588373885480}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-4602053606157684420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Poops/Player_Poops
+  m_EditorClassIdentifier: 
+  Path: event:/Poops/Player_Poops
+  Guid:
+    Data1: 1796020849
+    Data2: 1336446462
+    Data3: -1567428713
+    Data4: 1060673333
+  Banks:
+  - {fileID: 6245889213501252793}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 2160039644171383136}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-4519039553381262795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,6 +423,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 1524
   Exists: 1
+--- !u!114 &-3786428201969816705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/WorldMusic
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/WorldMusic
+  Guid:
+    Data1: -1898431776
+    Data2: 1304136254
+    Data3: 1917869759
+    Data4: 1995862118
+  Banks:
+  - {fileID: 6756548285779738446}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 474000
 --- !u!114 &-3159810731145985685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +498,58 @@ MonoBehaviour:
   - Name: Desktop
     Value: 9557472
   Exists: 1
+--- !u!114 &-281887107944519751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Player_Splats/RandomSplat
+  m_EditorClassIdentifier: 
+  Name: RandomSplat
+  StudioPath: 
+  Min: 0
+  Max: 0
+  Default: 0
+  ID:
+    data1: 1677900866
+    data2: 322448417
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
+  Exists: 1
+--- !u!114 &-217156247811708219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ambience/WorldWind
+  m_EditorClassIdentifier: 
+  Path: event:/Ambience/WorldWind
+  Guid:
+    Data1: -1748457847
+    Data2: 1284799085
+    Data3: -387358318
+    Data4: -447963099
+  Banks:
+  - {fileID: 6756548285779738446}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 60047
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,28 +563,28 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 2091664739478511244}
-  - {fileID: -2189292062327007833}
-  - {fileID: -4519039553381262795}
-  - {fileID: 4230668198286676077}
-  - {fileID: 8435538054931725827}
-  - {fileID: 401111573059354954}
+  - {fileID: 7968650986646313413}
+  - {fileID: 6756548285779738446}
+  - {fileID: 1049129095624132089}
+  - {fileID: 6985391345815627086}
+  - {fileID: 6245889213501252793}
+  - {fileID: 591164384298374099}
   EditorEvents:
-  - {fileID: -5339351816436053132}
-  - {fileID: -8004231005413089443}
-  - {fileID: 8819942129792245364}
-  - {fileID: 5943723778678317517}
-  - {fileID: 6196370989545568069}
-  - {fileID: -3159810731145985685}
-  - {fileID: -7728631593694396444}
-  - {fileID: 73506915100599220}
+  - {fileID: -5184699676966940580}
+  - {fileID: -217156247811708219}
+  - {fileID: -3786428201969816705}
+  - {fileID: -8979997832267879801}
+  - {fileID: -6032764263856006980}
+  - {fileID: -4602053606157684420}
+  - {fileID: -4942760936848228028}
+  - {fileID: -8732018220470247719}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -4519039553381262795}
+  - {fileID: 1049129095624132089}
   StringsBanks:
-  - {fileID: 2091664739478511244}
+  - {fileID: 7968650986646313413}
   cacheVersion: 131858
-  cacheTime: 639061600538728767
+  cacheTime: 639072094419928310
   SerializableEventsDict:
   - key: event:/Ambience/WorldBirds
     index: 0
@@ -314,6 +649,42 @@ MonoBehaviour:
   - Name: Desktop
     Value: 19168
   Exists: 1
+--- !u!114 &591164384298374099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/SFX.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/StreamingAssets/FMOD/Banks/SFX.bank
+  Name: SFX
+  StudioPath: bank:/SFX
+  lastModified: 639072094419928310
+  FileSizes: []
+  Exists: 1
+--- !u!114 &1049129095624132089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/StreamingAssets/FMOD/Banks/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 639072094419772136
+  FileSizes: []
+  Exists: 1
 --- !u!114 &1180671633683509754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,6 +729,31 @@ MonoBehaviour:
   FileSizes:
   - Name: Desktop
     Value: 1630
+  Exists: 1
+--- !u!114 &2160039644171383136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Player_Poops/NormalPoop
+  m_EditorClassIdentifier: 
+  Name: NormalPoop
+  StudioPath: 
+  Min: 0
+  Max: 0
+  Default: 0
+  ID:
+    data1: 4248391851
+    data2: 3104323414
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
   Exists: 1
 --- !u!114 &4230668198286676077
 MonoBehaviour:
@@ -435,6 +831,60 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &6245889213501252793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Player.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/StreamingAssets/FMOD/Banks/Player.bank
+  Name: Player
+  StudioPath: bank:/Player
+  lastModified: 639072094419928310
+  FileSizes: []
+  Exists: 1
+--- !u!114 &6756548285779738446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Ambience.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/StreamingAssets/FMOD/Banks/Ambience.bank
+  Name: Ambience
+  StudioPath: bank:/Ambience
+  lastModified: 639072094419772136
+  FileSizes: []
+  Exists: 1
+--- !u!114 &6985391345815627086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Music.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/StreamingAssets/FMOD/Banks/Music.bank
+  Name: Music
+  StudioPath: bank:/Music
+  lastModified: 639072094419928310
+  FileSizes: []
+  Exists: 1
 --- !u!114 &7419841717107519623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,6 +934,26 @@ MonoBehaviour:
   IsGlobal: 0
   Labels:
   - Value A
+  Exists: 1
+--- !u!114 &7968650986646313413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/StreamingAssets/FMOD/Banks/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 639072094419928310
+  FileSizes:
+  - Name: 
+    Value: 1630
   Exists: 1
 --- !u!114 &8435538054931725827
 MonoBehaviour:
