@@ -14,7 +14,8 @@ public class TutorialPrompt : MonoBehaviour
     [SerializeField] private Button skipCancelButton;
     [SerializeField] private TextMeshProUGUI promptText;
     [SerializeField] private List<string> prompts = new();
-    [SerializeField] int promptIndex;
+    public int promptIndex;
+    public UI_CanvasController canvasController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,7 +34,7 @@ public class TutorialPrompt : MonoBehaviour
 
     void CloseWindow()
     {
-        Destroy(this.gameObject);
+        canvasController.DestroyPrompt();
     }
 
     void SkipTutorial()

@@ -151,7 +151,6 @@ GameObject:
   - component: {fileID: 2132322051460559392}
   - component: {fileID: 8604246263738614505}
   - component: {fileID: 2275903232041212110}
-  - component: {fileID: 710622010676063689}
   m_Layer: 27
   m_Name: Willow_Tree6_Perchable
   m_TagString: Untagged
@@ -199,7 +198,7 @@ MonoBehaviour:
   perchSphere: {fileID: 2275903232041212110}
   hideColliders: {fileID: 0}
   isPromptShown: 0
-  icon: {fileID: 710622010676063689}
+  icon: {fileID: 0}
 --- !u!135 &2275903232041212110
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -221,21 +220,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3.64
   m_Center: {x: 0, y: 1.89, z: 0}
---- !u!114 &710622010676063689
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4850816487953090153}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d5cec5f4c9ee7345888ed8132eacdbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconRenderer: {fileID: 0}
-  icon: {fileID: 21300000, guid: f40637ff5e5e09641a420cdf40bcbd11, type: 3}
-  isActive: 0
 --- !u!1 &6648908194813424557
 GameObject:
   m_ObjectHideFlags: 0

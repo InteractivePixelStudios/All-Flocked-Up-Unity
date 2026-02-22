@@ -148,17 +148,18 @@ public class TrafficManager : MonoBehaviour
 
         for(int i = 0; i < numberOfCars; i++)
         {
-                var randomIndex = Random.Range(0, waypoints.Count - 1);
-                if (randomIndex != lastIndex)
-                {
-                    Transform waypoint = waypoints[randomIndex].transform;
-                    var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)],waypoint.position,waypoint.rotation);
-                    vehicles.Add(car);
-                    car.transform.position = waypoint.position;
-                    car.currentNode = waypoints[randomIndex];
-                    car.manager = this;
+            var randomIndex = Random.Range(0, waypoints.Count);
+            //if (randomIndex != lastIndex)
+            //{
+            Waypoint waypoint = waypoints[randomIndex];
+            var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)],waypoint.transform.position,waypoint.transform.rotation);
+            vehicles.Add(car);
+            car.transform.position = waypoint.transform.position;
+            car.currentNode = waypoint;
+            car.manager = this;
 
-                }
+
+           //}
         }
 
         await Task.Yield();

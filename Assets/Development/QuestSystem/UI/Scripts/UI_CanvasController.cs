@@ -101,7 +101,10 @@ public class UI_CanvasController : MonoBehaviour
     public UI_LevelTransition activeLevelTransition;
     public string cachedLevelName;
     public LevelTransition transitionObj;
-
+    [Header("TutorialPrompt")]
+    [SerializeField] private TutorialPrompt promptPrefab;
+    public TutorialPrompt activeTutPrompt;
+    public int cachedTutPromptIndex;
     private void Start()
     {
         input = FindFirstObjectByType<PlayerInput>();
@@ -647,6 +650,26 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeLevelTransition.gameObject);
             HidePlayerCursor();
+        }
+    }
+
+    public void ShowTutorialPrompt()
+    {
+        if(activeTutPrompt == null)
+        {
+            activeTutPrompt = Instantiate(promptPrefab);
+            activeTutPrompt.promptIndex = cachedTutPromptIndex;
+            activeTutPrompt.canvasController = this;
+            ShowPlayerCursor() ;
+        }
+    }
+
+    public void DestroyPrompt()
+    {
+        if(activeTutPrompt != null)
+        {
+            HidePlayerCursor();
+            Destroy(activeTutPrompt.gameObject);
         }
     }
 
