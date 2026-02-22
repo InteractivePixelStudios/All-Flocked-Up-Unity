@@ -151,7 +151,6 @@ GameObject:
   - component: {fileID: 3071874946545098841}
   - component: {fileID: 1833091540269192794}
   - component: {fileID: 1435253425626537390}
-  - component: {fileID: -8698694953822746660}
   m_Layer: 27
   m_Name: Tree16_Perchable
   m_TagString: Untagged
@@ -199,7 +198,7 @@ MonoBehaviour:
   perchSphere: {fileID: 1435253425626537390}
   hideColliders: {fileID: 0}
   isPromptShown: 0
-  icon: {fileID: -8698694953822746660}
+  icon: {fileID: 0}
 --- !u!135 &1435253425626537390
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -221,21 +220,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.61
   m_Center: {x: 0, y: 1.35, z: 0}
---- !u!114 &-8698694953822746660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6289614662452599190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d5cec5f4c9ee7345888ed8132eacdbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconRenderer: {fileID: 0}
-  icon: {fileID: 21300000, guid: f40637ff5e5e09641a420cdf40bcbd11, type: 3}
-  isActive: 1
 --- !u!1 &9210708046273129868
 GameObject:
   m_ObjectHideFlags: 0
