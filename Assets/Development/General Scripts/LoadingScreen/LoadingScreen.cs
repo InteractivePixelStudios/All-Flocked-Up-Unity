@@ -15,7 +15,6 @@ public class LoadingScreen : MonoBehaviour
     void Start()
     {
         GetRandomTip();
-        GetBirdImage();
         DestroyCanvas();
     }
 
