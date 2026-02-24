@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
     public Transform respawnTarget;    // Assign the object to watch after death
     public Vector3 respawnOffset = new Vector3(0, 20, 0); // Height above target
     public float transitionSpeed = 2f;
+    [SerializeField] public PlayerStateController playerState;
 
     private bool watchPlayer = true;
 
@@ -18,6 +19,18 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
+        if (!playerState)
+        {
+            Debug.LogWarning(
+                "PlayerStateController not assigned on ScreenshotCameraController. Searching in scene.",
+                this);
+            playerState = GameObject.FindWithTag("Player").GetComponent<PlayerStateController>();
+            if (!playerState)
+            {
+                Debug.LogWarning("PlayerStateController not found! Camera mode will not work.", this);
+            }
+        }
+            
         lookAction = InputSystem.actions.FindAction("Look");
         transform.position = player.position + new Vector3(0, 5, -10);
         transform.LookAt(player);
@@ -25,12 +38,19 @@ public class CameraController : MonoBehaviour
 
     void LateUpdate()
     {
-        if (watchPlayer && player != null)
+
+        if (playerState.CurrentState == PlayerState.PhotoMode)
+        {
+            return;
+        }
+           
+        
+        if (watchPlayer && player)
         {
             // Follow player
             CameraMovement();
         }
-        else if (respawnTarget != null)
+        else if (respawnTarget)
         {
             // Move to top-down view
             Vector3 targetPos = respawnTarget.position + respawnOffset;
