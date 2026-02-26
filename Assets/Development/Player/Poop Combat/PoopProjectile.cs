@@ -81,7 +81,28 @@ public class PoopProjectile : MonoBehaviour
         Instantiate(splashParticle,transform.position,Quaternion.identity* Quaternion.Euler(-90,0,0));
         //source?.HandleHitEffects(poopType, collision.contacts[0].point); // Trigger hit effects
 
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Cat"))
+        {
+            //poopable.OnPoopHit(poopType);
+            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            Debug.Log("EnemyHit");
+        }
+
+        if (collision.gameObject.CompareTag("Dog"))
+        {
+            //poopable.OnPoopHit(poopType);
+            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            Debug.Log("EnemyHit");
+        }
+
+        if (collision.gameObject.CompareTag("Human"))
+        {
+            //poopable.OnPoopHit(poopType);
+            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            Debug.Log("EnemyHit");
+        }
+
+        if (collision.gameObject.CompareTag("Raccoon"))
         {
             //poopable.OnPoopHit(poopType);
             obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);

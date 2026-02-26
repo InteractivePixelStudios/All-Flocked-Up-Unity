@@ -102,7 +102,7 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
 
                 playerRef = perchSphere.gameObject;
                 perchComp =  playerRef.GetComponent<PlayerPerchSystem>();
-               
+
             }
             playerRef.GetComponentInChildren<IconToggle>().ShowIcon();
         }

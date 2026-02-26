@@ -3,19 +3,26 @@ using UnityEngine.SceneManagement;
 
 public class LevelTransition : MonoBehaviour
 {
-    [SerializeField] private GameObject promptPrefab;
     [Tooltip("MUST BE THE EXACT SPELLING OF THE SCENE NAME! :)")]
     [SerializeField] private string nextScene;
+    [SerializeField] private UI_CanvasController canvasController;
+
+    private void Start()
+    {
+        canvasController = FindFirstObjectByType<UI_CanvasController>();
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
 
     void ShowTransitionPrompt()
     {
-        Instantiate(promptPrefab);
+        canvasController.OpenLevelTransition();
+        canvasController.transitionObj = this;
     }
 
     public void ChangeToNextScene()
     {
+        canvasController?.CloseLevelTransition();
         SceneManager.LoadScene(nextScene);
     }
   

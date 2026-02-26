@@ -37,7 +37,15 @@ public class UI_HudController : MonoBehaviour
     [SerializeField] private float currentPoop;
     [SerializeField] private float startPoop;
 
-    
+    [SerializeField] private Image levelUpIcon;
+    [SerializeField] private EXPSystem expComp;
+    [SerializeField] private int cachedLevel;
+    float iconTimer = 5f;
+    float fadeTimer = 2f;
+    float visibleTime = 2f;
+
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -45,6 +53,8 @@ public class UI_HudController : MonoBehaviour
         playerRef = FindFirstObjectByType<PlayerHealth>().gameObject;
         healthComp = playerRef.GetComponent<PlayerHealth>();
         staminaComp = playerRef.GetComponent<StaminaSystem>();
+        expComp = playerRef.GetComponent<EXPSystem>();
+        cachedLevel = expComp.PLAYERLEVEL;
         poopComp = playerRef.GetComponent<PoopSystem>();
         startHealth = healthComp.maxHealth;
         currentHealth = healthComp.currentHealth;
@@ -53,6 +63,15 @@ public class UI_HudController : MonoBehaviour
         startPoop = poopComp.GetMaxPoop();
         currentPoop = poopComp.GetCurrentPoop();
         UpdateHealth();
+        HideIcon();
+
+    }
+
+    void HideIcon()
+    {
+        var color = levelUpIcon.color;
+        color.a = 0f;
+        levelUpIcon.color = color;
     }
 
     // Update is called once per frame
@@ -61,9 +80,31 @@ public class UI_HudController : MonoBehaviour
         if (currentHealth !=  healthComp.currentHealth) { currentHealth = healthComp.currentHealth; UpdateHealth(); } 
         if(currentStamina != staminaComp.GetCurrentStamina()) { currentStamina = staminaComp.GetCurrentStamina(); UpdateStamina(); }
         if (currentPoop != poopComp.GetCurrentPoop()) { currentPoop = poopComp.GetCurrentPoop(); UpdatePoop(); }
+        if (expComp.PLAYERLEVEL != cachedLevel)
         {
-            
+            cachedLevel = expComp.PLAYERLEVEL;
+
+            iconTimer = visibleTime + fadeTimer;
+
+            var color = levelUpIcon.color;
+            color.a = 1f;          // show instantly
+            levelUpIcon.color = color;
         }
+        if (iconTimer > 0f)
+        {
+            iconTimer -= Time.deltaTime;
+
+            if (iconTimer <= fadeTimer)
+            {
+                var color = levelUpIcon.color;
+
+                float time = 1f - (iconTimer / fadeTimer);
+                color.a = Mathf.Lerp(1f, 0f, time);
+
+                levelUpIcon.color = color;
+            }
+        }
+
         if (isWarningShown)
         {
             currentTime -= Time.deltaTime;
@@ -138,5 +179,16 @@ public class UI_HudController : MonoBehaviour
         isWarningShown = false;
         currentTime = hawkTimer;
         warningObj?.SetActive(false);
+    }
+
+    public void ShowLevelUpIcon()
+    {
+
+        iconTimer = visibleTime + fadeTimer;
+
+        var color = levelUpIcon.color;
+        color.a = 1f;
+        levelUpIcon.color = color;
+
     }
 }
