@@ -96,7 +96,15 @@ public class UI_CanvasController : MonoBehaviour
     [Header("Health")]
     [SerializeField] private RespawnController respawnCanvasPrefab;
     public RespawnController activeRespawnCanvas;
-
+    [Header("LevelTransition")]
+    [SerializeField] private UI_LevelTransition levelTransitionPrefab;
+    public UI_LevelTransition activeLevelTransition;
+    public string cachedLevelName;
+    public LevelTransition transitionObj;
+    [Header("TutorialPrompt")]
+    [SerializeField] private TutorialPrompt promptPrefab;
+    public TutorialPrompt activeTutPrompt;
+    public int cachedTutPromptIndex;
     private void Start()
     {
         input = FindFirstObjectByType<PlayerInput>();
@@ -611,6 +619,7 @@ public class UI_CanvasController : MonoBehaviour
         activeRespawnCanvas = Instantiate(respawnCanvasPrefab);
         if(activeRespawnCanvas != null)
         {
+            activeRespawnCanvas.canvasController = this;
             ShowPlayerCursor();
         }
     }
@@ -621,6 +630,47 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeRespawnCanvas.gameObject); 
             HidePlayerCursor();
+        }
+    }
+
+    public void OpenLevelTransition()
+    {
+        if (activeLevelTransition == null)
+        {
+            activeLevelTransition = Instantiate(levelTransitionPrefab);
+            activeLevelTransition.sceneName = cachedLevelName;
+            activeLevelTransition.transitionObj = transitionObj;
+            ShowPlayerCursor() ;
+        }
+    }
+
+    public void CloseLevelTransition()
+    {
+        if (activeLevelTransition != null)
+        {
+            Destroy(activeLevelTransition.gameObject);
+            HidePlayerCursor();
+        }
+    }
+
+    public void ShowTutorialPrompt()
+    {
+        if(activeTutPrompt == null)
+        {
+            activeTutPrompt = Instantiate(promptPrefab);
+            activeTutPrompt.promptIndex = cachedTutPromptIndex;
+            activeTutPrompt.canvasController = this;
+            //ShowPlayerCursor() ;
+        }
+    }
+
+    public void DestroyPrompt()
+    {
+        if(activeTutPrompt != null)
+        {
+           // HidePlayerCursor();
+            Destroy(activeTutPrompt.gameObject);
+            cachedTutPromptIndex = -1;
         }
     }
 

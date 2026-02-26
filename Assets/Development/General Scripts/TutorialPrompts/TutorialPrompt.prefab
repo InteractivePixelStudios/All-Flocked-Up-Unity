@@ -787,14 +787,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc6dff0039d305647946fcf7b383d248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  confirmWindow: {fileID: 0}
-  confirmButton: {fileID: 0}
-  skipButton: {fileID: 0}
-  skipConfirmButton: {fileID: 0}
-  skipCancelButton: {fileID: 0}
-  promptText: {fileID: 0}
-  prompts: []
+  confirmWindow: {fileID: 7975449591722064499}
+  confirmButton: {fileID: 60905340705258298}
+  skipButton: {fileID: 5962901631202051853}
+  skipConfirmButton: {fileID: 4235290317560492332}
+  skipCancelButton: {fileID: 7502194137213160307}
+  promptText: {fileID: 1295281264515738810}
+  prompts:
+  - WASD to walk!
+  - Press Space to jump!
+  - Jump then press Space again to start flying!
   promptIndex: 0
+  canvasController: {fileID: 0}
 --- !u!223 &6220199275982158921
 Canvas:
   m_ObjectHideFlags: 0
