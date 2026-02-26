@@ -176,7 +176,8 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 
 
     private void FindRandomWaypoint()
-    {       
+    {
+        if (waypoints.Count == 0) return;
         var randomIndex = Random.Range(0, waypoints.Count);
         var transform = waypoints[randomIndex].transform.position;
         this.transform.position = transform;
@@ -338,6 +339,7 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 
     protected void ChooseNextDirection(Waypoint node)
     {
+        if(node == null) return;
         connections.Clear();
 
         foreach (var connection in node.connections)
