@@ -660,7 +660,7 @@ public class UI_CanvasController : MonoBehaviour
             activeTutPrompt = Instantiate(promptPrefab);
             activeTutPrompt.promptIndex = cachedTutPromptIndex;
             activeTutPrompt.canvasController = this;
-            ShowPlayerCursor() ;
+            //ShowPlayerCursor() ;
         }
     }
 
@@ -668,8 +668,9 @@ public class UI_CanvasController : MonoBehaviour
     {
         if(activeTutPrompt != null)
         {
-            HidePlayerCursor();
+           // HidePlayerCursor();
             Destroy(activeTutPrompt.gameObject);
+            cachedTutPromptIndex = -1;
         }
     }
 
