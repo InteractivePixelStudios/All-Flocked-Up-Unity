@@ -20,9 +20,18 @@ public class TutorialPromptManager : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            canvasController.ShowTutorialPrompt();
             canvasController.cachedTutPromptIndex = promptIndex;
+            canvasController.ShowTutorialPrompt();
+
         }
         
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            canvasController.cachedTutPromptIndex = -1;
+        }
     }
 }
