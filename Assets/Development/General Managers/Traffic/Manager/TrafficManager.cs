@@ -145,7 +145,7 @@ public class TrafficManager : MonoBehaviour
 
     private async void SpawnCarsAtWaypoints()
     {
-
+        if (waypoints.Count == 0) return;
         for(int i = 0; i < numberOfCars; i++)
         {
             var randomIndex = Random.Range(0, waypoints.Count);
