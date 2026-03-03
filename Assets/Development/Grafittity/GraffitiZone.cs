@@ -3,13 +3,17 @@ using UnityEngine.InputSystem;
 
 public class GraffitiZone : MonoBehaviour
 {
-    private BoxCollider graffitiZoneCollider;
-    private bool playerInMe = false;
-    InputAction grafit;
-    private UI_CanvasController canvasController;
+    [SerializeField] private BoxCollider graffitiZoneCollider;
+    [SerializeField] private bool playerInMe = false;
+    [SerializeField] InputAction grafit;
+    [SerializeField] private UI_CanvasController canvasController;
+
+    [SerializeField] private Camera mainCam;
+    [SerializeField] private Camera grafittiCam;
 
     void Start()
     {
+        grafittiCam.enabled = false;
         if (TryGetComponent<BoxCollider>(out BoxCollider collider))
         {
             graffitiZoneCollider = collider;
@@ -53,6 +57,11 @@ public class GraffitiZone : MonoBehaviour
             canvasController.SetUIMap();
             Debug.Log("Player is interacting with the graffiti zone.");
             // Implement graffiti interaction logic here
+
+            grafittiCam.enabled = true;
+            mainCam.enabled = false;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 
@@ -62,7 +71,6 @@ public class GraffitiZone : MonoBehaviour
         {
             Debug.Log("Player entered the graffiti zone.");
             //pop up UI here
-            //press E to do it
             playerInMe = true;
         }
     }
