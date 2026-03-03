@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CinematicController : MonoBehaviour
 {
-   [SerializeField] private CinemachineSplineDolly splineDollyRef;
+   public CinemachineSplineDolly splineDollyRef;
     [SerializeField] bool isCredits;
     public bool isPlaying;
 
@@ -30,7 +30,7 @@ public class CinematicController : MonoBehaviour
 
     private void DestroyPrefab()
     {
-        Destroy(gameObject);
+        this.gameObject.SetActive(false);
         if (isCredits)
         {
             Destroy(FindFirstObjectByType<CreditRoll>().gameObject);

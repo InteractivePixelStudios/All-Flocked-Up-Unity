@@ -26,7 +26,7 @@ public class TutorialPrompt : MonoBehaviour
         UpdatePrompt();
     }
 
-    void UpdatePrompt()
+    public void UpdatePrompt()
     {
         promptText.SetText(prompts[promptIndex]);
     }
