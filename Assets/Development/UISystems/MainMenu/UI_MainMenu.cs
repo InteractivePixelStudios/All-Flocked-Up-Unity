@@ -65,7 +65,7 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void OnSettingsOpen()
     {
-        if (settingsCanvas == null)
+        if (!settingsOpen)
         {
             mainCanvas.SetActive(false);
             settingsCanvas.SetActive(true);
@@ -82,7 +82,7 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void OnControlsOpen()
     {
-        if (controlsCanvas == null)
+        if (!controlsOpen)
         {
             mainCanvas.SetActive(false);
             controlsCanvas.SetActive(true);
@@ -98,8 +98,7 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void PlayCredits()
     {
-        //Needs to either trigger cinematic camera or change scene to a credits scene
-
+        SceneManager.LoadScene("CreditScene");
     }
 
     protected void StartNewGame()
@@ -109,7 +108,7 @@ public class UI_MainMenu : MonoBehaviour
         //playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
         Debug.Log("Loading Scene");
         canvasController.HidePlayerCursor();
-        SceneManager.LoadScene("AlexTestScene"); // change after build
+        SceneManager.LoadScene("TutorialIsland"); // change after build
         //cameraRef.enabled = true;
 
     }
