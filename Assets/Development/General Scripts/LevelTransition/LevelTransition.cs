@@ -16,13 +16,14 @@ public class LevelTransition : MonoBehaviour
 
     void ShowTransitionPrompt()
     {
-        canvasController.OpenLevelTransition();
         canvasController.transitionObj = this;
+        canvasController.cachedLevelName = nextScene;
+        canvasController.OpenLevelTransition();
     }
 
     public void ChangeToNextScene()
     {
-        canvasController?.CloseLevelTransition();
+        canvasController.CloseLevelTransition();
         SceneManager.LoadScene(nextScene);
     }
   

@@ -30,7 +30,7 @@ public class SteamInit : MonoBehaviour
         try
         {
 
-            if (SteamAPI.RestartAppIfNecessary((AppId_t)480))
+            if (SteamAPI.RestartAppIfNecessary((AppId_t)4502950))
             {
                 Debug.Log("[Steamworks.NET] Steam not running, quitting build.");
                 Application.Quit();
