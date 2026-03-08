@@ -108,6 +108,7 @@ public class UI_CanvasController : MonoBehaviour
     [Header("SkinSelector")]
     [SerializeField] private UI_SkinSelector skinSelectorPrefab;
     public UI_SkinSelector activeSkinSelector;
+
     private void Start()
     {
         input = FindFirstObjectByType<PlayerInput>();

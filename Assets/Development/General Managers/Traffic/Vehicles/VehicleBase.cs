@@ -164,8 +164,8 @@ public class VehicleBase :MonoBehaviour
             manager.RemoveVehicleFromList(this);
         }
 
-        if (connections.Count == 0)
-            return;
+        //if (connections.Count == 0)
+        //    return;
 
         int randomIndex = Random.Range(0, connections.Count);
         Waypoint nextNode = connections[randomIndex].node;

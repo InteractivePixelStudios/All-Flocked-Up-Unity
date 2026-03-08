@@ -30,7 +30,6 @@ RectTransform:
   m_Children:
   - {fileID: 3058052633284162195}
   - {fileID: 8755083393569175593}
-  - {fileID: 6305689651761129684}
   - {fileID: 382206237777860165}
   - {fileID: 6180414376294100760}
   - {fileID: 1567629991970574985}
@@ -180,7 +179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5109386602959595448
 RectTransform:
   m_ObjectHideFlags: 0
@@ -368,81 +367,6 @@ MonoBehaviour:
   m_Sprite: {fileID: 21300000, guid: df7291db6e767654f8d70b90eb122de6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!1 &900374934530451215
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6305689651761129684}
-  - component: {fileID: 4008608649107282871}
-  - component: {fileID: 2928485173024182007}
-  m_Layer: 5
-  m_Name: ButtonBG
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &6305689651761129684
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900374934530451215}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2260144783632856666}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.4135, y: 0.27514815}
-  m_AnchorMax: {x: 0.62600005, y: 0.36940745}
-  m_AnchoredPosition: {x: 0, y: -2}
-  m_SizeDelta: {x: 2, y: -2}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &4008608649107282871
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900374934530451215}
-  m_CullTransparentMesh: 1
---- !u!114 &2928485173024182007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900374934530451215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bc8a0ec15b307f94895d7cbe14a72ce3, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -797,10 +721,11 @@ MonoBehaviour:
   - WASD to walk!
   - Press Space to jump!
   - Jump then press Space again to start flying!
-  - There's a few other pidgeons you should go see!
+  - There's a few other pigeons you should go see!
   - Coobert will show you how to SNEAK around
   - Ruffle can tell you where to find food
   - Race Arnesto to test your skills!
+  - 'Anytime you think you''re ready, you can take the Coober to Pigeonton Market! '
   promptIndex: 0
   canvasController: {fileID: 0}
 --- !u!223 &6220199275982158921
@@ -1093,7 +1018,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1567629991970574985
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1228,10 +1153,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2260144783632856666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.23577085, y: 0.2927778}
-  m_AnchorMax: {x: 0.763, y: 0.70466673}
-  m_AnchoredPosition: {x: 1, y: 1.5}
-  m_SizeDelta: {x: -3.7999878, y: 4.600006}
+  m_AnchorMin: {x: 0.23700002, y: 0.23614815}
+  m_AnchorMax: {x: 0.762, y: 0.6548519}
+  m_AnchoredPosition: {x: 1, y: -0.5}
+  m_SizeDelta: {x: 0.2000122, y: -2.399994}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2410146693240377786
 CanvasRenderer:
@@ -1261,7 +1186,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 56fddba318c87e343b8f1b8ffa5ab470, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f9beead6e30eebe42976f0fcc202484c, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -1573,7 +1498,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &382206237777860165
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2109,10 +2034,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2260144783632856666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.2644792, y: 0.38885188}
-  m_AnchorMax: {x: 0.7583125, y: 0.53144443}
-  m_AnchoredPosition: {x: -22, y: 43}
-  m_SizeDelta: {x: -748, y: -104}
+  m_AnchorMin: {x: 0.254, y: 0.40214816}
+  m_AnchorMax: {x: 0.7583125, y: 0.5092592}
+  m_AnchoredPosition: {x: -1, y: 1}
+  m_SizeDelta: {x: -3, y: -4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1693680313037868243
 CanvasRenderer:
@@ -2151,8 +2076,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4280205766
+  m_fontColor: {r: 0.77647066, g: 0.7568628, b: 0.11764707, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2207,7 +2132,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -349.38184, y: -10.19165, z: -397.2483, w: -103.16281}
+  m_margin: {x: 0.42163086, y: -1.2019043, z: -0.5982666, w: -1.4526978}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2317,10 +2242,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2260144783632856666}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
-  m_AnchorMin: {x: 0.52239585, y: 0.38885188}
-  m_AnchorMax: {x: 0.8565417, y: 0.97314817}
-  m_AnchoredPosition: {x: -0.5, y: 0.5}
-  m_SizeDelta: {x: -1, y: -0.7000122}
+  m_AnchorMin: {x: 0.6448124, y: 0.51570374}
+  m_AnchorMax: {x: 0.7583125, y: 0.70466673}
+  m_AnchoredPosition: {x: -1, y: -2}
+  m_SizeDelta: {x: -1.7999878, y: 2.800003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &120790637252396719
 CanvasRenderer:
@@ -2350,7 +2275,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8d837ed01995fe6468ec3ba4d2c7ccc4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6bd3be3acef151443a616dbdc9625839, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

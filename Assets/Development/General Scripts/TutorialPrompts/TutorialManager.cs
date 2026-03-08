@@ -127,7 +127,7 @@ public class TutorialManager : MonoBehaviour
                     {
                         SwitchOnCinematic();
                     }
-                    else
+                    else if (cinematicIndex > cinematicPrefabList.Count)
                     {
                         canvasController.DestroyPrompt();
                         tutIndex = 5;
