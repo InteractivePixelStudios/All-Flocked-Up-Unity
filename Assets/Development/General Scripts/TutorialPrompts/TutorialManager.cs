@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using System.Linq;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class TutorialManager : MonoBehaviour
     private PlayerInput playerInput;
     PlayerGroundMovement playerMove;
     [SerializeField] protected int tutIndex;
-    protected int promptIndex;
+    [SerializeField]protected int promptIndex;
     protected int numberOfTimedPrompts = 4;
     [SerializeField] protected List<GameObject> cinematicPrefabList = new();
     [SerializeField] protected int cinematicIndex;
@@ -20,6 +21,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] protected bool hasJumped;
     protected int jumpCount;
     [SerializeField] protected bool hasTakeoff;
+    [SerializeField] protected bool hasOverview;
     [SerializeField] protected bool speakWithQ1;
     [SerializeField] protected bool speakWithQ2;
     [SerializeField] protected bool speakWithQ3;
@@ -88,15 +90,71 @@ public class TutorialManager : MonoBehaviour
                 }
                 return;
             case 3:
-                isPlayingCinematic = true;
-                SwitchOnCinematic();
+                TogglePrompt(promptIndex);
+                if (!hasOverview && hasMoved && hasJumped && hasTakeoff && !tutComplete)
+                {
+                    hasOverview = true;
+                }
+                if (hasOverview)
+                {
+                    if (playerInput.actions.FindAction("Fire").WasPressedThisFrame())
+                    {
+                        canvasController.DestroyPrompt();
+                        tutIndex = 4;
+                    }
+                }
                 return;
             case 4:
+                isPlayingCinematic = true;
+                TogglePrompt(promptIndex);
+
+                if (!isPlayingCinematic) return;
+
+                if (cinematicIndex > cinematicPrefabList.Count)
+                {
+                    canvasController.DestroyPrompt();
+                    tutIndex = 5;
+                    isPlayingCinematic = false;
+                    return;
+                }
+
+                if (playerInput.actions.FindAction("Jump").WasPressedThisFrame()|| cinematicPrefabList[cinematicIndex].GetComponent<CinematicController>().isPlaying == false)
+                {
+                    canvasController.DestroyPrompt();
+                    promptIndex++;
+
+                    if (cinematicIndex <= cinematicPrefabList.Count)
+                    {
+                        SwitchOnCinematic();
+                    }
+                    else if (cinematicIndex > cinematicPrefabList.Count)
+                    {
+                        canvasController.DestroyPrompt();
+                        tutIndex = 5;
+                        isPlayingCinematic = false;
+                    }
+                }
+
+                return;
+            case 5:
+                TogglePrompt(promptIndex);
+                if (!hasOverview && hasMoved && hasJumped && hasTakeoff && !tutComplete)
+                {
+                    hasOverview = true;
+                }
+                if (hasOverview)
+                {
+                    if (playerInput.actions.FindAction("Fire").WasPressedThisFrame())
+                    {
+                        canvasController.DestroyPrompt();
+                        tutIndex = 6;
+                    }
+                }
+                return;
+            case 6:
+
                 return;
         }
-
-
-
     }
 
     void TogglePrompt(int index)
@@ -105,23 +163,27 @@ public class TutorialManager : MonoBehaviour
         canvasController.ShowTutorialPrompt();
     }
 
+    void UpdatePrompt(int index)
+    {
+        canvasController.cachedTutPromptIndex = index;
+        canvasController.activeTutPrompt.UpdatePrompt();
+    }
+
+
     void SwitchOnCinematic()
     {
-        if (isPlayingCinematic)
-        {
-            for (int i = 0; i <= cinematicPrefabList.Count;)
-            {
-                ToggleOverview(cinematicIndex);
-                if (cinematicPrefabList[0].GetComponent<CinematicController>().isPlaying == false)
-                {
-                    cinematicIndex++;
-                    i++;
-                }
-            }
-           
-            
-        }
 
+        if (!isPlayingCinematic) return;
+        cinematicIndex++;
+        PlayCine();
+
+
+    }
+         void PlayCine()
+        {
+        ToggleOverview(cinematicIndex);
+            UpdatePrompt(promptIndex);
+        }
 
 
         void ToggleOverview(int index)
@@ -147,4 +209,3 @@ public class TutorialManager : MonoBehaviour
 
         }
     }
-}

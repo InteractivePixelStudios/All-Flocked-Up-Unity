@@ -143,9 +143,9 @@ public class TrafficManager : MonoBehaviour
         }
     }
 
-    private async void SpawnCarsAtWaypoints()
+    private  void SpawnCarsAtWaypoints()
     {
-
+        if (waypoints.Count == 0) return;
         for(int i = 0; i < numberOfCars; i++)
         {
             var randomIndex = Random.Range(0, waypoints.Count);
@@ -162,7 +162,7 @@ public class TrafficManager : MonoBehaviour
            //}
         }
 
-        await Task.Yield();
+        //await Task.Yield();
     }
 
     public void RemoveVehicleFromList(VehicleBase vehicle)
