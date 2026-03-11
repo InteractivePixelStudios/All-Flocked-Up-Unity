@@ -16,10 +16,14 @@ public class VehicleBase :MonoBehaviour
     [SerializeField] protected LayerMask enemyLayer;
     [SerializeField] protected LayerMask trafficLayer;
     public bool isStopped;
+    private float stopTimer = 5f;
     [SerializeField] private bool isMoving;
     [SerializeField] private List<WaypointConnection> connections = new();
     [SerializeField] protected float detectObjectRange=2f;
     public TrafficManager manager;
+
+    bool isLeftTurn;
+    bool isRightTurn;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
@@ -27,9 +31,17 @@ public class VehicleBase :MonoBehaviour
         MoveVehicleToLocation();
     }
 
+
     // Update is called once per frame
     protected virtual void Update()
     {
+        var distance = Vector3.Distance(transform.position, currentNode.transform.position);
+        if (distance > 200f)
+        {
+            Debug.Log("Too far from currentNode");
+            Destroy(this.gameObject);
+           
+        }
         if (isStopped)
         {
             StopVehicle();
@@ -41,6 +53,7 @@ public class VehicleBase :MonoBehaviour
         if (currentNode == null)
         {
             StopVehicle();
+            Debug.Log("Cant find CurrentNode");
             return;
         }
 
@@ -49,6 +62,21 @@ public class VehicleBase :MonoBehaviour
             ChooseNextDirection(currentNode);
         }
 
+    }
+
+    public bool GetIsMoving()
+    {
+        return isMoving;
+    }
+
+    public bool GetIsLeftTurn()
+    {
+        return isLeftTurn;
+    }
+
+    public bool GetIsRightTurn()
+    {
+        return isRightTurn;
     }
 
     protected virtual void SetMoveToLocation(Waypoint location)
@@ -70,17 +98,31 @@ public class VehicleBase :MonoBehaviour
 
     public virtual void StopVehicle()
     {
-        navAgent.isStopped = true;
+        stopTimer -= Time.deltaTime;
+        if(stopTimer <= 0)
+        {
+            Debug.Log("Car Stopped too long!");
+            navAgent.isStopped = false;
+            isStopped = false;
+            isMoving = true;
+        }
+        else
+        {
+            navAgent.isStopped = true;
+        }
         //Debug.Log("Stopping");
     }
 
-    protected virtual void TriggerCollisions()
+    public virtual void TriggerCollisions()
     {
+        Debug.Log("HitAnotherVehicle");
         //StopVehicle();
         HonkHorn();
         navAgent.speed = 2;
-        if (!navAgent.isStopped)
+        if (navAgent.isStopped)
         {
+            isStopped = false;
+            isMoving = true;
             MoveVehicleToLocation();
         }
     }
@@ -122,8 +164,8 @@ public class VehicleBase :MonoBehaviour
             manager.RemoveVehicleFromList(this);
         }
 
-        if (connections.Count == 0)
-            return;
+        //if (connections.Count == 0)
+        //    return;
 
         int randomIndex = Random.Range(0, connections.Count);
         Waypoint nextNode = connections[randomIndex].node;

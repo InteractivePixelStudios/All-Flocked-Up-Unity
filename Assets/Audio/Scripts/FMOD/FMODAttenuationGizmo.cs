@@ -5,7 +5,6 @@ using FMOD.Studio;
 [ExecuteAlways]
 public class FMODAttenuationGizmo : MonoBehaviour
 {
-    [EventRef]
     public EventReference eventReference;
 
     public Color minColor = Color.green;
@@ -23,17 +22,15 @@ public class FMODAttenuationGizmo : MonoBehaviour
             return;
         }
 
-        // Only try to talk to FMOD when it's initialized (play mode or editor with FMOD loaded)
         if (!RuntimeManager.IsInitialized)
         {
             hasDistanceData = false;
             return;
         }
 
-        EventDescription eventDescription;
-        var result = RuntimeManager.StudioSystem.getEvent(eventReference.Path, out eventDescription);
+        var eventDescription = RuntimeManager.GetEventDescription(eventReference);
 
-        if (result == FMOD.RESULT.OK && eventDescription.isValid())
+        if (eventDescription.isValid())
         {
             eventDescription.getMinMaxDistance(out minDistance, out maxDistance);
             hasDistanceData = true;

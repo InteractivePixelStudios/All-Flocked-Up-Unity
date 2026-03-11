@@ -15,11 +15,15 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask nestLayer;
     public LayerMask shopLayer;
     public LayerMask wearableLayer;
+    public LayerMask perchLayer;
     public QuestLog questLog; // assign in Inspector
     public UI_CanvasController canvasController;
     public bool gamePaused;
     [SerializeField] private GameObject attachPoint;
     private bool isWingventoryOpen;
+    public PlayerPerchSystem perchComp;
+    public I_Perchable currentPerchPoint;
+    bool perchInteracted;
 
     private PlayerInput playerInput;
     private InputAction interactAction;
@@ -29,10 +33,25 @@ public class PlayerInteraction : MonoBehaviour
     private InputAction pauseAction;
     private InputAction debugAction;
     private InputAction reportAction;
+    bool uiOn;
 
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
+        InitInputs();
+    }
+    private void Update()
+    {
+        if (playerInput.currentActionMap == playerInput.actions.FindActionMap("UI") &&!uiOn) { uiOn = true; InitInputs(); Debug.Log("REINIT"); }
+        else return;
+    }
+
+    public bool ReturnInteractPerformed()
+    {
+        return interactAction.inProgress;
+    }
+    void InitInputs()
+    {
         interactAction = playerInput.actions.FindAction("Interact");
         questLogAction = playerInput.actions.FindAction("QuestLog");
         mapAction = playerInput.actions.FindAction("Map");
@@ -52,6 +71,7 @@ public class PlayerInteraction : MonoBehaviour
             debugAction.performed += OpenDebug;
             reportAction.performed += OpenReport;
         }
+        
     }
     public bool GetIsWingventoryOpen()
     {
@@ -67,6 +87,7 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             canvasController.CloseBugReporter();
+            uiOn = false;
         }
     }
 
@@ -79,6 +100,7 @@ public class PlayerInteraction : MonoBehaviour
         else
         {
             canvasController.CloseDebugMenu();
+            uiOn = false;
         }
     }
 
@@ -190,7 +212,39 @@ public class PlayerInteraction : MonoBehaviour
                 var questNPC = lookHit.collider.GetComponentInParent<IQuestInteraction>();
                 questNPC?.LookAtNPC();
             }
+
+
+        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, perchLayer))
+        {
+            Debug.Log("PerchSeen");
+            currentPerchPoint = hit.collider.GetComponentInParent<I_Perchable>();
+            Debug.Log(currentPerchPoint);
+            perchComp.isReady = true;
+            perchInteracted = true;
+            switch (currentPerchPoint)
+            {
+                case PerchableObject_Tree:
+                    Debug.Log("Ima Tree");
+                    var tree = currentPerchPoint as PerchableObject_Tree;
+                    tree.isPerching = true;
+                    currentPerchPoint.StartPerch();
+                    var check = hit.collider.CompareTag("HideSpot");
+                    if (check)
+                    {
+                        tree.isHiding = true;
+                    }
+                    break;
+                case PerchableObject_Bush:
+                    perchComp.Perch(currentPerchPoint);
+                    break;
+                case PerchableObject_General:
+                    perchComp.Perch(currentPerchPoint);
+                    break;
+            }
+
         }
+        else { perchComp.isReady = false; perchInteracted = false; }
+    }
 
         void OpenQuestLog(InputAction.CallbackContext ctx)
         {
@@ -198,8 +252,8 @@ public class PlayerInteraction : MonoBehaviour
             {
                 canvasController.ShowQuestLog();
             }
-            else canvasController.DestroyQuestLog();
-        }
+            else canvasController.DestroyQuestLog(); uiOn = false;
+    }
 
         void OpenMap(InputAction.CallbackContext ctx)
         {
@@ -209,8 +263,8 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                canvasController.CloseMainMap();
-            }
+                canvasController.CloseMainMap(); uiOn = false;
+        }
         }
 
         void OpenInventory(InputAction.CallbackContext ctx)
@@ -224,8 +278,9 @@ public class PlayerInteraction : MonoBehaviour
             {
                 canvasController.CloseWingventory();
                 isWingventoryOpen = false;
+                uiOn = false;
             }
-        }
+    }
 
         void OpenPause(InputAction.CallbackContext ctx)
         {
@@ -233,7 +288,12 @@ public class PlayerInteraction : MonoBehaviour
             {
                 canvasController.PauseGame();
             }
-            else canvasController.ResumeGame();
-        }
+            else canvasController.ResumeGame(); uiOn = false;
     }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        canvasController = FindFirstObjectByType<UI_CanvasController>();
+    }
+}
 

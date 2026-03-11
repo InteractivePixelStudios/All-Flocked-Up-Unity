@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CameraController : MonoBehaviour
+public class CameraController : Singleton<CameraController>
 {
     public Transform player;           // Assign in Inspector or via script
     public Transform respawnTarget;    // Assign the object to watch after death
@@ -18,6 +18,7 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
+        player = FindFirstObjectByType<PlayerFlightMovement>().transform;
         lookAction = InputSystem.actions.FindAction("Look");
         transform.position = player.position + new Vector3(0, 5, -10);
         transform.LookAt(player);
@@ -69,5 +70,10 @@ public class CameraController : MonoBehaviour
     public void SwitchToPlayer()
     {
         watchPlayer = true;
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        this.enabled = true;
     }
 }

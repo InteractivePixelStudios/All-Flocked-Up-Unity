@@ -36,6 +36,12 @@ public class UI_NestMenu : MonoBehaviour
     [Header("Components")]
     [SerializeField] private S_DayNightCycle dayNightSystem;
     public UI_CanvasController canvasController;
+    public PlayerCounter playerStats;
+
+    [Header("Counters")]
+    [SerializeField] private Dictionary<string, int> counterDictionary = new();
+    [SerializeField] private RectTransform statBox;
+    [SerializeField] private CounterTextBox counterTextPrefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -43,6 +49,7 @@ public class UI_NestMenu : MonoBehaviour
     {
         dayNightSystem = FindFirstObjectByType<S_DayNightCycle>();
         canvasController = FindFirstObjectByType<UI_CanvasController>();
+
     }
     void Start()
     {
@@ -54,8 +61,9 @@ public class UI_NestMenu : MonoBehaviour
         closeStatsButton.onClick.AddListener(CloseStats);
         scrapbookButton.onClick.AddListener(OpenScrapbook);
         closeSbButton.onClick.AddListener(CloseScrapbook);
-        sbNextPage.onClick.AddListener(SBNextPage);
-        sbPrevPage.onClick.AddListener(SBPrevPage);
+        //sbNextPage.onClick.AddListener(SBNextPage);
+        //sbPrevPage.onClick.AddListener(SBPrevPage);
+        GetStats();
 
     }
 
@@ -107,6 +115,7 @@ public class UI_NestMenu : MonoBehaviour
     {
         mainPanel.SetActive(false);
         statsPanel.SetActive(true);
+        UpdateStats();
     }
 
     private void CloseStats()
@@ -135,5 +144,24 @@ public class UI_NestMenu : MonoBehaviour
     private void SBPrevPage()
     {
 
+    }
+
+    void GetStats()
+    {
+        counterDictionary = playerStats.SendStats();
+        Debug.Log("MenuGotStats");
+    }
+
+    void UpdateStats()
+    {
+        foreach(var item in counterDictionary)
+        {
+            var text =Instantiate(counterTextPrefab);
+            text.transform.SetParent(statBox, false);
+            text.statName = item.Key;
+            text.statNumber = item.Value;
+            Debug.Log(item.Key + item.Value);
+
+        }
     }
 }

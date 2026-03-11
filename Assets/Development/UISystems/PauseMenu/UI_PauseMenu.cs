@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,21 +16,22 @@ public class UI_PauseMenu : MonoBehaviour
     [SerializeField] protected bool controlsOpen;
     [SerializeField] protected GameObject saveWindowPrefab;
     [SerializeField] protected GameObject currentSaveWindow;
+    [SerializeField] private RectTransform scrollPanel;
 
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        settingsCanvas.SetActive(false);
+
         controlsCanvas.SetActive(false);
         continueButton.onClick.AddListener(Unpause);
         settingsButton.onClick.AddListener(OnSettingsOpen);
         controlsButton.onClick.AddListener(OnControlsOpen);
         saveQuitButton.onClick.AddListener(OnSaveAndQuit);
-        EventSystem.current.SetSelectedGameObject(settingsButton.gameObject);
-    }
+        EventSystem.current.SetSelectedGameObject(continueButton.gameObject);
 
+    }
     public void Unpause()
     {
         var controller = FindFirstObjectByType<UI_CanvasController>();
@@ -42,17 +44,19 @@ public class UI_PauseMenu : MonoBehaviour
         if (!settingsOpen)
         {
             settingsOpen = true;
-            mainCanvas.SetActive(false);
-            settingsCanvas.SetActive(true);
+            //mainCanvas.SetActive(false);
+            //settingsCanvas.SetActive(true);
             settingsCanvas.GetComponent<UI_SettingsMenu>().SetFirstSettingsButton();
+            Debug.Log("Open");
 
         }
         else
         {
             settingsOpen = false;
-            mainCanvas.SetActive(true);
-            settingsCanvas.SetActive(false);
-            EventSystem.current.SetSelectedGameObject(settingsButton.gameObject);
+            //mainCanvas.SetActive(true);
+            //settingsCanvas.SetActive(false);
+            EventSystem.current.SetSelectedGameObject(continueButton.gameObject);
+
         }
     }
 

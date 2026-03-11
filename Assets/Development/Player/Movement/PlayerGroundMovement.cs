@@ -16,6 +16,8 @@ public class PlayerGroundMovement : MonoBehaviour
     static GroundCheck groundCheck;
     Transform cameraRef;
 
+    [SerializeField] private PlayerInput input;
+
     [Header("Additional Requirements")]
     [SerializeField] GameObject crouchVinete;
 
@@ -83,7 +85,7 @@ public class PlayerGroundMovement : MonoBehaviour
     {
         // === refactored for PSC - Jacob. hope this works :0 ===
         //return isFlying;
-        return playerStateController.CurrentState == PlayerState.FlyMove;;
+        return playerStateController.CurrentState == PlayerState.FlyMove;
     }
 
     private void Awake()
@@ -102,8 +104,7 @@ public class PlayerGroundMovement : MonoBehaviour
         cameraRef = Camera.main.transform;
         groundCheck = GetComponentInChildren<GroundCheck>();
         playerFlightMovement = GetComponent<PlayerFlightMovement>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
 
         currentMaxSpeed = maxSpeed;
 
@@ -111,6 +112,8 @@ public class PlayerGroundMovement : MonoBehaviour
         jumpAction = InputSystem.actions.FindAction("Jump");
         sprintAction = InputSystem.actions.FindAction("Sprint");
         crouchAction = InputSystem.actions.FindAction("Crouch");
+
+        input = GetComponent<PlayerInput>();
 
         PlayerInput();
     }
@@ -205,9 +208,10 @@ public class PlayerGroundMovement : MonoBehaviour
 
     void Jump()
     {
+        if (input.currentActionMap != input.actions.FindActionMap("Player")) return;
+
         //if (isFlying)
         if (playerStateController.CurrentState != PlayerState.GroundMove)
-
             return;
 
         // check if player is on the ground to jump
@@ -321,7 +325,7 @@ public class PlayerGroundMovement : MonoBehaviour
         {
             playerBody.AddForce(transform.right * (moveSpeed * Time.deltaTime * -mag.x * counterMovement));
         }
-        if (Mathf.Abs(mag.y) > threshold && Mathf.Abs(y) < 0.05f || (mag.y < -threshold && y > 0) || (mag.y > threshold && y < 0))
+        if (Mathf.Abs(mag.y) > threshold && Mathf.Abs(y) < 0.05f && Mathf.Abs(x) < 0.05f || (mag.y < threshold && y != 0))
         {
             playerBody.AddForce(transform.forward * (moveSpeed * Time.deltaTime * -mag.y * counterMovement));
         }

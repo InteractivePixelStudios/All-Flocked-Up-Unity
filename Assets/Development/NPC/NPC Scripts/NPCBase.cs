@@ -42,7 +42,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         if(questGiverComp.hasQuest == false || questGiverComp == null)
         {
             targetLocation = homeLocation.transform;
-            isMoving = true;
+            //isMoving = true;
         }
 
     }    
@@ -87,7 +87,10 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         navAgentComponent.SetDestination(targetLocation.position);
     }
 
+    public void HitReact()
+    {
 
+    }
 
 
 }

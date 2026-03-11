@@ -33,7 +33,7 @@ public class VehicleScript : VehicleBase
         base.StopVehicle();
     }
 
-    protected override void TriggerCollisions()
+    public override void TriggerCollisions()
     {
         base.TriggerCollisions();
     }

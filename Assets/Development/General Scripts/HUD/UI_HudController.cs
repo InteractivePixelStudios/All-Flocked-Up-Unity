@@ -3,9 +3,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines.Interpolators;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class UI_HudController : MonoBehaviour
 {
+    GameObject playerRef;
     [SerializeField] private StatInfo playerStats;
     [SerializeField] private float hawkTimer = 5f;
     [SerializeField] private float currentTime;
@@ -17,20 +19,92 @@ public class UI_HudController : MonoBehaviour
     [SerializeField] private Image warningImage;
     private float fadeInAlpha = 200f;
 
-    [SerializeField] private float health => playerStats.GetStat(StatInfo.stats.Health);
-    [SerializeField] private float stamina => playerStats.GetStat(StatInfo.stats.Stamina);
-    [SerializeField] private float poop => playerStats.GetStat(StatInfo.stats.PoopAmount);
+    [SerializeField] private List<Sprite> healthImages = new();
+    [SerializeField] private Image shownHealthImage;
+    [SerializeField] private Image staminaBarImage;
+    [SerializeField] private Image poopBarImage;
 
-    
+    [SerializeField] private PlayerHealth healthComp;
+    [SerializeField] private float health => playerStats.GetStat(StatInfo.stats.Health);
+    [SerializeField] private float currentHealth;
+    [SerializeField] private float startHealth;
+    [SerializeField] private StaminaSystem staminaComp;
+    [SerializeField] private float stamina => playerStats.GetStat(StatInfo.stats.Stamina);
+    [SerializeField] private float currentStamina;
+    [SerializeField] private float startStamina;
+    [SerializeField] private PoopSystem poopComp;
+    [SerializeField] private float poop => playerStats.GetStat(StatInfo.stats.PoopAmount);
+    [SerializeField] private float currentPoop;
+    [SerializeField] private float startPoop;
+
+    [SerializeField] private Image levelUpIcon;
+    [SerializeField] private EXPSystem expComp;
+    [SerializeField] private int cachedLevel;
+    float iconTimer = 5f;
+    float fadeTimer = 2f;
+    float visibleTime = 2f;
+
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentTime = hawkTimer;
+        playerRef = FindFirstObjectByType<PlayerHealth>().gameObject;
+        healthComp = playerRef.GetComponent<PlayerHealth>();
+        staminaComp = playerRef.GetComponent<StaminaSystem>();
+        expComp = playerRef.GetComponent<EXPSystem>();
+        cachedLevel = expComp.PLAYERLEVEL;
+        poopComp = playerRef.GetComponent<PoopSystem>();
+        startHealth = healthComp.maxHealth;
+        currentHealth = healthComp.currentHealth;
+        currentStamina = staminaComp.GetCurrentStamina();
+        startStamina = staminaComp.GetMaxStamina() ;
+        startPoop = poopComp.GetMaxPoop();
+        currentPoop = poopComp.GetCurrentPoop();
+        UpdateHealth();
+        HideIcon();
+
+    }
+
+    void HideIcon()
+    {
+        var color = levelUpIcon.color;
+        color.a = 0f;
+        levelUpIcon.color = color;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (currentHealth !=  healthComp.currentHealth) { currentHealth = healthComp.currentHealth; UpdateHealth(); } 
+        if(currentStamina != staminaComp.GetCurrentStamina()) { currentStamina = staminaComp.GetCurrentStamina(); UpdateStamina(); }
+        if (currentPoop != poopComp.GetCurrentPoop()) { currentPoop = poopComp.GetCurrentPoop(); UpdatePoop(); }
+        if (expComp.PLAYERLEVEL != cachedLevel)
+        {
+            cachedLevel = expComp.PLAYERLEVEL;
+
+            iconTimer = visibleTime + fadeTimer;
+
+            var color = levelUpIcon.color;
+            color.a = 1f;          // show instantly
+            levelUpIcon.color = color;
+        }
+        if (iconTimer > 0f)
+        {
+            iconTimer -= Time.deltaTime;
+
+            if (iconTimer <= fadeTimer)
+            {
+                var color = levelUpIcon.color;
+
+                float time = 1f - (iconTimer / fadeTimer);
+                color.a = Mathf.Lerp(1f, 0f, time);
+
+                levelUpIcon.color = color;
+            }
+        }
+
         if (isWarningShown)
         {
             currentTime -= Time.deltaTime;
@@ -56,16 +130,42 @@ public class UI_HudController : MonoBehaviour
     private void UpdateHealth()
     {
 
+        if(currentHealth == startHealth)
+        {
+            shownHealthImage.sprite = healthImages[0];
+         }
+        else if (currentHealth == startHealth * 0.8)
+        {
+            shownHealthImage.sprite = healthImages[1];
+        }
+        else if (currentHealth == startHealth * 0.6)
+        {
+            shownHealthImage.sprite = healthImages[2];
+        }
+        else if (currentHealth == startHealth * 0.4)
+        {
+            shownHealthImage.sprite = healthImages[3];
+        }
+        else if (currentHealth == startHealth * 0.2)
+        {
+            shownHealthImage.sprite = healthImages[4];
+        }
+        else if (currentHealth == 0)
+        {
+            shownHealthImage.sprite = healthImages[5];
+        }
+
+
     }
 
     private void UpdateStamina()
     {
-       
+        staminaBarImage.fillAmount = currentStamina/startStamina;
     }
 
     private void UpdatePoop()
     {
-
+        poopBarImage.fillAmount = currentPoop/startPoop;
     }
 
     public void ShowHawkWarning()
@@ -79,5 +179,16 @@ public class UI_HudController : MonoBehaviour
         isWarningShown = false;
         currentTime = hawkTimer;
         warningObj?.SetActive(false);
+    }
+
+    public void ShowLevelUpIcon()
+    {
+
+        iconTimer = visibleTime + fadeTimer;
+
+        var color = levelUpIcon.color;
+        color.a = 1f;
+        levelUpIcon.color = color;
+
     }
 }

@@ -48,10 +48,10 @@ public class VehicleCollisionChecker : MonoBehaviour
             if (type == 1)
             {
                 if (other.gameObject.GetComponent<BikeScript>().isStopped) { bikeScript.isStopped = true; }
-                else { 
-                bikeScript.SpeedUp();
-                other.gameObject.GetComponent<BikeScript>().SendCollisions();
-            }
+                else {
+                    bikeScript.SpeedUp();
+                    other.gameObject.GetComponent<BikeScript>().SendCollisions();
+                }
             }
             if (type == 2)
             {
@@ -74,8 +74,50 @@ public class VehicleCollisionChecker : MonoBehaviour
 
 
 
-        }
-
-
+        } 
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+
+        if (other.gameObject.CompareTag("Player") ||
+             other.gameObject.CompareTag("Vehicle") ||
+             other.gameObject.CompareTag("Enemy") ||
+             other.gameObject.CompareTag("NPC"))
+        {
+            if (type == 1)
+            {
+                if (other.gameObject.GetComponent<BikeScript>().isStopped == true) { bikeScript.isStopped = false; }
+                else
+                {
+                    bikeScript.SpeedUp();
+                    other.gameObject.GetComponent<BikeScript>().SendCollisions();
+                }
+            }
+            if (type == 2)
+            {
+                if (other.gameObject.GetComponent<BusScript>().isStopped == true) { busScript.isStopped = false; }
+                else
+                {
+                    busScript.SpeedUp();
+                    other.gameObject.GetComponent<BusScript>().SendCollisions();
+                }
+            }
+            if (type == 3)
+            {
+                if (other.gameObject.GetComponent<VehicleScript>().isStopped == true) { vehicleScript.isStopped = false; }
+                else
+                {
+                    vehicleScript.SpeedUp();
+                    other.gameObject.GetComponent<VehicleScript>().SendCollisions();
+                }
+            }
+
+
+
+        }
+    }
+
+
+        
 }
