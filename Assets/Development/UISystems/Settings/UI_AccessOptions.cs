@@ -25,7 +25,7 @@ public class UI_AccessOptions : UI_SettingsMenu
         InitCBModeDD();
         InitContrastModeDD();
         InitLanguageDD();
-
+        SetFirstAccessButton();
 
     }
 

@@ -22,7 +22,7 @@ public class UI_SkinSelector : MonoBehaviour
         confirmButton.onClick.AddListener(SetSkinToPlayer);
         //Cursor.visible = true;
         //Cursor.lockState = CursorLockMode.Confined;
-        //EventSystem.current.SetSelectedGameObject(confirmButton.gameObject);
+        EventSystem.current.SetSelectedGameObject(confirmButton.gameObject);
     }
     
     void PreviousSkin()

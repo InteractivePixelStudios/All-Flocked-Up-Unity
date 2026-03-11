@@ -3,7 +3,11 @@ using UnityEngine;
 public class TrinketScript : MonoBehaviour
 {
     [SerializeField] private GameObject playerRef;
-    [SerializeField] private int value;
+    public int value;
+    [SerializeField] private bool isKeychain;
+    [SerializeField] private bool isPresto;
+    [SerializeField] private bool isTrinket;
+    private int index;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void OnTriggerEnter(Collider other)
@@ -11,12 +15,30 @@ public class TrinketScript : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerRef = other.gameObject;
-            CollectTrinket(value);
         }
     }
 
-    private void CollectTrinket(int amt)
+    void SetIndex()
     {
-        playerRef.GetComponent<PlayerWingventory>().AddTrinketToInv(amt);
+        if (isKeychain)
+        {
+            index = 1;
+        }
+        else if (isTrinket)
+        {
+            index = 2;
+        }
+        else if (isPresto)
+        {
+            index = 3;
+        }
+        else index = 0;
+    }
+
+    public void CollectTrinket(int amt)
+    {
+        SetIndex();
+        playerRef.GetComponent<PlayerWingventory>().AddTrinketToInv(amt, index);
+        Destroy(this.gameObject);
     }
 }
