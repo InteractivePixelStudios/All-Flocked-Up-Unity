@@ -23,7 +23,7 @@ public class Q_KillComponent : MonoBehaviour, IQuestMechanic
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Poop"))
         {
             KillComplete();
             Debug.Log("collision test");

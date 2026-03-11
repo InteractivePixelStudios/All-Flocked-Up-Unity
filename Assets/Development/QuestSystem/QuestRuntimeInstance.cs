@@ -20,6 +20,8 @@ public class QuestRuntimeInstance
     public bool isRetrySelected = false;
 
     public List<GameObject> questMechanicsObjects = new List<GameObject>();
+    [SerializeField] private PlayerNavArrow arrowPointer;
+    GameObject destination;
 
     public void Start()
     {
@@ -30,6 +32,7 @@ public class QuestRuntimeInstance
     public void StartQuest()
     {
         questLog = GameObject.Find("Player").GetComponent<QuestLog>();
+        arrowPointer = GameObject.Find("Player").GetComponent<PlayerNavArrow>();
 
         var objectives = GetCurrentObjectives();
         foreach (var obj in objectives)
@@ -40,6 +43,9 @@ public class QuestRuntimeInstance
         // finds quest mechanics
         GetQuestObjects();
         GetQuestID(questData.questID);
+        GetObjectiveDestination(objectives[0].objectiveID);
+        arrowPointer.destination = destination;
+        arrowPointer.EnablePointerArrow(destination);
 
 
     }
@@ -75,10 +81,29 @@ public class QuestRuntimeInstance
         return questData.stages[currentStageIndex].objectivesToComplete;
     }
 
+    private void GetObjectiveDestination(string objectiveID)
+    {
+        var objective = objectiveProgress[objectiveID];
+        if (objective.Equals(currentStageIndex))
+        {
+            foreach (var mechanic in questMechanicsObjects)
+            {
+                var comp = mechanic.GetComponent<IQuestMechanic>();
+                if (objectiveProgress.Keys.Contains<string>(comp.GetObjectiveID()))
+                {
+                    destination = mechanic;
+                } 
+            }
+        }
+    }
+
     //Takes ObjectiveID and amount and increments. Checks if stage is complete and advances if true.
     public void UpdateObjective(string objectiveID, int amount)
     {
-        if (!objectiveProgress.ContainsKey(objectiveID)) return;
+        GetObjectiveDestination(objectiveID); 
+        arrowPointer.destination = destination; 
+        arrowPointer.EnablePointerArrow(destination);
+        if (!objectiveProgress.ContainsKey(objectiveID)) {  return; }
 
         objectiveProgress[objectiveID] += amount;
         questLog.OnObjectiveUpdated(this, objectiveID, objectiveProgress[objectiveID]);
@@ -144,5 +169,10 @@ public class QuestRuntimeInstance
         }
    
         Debug.Log("Call Quest Failed");
+    }
+
+    public void GiveItemReward()
+    {
+        questLog.AddItemsToInventory(questData.itemRewards);
     }
 }

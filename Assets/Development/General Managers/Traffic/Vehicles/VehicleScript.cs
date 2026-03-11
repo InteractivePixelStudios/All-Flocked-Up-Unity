@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class VehicleScript :  VehicleBase
+public class VehicleScript : VehicleBase
 {
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -33,13 +33,23 @@ public class VehicleScript :  VehicleBase
         base.StopVehicle();
     }
 
-    protected override void CheckForCollisions()
+    public override void TriggerCollisions()
     {
-        base.CheckForCollisions();
+        base.TriggerCollisions();
     }
 
     protected override void HonkHorn()
     {
         //add horn SFX/possible headlight VFX? 
+    }
+
+   public void SendCollisions()
+    {
+        TriggerCollisions();
+    }
+
+    public void SpeedUp()
+    {
+        base.navAgent.speed = 4f;
     }
 }

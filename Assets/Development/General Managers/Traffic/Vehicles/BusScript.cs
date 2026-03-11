@@ -30,13 +30,23 @@ public class BusScript : VehicleBase
         base.navAgent.isStopped = true;
     }
 
-    protected override void CheckForCollisions()
+    public override void TriggerCollisions()
     {
-        base.CheckForCollisions();
+        base.TriggerCollisions();
     }
 
     protected override void HonkHorn()
     {
         //add horn SFX/possible headlight VFX? 
+    }
+
+    public void SendCollisions()
+    {
+        TriggerCollisions();
+    }
+
+    public void SpeedUp()
+    {
+        base.navAgent.speed = 4f;
     }
 }

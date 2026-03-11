@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 
 public class CPURacer : MonoBehaviour 
@@ -11,6 +12,7 @@ public class CPURacer : MonoBehaviour
     [SerializeField] private RaceCheckpoint currentLocation;
     [SerializeField] private RaceBase raceBase;
     [SerializeField] private NavMeshAgent navAgentComponent;
+    [SerializeField] private RacerFlightComponent flightComponent;
     public bool isMoving = false;
     [SerializeField] private float detectObjectRange;
     [SerializeField] private LayerMask detectLayer;
@@ -27,37 +29,90 @@ public class CPURacer : MonoBehaviour
     [SerializeField] private float weight;
     [SerializeField] private float stamina;
 
+    private bool isGliding;
+    private bool isDiving;
+    private bool flapUp;
+    private bool isFlying;
+    private bool slowFlap;
+    private float currentSpeed;
+    [SerializeField]private bool wantsToFly;
+
     public float finishTime;
+
+    public bool GetFlapUp()
+    {
+        return flapUp;
+    }
+    public bool GetIsDiving()
+    {
+        return isDiving;
+    }
+    public float GetSpeedForward()
+    {
+        return currentSpeed; 
+    }
+    public bool GetIsGliding()
+    {
+        return isGliding;
+    }
+    public bool GetIsFlying()
+    {
+        return isFlying;
+    }
+    public bool GetIsJumping()
+    {
+        return isJumping;
+    }
+    public bool GetIsSlowFlap()
+    {
+        return slowFlap;
+    }
 
 
     //on load
     public void Awake()
     {
-        
-        Debug.Log("Loading");
+
     }
     //on start
     public void Start()
     {
+        flightComponent = GetComponent<RacerFlightComponent>();
         body = GetComponent<Rigidbody>();
         navAgentComponent = GetComponent<NavMeshAgent>();
         raceBase = FindFirstObjectByType<RaceBase>();
         SetRacerStats();
         GetCheckpoints();
-        //isMoving = true;
+        if (raceBase.countdownComplete)
+        {
+            isMoving = true;
+        }else isMoving = false;
 
 
     }
     //raycasts for groundcheck and obstacle detection... if has targetlocation and isMoving then it moves
     public void Update()
     {
+        if(!raceBase.countdownComplete) { return; }
+        if (wantsToFly)
+        {
+            RacerFly();
+        }
         GroundCheck();
         CheckForObstacles();
+        Debug.Log("CurrentSpeed = " + currentSpeed);
         if (targetLocation != null && isMoving && index < targetLocation.Count)
         {
-
-                currentLocation = targetLocation[index];
+            currentLocation = targetLocation[index];
+            if (!isFlying)
+            {
                 SetMoveToLocation(index);
+            }
+            else
+            {
+                FlightNavigation();
+            }
+                currentSpeed = GetComponent<Rigidbody>().linearVelocity.magnitude;
 
         }
 
@@ -82,8 +137,12 @@ public class CPURacer : MonoBehaviour
     //moves the nav agent to the location given
     public void MoveToLocation(RaceCheckpoint checkpoint)
     {
+        if (navAgentComponent.destination != currentLocation.transform.position)
+        {
 
-        navAgentComponent.SetDestination(currentLocation.transform.position);
+            navAgentComponent.SetDestination(currentLocation.transform.position);
+        }
+        else return;
     }
     //Stops nav agent movement
     private void StopMoving()
@@ -91,7 +150,7 @@ public class CPURacer : MonoBehaviour
         navAgentComponent.isStopped = true;
         navAgentComponent.speed = 0;
         //says obsolete...it lies...it works... actually setting isStopped only stops movement and doesnt cancel velocity LOL...why unity
-        navAgentComponent.Stop();
+        body.linearVelocity = Vector3.zero;
     }
     public void NextCheckpoint()
     {
@@ -103,33 +162,39 @@ public class CPURacer : MonoBehaviour
     {
         float turnDegree = 30f;
         RaycastHit hit;
-        Debug.DrawRay(transform.position, transform.forward * detectObjectRange, Color.red);
-        if(Physics.Raycast(transform.position, transform.forward*detectObjectRange, out hit,detectLayer))
+        if(Physics.Raycast(transform.position + transform.up / 4, transform.forward*detectObjectRange, out hit,detectLayer))
         {
+            Debug.DrawRay(transform.position + transform.up/4, transform.forward * detectObjectRange, Color.red);
             TurnRacer(turnDegree);
         }
 
         //needs to angle down
-        if (Physics.Raycast(transform.position, transform.forward * detectObjectRange, out hit, detectLayer))
+        if (Physics.Raycast(transform.position + transform.up / 4, transform.forward * detectObjectRange/10 - transform.up / 4, out hit, detectLayer))
         {
+            Debug.DrawRay(transform.position + transform.up / 4, transform.forward * detectObjectRange/10 - transform.up / 8, Color.red);
             Jump();
+
         }
-        if (Physics.Raycast(transform.position, transform.right * detectObjectRange, out hit, detectLayer))
+        if (Physics.Raycast(transform.position + transform.up / 4, transform.right * detectObjectRange, out hit, detectLayer))
         {
+            Debug.DrawRay(transform.position + transform.up / 4, transform.right * detectObjectRange, Color.red);
             TurnRacer(turnDegree);
         }
-        if (Physics.Raycast(transform.position, -transform.right* detectObjectRange, out hit, detectLayer))
+        if (Physics.Raycast(transform.position + transform.up / 4, -transform.right* detectObjectRange, out hit, detectLayer))
         {
+            Debug.DrawRay(transform.position + transform.up / 4, -transform.right * detectObjectRange, Color.red);
             TurnRacer(-turnDegree);
         }
     }
     //raycast for groundcheck bool 
-    private bool GroundCheck()
+    public bool GroundCheck()
     {
         RaycastHit ground;
-        if(Physics.Raycast(transform.position,Vector3.down*groundRange, out ground, groundLayer))
+        if(Physics.Raycast(transform.position + transform.up / 4, -transform.up * groundRange, out ground, groundLayer))
         {
+            Debug.DrawRay(transform.position + transform.up / 4, -transform.up * groundRange, Color.red);
             isGrounded = true;
+            isJumping = false;
         }
         return isGrounded;
     }
@@ -144,21 +209,64 @@ public class CPURacer : MonoBehaviour
     //YUMP-ING
     private void Jump()
     {
-        if (GroundCheck() && !isJumping)
+
+        if (GroundCheck() == true && !isJumping)
         {
             isJumping = true;
             // add verticle force to make the player jump
-            body.AddForce(transform.up * jumpHeight);
+            body.AddForce(Vector3.up * jumpHeight);
+
+                wantsToFly = true;
+            
         }
-        else
+        else if (GroundCheck() == true && isJumping && wantsToFly)
         {
-            RacerFly();
+
+
+            if (!isFlying)
+            {
+                flightComponent.InitiateFlight();
+                Debug.Log("ThisGotCalled");
+            }
         }
+        else return;
+
     }
 
     //... they believe they can touch the sky
     private void RacerFly()
     {
+        navAgentComponent.enabled = false;
+        if (!isFlying)
+        {
+            Debug.Log("FLYING");
+            flightComponent.InitiateFlight();
+        }
+        isFlying = true;
+    }
+
+    private void FlightNavigation()
+    {
+        var dir = (currentLocation.transform.position- transform.position).normalized;
+        Quaternion targetRot = Quaternion.LookRotation(dir);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 10);
+        Debug.Log(dir);
+        var distance = Vector3.Distance(currentLocation.transform.position, transform.forward);
+        Debug.Log(distance);
+        if (distance > 3)
+        {
+            if (currentLocation.transform.position.y > transform.position.y)
+            {
+                Debug.Log("NotHighEnough");
+                if(flightComponent.isFlying != true) { flightComponent.InitiateFlight(); }
+                    flightComponent.FlapUp();
+                
+            }else if (currentLocation.transform.position.y < transform.position.y)
+            {
+                flightComponent.gliding = true;
+                Debug.Log("Glide");
+            }
+        }
 
     }
     //gets the checkpoints for the race and orders them
@@ -229,5 +337,13 @@ public class CPURacer : MonoBehaviour
     public void StartMoving()
     {
         isMoving = true;
+        Debug.Log("RacerMOVE");
     }
+
+    public void ToggleNavCompOn()
+    {
+        navAgentComponent.enabled = true;
+    }
+
+
 }

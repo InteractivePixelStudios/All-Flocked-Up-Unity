@@ -226,6 +226,10 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
 
     protected void ChasePlayer()
     {
+        if (navAgent != enabled)
+        {
+            navAgent.enabled = true;
+        }
         Vector3 targetPos = player.transform.position;
         targetPos.y = transform.position.y;
 
@@ -239,28 +243,47 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
     protected void CheckForClimb()
     {
         if (isClimbing || climbCooldown > 0) return;
-        if (Physics.Raycast(transform.position + Vector3.up * 1f, transform.forward*0.5f,out RaycastHit hit, 5f, climbLayer))
+        if (Physics.Raycast(transform.position + Vector3.up * 1f, transform.forward*1.5f,out RaycastHit hit, 5f, climbLayer))
         {
             StartClimb(hit);
+            Debug.Log(hit.collider);
             
         }
     }
 
     protected void StartClimb(RaycastHit hit)
     {
+        Climb();
+        var col = hit.collider;
+        Vector3 point = col.bounds.center + Vector3.up * col.bounds.extents.y;
+        float lerpTime = 3f;
+        if (Vector3.Distance(transform.position, point) < 3)
+        {
+            transform.position = Vector3.Lerp(transform.position, point, Time.deltaTime * lerpTime);
+        Debug.Log(Vector3.Distance(transform.position, point));
 
+
+            Debug.Log(point);
+        }else if(Vector3.Distance(transform.position, point) < 1)
+        {
+            Search();
+        }
 
     }
 
     protected void Climb()
     {
-
+        Debug.Log("Climbing");
+        navAgent.enabled = false;
 
     }
 
-    protected void Search()
+    protected async void Search()
     {
 
+        Debug.Log("Searching");
+        await Task.Delay(1000);
+        GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
     }
 
 
@@ -284,7 +307,7 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
     //call this to run like wind
     public virtual void MoveRacoonToLocation()
     {
-        if (currentNode == null || navAgent == null)
+        if (currentNode == null || navAgent == null ||navAgent.enabled ==false)
             return;
 
         Vector3 direction = (currentNode.transform.position - transform.position).normalized;
@@ -295,6 +318,8 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
 
     public virtual void StopRacoon()
     {
+        if (currentNode == null || navAgent == null)
+            return;
         navAgent.isStopped = true;
         //Debug.Log("Stopping");
     }
@@ -311,6 +336,8 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
 
     protected void ChooseNextDirection(Waypoint node)
     {
+        if (navAgent == null)
+            return;
         connections.Clear();
 
         foreach (var connection in node.connections)

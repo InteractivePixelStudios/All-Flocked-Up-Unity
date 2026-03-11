@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_SettingsMenu : UI_PauseMenu
@@ -31,24 +32,26 @@ public class UI_SettingsMenu : UI_PauseMenu
         accessBackButton.onClick.AddListener(OpenAccessOptions);
     }
 
-
-    protected new void OnSettingsOpen()
+    public void SetFirstSettingsButton()
     {
-        base.OnSettingsOpen();
+        //EventSystem.current.SetSelectedGameObject(videoButton.gameObject);
     }
+
 
     protected void OpenVideoOptions()
     {
-        if (!accessOpen)
+        if (!videoOpen)
         {
-            accessOpen = true;
+            videoOpen = true;
             videoParent.gameObject.SetActive(true);
+            videoParent.gameObject.GetComponent<UI_VideoOptions>().SetFirstVideoButton();
             Debug.Log("Hello");
         }
-        else if (accessOpen)
+        else if (videoOpen)
         {
-            accessOpen = false;
+            videoOpen = false;
             videoParent.gameObject.SetActive(false);
+            SetFirstSettingsButton();
         }
     }
 
@@ -58,11 +61,14 @@ public class UI_SettingsMenu : UI_PauseMenu
         {
             audioOpen = true;
             audioParent.gameObject.SetActive(true);
+            audioParent.gameObject.GetComponent<UI_AudioOptions>().SetFirstAudioButton();
         }
         else if (audioOpen) 
         {
             audioOpen = false;
-            audioParent.gameObject.SetActive(false); }
+            audioParent.gameObject.SetActive(false);
+            SetFirstSettingsButton();
+        }
     }
 
     protected void OpenAccessOptions()
@@ -71,11 +77,13 @@ public class UI_SettingsMenu : UI_PauseMenu
         {
             accessOpen= true;
             accessParent.gameObject.SetActive(true);
+            accessParent.gameObject.GetComponent<UI_AccessOptions>().SetFirstAccessButton();
         }
         else if (accessOpen)
         {
             accessOpen = false;
             accessParent.gameObject.SetActive(false);
+            SetFirstSettingsButton();
         }
     }
 

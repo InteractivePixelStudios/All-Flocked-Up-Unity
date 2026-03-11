@@ -1,51 +1,43 @@
-using UnityEditor.Experimental.GraphView;
+
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerPerchSystem : MonoBehaviour
 {
-    [SerializeField] private LayerMask perchLayer;
-    [SerializeField] private I_Perchable currentPerchPoint;
-    [SerializeField] private UI_PerchPrompt prompt;
-    [SerializeField] private UI_PerchPrompt promptPrefab;
-    [SerializeField] private bool isReady;
+    public I_Perchable currentPerchPoint;
+    [SerializeField] private IconToggle icon;
+    public bool isReady;
+    bool isPerching;
     [SerializeField] private float checkDistance = 5f;
+    public bool moveLeft;
+    public bool moveRight;
+    float x;
+
+    PlayerInput playerInput;
+    InputAction moveAction;
+
+    private void Start()
+    {
+        playerInput = GetComponent<PlayerInput>();
+        moveAction = playerInput.actions.FindAction("Move");
+
+    }
 
 
     void Update()
     {
-        if (isReady && Input.GetKeyDown(KeyCode.E))
+
+        if (isPerching && x < 0f) { currentPerchPoint.MovePosition(x); }
+
+    }
+
+    public void Perch(I_Perchable currentPerchPoint)
+    {
+        if (isReady)
         {
             InteractWithPerch(currentPerchPoint);
             Debug.Log("InteractWithPerch");
         }
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, checkDistance, perchLayer))
-        {
-            hit.collider.TryGetComponent<I_Perchable>(out currentPerchPoint);
-            switch (currentPerchPoint)
-            {
-                case PerchableObject_Tree:
-                    ShowPrompt("Tree");
-                    isReady = true;
-                    var check = hit.collider.CompareTag("HideSpot");
-                    if (check)
-                    {
-                      var tree =currentPerchPoint as PerchableObject_Tree;
-                        tree.isHiding = true;
-                    }
-                    break;
-                case PerchableObject_Bush:
-                    ShowPrompt("Bush");
-                    isReady = true;
-                    break;
-                case PerchableObject_General:
-                    ShowPrompt(hit.collider.name);
-                    isReady = true;
-                    break;
-            }
-
-        }
-        else { HidePrompt(); isReady = false; }
     }
 
     private void InteractWithPerch(I_Perchable currentPerchPoint)
@@ -64,24 +56,7 @@ public class PlayerPerchSystem : MonoBehaviour
         }
         finally
         {
-            HidePrompt();
-        }
-    }
-
-    private void ShowPrompt(string obj)
-    {
-        if (prompt == null)
-        {
-            prompt = Instantiate<UI_PerchPrompt>(promptPrefab);
-            prompt.promptText.SetText(obj);
-        }
-    }
-
-    private void HidePrompt()
-    {
-        if(prompt!= null)
-        {
-            Destroy(prompt);
+            
         }
     }
 

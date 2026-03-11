@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class UI_RaceGiver : MonoBehaviour
@@ -26,8 +27,27 @@ public class UI_RaceGiver : MonoBehaviour
     private void GetRaceInfo()
     {
         Debug.Log("RaceInfo");
-        raceNameText.SetText(raceBase.raceData.raceName);
-        raceTimeText.SetText(raceBase.raceData.raceTime.ToString());
+        LocalizedString localizedString = new LocalizedString
+        {
+            TableReference = "AFU_Races",
+            TableEntryReference = raceBase.currentRaceGiver.raceData.name
+        };
+
+        localizedString.GetLocalizedStringAsync().Completed += handle =>
+        {
+            raceNameText.SetText(handle.Result);
+        };
+        LocalizedString localizedDescString = new LocalizedString
+        {
+            TableReference = "AFU_Races",
+            TableEntryReference = raceBase.currentRaceGiver.raceData.raceDescription.GetLocalizedString()
+        };
+
+        localizedDescString.GetLocalizedStringAsync().Completed += handle =>
+        {
+            raceTimeText.SetText(handle.Result);
+        };
+        // raceTimeText.SetText(raceBase.raceData.raceTime.ToString());
     }
 
     private void AcceptRace()

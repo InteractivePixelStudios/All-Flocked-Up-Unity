@@ -19,6 +19,9 @@ public class PoopProjectile : MonoBehaviour
 
     private float lifeTimer;
 
+    [SerializeField] private PoopSplatDecal decalPrefab;
+    [SerializeField] private ParticleSystem splashParticle;
+
 
     private void Awake()
     {
@@ -43,6 +46,27 @@ public class PoopProjectile : MonoBehaviour
 
     }
 
+    private void SpawnPoopDecal(Vector3 position, Vector3 hit)
+    {
+        PoopSplatDecal spawned;
+        if (hit.y >= 1)
+        {
+
+            spawned = Instantiate(decalPrefab, position, Quaternion.Euler(90, 0, 0));
+        }
+        else if (hit.x >= 1)
+        {
+
+            spawned = Instantiate(decalPrefab, position, Quaternion.Euler(0, 90, 0));
+        }
+        else if (hit.z <= 0)
+        {
+            spawned = Instantiate(decalPrefab, position, Quaternion.Euler(0, 0, 0));
+        }
+        else return;
+    }
+
+
     private void Update()
     {
 
@@ -50,21 +74,49 @@ public class PoopProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        var obj = collision.gameObject;
+        var hit = collision.GetContact(0).normal;
+        Debug.Log(hit);
+        SpawnPoopDecal(transform.position,hit);
+        Instantiate(splashParticle,transform.position,Quaternion.identity* Quaternion.Euler(-90,0,0));
         //source?.HandleHitEffects(poopType, collision.contacts[0].point); // Trigger hit effects
 
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Cat"))
         {
             //poopable.OnPoopHit(poopType);
+            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            Debug.Log("EnemyHit");
+        }
+
+        if (collision.gameObject.CompareTag("Dog"))
+        {
+            //poopable.OnPoopHit(poopType);
+            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            Debug.Log("EnemyHit");
+        }
+
+        if (collision.gameObject.CompareTag("Human"))
+        {
+            //poopable.OnPoopHit(poopType);
+            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            Debug.Log("EnemyHit");
+        }
+
+        if (collision.gameObject.CompareTag("Raccoon"))
+        {
+            //poopable.OnPoopHit(poopType);
+            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
             Debug.Log("EnemyHit");
         }
         if (collision.gameObject.CompareTag("NPC"))
         {
+            obj.GetComponent<NPCBase>().HitReact();
             Debug.Log("NPCHit");
         }
         if (collision.gameObject.CompareTag("Vehicle"))
         {
             var vehicle = collision.gameObject.GetComponent<VehicleScript>();
-            //Add Honk
+            vehicle.TriggerCollisions();
             Debug.Log("CarHit");
         }
         if (!collision.gameObject.CompareTag("Player"))

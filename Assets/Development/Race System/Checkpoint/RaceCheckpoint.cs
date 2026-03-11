@@ -13,6 +13,14 @@ public class RaceCheckpoint : MonoBehaviour
     private void Start()
     {
         num = raceBase.activeCheckpoints.Count;
+        GetComponent<MeshRenderer>().enabled = false;
+        GetComponent<SphereCollider>().enabled = false;
+    }
+
+    public void ShowCheckpoint()
+    {
+        GetComponent<MeshRenderer>().enabled = true;
+        GetComponent<SphereCollider>().enabled = true;
     }
     //calls UpdateCheckpoints on raceBase
     private void TriggerCheckpoint()
@@ -33,6 +41,7 @@ public class RaceCheckpoint : MonoBehaviour
     //trigger enter will call above function and destroy checkpoint
     private void OnTriggerEnter(Collider other)
     {
+        if (!raceBase.raceStarted) return;
         //this triggers early ....why me....activeCheckpoints get removed when hit so try to save count on Start but still nothing
         if (checkpointNumber >= num)raceBase.AddRacerToCompleted(other.gameObject, this);
 

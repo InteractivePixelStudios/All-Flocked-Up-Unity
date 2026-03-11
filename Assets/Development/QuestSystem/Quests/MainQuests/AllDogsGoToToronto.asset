@@ -17,11 +17,11 @@ MonoBehaviour:
   questLogDescription: All Dogs
   trackerDescription: All Dogs
   isMainQuest: 1
-  stagesToComplete: 1
-  isQuestTimed: 1
+  stagesToComplete: 2
+  isQuestTimed: 0
   questTime: 30
   autoAcceptQuest: 1
-  autoCompleteQuest: 0
+  autoCompleteQuest: 1
   stages:
   - stageName: All Dogs
     stageDescription: All Dogs
@@ -33,6 +33,11 @@ MonoBehaviour:
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0
+    expReward: 0
+    trinketReward: 0
+  - stageName: All Dogs
+    stageDescription: All Dogs
+    objectivesToComplete:
     - objectiveName: All Dogs
       objectiveDescription: All Dogs
       objectiveType: Q_InteractComponent
@@ -42,3 +47,6 @@ MonoBehaviour:
       bonusEXP: 0
     expReward: 0
     trinketReward: 0
+  itemRewards:
+  - {fileID: 7004370475826129043, guid: ba34f1e0fb329a040b2248c25013f786, type: 3}
+  - {fileID: 6246681715980741345, guid: 0a54840cdde938f46a8e29407f7cf9f6, type: 3}

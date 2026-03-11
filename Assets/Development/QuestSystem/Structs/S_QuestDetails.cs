@@ -1,14 +1,18 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.Localization;
+
 
 [CreateAssetMenu(fileName = "NewQuest", menuName = "Quests/Quest")]
 public class QuestDetails : ScriptableObject
 {
     //Store the QUEST variables and refs here.
 
-    public string questName;
+    public LocalizedString questName;
     public string questID;
-    [TextArea] public string questLogDescription;
-    [TextArea] public string trackerDescription;
+    public LocalizedString questLogDescription;
+    public LocalizedString trackerDescription;
 
     public bool isMainQuest;
     public int stagesToComplete;
@@ -20,4 +24,6 @@ public class QuestDetails : ScriptableObject
     public bool autoCompleteQuest;
 
     public StageDetails[] stages;
+
+    public List<GameObject> itemRewards = new();
 }

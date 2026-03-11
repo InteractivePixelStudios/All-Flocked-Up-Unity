@@ -1,6 +1,7 @@
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -46,23 +47,25 @@ public class UI_MainMenu : MonoBehaviour
         playerRef.transform.rotation  = playerSpawnPoint.transform.rotation;
         cameraRef.transform.forward = playerSpawnPoint.transform.forward;
         cameraRef.transform.position = playerRef.transform.position+ cameraOffset;
-        playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
-        playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
-        cameraRef.enabled = false;
+        //playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
+        //playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
+        //cameraRef.enabled = false;
+        //EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+        canvasController.ShowPlayerCursor();
     }
 
     private void Update()
     {
-        if (menuOpen)
-        {
-            cameraRef.transform.forward = playerSpawnPoint.transform.forward;
-        }
-        else return;
+        //if (menuOpen)
+        //{
+        //    cameraRef.transform.forward = playerSpawnPoint.transform.forward;
+        //}
+        //else return;
     }
 
     protected void OnSettingsOpen()
     {
-        if (settingsCanvas == null)
+        if (!settingsOpen)
         {
             mainCanvas.SetActive(false);
             settingsCanvas.SetActive(true);
@@ -79,7 +82,7 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void OnControlsOpen()
     {
-        if (controlsCanvas == null)
+        if (!controlsOpen)
         {
             mainCanvas.SetActive(false);
             controlsCanvas.SetActive(true);
@@ -95,17 +98,19 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void PlayCredits()
     {
-        //Needs to either trigger cinematic camera or change scene to a credits scene
-
+        SceneManager.LoadScene("CreditScene");
     }
 
     protected void StartNewGame()
     {
-        Destroy(this.gameObject);
-        canvasController.DestroyMainMenu();
-        playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
-        playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
-        cameraRef.enabled = true;
+
+        //playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
+        //playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
+        Debug.Log("Loading Scene");
+        canvasController.HidePlayerCursor();
+        SceneManager.LoadScene("TutorialIsland"); // change after build
+        //cameraRef.enabled = true;
+
     }
 
     protected void CheckForSavedGame()
@@ -128,7 +133,9 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void LoadGame()
     {
+        mainCanvas.SetActive(false);
         GameObject canvasObj = new GameObject("SaveWindowCanvas");
+        canvasObj.transform.SetParent(transform, false);
         Canvas canvas = canvasObj.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvasObj.AddComponent<CanvasScaler>();
@@ -138,8 +145,12 @@ public class UI_MainMenu : MonoBehaviour
         var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
         comp.isSaving = false;
 
-        playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
-        playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
+    }
+
+    public void CloseSaveWindow()
+    {
+        Destroy(currentSaveWindow);
+        mainCanvas.SetActive(true);
     }
 
     protected void QuitGame()

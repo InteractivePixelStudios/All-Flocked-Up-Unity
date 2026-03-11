@@ -18,12 +18,6 @@ public class TrafficManager : MonoBehaviour
     public float timer;
 
 
-
-
-    private void Awake()
-    {
-        
-    }
     async void Start()
     {
         InitLights();
@@ -149,37 +143,47 @@ public class TrafficManager : MonoBehaviour
         }
     }
 
-    private async void SpawnCarsAtWaypoints()
+    private  void SpawnCarsAtWaypoints()
     {
-
-        for(int i = 0; i <= numberOfCars; i++)
+        if (waypoints.Count == 0) return;
+        for(int i = 0; i < numberOfCars; i++)
         {
-            var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)]);
+            var randomIndex = Random.Range(0, waypoints.Count);
+            //if (randomIndex != lastIndex)
+            //{
+            Waypoint waypoint = waypoints[randomIndex];
+            var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)],waypoint.transform.position,waypoint.transform.rotation);
             vehicles.Add(car);
-            ;
-            if (car != null)
-            {
-                var randomIndex = Random.Range(0, waypoints.Count - 1);
-                if (randomIndex != lastIndex)
-                {
-                    Transform waypoint = waypoints[randomIndex].transform;
-                    car.transform.position = waypoint.position;
-                    car.currentNode = waypoints[randomIndex];
-                }
-                else
-                {
-                    randomIndex++;
-                    Transform waypoint = waypoints[randomIndex].transform;
-                    car.transform.position = waypoint.position;
-                    car.currentNode = waypoints[randomIndex];
-                }
-            }
+            car.transform.position = waypoint.transform.position;
+            car.currentNode = waypoint;
+            car.manager = this;
+
+
+           //}
         }
-        Debug.Log("CarsSpawned");
-        await Task.Yield();
+
+        //await Task.Yield();
     }
 
+    public void RemoveVehicleFromList(VehicleBase vehicle)
+    {
+        vehicles.Remove(vehicle);
+        SpawnNewCar();
+    }
 
+    private void SpawnNewCar()
+    {
+        var randomIndex = Random.Range(0, waypoints.Count - 1);
+        if (randomIndex != lastIndex)
+        {
+            Transform waypoint = waypoints[randomIndex].transform;
+            var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)], waypoint.position, waypoint.rotation);
+            vehicles.Add(car);
+            car.transform.position = waypoint.position;
+            car.currentNode = waypoints[randomIndex];
+            car.manager = this;
 
+        }
 
+    }
 }

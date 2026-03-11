@@ -12,8 +12,11 @@ public class PlayerGroundMovement : MonoBehaviour
     StaminaSystem playerStamina;
     PlayerFlightMovement playerFlightMovement;
     PlayerStealthSystem playerStealthComponent;
+    PlayerStateController playerStateController;
     static GroundCheck groundCheck;
     Transform cameraRef;
+
+    [SerializeField] private PlayerInput input;
 
     [Header("Additional Requirements")]
     [SerializeField] GameObject crouchVinete;
@@ -52,7 +55,7 @@ public class PlayerGroundMovement : MonoBehaviour
     float x, z;
     bool crouching, sprinting;
     bool isJumping = false;
-    bool isFlying = false;
+    //bool isFlying = false;
     float sprintTimer = 0f;
 
     InputAction moveAction;
@@ -62,7 +65,10 @@ public class PlayerGroundMovement : MonoBehaviour
 
     public float GetSpeedForward()
     {
-        return z;
+        if (z != 0)
+            return Mathf.Abs(z);
+        else
+            return Mathf.Abs(x);
     }
 
     public float GetSpeedSide()
@@ -77,7 +83,9 @@ public class PlayerGroundMovement : MonoBehaviour
 
     public bool GetIsFlying()
     {
-        return isFlying;
+        // === refactored for PSC - Jacob. hope this works :0 ===
+        //return isFlying;
+        return playerStateController.CurrentState == PlayerState.FlyMove;
     }
 
     private void Awake()
@@ -85,6 +93,7 @@ public class PlayerGroundMovement : MonoBehaviour
         playerBody = GetComponent<Rigidbody>();
         playerStamina = GetComponent<StaminaSystem>();
         playerStealthComponent = GetComponent<PlayerStealthSystem>();
+        playerStateController = GetComponent<PlayerStateController>();
 
         stepRayUpper.transform.localPosition = new Vector3(stepRayUpper.transform.localPosition.x, stepHeight, stepRayUpper.transform.localPosition.z);
     }
@@ -95,8 +104,7 @@ public class PlayerGroundMovement : MonoBehaviour
         cameraRef = Camera.main.transform;
         groundCheck = GetComponentInChildren<GroundCheck>();
         playerFlightMovement = GetComponent<PlayerFlightMovement>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
 
         currentMaxSpeed = maxSpeed;
 
@@ -104,6 +112,8 @@ public class PlayerGroundMovement : MonoBehaviour
         jumpAction = InputSystem.actions.FindAction("Jump");
         sprintAction = InputSystem.actions.FindAction("Sprint");
         crouchAction = InputSystem.actions.FindAction("Crouch");
+
+        input = GetComponent<PlayerInput>();
 
         PlayerInput();
     }
@@ -117,7 +127,8 @@ public class PlayerGroundMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isFlying)
+        //if (isFlying) === refactored for PSC - Jacob ===
+        if (playerStateController.CurrentState != PlayerState.GroundMove)
             return;
 
         Movement();
@@ -146,7 +157,8 @@ public class PlayerGroundMovement : MonoBehaviour
 
     void Movement()
     {
-        if (isFlying)
+        //if (isFlying) === refactored for PSC - Jacob ===
+        if (playerStateController.CurrentState != PlayerState.GroundMove)
             return;
 
         x = moveAction.ReadValue<Vector2>().x;
@@ -177,6 +189,11 @@ public class PlayerGroundMovement : MonoBehaviour
         // Counteract sliding and sloppy movement
         CounterMovement(x, z, mag);
 
+        if (z != 0)
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y - 90 + (90 * z + 45 * x * z), rotationLerpSpeed), transform.eulerAngles.z);
+        else
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y + (90 * x), rotationLerpSpeed), transform.eulerAngles.z);
+
         // check whether adding speed will bring player over max speed
         if (x > 0 && xMag > currentMaxSpeed) x = 0;
         if (x < 0 && xMag < -currentMaxSpeed) x = 0;
@@ -184,18 +201,17 @@ public class PlayerGroundMovement : MonoBehaviour
         if (z < 0 && yMag < -currentMaxSpeed) z = 0;
 
 
-        if (z > 0)
-        {
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y, rotationLerpSpeed), transform.eulerAngles.z);
-        }
         //Apply forces to playerBody
-        playerBody.AddForce(transform.forward * z * currentSpeed * Time.deltaTime);
-        playerBody.AddForce(transform.right * x * currentSpeed * Time.deltaTime);      
+        playerBody.AddForce(transform.forward * Mathf.Abs(z) * currentSpeed * Time.deltaTime);
+        playerBody.AddForce(transform.forward * Mathf.Abs(x) * currentSpeed * Time.deltaTime);
     }
 
     void Jump()
     {
-        if (isFlying)
+        if (input.currentActionMap != input.actions.FindActionMap("Player")) return;
+
+        //if (isFlying)
+        if (playerStateController.CurrentState != PlayerState.GroundMove)
             return;
 
         // check if player is on the ground to jump
@@ -214,7 +230,8 @@ public class PlayerGroundMovement : MonoBehaviour
 
     void StartCrouch()
     {
-        if (isFlying || sprinting)
+        //if (isFlying || sprinting)
+        if(playerStateController.CurrentState != PlayerState.GroundMove || sprinting)
             return;
 
         if (!crouching)
@@ -223,7 +240,6 @@ public class PlayerGroundMovement : MonoBehaviour
             crouching = true;
             currentMaxSpeed = crouchSpeed;
             playerStealthComponent.ToggleStealthOn();
-            Debug.Log("Crouched");
         }
     }
 
@@ -235,13 +251,14 @@ public class PlayerGroundMovement : MonoBehaviour
             crouching = false;
             currentMaxSpeed = maxSpeed;
             playerStealthComponent.ToggleStealthOff();
-            Debug.Log("UnCrouched");
         }
     }
 
     void StartSprint()
     {
-        if (isFlying || crouching)
+        //if (isFlying || crouching)
+        if(playerStateController.CurrentState != PlayerState.GroundMove || sprinting)
+
             return;
 
         if (playerStamina.UseStamina(sprintStaminaAmount))
@@ -306,11 +323,11 @@ public class PlayerGroundMovement : MonoBehaviour
         //Counter movement based on direction of movement
         if (Mathf.Abs(mag.x) > threshold && Mathf.Abs(x) < 0.05f || (mag.x < -threshold && x > 0) || (mag.x > threshold && x < 0))
         {
-            playerBody.AddForce(moveSpeed * transform.right * Time.deltaTime * -mag.x * counterMovement);
+            playerBody.AddForce(transform.right * (moveSpeed * Time.deltaTime * -mag.x * counterMovement));
         }
-        if (Mathf.Abs(mag.y) > threshold && Mathf.Abs(y) < 0.05f || (mag.y < -threshold && y > 0) || (mag.y > threshold && y < 0))
+        if (Mathf.Abs(mag.y) > threshold && Mathf.Abs(y) < 0.05f && Mathf.Abs(x) < 0.05f || (mag.y < threshold && y != 0))
         {
-            playerBody.AddForce(moveSpeed * transform.forward * Time.deltaTime * -mag.y * counterMovement);
+            playerBody.AddForce(transform.forward * (moveSpeed * Time.deltaTime * -mag.y * counterMovement));
         }
 
         // Limit the speed of diagonal running to the maxSpeed
@@ -325,6 +342,8 @@ public class PlayerGroundMovement : MonoBehaviour
         }
     }
 
+    
+    // === I feel like this could somehow be made more elegant - Jacob ===
     void StepClimb()
     {
         RaycastHit hitLower;
@@ -378,9 +397,12 @@ public class PlayerGroundMovement : MonoBehaviour
         }
     }
 
+    
+    // === refactored for PSC - Jacob === 
     public void InitiateFlight()
     {
-        isFlying = true;
+        //isFlying = true;
+        playerStateController.EnterFlyMode();
         playerBody.useGravity = false;
         playerStamina.CancelRegen();
         playerFlightMovement.InitiateFlight();
@@ -388,10 +410,11 @@ public class PlayerGroundMovement : MonoBehaviour
 
     public void InitiateWalkState()
     {
-        isFlying = false;
+        //isFlying = false;
+        playerStateController.ExitFlyMode();
         playerBody.useGravity = true;
         if (groundCheck.IsGrounded())
             playerStamina.RegenStamina();
-    }
+    } 
 
 }

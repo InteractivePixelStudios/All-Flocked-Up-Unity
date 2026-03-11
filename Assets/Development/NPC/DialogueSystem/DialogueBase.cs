@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEngine.Localization;
+using System.Linq;
 
 public class DialogueBase : MonoBehaviour
 {
@@ -13,11 +15,11 @@ public class DialogueBase : MonoBehaviour
     [SerializeField] private string currentDialogueLineID;
 
     [SerializeField] private string currentDialogueName;
-    [SerializeField] private string currentDialogueText;
-    [SerializeField] private Image currentDialogueImage;
+    [SerializeField] private LocalizedString currentDialogueText;
+    [SerializeField] private Sprite currentDialogueImage;
     [SerializeField] private string currentContinueStatus;
     public string currentBranchID;
-    public string[] currentResponseOptions;
+    public LocalizedString[] currentResponseOptions;
     public string responseReturnID;
     [SerializeField] private UI_CanvasController canvasController;
     [SerializeField] private bool typerComplete {  get; set; }
@@ -26,12 +28,14 @@ public class DialogueBase : MonoBehaviour
     [SerializeField]private List<DialogueLineData> dialogueList = new List<DialogueLineData>();
     public DialogueLineData currentDialogueLineData;
 
+    [SerializeField] private List<Sprite> birdImageList = new();
+
 
     [SerializeField]private string retriggerDialogueLineID;
     public bool isRetrigger;
 
    [SerializeField] private int currentTextSpeed;
-    public int textSpeed=>currentTextSpeed=500;// this speed is in ms
+    public int textSpeed=>currentTextSpeed=100;// this speed is in ms
 
     public bool GetIsTyping()
     {
@@ -46,12 +50,12 @@ public class DialogueBase : MonoBehaviour
     //loads the CSV and adds each line as a string into importedLines, trims each line into lineData and sets the currentDialogueLine based on currentDialogueIndex
     public void LoadDialogueSheet()
     {
-        string filePath = Path.Combine(Application.streamingAssetsPath, "DialogueSpreadsheet.csv");
-        if (!File.Exists(filePath)) { Debug.Log("FileNotFound"); return; }
+        string filePath = Path.Combine(Application.streamingAssetsPath, DIALOGUEFILENAME);
+        if (!File.Exists(filePath)) { Debug.Log("File not found: " + filePath); return; }
 
         string[] importedLines = File.ReadAllLines(filePath);
-        Debug.Log(importedLines.Length);
 
+        Debug.Log(importedLines.Length);
         for (int i = currentDialogueIndex; i < importedLines.Length; i++)
         {
             string line = importedLines[i].Trim();
@@ -64,11 +68,19 @@ public class DialogueBase : MonoBehaviour
             {
                 dialogueID = lineData[0],
                 dialogueSpeaker = lineData[1],
-                dialogueText = lineData[2],
+                dialogueText = new LocalizedString
+                {
+                    TableReference = "AFU_Dialogue",
+                    TableEntryReference = lineData[0]
+                },
                 dialogueImage = lineData[3],
                 dialogueContinue = lineData[4],
                 nextID = lineData[5],
-                resposeOptions = lineData[6].Split('|'),
+                resposeOptions = lineData[6].Split('|').Select(option => new LocalizedString
+                {
+                    TableReference = "AFU_DialogueResponses",  
+                    TableEntryReference = option        
+                }).ToArray(),
                 branchID = lineData[7]
 
 
@@ -79,6 +91,7 @@ public class DialogueBase : MonoBehaviour
             currentDialogueLineID = dialogueLine.dialogueID;
             currentContinueStatus = dialogueLine.dialogueContinue;
             currentDialogueName = dialogueLine.dialogueSpeaker;
+            currentDialogueImage = FindBirdImage(dialogueLine.dialogueImage);
             currentDialogueText = dialogueLine.dialogueText;
             retriggerDialogueLineID = dialogueLine.nextID;
             currentResponseOptions = dialogueLine.resposeOptions;
@@ -97,8 +110,15 @@ public class DialogueBase : MonoBehaviour
             currentBranchID=currentDialogueLineData.branchID;
 
         }
-        TypeText(textSpeed);
-        SendResponseOptions();
+        //TypeText(textSpeed);
+        //SendResponseOptions();
+    }
+
+    //Finds the sprite with the given name
+    private Sprite FindBirdImage(string imageName)
+    {
+        return birdImageList.Find(image => image.name == imageName);
+
     }
     //returns the desired dialogueLineData based on the given string ID
     public DialogueLineData GetDialogueLineByID(string id)
@@ -119,6 +139,7 @@ public class DialogueBase : MonoBehaviour
         currentDialogueLineID = line.dialogueID;
         currentDialogueName = line.dialogueSpeaker;
         currentDialogueText = line.dialogueText;
+        currentDialogueImage = FindBirdImage(line.dialogueImage);
         currentContinueStatus = line.dialogueContinue;
         currentResponseOptions = line.resposeOptions;
     }
@@ -129,7 +150,7 @@ public class DialogueBase : MonoBehaviour
         typerComplete = false;
         SetCurrentDialogue(dialogueLineID);
 
-        if (canvasController != null && canvasController.dialogueCanvas != null)
+        if (canvasController.activeDialogueInstance != null)
         {
             TypeText(textSpeed);
 
@@ -166,7 +187,7 @@ public class DialogueBase : MonoBehaviour
     //calls the function from the dialogue canvas
     public void ClearDialogue()
     {
-        canvasController.dialogueCanvas.ClearDialogueCanvas();
+        canvasController.activeDialogueInstance.ClearDialogueCanvas();
         isRetrigger = true;
     }
 
@@ -187,21 +208,25 @@ public class DialogueBase : MonoBehaviour
     //waits 2s after text done to show buttons
     public async void TypeText(int speed)
     {
-        string temp = "";
-        foreach (var item in currentDialogueText.AsSpan().ToArray())
-        {
-            
-            Debug.Log(temp);
-            temp += item; 
-            canvasController.dialogueCanvas.UpdateDialogueUI(
-            currentDialogueName,
-            temp,
-            currentDialogueImage);
-            //Add narrative sounds / function call here
-            await Task.Delay(speed);
+        typerComplete = false;
 
+        string resolvedText = await currentDialogueText.GetLocalizedStringAsync().Task;
+
+
+        string temp = "";
+        foreach (char c in resolvedText)
+        {
+            temp += c;
+
+            canvasController.activeDialogueInstance.UpdateDialogueUI(
+                currentDialogueName,
+                temp,
+                currentDialogueImage
+            );
+
+            await Task.Delay(speed);
         }
-        
+
         await Task.Delay(2000);
         ShowResponseButtons(true);
     }
@@ -218,7 +243,7 @@ public class DialogueBase : MonoBehaviour
         typerComplete = ready;
         if (typerComplete)
         {
-            canvasController.dialogueCanvas.GetResponseOptions();
+            canvasController.activeDialogueInstance.GetResponseOptions();
             
         }
         

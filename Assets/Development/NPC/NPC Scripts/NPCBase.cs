@@ -10,9 +10,13 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     public bool isMoving=false;
     private UI_CanvasController canvasController;
     [SerializeField] private DialogueBase dialogue;
-    [SerializeField] private string dialogueStartLineID;
+    [SerializeField] private List<string> dialogueStartLineID = new();
     [SerializeField] private string retriggerDialogueLineID;
+    int index;
     private bool isRetrigger;
+    [SerializeField] private GameObject homeLocation;
+    [SerializeField] private QuestGiver questGiverComp;
+    public bool dialogueFirst;
     //on load
     public void Awake()
     {
@@ -21,10 +25,12 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     //on start
     public void Start()
     {
+        questGiverComp = GetComponent<QuestGiver>();
         navAgentComponent = GetComponent<NavMeshAgent>();
         dialogue = FindFirstObjectByType<DialogueBase>();
         canvasController = FindFirstObjectByType<UI_CanvasController>();
         Debug.Log("NPC LOADED");
+        homeLocation = FindFirstObjectByType<LargeNest>().gameObject;
     }
 
     public void Update()
@@ -33,6 +39,12 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         {
             MoveToLocation();
         }
+        if(questGiverComp.hasQuest == false || questGiverComp == null)
+        {
+            targetLocation = homeLocation.transform;
+            //isMoving = true;
+        }
+
     }    
 
     //use this to add "Look at" effects like a prompt or something
@@ -44,13 +56,21 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     //called from PlayerInteraction... opens and prints dialogue
     public void InteractWithNPCDialogue()
     {
+
         if (dialogue.isRetrigger)
         {
             dialogue.PrintDialogue(retriggerDialogueLineID);
-        } 
+        }
         else
-        dialogue.PrintDialogue(dialogueStartLineID);
-        dialogue.isRetrigger = true;
+        {
+            dialogue.PrintDialogue(dialogueStartLineID[index]);
+            index++;
+            if (index <= dialogueStartLineID.Count - 1)
+            {
+                dialogue.isRetrigger = true;
+                index = 0;
+            }
+        }
 
 
     }
@@ -67,7 +87,10 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         navAgentComponent.SetDestination(targetLocation.position);
     }
 
+    public void HitReact()
+    {
 
+    }
 
 
 }

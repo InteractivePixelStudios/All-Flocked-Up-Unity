@@ -9,16 +9,18 @@ public class NestBase : MonoBehaviour
     [SerializeField] private StickBuilder stickBuilder;
     public bool isActiveNest;
     private UI_CanvasController canvasController;
+    [SerializeField] Material baseMaterial;
+    [SerializeField] Material distanceMaterial;
 
 
     protected void ShowNest()
     {
-        gameObject.SetActive(true);
+        gameObject.GetComponent<MeshRenderer>().material = baseMaterial;
     }
 
     protected void HideNest()
     {
-        gameObject.SetActive(false);
+        gameObject.GetComponent<MeshRenderer>().material = distanceMaterial;
     }
 
 

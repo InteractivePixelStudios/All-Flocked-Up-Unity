@@ -10,15 +10,20 @@ public class VehicleBase :MonoBehaviour
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [SerializeField] protected NavMeshAgent navAgent;
-    [SerializeField] private float vehicleSpeed;
+    [SerializeField] private float vehicleSpeed => navAgent.speed;
     [SerializeField] protected float detectRadius=2f;
     [SerializeField] protected LayerMask playerLayer;
     [SerializeField] protected LayerMask enemyLayer;
     [SerializeField] protected LayerMask trafficLayer;
     public bool isStopped;
+    private float stopTimer = 5f;
     [SerializeField] private bool isMoving;
     [SerializeField] private List<WaypointConnection> connections = new();
     [SerializeField] protected float detectObjectRange=2f;
+    public TrafficManager manager;
+
+    bool isLeftTurn;
+    bool isRightTurn;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
@@ -26,9 +31,17 @@ public class VehicleBase :MonoBehaviour
         MoveVehicleToLocation();
     }
 
+
     // Update is called once per frame
     protected virtual void Update()
     {
+        var distance = Vector3.Distance(transform.position, currentNode.transform.position);
+        if (distance > 200f)
+        {
+            Debug.Log("Too far from currentNode");
+            Destroy(this.gameObject);
+           
+        }
         if (isStopped)
         {
             StopVehicle();
@@ -36,11 +49,11 @@ public class VehicleBase :MonoBehaviour
         {
             MoveVehicleToLocation();
         }
-        CheckForCollisions();
 
         if (currentNode == null)
         {
             StopVehicle();
+            Debug.Log("Cant find CurrentNode");
             return;
         }
 
@@ -51,9 +64,25 @@ public class VehicleBase :MonoBehaviour
 
     }
 
+    public bool GetIsMoving()
+    {
+        return isMoving;
+    }
+
+    public bool GetIsLeftTurn()
+    {
+        return isLeftTurn;
+    }
+
+    public bool GetIsRightTurn()
+    {
+        return isRightTurn;
+    }
+
     protected virtual void SetMoveToLocation(Waypoint location)
     {
         currentNode = location;
+        navAgent.speed = 3.5f;
     }
 
     //call this to run like wind
@@ -69,25 +98,32 @@ public class VehicleBase :MonoBehaviour
 
     public virtual void StopVehicle()
     {
-        navAgent.isStopped = true;
-        //Debug.Log("Stopping");
-    }
-
-    protected virtual void CheckForCollisions()
-    {
-        RaycastHit hit;
-        int combinedMask = trafficLayer | playerLayer | enemyLayer;
-
-        if (Physics.Raycast(transform.position, transform.forward, out hit, detectObjectRange, combinedMask))
+        stopTimer -= Time.deltaTime;
+        if(stopTimer <= 0)
         {
-            StopVehicle();
-            HonkHorn();
-            Debug.DrawLine(transform.position, hit.point, Color.yellow);
+            Debug.Log("Car Stopped too long!");
+            navAgent.isStopped = false;
+            isStopped = false;
+            isMoving = true;
         }
         else
         {
-            if (!navAgent.isStopped)
-                MoveVehicleToLocation();
+            navAgent.isStopped = true;
+        }
+        //Debug.Log("Stopping");
+    }
+
+    public virtual void TriggerCollisions()
+    {
+        Debug.Log("HitAnotherVehicle");
+        //StopVehicle();
+        HonkHorn();
+        navAgent.speed = 2;
+        if (navAgent.isStopped)
+        {
+            isStopped = false;
+            isMoving = true;
+            MoveVehicleToLocation();
         }
     }
 
@@ -105,26 +141,31 @@ public class VehicleBase :MonoBehaviour
             connections.Add(new WaypointConnection { node = node.nextWaypoint });
 
         }
-        if(node.nextWaypoint == null)
+        if (connections.Count == 0 && node.nextWaypoint == null)
         {
-            node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count)];
-        }
-        if (node.branches.Count>0)
-        {
-            var chance = Random.Range(0, 1);
-            if (chance != 0)
+            if (node.branches.Count > 0)
             {
-                node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count)];
+                node.nextWaypoint = node.branches[0];
             }
             
         }
+        //if (node.branches.Count>0)
+        //{
+        //    var chance = Random.Range(0, 1);
+        //    if (chance != 0)
+        //    {
+        //        node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count-1)];
+        //    }
+            
+        //}
         if(connections.Count ==0 && node.branches.Count == 0 && node.nextWaypoint == null)
         {
             Destroy(this.gameObject);
+            manager.RemoveVehicleFromList(this);
         }
 
-        if (connections.Count == 0)
-            return;
+        //if (connections.Count == 0)
+        //    return;
 
         int randomIndex = Random.Range(0, connections.Count);
         Waypoint nextNode = connections[randomIndex].node;
@@ -139,5 +180,8 @@ public class VehicleBase :MonoBehaviour
     protected virtual void HonkHorn()
     {
         //add horn SFX/possible headlight VFX? 
+        Debug.Log("HONNKKKKKKKKKKKK");
     }
+
+
 }

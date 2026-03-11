@@ -33,7 +33,7 @@ public class CompassController : MonoBehaviour
         //north compass
      float playerYaw = player.transform.eulerAngles.y;   
      compassDial.localEulerAngles = new Vector3(0,0, playerYaw);
-     Debug.Log(compassDial.localEulerAngles);
+
      
      //Quest marker direction
      //Vector3 toTarget = questTarget.position - player.position

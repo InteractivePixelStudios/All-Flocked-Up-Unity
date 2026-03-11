@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,10 +13,10 @@ public class QuestLog : MonoBehaviour
     [SerializeField] private UI_QuestReward questRewardUI;
     public bool hasQuest = false;
     public QuestGiver currentQuestGiver;
-    public QuestLogMenuEvents logMenuEvents;
     private bool questTimerStarted;
     public float currentTime;
     [SerializeField] private UI_CanvasController canvasController;
+    [SerializeField]private PlayerNavArrow arrowPointer ;
 
     //checks if quest in timed and shows the timer when  quest started
     private void GetIsQuestTimed(QuestDetails quest, QuestRuntimeInstance instance)
@@ -77,7 +78,7 @@ public class QuestLog : MonoBehaviour
     //if playuer doesnt have quest already it creates QuestRuntimeInstance from QuestData and calls StartQuest() in that instance
     public void AcceptQuest(QuestDetails questData,QuestGiver questGiver)
     {
-        if (hasQuest) { return; }
+       // if (hasQuest) { return; }
         if (HasQuestOrCompleted(questData))
         {
             Debug.LogWarning($"Quest '{questData.questName}' already accepted or completed.");
@@ -95,6 +96,7 @@ public class QuestLog : MonoBehaviour
         hasQuest = true;
         currentQuestGiver = questGiver;
         GetIsQuestTimed(questData, instance);
+
         
     }
     //updates the quest Objective... call this on quest mechanics or anytime you want to complete an objective... send the objectiveID and number of times completed (usually 1 but can be other if needed)
@@ -105,7 +107,6 @@ public class QuestLog : MonoBehaviour
         {
             //throws an error when a quest is complete...stupid
                 quest.UpdateObjective(objectiveID, amount);
-            
         }
 
         CheckForCompletedQuests();
@@ -128,15 +129,22 @@ public class QuestLog : MonoBehaviour
             if (activeQuests[i].IsComplete)
             {
                 completedQuests.Add(activeQuests[i].questData);
+                canvasController.ShowQuestReward(activeQuests[i].questData);
+                canvasController.EndTimer();
                 activeQuests.RemoveAt(i);
+                currentQuestGiver.quests.RemoveAt(0);
                 hasQuest = false;
-                canvasController.ShowQuestReward();
+                arrowPointer.DestroyArrow();
+                currentQuestGiver.GetComponent<NPCBase>().dialogueFirst = true;
+            }
+            if(currentQuestGiver.quests.Count <= 0)
+            {
                 currentQuestGiver.gameObject.layer = LayerMask.NameToLayer("Dialogue");
                 Debug.Log(currentQuestGiver.gameObject.layer);
                 Destroy(currentQuestGiver);
-                canvasController.EndTimer();
-
+               
             }
+
         }
     }
 
@@ -191,6 +199,26 @@ public class QuestLog : MonoBehaviour
             activeQuests.Remove(quest);
             
             
+        }
+    }
+
+    public void TrackQuest(QuestRuntimeInstance instance)
+    {
+        if (instance != null)
+        {
+
+        }
+    }
+
+    public void AddItemsToInventory(List<GameObject> items)
+    {
+        var inventory = GetComponentInParent<PlayerWingventory>();
+        foreach( var reward in items)
+        {
+            if (reward != null) 
+            {
+                inventory.AddItemToInv(reward, 1);
+            }
         }
     }
 }

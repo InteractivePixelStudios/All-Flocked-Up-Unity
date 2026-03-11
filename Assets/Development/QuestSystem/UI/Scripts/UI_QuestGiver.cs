@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization;
 
 public class UI_QuestGiver : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class UI_QuestGiver : MonoBehaviour
 
     [SerializeField] Button acceptQuestButton;
     [SerializeField] Button cancelButton;
+    public UI_CanvasController canvasController;
 
     [SerializeField] TextMeshProUGUI questNameText;
     [SerializeField] TextMeshProUGUI questDescription;
@@ -21,10 +23,11 @@ public class UI_QuestGiver : MonoBehaviour
         questLog = FindFirstObjectByType<QuestLog>();
         acceptQuestButton.onClick.AddListener(AddQuestToLog);
         cancelButton.onClick.AddListener(CloseQuestGiverUI);
+        Debug.Log(currentquestGiver.quests[0].ToString());
         
     }
 
-    public void UpdateUIText(string name, string description, string rewards)
+    public void UpdateUIText(LocalizedString name, LocalizedString description, LocalizedString rewards)
     {
         SetQuestNameText(name);
         SetQuestDescriptionText(description);
@@ -40,9 +43,8 @@ public class UI_QuestGiver : MonoBehaviour
 
     public void CloseQuestGiverUI()
     {
-        Destroy(this.gameObject);
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        canvasController.DestroyQuestGiver();
+
     }
 
     private void AddQuestToLog()
@@ -51,18 +53,18 @@ public class UI_QuestGiver : MonoBehaviour
         CloseQuestGiverUI();
     }
 
-    public void SetQuestNameText(string name)
+    public void SetQuestNameText(LocalizedString name)
     {
-        questNameText.SetText(name);
+        name.StringChanged += value => questNameText.text = value;
     }
 
-    public void SetQuestDescriptionText(string description)
+    public void SetQuestDescriptionText(LocalizedString description)
     {
-        questDescription.SetText(description);
+        description.StringChanged += value => questDescription.text = value;
     }
 
-    public void SetRewardsText(string rewards)
+    public void SetRewardsText(LocalizedString rewards)
     {
-        rewardsText.SetText(rewards);
+        rewards.StringChanged += value => rewardsText.text = value;
     }
 }

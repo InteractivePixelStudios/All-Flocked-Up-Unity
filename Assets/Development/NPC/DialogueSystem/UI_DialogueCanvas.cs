@@ -3,6 +3,9 @@ using TMPro;
 using UnityEngine.UI;
 using System;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using System.Collections.Generic;
+using UnityEngine.Localization;
 
 
 public class UI_DialogueCanvas : MonoBehaviour
@@ -11,13 +14,15 @@ public class UI_DialogueCanvas : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private Image dialogueImage;
+    [SerializeField] private Image dialogueImage2;
     [SerializeField] private DialogueBase dialogueBase;
     [SerializeField] private ScrollRect responseBox;
     [SerializeField] private Button buttonPrefab;
     [SerializeField] private int textSpeed = 1;
-    public string[] responses;
+    public LocalizedString[] responses;
     [SerializeField] private string responseReturnID;
     [SerializeField] private bool hasButtons = false;
+    UI_CanvasController canvasController;
 
     bool skipDialogue;
     public Action SkipLine { get; private set; }
@@ -25,30 +30,42 @@ public class UI_DialogueCanvas : MonoBehaviour
     {
         dialogueCanvas = GetComponent<Canvas>();
         dialogueBase = FindFirstObjectByType<DialogueBase>();
+        canvasController = FindFirstObjectByType<UI_CanvasController>();
         //dialogueImage = GetComponent<Image>();
     }
     void Start()
     {
-        dialogueCanvas.gameObject.SetActive(false);
         textSpeed=dialogueBase.textSpeed;
     }
     void Update()
     {
 
-        if(Input.GetMouseButtonDown(0))
-        {
-            if (responses != null)
-            {
-                // ProgressDialogueCanvas();
-            }
-        }
+        //if(Input.GetMouseButtonDown(0))
+        //{
+        //    if (responses != null)
+        //    {
+        //        // ProgressDialogueCanvas();
+        //    }
+        //}
     }
 
-    public void UpdateDialogueUI(string name,string dialogue, Image image)
+    public void UpdateDialogueUI(string name,string dialogue, Sprite image)
     {
         dialogueText.SetText(dialogue);
         nameText.SetText(name);
-        dialogueImage.material = image.material;
+        if (name == "Peep")
+        {
+            dialogueImage.gameObject.SetActive(true);
+            dialogueImage2.gameObject.SetActive(false);
+            dialogueImage.sprite = image;
+            
+        }
+        else 
+        {
+            dialogueImage.gameObject.SetActive(false);
+            dialogueImage2.gameObject.SetActive(true);
+            dialogueImage2.sprite = image; 
+        }
     }
 
     public void ClearDialogueCanvas()
@@ -62,7 +79,7 @@ public class UI_DialogueCanvas : MonoBehaviour
 
     public void DestroyDialogue()
     {
-        this.gameObject.SetActive(false);
+        canvasController.CloseDialogue();
     }
 
 
@@ -84,7 +101,7 @@ public class UI_DialogueCanvas : MonoBehaviour
     public void GetResponseOptions()
     {
         DestroyCurrentOptionButtons();
-        responses = new string[dialogueBase.currentResponseOptions.Length];
+        responses = new LocalizedString[dialogueBase.currentResponseOptions.Length];
         dialogueBase.currentResponseOptions.CopyTo(responses.AsSpan());
         Debug.Log("UISpawnResponseButtons");
         float startY = 0f;
@@ -100,9 +117,8 @@ public class UI_DialogueCanvas : MonoBehaviour
             startY -= offset;
             index++;
         }
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        hasButtons = true;  
+        hasButtons = true;
+        Cursor.visible = true ;
     }
 
     private void ResponseClicked(string option)
@@ -123,7 +139,7 @@ public class UI_DialogueCanvas : MonoBehaviour
         hasButtons = false;
     }
 
-    private Button CreateResponseButton(string text, string branchOption, float startY,float offset)
+    private Button CreateResponseButton(LocalizedString text, string branchOption, float startY,float offset)
     {
         Button response = Instantiate(buttonPrefab, responseBox.transform);
         RectTransform buttonTransform = response.GetComponent<RectTransform>();
@@ -144,10 +160,16 @@ public class UI_DialogueCanvas : MonoBehaviour
 
     }
 
-    private void SetButtonText(Button button, string text)
+    private void SetButtonText(Button button, LocalizedString text)
     {
         var labelText = button.GetComponentInChildren<TextMeshProUGUI>();
-        if (labelText != null) labelText.SetText(text);
+        if (labelText != null)
+        {
+            text.GetLocalizedStringAsync().Completed += handle =>
+            {
+                labelText.SetText(handle.Result);
+            };
+        }
     }
 
 }
