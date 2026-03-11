@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_RemapButton : MonoBehaviour
@@ -12,6 +13,7 @@ public class UI_RemapButton : MonoBehaviour
     private void Start()
     {
         remapButton.onClick.AddListener(RebindButton);
+        EventSystem.current.SetSelectedGameObject(remapButton.gameObject);
     }
 
     public void RebindButton()

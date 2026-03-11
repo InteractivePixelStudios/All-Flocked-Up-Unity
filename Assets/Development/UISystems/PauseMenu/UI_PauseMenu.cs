@@ -30,6 +30,7 @@ public class UI_PauseMenu : MonoBehaviour
         controlsButton.onClick.AddListener(OnControlsOpen);
         saveQuitButton.onClick.AddListener(OnSaveAndQuit);
         EventSystem.current.SetSelectedGameObject(continueButton.gameObject);
+        settingsCanvas.GetComponent<UI_SettingsMenu>().parent = this.gameObject;
 
     }
     public void Unpause()

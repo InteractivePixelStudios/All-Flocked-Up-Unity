@@ -11,25 +11,47 @@ public static class SaveLoadBase
     private static string encryptionKey = "ChangeThisKeyToSomethingSecure123!"; 
     public static string currentVersion = "1.0.0";
 
+    private static void InitPath()
+    {
+        if (string.IsNullOrEmpty(basePath))
+        {
+            basePath = Path.Combine(Application.persistentDataPath, "Saves");
 
+            if (!Directory.Exists(basePath))
+                Directory.CreateDirectory(basePath);
+        }
+    }
 
     public static void Save(SaveData data, int slot = 0, bool encrypt = false)
     {
-        basePath = Application.persistentDataPath + "/Saves/";
+        basePath = Path.Combine(Application.persistentDataPath, "Saves");
         if (!Directory.Exists(basePath))
             Directory.CreateDirectory(basePath);
-
+        InitPath();
         string path = GetSlotPath(slot);
         string json = JsonUtility.ToJson(data, true);
 
         if (encrypt)
             json = Encrypt(json);
 
-        File.WriteAllText(path, json);
+        SafeWrite(path, json);
+    }
+
+    private static void SafeWrite(string path, string content)
+    {
+        string tempPath = path + ".tmp";
+
+        File.WriteAllText(tempPath, content);
+
+        if (File.Exists(path))
+            File.Delete(path);
+
+        File.Move(tempPath, path);
     }
 
     public static SaveData Load(int slot = 0, bool encrypted = false)
     {
+        InitPath();
         string path = GetSlotPath(slot);
         if (!File.Exists(path))
         {
@@ -81,7 +103,7 @@ public static class SaveLoadBase
 
     private static string Encrypt(string plainText)
     {
-        byte[] key = Encoding.UTF8.GetBytes(encryptionKey.Substring(0, 32));
+        byte[] key = Encoding.UTF8.GetBytes(encryptionKey.PadRight(32).Substring(0, 32));
         byte[] iv = new byte[16];
         using (Aes aes = Aes.Create())
         {

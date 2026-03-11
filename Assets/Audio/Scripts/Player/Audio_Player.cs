@@ -35,13 +35,13 @@ public class Audio_Player : MonoBehaviour // REMINDER - Clean this damn script u
 
         if (!TryGetGround(out RaycastHit tempHit))
         {
-            Debug.Log("No ground detected.");
+           // Debug.Log("No ground detected.");
             KillAudioEarly(footstepInstance);
             return;
         }
         else
         {
-            Debug.Log("Ground detected: " + tempHit.collider.name);
+           // Debug.Log("Ground detected: " + tempHit.collider.name);
         }
     }
 
