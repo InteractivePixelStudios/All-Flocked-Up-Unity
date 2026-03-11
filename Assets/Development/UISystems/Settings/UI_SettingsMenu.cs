@@ -34,14 +34,9 @@ public class UI_SettingsMenu : UI_PauseMenu
 
     public void SetFirstSettingsButton()
     {
-        EventSystem.current.SetSelectedGameObject(videoButton.gameObject);
+        //EventSystem.current.SetSelectedGameObject(videoButton.gameObject);
     }
 
-
-    protected new void OnSettingsOpen()
-    {
-        base.OnSettingsOpen();
-    }
 
     protected void OpenVideoOptions()
     {
@@ -52,7 +47,7 @@ public class UI_SettingsMenu : UI_PauseMenu
             videoParent.gameObject.GetComponent<UI_VideoOptions>().SetFirstVideoButton();
             Debug.Log("Hello");
         }
-        else if (accessOpen)
+        else if (videoOpen)
         {
             videoOpen = false;
             videoParent.gameObject.SetActive(false);

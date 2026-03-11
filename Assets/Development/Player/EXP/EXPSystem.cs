@@ -6,6 +6,10 @@ public class EXPSystem : MonoBehaviour
     [SerializeField] private int requiredToNextLevel;
     [SerializeField] private int currentLevel;
     public int PLAYERLEVEL => GetLevel();
+    public void GiveLevels(int level)
+    {
+        currentLevel = level; 
+    }
 
 
     //Get Level
@@ -39,7 +43,7 @@ public class EXPSystem : MonoBehaviour
     {
         GameObject playerRef = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
         playerRef.GetComponent<PlayerHealth>().maxHealth += 5;
-        //Add stamina
-        //Add poop
+        playerRef.GetComponent<StaminaSystem>().AddMaxStamina(2);
+        playerRef.GetComponent<PoopSystem>().AddMaxPoop(1);
     }
 }

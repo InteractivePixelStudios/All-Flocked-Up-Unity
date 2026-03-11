@@ -1,11 +1,14 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PerchableObject_Tree : MonoBehaviour, I_Perchable
 {
     public GameObject playerRef;
-    [SerializeField] private bool isPerching;
+    PlayerPerchSystem perchComp;
+    public bool isPerching;
     public bool isHiding;
+    bool jumpCheck => playerRef.GetComponent<PlayerGroundMovement>().GetIsFlying();
     [SerializeField] private GameObject[] topHideSpots;
     [SerializeField] private GameObject[] branchPerchSpots;
     int currentIndex;
@@ -15,12 +18,16 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
     [SerializeField] private bool isPromptShown;
     [SerializeField] IconToggle icon;
 
+  
+
     void Update()
     {
+
         if (isPerching)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (jumpCheck)
             {
+                Debug.Log("Called" + jumpCheck);
                 StopPerch();
                 playerRef.GetComponent<Rigidbody>().linearVelocity = new Vector3(1, 1, 0);
             }
@@ -31,8 +38,9 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
 
     public void StartPerch()
     {
-        isPerching = true;
-        if (isHiding)
+        currentIndex = 0;
+        playerRef.GetComponentInChildren<IconToggle>().HideIcon();
+        if (isHiding || branchPerchSpots.Length ==0)
         {
             playerRef.transform.position = topHideSpots[currentIndex].transform.position + playerOffset;
         }
@@ -53,13 +61,14 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
         }else playerRef.transform.position = branchPerchSpots[currentIndex].transform.position+ playerOffset;
     }
 
-    public void MovePosition()
+    public void MovePosition(float x)
     {
-        if (Input.GetKeyDown(KeyCode.D))
+
+        if (x>0)
         {
             currentIndex++;
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (x<0)
         {
             currentIndex--;
             if(currentIndex < 0)
@@ -92,9 +101,10 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
             {
 
                 playerRef = perchSphere.gameObject;
-               
+                perchComp =  playerRef.GetComponent<PlayerPerchSystem>();
+
             }
-            icon.ShowIcon();
+            playerRef.GetComponentInChildren<IconToggle>().ShowIcon();
         }
     }
 
@@ -107,22 +117,23 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
 
                 playerRef = perchSphere.gameObject;
             }
-            icon.ShowIcon();
+           
         }
     }
 
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider perchSphere)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (perchSphere.gameObject.CompareTag("Player"))
         {
+            playerRef.GetComponentInChildren<IconToggle>().HideIcon();
             if (playerRef != null)
             {
                 playerRef = null;
+                perchComp = null;
                 
 
             }
-            icon.HideIcon();
         }
     }
 }

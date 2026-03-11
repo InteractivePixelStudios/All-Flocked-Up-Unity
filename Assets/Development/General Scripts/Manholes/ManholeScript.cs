@@ -3,7 +3,7 @@ using UnityEngine;
 public class ManholeScript : MonoBehaviour
 {
     [SerializeField] private GameObject playerRef;
-    [SerializeField] private float airVerticalForce;
+    [SerializeField] private float airVerticalForce = 10f;
     [SerializeField] private BoxCollider triggerBox;
     [SerializeField] private bool resetBox;
     // Start is called once before the first execution of Update after the MonoBehaviour is created

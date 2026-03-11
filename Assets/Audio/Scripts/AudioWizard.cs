@@ -59,6 +59,6 @@ public class AudioWizard : MonoBehaviour // This is being made in a way where th
         GameObject ambienceLogic = Instantiate(ambienceLogicPrefab);
         ambienceLogic.name = "AmbienceLogic"; // Just a precaution.
         ambienceLogic.transform.parent = this.transform;
-        DontDestroyOnLoad(ambienceLogic);
+        //DontDestroyOnLoad(ambienceLogic);
     }
 }

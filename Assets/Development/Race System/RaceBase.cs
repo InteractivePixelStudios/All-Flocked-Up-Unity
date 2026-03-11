@@ -23,7 +23,7 @@ public class RaceBase : MonoBehaviour
     [SerializeField] private float currentTime;
     [SerializeField] private bool timerStarted;
     [SerializeField] private bool countdownStarted;
-    [SerializeField] private bool countdownComplete;
+    public bool countdownComplete;
     [SerializeField] private StartingLine currentRaceStartingLine => raceData.GetStartLine();
     public StartingLine raceStartLine => currentRaceStartingLine;
     [SerializeField] private List<CPURacer> currentRacerList = new();
@@ -62,6 +62,8 @@ public class RaceBase : MonoBehaviour
 
     private void StartRaceCountdown()
     {
+        canvasController.OpenCountdownCanvas();
+        Debug.Log("call countdown");
         if (countdownStarted)
         {
             countdown -= Time.deltaTime;
@@ -285,7 +287,7 @@ public class RaceBase : MonoBehaviour
     {
         if (!completedRacer.Contains(racer))
         {
-            if (checkpoint == lastCheckpoint)
+            if (checkpoint == lastCheckpoint && checkpointIndex == activeCheckpoints.Count)
             {
                 completedRacer.Add(racer);
                 if (racer.CompareTag("Race"))

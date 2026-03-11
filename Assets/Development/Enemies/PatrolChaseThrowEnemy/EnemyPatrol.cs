@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 {
     [Header("Patrol")]
-    public Transform[] patrolPoints;
+    public GameObject patrolPoint;
     public GameObject player;
     public PlayerStealthSystem playerStealth;
     public float patrolSpeed = 3f;
@@ -161,8 +161,8 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 
     private void FindWaypoints()
     {
-        var waypointsArray = FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
-        foreach (var waypoint in waypointsArray)
+        var waypointArray = patrolPoint.GetComponentsInChildren<Waypoint>();
+        foreach (var waypoint in waypointArray)
         {
             if (waypoint.CompareTag("Human"))
             {
@@ -176,11 +176,10 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 
 
     private void FindRandomWaypoint()
-    {       
-        var randomIndex = Random.Range(0, waypoints.Count);
-        var transform = waypoints[randomIndex].transform.position;
-        this.transform.position = transform;
-        this.currentNode = waypoints[randomIndex];     
+    {
+        if (waypoints.Count == 0) return;
+       // var randomIndex = Random.Range(0, waypoints.Count);
+        this.currentNode = waypoints[1];     
         Debug.Log("H");
     }
 
@@ -338,6 +337,7 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 
     protected void ChooseNextDirection(Waypoint node)
     {
+        if(node == null) return;
         connections.Clear();
 
         foreach (var connection in node.connections)

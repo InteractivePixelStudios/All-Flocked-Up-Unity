@@ -8,13 +8,15 @@ public class PerchableObject_Bush : MonoBehaviour, I_Perchable
     [SerializeField] private bool isPerching;
     Vector3 offset = new Vector3(0, 1, 0);
     [SerializeField] IconToggle icon;
+    bool jumpCheck => playerRef.GetComponent<PlayerGroundMovement>().GetIsFlying();
 
     void Update()
     {
 
         if (isPerching)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+
+            if (jumpCheck)
             {
                 StopPerch();
                 playerRef.GetComponent<Rigidbody>().linearVelocity = new Vector3(1, 1, 0);
@@ -28,6 +30,7 @@ public class PerchableObject_Bush : MonoBehaviour, I_Perchable
     {
         isPerching = true;
         playerRef.transform.position = transform.position - offset;
+        playerRef.GetComponentInChildren<IconToggle>().HideIcon();
     }
 
     public void StopPerch()
@@ -40,7 +43,7 @@ public class PerchableObject_Bush : MonoBehaviour, I_Perchable
         playerRef.transform.position = transform.position+offset;
     }
 
-    public void MovePosition()
+    public void MovePosition(float x)
     {
         //not needed for bush... maybe could think of something later
     }
@@ -52,7 +55,7 @@ public class PerchableObject_Bush : MonoBehaviour, I_Perchable
             if(playerRef == null)
             {
                 playerRef = other.gameObject;
-                icon.ShowIcon();
+                playerRef.GetComponentInChildren<IconToggle>().ShowIcon();
             }
         }
     }
@@ -64,7 +67,7 @@ public class PerchableObject_Bush : MonoBehaviour, I_Perchable
             if (playerRef != null)
             {
                 playerRef = null;
-                icon.HideIcon();
+                playerRef.GetComponentInChildren<IconToggle>().HideIcon();
             }
         }
     }

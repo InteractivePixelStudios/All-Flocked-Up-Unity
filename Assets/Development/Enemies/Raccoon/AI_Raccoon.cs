@@ -226,6 +226,10 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
 
     protected void ChasePlayer()
     {
+        if (navAgent != enabled)
+        {
+            navAgent.enabled = true;
+        }
         Vector3 targetPos = player.transform.position;
         targetPos.y = transform.position.y;
 
@@ -249,14 +253,16 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
 
     protected void StartClimb(RaycastHit hit)
     {
+        Climb();
         var col = hit.collider;
         Vector3 point = col.bounds.center + Vector3.up * col.bounds.extents.y;
         float lerpTime = 3f;
-        transform.position = Vector3.Lerp(transform.position, point, Time.deltaTime * lerpTime);
-        Debug.Log(Vector3.Distance(transform.position, point));
-        if(Vector3.Distance(transform.position, point) < 3)
+        if (Vector3.Distance(transform.position, point) < 3)
         {
-            Climb();
+            transform.position = Vector3.Lerp(transform.position, point, Time.deltaTime * lerpTime);
+        Debug.Log(Vector3.Distance(transform.position, point));
+
+
             Debug.Log(point);
         }else if(Vector3.Distance(transform.position, point) < 1)
         {

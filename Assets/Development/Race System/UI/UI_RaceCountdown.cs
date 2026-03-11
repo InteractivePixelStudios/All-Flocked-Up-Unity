@@ -10,7 +10,7 @@ public class UI_RaceCountdown : MonoBehaviour
     private float timer;
     [SerializeField] private Image numberImage;
     [SerializeField] private RaceBase raceBase;
-    [SerializeField] private List<Material> imageMaterialList;
+    [SerializeField] private List<Sprite> imageMaterialList;
 
     private void Start()
     {
@@ -42,27 +42,27 @@ public class UI_RaceCountdown : MonoBehaviour
     {
         if ( timer >= 5)
         {
-            numberImage.material = imageMaterialList[5];
+            numberImage.sprite = imageMaterialList[5];
         }
         else if ( timer >= 4)
         {
-            numberImage.material = imageMaterialList[4];
+            numberImage.sprite = imageMaterialList[4];
         }
         else if( timer >= 3)
         {
-            numberImage.material = imageMaterialList[3];
+            numberImage.sprite = imageMaterialList[3];
         }
         else if (timer >= 2)
         {
-            numberImage.material = imageMaterialList[2];
+            numberImage.sprite = imageMaterialList[2];
         }
         else if(timer >= 1)
         {
-            numberImage.material = imageMaterialList[1];
+            numberImage.sprite = imageMaterialList[1];
         }
         else
         {
-            numberImage.material = imageMaterialList[0];
+            numberImage.sprite = imageMaterialList[0];
             Task.Delay(1000);
             Destroy(this.gameObject);
         }

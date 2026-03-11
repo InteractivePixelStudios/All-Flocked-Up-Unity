@@ -12,35 +12,47 @@ public class PlayerSkinSelector : MonoBehaviour
     [SerializeField] private CinemachineCamera cam;
     [SerializeField] private CameraController controller;
     [SerializeField] private GameObject camLocation;
-    [SerializeField] private GameObject backdropPrefab;
-    [SerializeField] private GameObject spawnedBackdrop;
-    [SerializeField] private GameObject backdropSpawnPoint;
+    [SerializeField] private SkinShopLocation shopLocation;
+    [SerializeField] private GameObject playerSpawnPoint;
+    [SerializeField] private UI_CanvasController canvasController;
     [SerializeField]private bool isSelecting;
-    [SerializeField] private GameObject canvasPrefab;
-    [SerializeField] private GameObject spawnedCanvas;
 
+    public Material GetCurrentMaterial()
+    {
+        return currentMertial;
+    }
+
+    public void SetLoadedMaterial(Material loaded)
+    {
+        currentMertial = loaded;
+    }
     private void Start()
     {
-
-
+        shopLocation = FindFirstObjectByType<SkinShopLocation>();
+        playerSpawnPoint = shopLocation.playerSpawnPoint;
+        canvasController = FindFirstObjectByType<UI_CanvasController>();
     }
 
     public void StartSkinSelector()
     {
         cam.GetComponent<CinemachineInputAxisController>().enabled = false;
         isSelecting = true;
-        SpawnBackdrop();
+        SetPlayerLocation();
         PivotCamera();
         OpenUI();
     }
-    void SpawnBackdrop()
+
+    void SetPlayerLocation()
     {
-        spawnedBackdrop = Instantiate(backdropPrefab, backdropSpawnPoint.transform.position, backdropSpawnPoint.transform.rotation);
+        var rb = GetComponent<Rigidbody>();
+        rb.linearVelocity = Vector3.zero;
+        transform.position = playerSpawnPoint.transform.position;
+        transform.rotation = playerSpawnPoint.transform.rotation;
     }
 
     public void DestroyBackdrop()
     {
-        Destroy(spawnedBackdrop);
+        //Destroy(spawnedBackdrop);
     }
 
     void PivotCamera()
@@ -96,7 +108,7 @@ public class PlayerSkinSelector : MonoBehaviour
 
     void OpenUI()
     {
-        spawnedCanvas = Instantiate(canvasPrefab);
+        canvasController.ShowSkinSelector();
     }
 
     public void ConfirmSelection()
@@ -104,6 +116,6 @@ public class PlayerSkinSelector : MonoBehaviour
         isSelecting = false;
         cam.GetComponent<CinemachineInputAxisController>().enabled = true;
         cam.GetComponent<CinemachineOrbitalFollow>().enabled = true;
-
+        canvasController.HideSkinSelector();
     }
 }

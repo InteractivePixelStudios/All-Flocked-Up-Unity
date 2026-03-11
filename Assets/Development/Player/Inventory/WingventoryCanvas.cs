@@ -59,7 +59,6 @@ public class WingventoryCanvas : MonoBehaviour
         SetTrinketText();
         GetPlayerInv();
         SpawnItemButton();
-        GoCenterPage();
         Time.timeScale = 0;
     }
 
@@ -76,21 +75,21 @@ public class WingventoryCanvas : MonoBehaviour
 
     private void GoLeftPage()
     {
-
+        centerCanvas.SetActive(false);
         leftCanvas.SetActive(true);
         rightCanvas.SetActive(false);
     }
 
     private void GoRightPage()
     {
-
+        centerCanvas.SetActive(false);
         leftCanvas.SetActive(false);
         rightCanvas.SetActive(true);
     }
 
     private void GoCenterPage()
     {
-
+        centerCanvas.SetActive(true);
         leftCanvas.SetActive(false);
         rightCanvas.SetActive(false);
     }
