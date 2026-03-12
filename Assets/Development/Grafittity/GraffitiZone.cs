@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class GraffitiZone : MonoBehaviour
 {
+    [Header("Graffiti Zone Settings")]
     [SerializeField] private BoxCollider graffitiZoneCollider;
     [SerializeField] private bool playerInMe = false;
     [SerializeField] InputAction grafit;
@@ -10,6 +13,21 @@ public class GraffitiZone : MonoBehaviour
 
     [SerializeField] private Camera mainCam;
     [SerializeField] private Camera grafittiCam;
+
+    [Header("Graffiti UI Settings")]
+    [SerializeField] public Slider colorSlider;
+    [SerializeField] public Image targetImage;
+    [SerializeField] public Slider sizeSlider;
+    [SerializeField] public Image SizeImage;
+
+    [Header ("Spray Knowledge")]
+    [SerializeField] InputAction spray;
+    [SerializeField] public int textureSize = 1024;
+    [SerializeField] public int brushSize = 5;
+    [SerializeField] public Color currentColor;
+    [SerializeField] public bool isPainting = false;
+
+    private Dictionary<Renderer, Texture2D> paintTextures = new Dictionary<Renderer, Texture2D>();
 
     void Start()
     {
@@ -25,6 +43,7 @@ public class GraffitiZone : MonoBehaviour
         }
 
         grafit = InputSystem.actions.FindAction("Interact");
+        spray = InputSystem.actions.FindAction("Click");
 
         PlayerInput();
 
@@ -37,17 +56,39 @@ public class GraffitiZone : MonoBehaviour
         {
             Debug.Log("UI_CanvasController found and assigned to canvasController.");
         }
+
+        colorSlider.onValueChanged.AddListener(UpdateColor);
+        sizeSlider.onValueChanged.AddListener(UpdateSize);
+        UpdateColor(colorSlider.value);
+        UpdateSize(sizeSlider.value);
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+    }
 
+    //change color based on slider value
+    void UpdateColor(float value)
+    {
+        float hue = value; // 0 → 1
+        Color rainbowColor = Color.HSVToRGB(hue, 1f, 1f);
+
+        targetImage.color = rainbowColor;
+        currentColor = rainbowColor;
+    }
+
+    void UpdateSize(float value)
+    {
+        brushSize = (int)value;
+        SizeImage.rectTransform.sizeDelta = new Vector2(brushSize * 2, brushSize * 2);
     }
 
     void PlayerInput()
     {
         grafit.started += ctx => GrafittiTime();
+        spray.performed += ctx => GraffitiSpray();
     }
 
     void GrafittiTime()
@@ -62,6 +103,74 @@ public class GraffitiZone : MonoBehaviour
             mainCam.enabled = false;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            isPainting = true;
+        }
+    }
+
+    void GraffitiSpray()
+    {
+        if (isPainting == true)
+        {
+            Debug.Log("Painting at mouse position: " + Mouse.current.position.ReadValue());
+            Ray ray = grafittiCam.ScreenPointToRay(Mouse.current.position.ReadValue());
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                Renderer rend = hit.collider.GetComponent<Renderer>();
+                if (rend == null) return;
+
+                Texture2D tex = GetOrCreateTexture(rend);
+
+                Vector2 uv = hit.textureCoord;
+
+                int x = (int)(uv.x * textureSize);
+                int y = (int)(uv.y * textureSize);
+
+                Paint(tex, x, y);
+
+                tex.Apply();
+            }
+        }
+    }
+
+    Texture2D GetOrCreateTexture(Renderer rend)
+    {
+        if (paintTextures.ContainsKey(rend))
+            return paintTextures[rend];
+
+        Texture2D tex = new Texture2D(textureSize, textureSize);
+
+        Color[] pixels = new Color[textureSize * textureSize];
+        for (int i = 0; i < pixels.Length; i++)
+            pixels[i] = Color.white;
+
+        tex.SetPixels(pixels);
+        tex.Apply();
+
+        rend.material.mainTexture = tex;
+
+        paintTextures.Add(rend, tex);
+
+        return tex;
+    }
+
+    void Paint(Texture2D tex, int x, int y)
+    {
+        for (int i = -brushSize; i <= brushSize; i++)
+        {
+            for (int j = -brushSize; j <= brushSize; j++)
+            {
+                float dist = Mathf.Sqrt(i * i + j * j);
+
+                if (dist > brushSize) continue;
+
+                int px = x + i;
+                int py = y + j;
+
+                if (px >= 0 && px < tex.width && py >= 0 && py < tex.height)
+                    tex.SetPixel(px, py, currentColor);
+            }
         }
     }
 
