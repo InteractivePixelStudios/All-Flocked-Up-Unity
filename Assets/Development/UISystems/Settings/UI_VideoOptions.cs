@@ -66,8 +66,8 @@ public class UI_VideoOptions : UI_SettingsMenu
         InitFOVSlider();
         InitInvertToggle();
         InitVsyncToggle();
-
         LoadSettings();
+        EventSystem.current.SetSelectedGameObject(resolDropdown.gameObject);
     }
 
     public void SetFirstVideoButton()

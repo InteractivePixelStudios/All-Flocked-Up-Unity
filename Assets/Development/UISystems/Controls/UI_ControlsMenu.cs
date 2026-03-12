@@ -23,8 +23,8 @@ public class UI_ControlsMenu : UI_PauseMenu
     [SerializeField] private Button cancelRemapButton;
     [SerializeField] private TMP_Dropdown controlImageDropdown;
     [SerializeField] private Image controlImage;
-    [SerializeField] private Sprite keyboardImage;
-    [SerializeField] private Sprite gamepadImage;
+    [SerializeField] private GameObject keyboardImage;
+    [SerializeField] private GameObject gamepadImage;
     [SerializeField] private Button rebindButton;
     [Header("Keybinds")]
     [SerializeField] private Transform keybindContainer;
@@ -143,9 +143,14 @@ public class UI_ControlsMenu : UI_PauseMenu
     {
         if (index == 0)
         {
-            controlImage.sprite = keyboardImage;
+            keyboardImage.SetActive(true);
+            gamepadImage.SetActive(false);
         }
-        else { controlImage.sprite = gamepadImage; }
+        else
+        {
+            keyboardImage.SetActive(false);
+            gamepadImage.SetActive(true);
+        }
     }
 
     protected Dictionary<string,string> GetAllKeybinds(InputActionAsset inputActions)

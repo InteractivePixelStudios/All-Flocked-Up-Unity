@@ -29,6 +29,7 @@ public class DialogueBase : MonoBehaviour
     public DialogueLineData currentDialogueLineData;
 
     [SerializeField] private List<Sprite> birdImageList = new();
+    [SerializeField] NPC_Vocalizer npcSpeech;
 
 
     [SerializeField]private string retriggerDialogueLineID;
@@ -45,6 +46,7 @@ public class DialogueBase : MonoBehaviour
     void Start()
     {
         LoadDialogueSheet();
+        npcSpeech = GetComponent<NPC_Vocalizer>();
 
     }
     //loads the CSV and adds each line as a string into importedLines, trims each line into lineData and sets the currentDialogueLine based on currentDialogueIndex
@@ -82,6 +84,7 @@ public class DialogueBase : MonoBehaviour
                     TableEntryReference = option        
                 }).ToArray(),
                 branchID = lineData[7]
+
 
 
 
@@ -222,8 +225,10 @@ public class DialogueBase : MonoBehaviour
                 currentDialogueName,
                 temp,
                 currentDialogueImage
-            );
 
+
+            );
+            npcSpeech.Speech();
             await Task.Delay(speed);
         }
 
