@@ -83,6 +83,14 @@ public class PlayerFlightMovement : MonoBehaviour
         flapAction = InputSystem.actions.FindAction("Jump");
         diveAction = InputSystem.actions.FindAction("Dive");
         stallAction = InputSystem.actions.FindAction("AirStall");
+
+        // check if player hits spacebar
+        flapAction.started += ctx => FlapUp();
+        diveAction.started += ctx => Dive();
+        stallAction.started += ctx => AirStall();
+
+        diveAction.Disable();
+        stallAction.Disable();
     }
 
     // Update is called once per frame
@@ -131,13 +139,6 @@ public class PlayerFlightMovement : MonoBehaviour
         // check x and z axis movement
         horizontalMovement = moveAction.ReadValue<Vector2>().x;
         forwardMovement = moveAction.ReadValue<Vector2>().y;
-
-        // check if player hits spacebar
-        flapAction.started += ctx => FlapUp();
-
-        diveAction.started += ctx => Dive();
-
-        stallAction.started += ctx => AirStall();
     }
 
     void FlightMovement()
@@ -247,7 +248,7 @@ public class PlayerFlightMovement : MonoBehaviour
 
     void Dive()
     {
-        if (isDiving) return;
+        if (isDiving || !isFlying) return;
 
         isDiving = true;
         playerBody.AddForce(transform.forward * diveSpeed);
@@ -256,7 +257,7 @@ public class PlayerFlightMovement : MonoBehaviour
 
     void AirStall()
     {
-        if (isStalling) return;
+        if (isStalling || !isFlying) return;
 
         playerBody.linearVelocity = Vector3.zero;
         
@@ -268,6 +269,10 @@ public class PlayerFlightMovement : MonoBehaviour
     public void InitiateFlight()
     {
         isFlying = true;
+
+        diveAction.Enable();
+        stallAction.Enable();
+
         GetComponent<VFXController>().ToggleStreakOn();
         FlapUp();
     }
@@ -279,6 +284,10 @@ public class PlayerFlightMovement : MonoBehaviour
         isStalling = false;
         reverseStallLerp = false;
         currentStallTime = 0;
+
+        diveAction.Disable();
+        stallAction.Disable();
+
         GetComponent<VFXController>().ToggleStreakOff();
         meshTransform.localRotation = Quaternion.Euler(Vector3.zero);
         GetComponent<PlayerGroundMovement>().InitiateWalkState();
