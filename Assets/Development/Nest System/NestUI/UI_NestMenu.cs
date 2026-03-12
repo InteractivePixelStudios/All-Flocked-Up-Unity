@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class UI_NestMenu : MonoBehaviour
 {
@@ -64,6 +65,7 @@ public class UI_NestMenu : MonoBehaviour
         //sbNextPage.onClick.AddListener(SBNextPage);
         //sbPrevPage.onClick.AddListener(SBPrevPage);
         GetStats();
+        EventSystem.current.SetSelectedGameObject(invButton.gameObject);
 
     }
 

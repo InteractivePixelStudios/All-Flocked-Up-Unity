@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.Localization;
 
 public class WingventoryCanvas : MonoBehaviour
 {
@@ -19,16 +20,24 @@ public class WingventoryCanvas : MonoBehaviour
     [SerializeField] private Button leftBackPageButton;
     [SerializeField] private Button rightBackPageButton;
     [SerializeField] private Button closeButton;
-    [SerializeField] private Button accessoryPanelButton;
-    [SerializeField] private Button mapButton;
+    [SerializeField] private Button questPanelButton;
+    [SerializeField] private Button mapPanelButton;
+
     [Header("Inv/Accessory")]
     [SerializeField] private PlayerWingventory playerWingventory;
     [SerializeField] private Dictionary<GameObject, int> playerInvItems = new();
     [SerializeField] private UI_CanvasController canvasController;
-    [SerializeField] private AccessoryPanelCanvas accessoryPanelPrefab;
+    [SerializeField] private GameObject questParent;
+    [SerializeField] private GameObject mapParent;
+    [SerializeField] private GameObject invParent;
     [Header("Trinket")]
     [SerializeField] private int currentTrinketCount=>GetTrinketCount();
+    [SerializeField] private int currentkeyChainCount => GetKeychainCount();
+    [SerializeField] private int currentPrestoCount => GetPrestoCount();
+    [SerializeField] private LocalizedString currentObjective => GetCurrentQuestInfo();
     [SerializeField] private TextMeshProUGUI trinketCountText;
+    [SerializeField] private TextMeshProUGUI keychainText;
+    [SerializeField] private TextMeshProUGUI prestoText;
     [Header("ItemButtons")]
     [SerializeField] private UI_ItemButton itemButtonPrefab;
     public Dictionary<UI_ItemButton, int> currentItemButtons = new();
@@ -37,6 +46,7 @@ public class WingventoryCanvas : MonoBehaviour
 
     [Header("QuestRef")]
     [SerializeField] private QuestLog questLog;
+    [SerializeField] private TextMeshProUGUI questObjText;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -48,15 +58,17 @@ public class WingventoryCanvas : MonoBehaviour
         GetTrinketCount();
         GetItemBoxes();
         leftBackPageButton.onClick.AddListener(GoCenterPage);
-        rightBackPageButton.onClick.AddListener(GoCenterPage);
         leftPageButton.onClick.AddListener(GoLeftPage);
         rightPageButton.onClick.AddListener(GoRightPage);
         closeButton.onClick.AddListener(CloseWingventory);
-        accessoryPanelButton.onClick.AddListener(OpenAccessoryPanel);
-        mapButton.onClick.AddListener(OpenMap);
+        questPanelButton.onClick.AddListener(OpenQuestPanel);
+        mapPanelButton.onClick.AddListener(OpenMapPanel);
         leftCanvas.SetActive(false);
         rightCanvas.SetActive(false);
         SetTrinketText();
+        SetKeychainText();
+        SetPrestoText();
+        SetObjectiveText();
         GetPlayerInv();
         SpawnItemButton();
         Time.timeScale = 0;
@@ -92,6 +104,7 @@ public class WingventoryCanvas : MonoBehaviour
         centerCanvas.SetActive(true);
         leftCanvas.SetActive(false);
         rightCanvas.SetActive(false);
+        Debug.Log("CenterPage");
     }
 
     private void CloseWingventory()
@@ -106,20 +119,88 @@ public class WingventoryCanvas : MonoBehaviour
             return trinketCount;
     }
 
+    private int GetKeychainCount()
+    {
+        int keychainCount = playerWingventory.playerKeychainQuantity;
+        return keychainCount;
+    }
+
+    private int GetPrestoCount()
+    {
+        int PrestoCount = playerWingventory.playerPrestoQuantity;
+        return PrestoCount;
+    }
+
     private void SetTrinketText()
     {
         trinketCountText.SetText(currentTrinketCount.ToString());
     }
 
-    private void OpenAccessoryPanel()
+    private void SetKeychainText()
     {
-        Instantiate(accessoryPanelPrefab);
+        keychainText.SetText(currentkeyChainCount.ToString());
+    }
+
+    private void SetPrestoText()
+    {
+        prestoText.SetText(currentPrestoCount.ToString());
+    }
+
+    private void SetObjectiveText()
+    {
+        if (currentObjective != null)
+        {
+            questObjText.SetText(currentObjective.GetLocalizedString());
+        }else
+        {
+            questObjText.SetText("No Current Objective");
+        }
+    }
+
+    private void OpenQuestPanel()
+    {
+        if(!questParent.gameObject.activeInHierarchy)
+        {
+            invParent.SetActive(false);
+            mapParent.SetActive(false);
+            questParent.SetActive(true);
+            Debug.Log("QuestOpen");
+        }
+        else
+        {
+            invParent.SetActive(true);
+            mapParent.SetActive(false);
+            questParent.SetActive(false);
+            Debug.Log("QuestClosed");
+        }
     }
 
 
-    private void GetCurrentQuestInfo()
+    private void OpenMapPanel()
     {
-        //questLog.activeQuests[0].
+        if (!mapParent.gameObject.activeInHierarchy)
+        {
+            invParent.SetActive(false);
+            mapParent.SetActive(true);
+            questParent.SetActive(false);
+        }
+        else
+        {
+            invParent.SetActive(true);
+            mapParent.SetActive(false);
+            questParent.SetActive(false);
+        }
+    }
+
+
+    private LocalizedString GetCurrentQuestInfo()
+    {
+        var objective = questLog.activeQuests[0].questData.stages[0].objectivesToComplete[0].objectiveDescription;
+        if (objective != null)
+        {
+            return objective;
+        }else return null;
+
     }
 
     private void OpenMap()

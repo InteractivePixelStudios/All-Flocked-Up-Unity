@@ -290,5 +290,10 @@ public class PlayerInteraction : MonoBehaviour
             }
             else canvasController.ResumeGame(); uiOn = false;
     }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        canvasController = FindFirstObjectByType<UI_CanvasController>();
     }
+}
 

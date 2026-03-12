@@ -3,6 +3,7 @@ using UnityEngine.Localization.Settings;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class UI_LanguageSelector : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class UI_LanguageSelector : MonoBehaviour
         Init();
         confirmButton.onClick.AddListener(DestroyCanvas);
         canvasController = FindFirstObjectByType<UI_CanvasController>();
+        EventSystem.current.SetSelectedGameObject(confirmButton.gameObject);
     }
 
 
@@ -30,12 +32,12 @@ public class UI_LanguageSelector : MonoBehaviour
         {
             var locale = locales[i];
             options.Add(locale.LocaleName);
-            Debug.Log(locale.LocaleName);
         }
         selector.AddOptions(options);
         selector.value = index;
         selector.RefreshShownValue();
         selector.onValueChanged.AddListener(ChangeLanguage);
+        EventSystem.current.SetSelectedGameObject(selector.gameObject);
     }
 
     void ChangeLanguage(int id)

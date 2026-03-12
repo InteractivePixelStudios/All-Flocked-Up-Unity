@@ -85,7 +85,7 @@ public class PlayerGroundMovement : MonoBehaviour
     {
         // === refactored for PSC - Jacob. hope this works :0 ===
         //return isFlying;
-        return playerStateController.CurrentState == PlayerState.FlyMove;;
+        return playerStateController.CurrentState == PlayerState.FlyMove;
     }
 
     private void Awake()

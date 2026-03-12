@@ -105,6 +105,10 @@ public class UI_CanvasController : MonoBehaviour
     [SerializeField] private TutorialPrompt promptPrefab;
     public TutorialPrompt activeTutPrompt;
     public int cachedTutPromptIndex;
+    [Header("SkinSelector")]
+    [SerializeField] private UI_SkinSelector skinSelectorPrefab;
+    public UI_SkinSelector activeSkinSelector;
+
     private void Start()
     {
         input = FindFirstObjectByType<PlayerInput>();
@@ -673,5 +677,24 @@ public class UI_CanvasController : MonoBehaviour
             cachedTutPromptIndex = -1;
         }
     }
+
+    public void ShowSkinSelector()
+    {
+        if(activeSkinSelector == null)
+        {
+            activeSkinSelector = Instantiate(skinSelectorPrefab);
+            ShowPlayerCursor();
+        }
+    }
+
+    public void HideSkinSelector()
+    {
+        if(activeSkinSelector != null)
+        {
+            Destroy(activeSkinSelector.gameObject);
+            HidePlayerCursor();
+        }
+    }
+
 
 }

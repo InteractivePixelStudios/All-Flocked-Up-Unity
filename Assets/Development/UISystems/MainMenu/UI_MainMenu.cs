@@ -50,8 +50,9 @@ public class UI_MainMenu : MonoBehaviour
         //playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
         //playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
         //cameraRef.enabled = false;
-        //EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+        EventSystem.current.SetSelectedGameObject(startButton.gameObject);
         canvasController.ShowPlayerCursor();
+        settingsCanvas.GetComponent<UI_SettingsMenu>().parent = this.gameObject;
     }
 
     private void Update()
@@ -65,7 +66,7 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void OnSettingsOpen()
     {
-        if (settingsCanvas == null)
+        if (!settingsOpen)
         {
             mainCanvas.SetActive(false);
             settingsCanvas.SetActive(true);
@@ -77,12 +78,13 @@ public class UI_MainMenu : MonoBehaviour
             mainCanvas.SetActive(!settingsOpen);
             settingsCanvas.SetActive(false);
             settingsOpen = false;
+            EventSystem.current.SetSelectedGameObject(startButton.gameObject);
         }
     }
 
     protected void OnControlsOpen()
     {
-        if (controlsCanvas == null)
+        if (!controlsOpen)
         {
             mainCanvas.SetActive(false);
             controlsCanvas.SetActive(true);
@@ -93,13 +95,13 @@ public class UI_MainMenu : MonoBehaviour
             mainCanvas.SetActive(!controlsOpen);
             controlsCanvas.SetActive(false);
             controlsOpen= false;
+            EventSystem.current.SetSelectedGameObject(startButton.gameObject);
         }
     }
 
     protected void PlayCredits()
     {
-        //Needs to either trigger cinematic camera or change scene to a credits scene
-
+        SceneManager.LoadScene("CreditScene");
     }
 
     protected void StartNewGame()
@@ -109,7 +111,7 @@ public class UI_MainMenu : MonoBehaviour
         //playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
         Debug.Log("Loading Scene");
         canvasController.HidePlayerCursor();
-        SceneManager.LoadScene("AlexTestScene"); // change after build
+        SceneManager.LoadScene("TutorialIsland"); // change after build
         //cameraRef.enabled = true;
 
     }

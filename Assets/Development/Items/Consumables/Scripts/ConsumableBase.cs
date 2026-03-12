@@ -60,15 +60,15 @@ public class ConsumableBase : MonoBehaviour
     }
 
     //trigger checks if player and sets the playerRef, then calls effect and destroy
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            //playerRef = other.gameObject;
-            ConsumableEffect(consumableType);
-            Destroy(gameObject);
-        }
-    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Player"))
+    //    {
+    //        //playerRef = other.gameObject;
+    //        ConsumableEffect(consumableType);
+    //        Destroy(gameObject);
+    //    }
+    //}
     //switch case based on consumabletype enum... this is what triggers each effect when collected
     private void ConsumableEffect(E_ConsumableType consumableType)
     {

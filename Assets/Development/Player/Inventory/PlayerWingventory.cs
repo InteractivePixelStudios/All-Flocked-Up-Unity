@@ -6,6 +6,8 @@ using System.Collections.Generic;
 public class PlayerWingventory : MonoBehaviour
 {
    public int playerTrinketQuantity = 0;
+    public int playerKeychainQuantity = 0;
+    public int playerPrestoQuantity = 0;
    public Dictionary<GameObject,int> inventory = new();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -70,9 +72,24 @@ public class PlayerWingventory : MonoBehaviour
         }
     }
 
-    public void AddTrinketToInv(int amt)
+    public void AddTrinketToInv(int amt, int index)
     {
-        playerTrinketQuantity += amt;
+        if (index == 2)
+        {
+            playerTrinketQuantity += amt;
+        }
+        else if(index == 1)
+        {
+            playerKeychainQuantity += amt;
+        }
+        else if (index == 3)
+        {
+            playerPrestoQuantity += amt;
+        }
+        else if (index == 0)
+        {
+            playerTrinketQuantity += amt;
+        }
     }
 
     
