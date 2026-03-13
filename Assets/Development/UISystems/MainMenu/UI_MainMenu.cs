@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class UI_MainMenu : MonoBehaviour
     [SerializeField] private GameObject mainCanvas;
     [SerializeField] private GameObject settingsCanvas;
     [SerializeField] private GameObject controlsCanvas;
-    [SerializeField] private Button startButton;
+    public Button startButton;
     [SerializeField] private Button loadButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button controlsButton;
@@ -27,6 +28,8 @@ public class UI_MainMenu : MonoBehaviour
     private string savePath;
     private bool menuOpen;
     [SerializeField] private Vector3 cameraOffset;
+    [SerializeField] UI_LanguageSelector lang;
+    public bool firstSelected;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -50,18 +53,25 @@ public class UI_MainMenu : MonoBehaviour
         //playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
         //playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
         //cameraRef.enabled = false;
-        EventSystem.current.SetSelectedGameObject(startButton.gameObject);
         canvasController.ShowPlayerCursor();
         settingsCanvas.GetComponent<UI_SettingsMenu>().parent = this.gameObject;
+
     }
+    public void SetSelectedObject(GameObject obj)
+    {
+        EventSystem.current.SetSelectedGameObject(obj);
+    }
+
 
     private void Update()
     {
-        //if (menuOpen)
-        //{
-        //    cameraRef.transform.forward = playerSpawnPoint.transform.forward;
-        //}
-        //else return;
+
+        if (lang == null && !firstSelected)
+        {
+            SetSelectedObject(startButton.gameObject);
+            firstSelected = true;
+        }
+        else return;
     }
 
     protected void OnSettingsOpen()

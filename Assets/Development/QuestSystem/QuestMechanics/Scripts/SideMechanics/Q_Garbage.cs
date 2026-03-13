@@ -7,9 +7,10 @@ public class Q_Garbage : MonoBehaviour, IQuestMechanic
     public UI_CanvasController canvasController;
     public QuestLog questLog;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-
+        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        questLog = FindFirstObjectByType<QuestLog>();
     }
 
     // Update is called once per frame

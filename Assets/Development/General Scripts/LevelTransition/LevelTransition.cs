@@ -34,4 +34,12 @@ public class LevelTransition : MonoBehaviour
             ShowTransitionPrompt();
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            canvasController.CloseLevelTransition();
+        }
+    }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine.Localization;
+using UnityEngine.EventSystems;
 
 
 public class UI_DialogueCanvas : MonoBehaviour
@@ -148,6 +149,7 @@ public class UI_DialogueCanvas : MonoBehaviour
         SetButtonText(response, text);
 
         response.onClick.AddListener(() => ResponseClicked(branchOption));
+        EventSystem.current.SetSelectedGameObject(response.gameObject);
         return response;
     }
 

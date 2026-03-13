@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MainMenuSceneController : MonoBehaviour
 {
@@ -17,5 +18,6 @@ public class MainMenuSceneController : MonoBehaviour
     {
         if (playerPoop.TryPoop())
             playerPoop.GainPoop(1);
+
     }
 }

@@ -40,11 +40,10 @@ public class PlayerAccessoryComponent : MonoBehaviour
         currentItem = Instantiate(accessory);
         currentItem.isEquip = isEquip;
         currentItem.itemState = state;
-        currentItem.transform.SetParent(slot.transform, false);
+        currentItem.transform.SetParent(slot.transform, true);
         currentItem.transform.position = slot.transform.position;
         currentItem.transform.rotation = slot.transform.rotation;
         currentEquippedAccessories.Add(currentItem);
-        currentItem.transform.localPosition += accessoryOffset;
         
         
     }

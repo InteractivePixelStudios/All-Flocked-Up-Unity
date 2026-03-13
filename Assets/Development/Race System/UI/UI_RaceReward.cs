@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
@@ -38,7 +39,7 @@ public class UI_RaceReward: MonoBehaviour
         GetReward();
         UpdateStandings();
         UpdateRaceBestTime();
-
+        EventSystem.current.SetSelectedGameObject(acceptRewardButton.gameObject);
     }
 
     public void GetRaceStandings(GameObject racer,float time)

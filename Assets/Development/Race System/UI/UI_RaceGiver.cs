@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
@@ -21,6 +22,7 @@ public class UI_RaceGiver : MonoBehaviour
         acceptRaceButton.onClick.AddListener(AcceptRace);
         cancelButton.onClick.AddListener(CancelRace);
         GetRaceInfo();
+        EventSystem.current.SetSelectedGameObject(acceptRaceButton.gameObject);
     }
 
     // Update is called once per frame

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
@@ -20,6 +21,7 @@ public class UI_QuestReward : MonoBehaviour
         acceptReward.onClick.AddListener(AcceptReward);
         SetQuestNameText(quest.questName);
         SetRewardText(quest.itemRewards.ToString());
+        EventSystem.current.SetSelectedGameObject(acceptReward.gameObject);
 
     }
 

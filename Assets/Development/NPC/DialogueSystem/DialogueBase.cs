@@ -232,7 +232,7 @@ public class DialogueBase : MonoBehaviour
             await Task.Delay(speed);
         }
 
-        await Task.Delay(2000);
+        await Task.Delay(500);
         ShowResponseButtons(true);
     }
     //sends the current response options to the dialogue canvas

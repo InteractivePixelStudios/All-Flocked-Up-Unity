@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
@@ -23,7 +24,7 @@ public class UI_RaceFail : MonoBehaviour
         cancelButton.onClick.AddListener(CloseRace);
         GetRequiredTime();
         GetRaceInfo();
-
+        EventSystem.current.SetSelectedGameObject(retryButton.gameObject);
     }
     private void GetRequiredTime()
     {
