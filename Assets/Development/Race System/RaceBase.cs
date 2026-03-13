@@ -149,11 +149,12 @@ public class RaceBase : MonoBehaviour
 
     private void SpawnCheckpoints()
     {
+        int count = activeCheckpoints.Count;
         foreach (var checkpoint in activeCheckpoints)
         {
             checkpoint.ShowCheckpoint();
         }
-        lastCheckpoint = activeCheckpoints[activeCheckpoints.Count - 1];
+        lastCheckpoint = activeCheckpoints[count-1];
     }
 
     public void UpdateCheckpoints(int hitPoint)

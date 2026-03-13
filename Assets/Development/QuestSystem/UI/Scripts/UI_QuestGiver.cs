@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Localization;
+using UnityEngine.EventSystems;
 
 public class UI_QuestGiver : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class UI_QuestGiver : MonoBehaviour
         acceptQuestButton.onClick.AddListener(AddQuestToLog);
         cancelButton.onClick.AddListener(CloseQuestGiverUI);
         Debug.Log(currentquestGiver.quests[0].ToString());
+        EventSystem.current.SetSelectedGameObject(acceptQuestButton.gameObject);
         
     }
 

@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine.Localization;
+using UnityEngine.EventSystems;
 
 public class UI_QuestLog : MonoBehaviour
 {
@@ -49,6 +50,7 @@ public class UI_QuestLog : MonoBehaviour
         GetCurrentQuests();
         trackQuestButton.onClick.AddListener(()=>TrackQuest(currentQuest));
         HideRewardImages(currentQuest);
+        EventSystem.current.SetSelectedGameObject(trackQuestButton.gameObject);
     }
 
     public void TrackQuest(QuestRuntimeInstance questID)
