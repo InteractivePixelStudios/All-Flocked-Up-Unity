@@ -7,7 +7,7 @@ public class AchievementList : MonoBehaviour
     [SerializeField] private List<AchievementInfo> achievementList = new();
     [SerializeField] private Dictionary<string,AchievementInfo> achievementsComplete = new();
 
-    private bool statsLoaded;
+    [SerializeField] private bool statsLoaded;
 
     private Callback<UserStatsReceived_t> statsReceived;
 
@@ -28,6 +28,8 @@ public class AchievementList : MonoBehaviour
         }
 
         statsReceived = Callback<UserStatsReceived_t>.Create(OnStatsReceived);
+        BuildDictionary();
+        SteamUserStats.RequestUserStats(SteamUser.GetSteamID());
     }
 
     private void BuildDictionary()
@@ -81,7 +83,7 @@ public class AchievementList : MonoBehaviour
         return achievement.unlocked;
     }
 
-    void CompleteAchievement(string name)
+   public void CompleteAchievement(string name)
     {
         if (!statsLoaded) return;
 
@@ -100,10 +102,10 @@ public class AchievementList : MonoBehaviour
 
     void TriggerSteamAchievement(string ID)
     {
+        Debug.Log("SteamAchCalled");
         if (!SteamManager.Initialized)
             return;
-
-        SteamUserStats.SetAchievement(name);
+        SteamUserStats.SetAchievement(ID);
         SteamUserStats.StoreStats();
     }
 }

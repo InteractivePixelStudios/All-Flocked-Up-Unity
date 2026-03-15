@@ -39,7 +39,7 @@ public class UI_PauseMenu : MonoBehaviour
         controller.HidePlayerCursor();
     }
 
-    protected virtual void OnSettingsOpen()
+    public virtual void OnSettingsOpen()
     {
         if (!settingsOpen)
         {

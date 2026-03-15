@@ -1,4 +1,5 @@
 using System.Drawing;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,8 @@ public class GrabHoldObject : MonoBehaviour
     [SerializeField] private float grabDistance;
     [SerializeField] private GameObject grabbedObject;
     [SerializeField] private LayerMask grabLayer;
+    [SerializeField] private LayerMask consumeLayer;
+    [SerializeField] private LayerMask collectLayer;
     [SerializeField] private Vector3 grabOffset;
     [SerializeField] private bool isHoldingObject = false;
     [SerializeField] private PlayerPeckComponent peckComp;
@@ -24,7 +27,7 @@ public class GrabHoldObject : MonoBehaviour
 
         if(grabAction != null )
         {
-            grabAction.performed += CallGrab;
+            grabAction.performed += GrabObject;
             grabAction.started += CallHold;
             grabAction.canceled += CallRelease;
 
@@ -68,10 +71,33 @@ public class GrabHoldObject : MonoBehaviour
     {
 
         RaycastHit hit;
-        if(Physics.Raycast(grabPoint.transform.position, transform.forward, out hit, grabDistance, grabLayer))
+        if(Physics.Raycast(grabPoint.transform.position, transform.forward + (Vector3.down*2), out hit, grabDistance, grabLayer))
         {
             grabbedObject = hit.collider.gameObject;
             PickUpObject(grabbedObject);
+
+        }
+
+        if (Physics.Raycast(grabPoint.transform.position, transform.forward + (Vector3.down * 2), out hit, grabDistance, consumeLayer))
+        {
+            grabbedObject = hit.collider.gameObject;
+            var comp = hit.collider.gameObject.GetComponentInParent<PlayerHealth>();
+            if (comp !=null && comp.currentHealth < comp.maxHealth)
+            {
+                grabbedObject.GetComponentInParent<ConsumableBase>().UseConsumable();
+            }
+            else
+            {
+                var inv = GetComponentInParent<PlayerWingventory>();
+                inv.AddItemToInv(hit.collider.gameObject,1);
+            }
+
+        }
+
+        if (Physics.Raycast(grabPoint.transform.position, transform.forward + (Vector3.down * 2), out hit, grabDistance, collectLayer))
+        {
+            var comp = hit.collider.gameObject.GetComponent<TrinketScript>();
+            comp.CollectTrinket(comp.value);
 
         }
     }
@@ -114,7 +140,11 @@ public class GrabHoldObject : MonoBehaviour
         {
             Object.transform.localPosition = Vector3.zero;
             Object.transform.rotation = grabPoint.transform.rotation;
-            Object.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            var obj = Object.GetComponent<Rigidbody>();
+            if(obj != null)
+            {
+                obj.constraints = RigidbodyConstraints.FreezeAll;
+            }
         }
     }
 

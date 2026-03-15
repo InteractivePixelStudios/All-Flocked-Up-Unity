@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyPatrol : MonoBehaviour, I_EnemyBase
+public class EnemyPatrol : EnemyBaseComponent
 {
     [Header("Patrol")]
     public GameObject patrolPoint;
@@ -39,7 +39,7 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
     [SerializeField] protected bool isRetreating;
 
     private int currentPointIndex = 0;
-    private enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
+    public enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
     public bool IsDead = false;
@@ -51,6 +51,10 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
         animator = GetComponent<Animator>();
         FindWaypoints();
     }
+    public void SetCurrentState(EnemyState state)
+    {
+        currentState = state;
+    }
 
     void Update()
     {
@@ -61,59 +65,59 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
         switch (currentState) 
         {
             case EnemyState.Patrolling:
-                if (playerStealth.GetStealth() < 10&& distanceToPlayer < detectionRange)
+                if (playerStealth.GetStealth() < 10&& distanceToPlayer < detectionRange && !isHit)
                     currentState = EnemyState.Chasing;
                 else if (isHit)
                     currentState = EnemyState.Hit;
                 break;
 
             case EnemyState.Chasing:
-                if (distanceToPlayer > detectionRange)
+                if (distanceToPlayer > detectionRange && !isHit)
                     currentState = EnemyState.Patrolling;
-                else if (distanceToPlayer < kickRange)
+                else if (distanceToPlayer < kickRange && !isHit)
                     currentState = EnemyState.Kicking;
-                else if(distanceToPlayer < throwRange)
+                else if(distanceToPlayer < throwRange && !isHit)
                     currentState = EnemyState.Throwing;
                 else if(isHit)
                     currentState = EnemyState.Hit;
                 break; 
 
             case EnemyState.Kicking:
-                if (distanceToPlayer > kickRange)
+                if (distanceToPlayer > kickRange && !isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Throwing:
-                if(distanceToPlayer > throwRange)
+                if(distanceToPlayer > throwRange && !isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Stop:
                 if (isHit)
                 {
-                    isHit = false;
-                    isStopped = true;
                     currentState = EnemyState.Retreat;
+                    isStopped = true;
+
                 }
                 break;
 
             case EnemyState.Retreat:
-                if (isStopped)
+                if (isStopped && !isHit)
                 {
                     isStopped = false;
-                    currentState = EnemyState.Patrolling;
-                }
-                else if (isHit)
-                {
                     currentState = EnemyState.Hit;
+                }
+                else if (!isHit)
+                {
+                    currentState = EnemyState.Patrolling;
                 }
                 break;
 
             case EnemyState.Hit:
                 isHit = true;
-                currentState = EnemyState.Stop;
                 break;
-        }
+
+    }
 
         switch (currentState)
         {
@@ -152,8 +156,12 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
                 Debug.Log("HitCalled");
                 break;
             case EnemyState.Retreat:
-                Retreat();
-                Debug.Log("RetreatCalled");
+                if (!isRetreating)
+                {
+                    isRetreating = true;
+                    Retreat();
+                    Debug.Log("RetreatCalled");
+                }
                 break;
         }
 
@@ -212,9 +220,9 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 
     protected async void HitReact()
     {
-        TakeDamage(1);
+        currentState = EnemyState.Stop;
         animator.SetTrigger("isHit");
-        await Task.Delay(3000);
+        await Task.Delay(1000);
     }
 
     protected void Retreat()
@@ -272,17 +280,6 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
         dir.y = 0;
         if (dir != Vector3.zero)
             objectSpawnPoint.transform.forward = dir;
-
-    }
-
-    public void TakeDamage(int damage)
-    {
-
-
-    }
-
-    public void OnDeath(bool IsDead)
-    {
 
     }
 

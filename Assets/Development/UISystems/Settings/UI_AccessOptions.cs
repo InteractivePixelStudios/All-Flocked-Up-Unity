@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.Localization.Settings;
 
 public class UI_AccessOptions : UI_SettingsMenu
 {
@@ -12,8 +13,14 @@ public class UI_AccessOptions : UI_SettingsMenu
     [SerializeField] private TMP_Dropdown cbModeDropdown;
     [SerializeField] private TMP_Dropdown languageDropdown;
     [SerializeField] private Toggle highContrastToggle;
+    [SerializeField] private Material cbMaterial;
+    [SerializeField] private LocalizationSettings settings;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
+    void Awake()
+    {
+        int mode = PlayerPrefs.GetInt("CBMode", 0);
+        Shader.SetGlobalFloat("_Mode", mode);
+    }
 
     public void SetFirstAccessButton()
     {
@@ -50,6 +57,7 @@ public class UI_AccessOptions : UI_SettingsMenu
 
     protected void OnCBModeChanged(int index)
     {
+        Debug.Log("Dropdown changed: " + index);
         ApplyCBMode(index);
         PlayerPrefs.SetInt("CBMode", index);
         PlayerPrefs.Save();
@@ -59,83 +67,77 @@ public class UI_AccessOptions : UI_SettingsMenu
     {
         switch (index)
         {
-            case 0: SetCBMode(ColorBlindMode.None); break;
-            case 1: SetCBMode(ColorBlindMode.Deuteranopia); break;
-            case 2: SetCBMode(ColorBlindMode.Protanopia); break;
-            case 3: SetCBMode(ColorBlindMode.Tritanopia); break;
+            case 0: SetCBMode(ColorBlindMode.None); 
+                break;
+            case 1: SetCBMode(ColorBlindMode.Deuteranopia); 
+                break;
+            case 2: SetCBMode(ColorBlindMode.Protanopia); 
+                break;
+            case 3: SetCBMode(ColorBlindMode.Tritanopia); 
+                break;
         }
     }
 
     protected void SetCBMode(ColorBlindMode cbMode)
     {
-         var currentCBMode = cbMode;
+        float modeValue = 0f;
+        var currentCBMode = cbMode;
         switch (currentCBMode)
         {
-            case ColorBlindMode.None:break;
-            case ColorBlindMode.Deuteranopia: break;
-            case ColorBlindMode.Protanopia: break;
-            case ColorBlindMode.Tritanopia: break;
+            case ColorBlindMode.None:
+                modeValue = 0f;
+                Shader.SetGlobalFloat("_Strength", 0f);
+                break;
+            case ColorBlindMode.Deuteranopia:
+                modeValue = 2f;
+                Shader.SetGlobalFloat("_Strength", 1f);
+                break;
+            case ColorBlindMode.Protanopia:
+                modeValue = 1f;
+                Shader.SetGlobalFloat("_Strength", 1f);
+                break;
+            case ColorBlindMode.Tritanopia:
+                modeValue = 3f;
+                Shader.SetGlobalFloat("_Strength", 1f);
+                break;
         }
+        Shader.SetGlobalFloat("_Mode", modeValue);
+        Debug.Log("Setting shader mode: " + modeValue);
     }
 
     protected void OnLanguageChanged(int index)
     {
-        ApplyLanguage(index);
+        ChangeLanguage(index);
         PlayerPrefs.SetInt("Language", index);
         PlayerPrefs.Save();
     }
 
-    protected void InitLanguageDD()
+    protected async void InitLanguageDD()
     {
+        await settings.GetInitializationOperation().Task;
+        var locales = settings.GetAvailableLocales().Locales;
+        List<string> options = new();
+        int langIndex = 6;
         languageDropdown.ClearOptions();
-        var options = new List<string>
+        for (int i = 0; i < locales.Count; i++)
         {
-            "English",
-            "French",
-            "Spanish",
-            "Chinese",
-            "Japanese",
-            "Hindi",
-
-        };
+            var locale = locales[i];
+            options.Add(locale.LocaleName);
+        }
         languageDropdown.AddOptions(options);
-        int index = PlayerPrefs.GetInt("Language", 0);
-        languageDropdown.value = index;
+        languageDropdown.value = langIndex;
         languageDropdown.RefreshShownValue();
-
-        ApplyLanguage(index);
-        PlayerPrefs.SetInt("Language", index);
-        PlayerPrefs.Save();
+        ChangeLanguage(langIndex);
+        languageDropdown.onValueChanged.AddListener(OnLanguageChanged);
 
     }
 
-    protected void ApplyLanguage(int index)
+    void ChangeLanguage(int id)
     {
-        switch (index)
-        {
-            case 0: SetLanguage(Language.English); break;
-            case 1: SetLanguage(Language.French); break;
-            case 2: SetLanguage(Language.Spanish); break;
-            case 3: SetLanguage(Language.Chinese); break;
-            case 4: SetLanguage(Language.Japanese); break;
-            case 5: SetLanguage(Language.Hindi); break;
-        }
+        var localeList = settings.GetAvailableLocales().Locales;
+        settings.SetSelectedLocale(localeList[id]);
     }
 
-    //this will need refs to whatever will change the text language
-    protected void SetLanguage(Language language)
-    {
-        switch (language)
-        {
-            case Language.English: break;
-            case Language.French: break;
-            case Language.Spanish: break;
-            case Language.Chinese: break;
-            case Language.Japanese: break;
-            case Language.Hindi: break;
-
-        }
-    }
 
     protected void InitContrastModeDD()
     {
@@ -163,7 +165,7 @@ public class UI_AccessOptions : UI_SettingsMenu
         var ui = FindObjectsByType<UnityEngine.UI.Graphic>(FindObjectsSortMode.None);
         foreach(var element in ui)
         {
-            if (enabled)
+            if (!value)
             {
                 if (element is UnityEngine.UI.Text || element is TMPro.TextMeshProUGUI)
                     element.color = Color.black;
@@ -187,14 +189,4 @@ public enum ColorBlindMode
     Deuteranopia,
     Protanopia,
     Tritanopia
-}
-
-public enum Language
-{
-    English,
-    French,
-    Spanish,
-    Chinese,
-    Japanese,
-    Hindi
 }

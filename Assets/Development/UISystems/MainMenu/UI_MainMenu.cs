@@ -63,7 +63,7 @@ public class UI_MainMenu : MonoBehaviour
         //else return;
     }
 
-    protected void OnSettingsOpen()
+    public void OnSettingsOpen()
     {
         if (!settingsOpen)
         {
@@ -74,7 +74,7 @@ public class UI_MainMenu : MonoBehaviour
         }
         else
         {
-            mainCanvas.SetActive(!settingsOpen);
+            mainCanvas.SetActive(true);
             settingsCanvas.SetActive(false);
             settingsOpen = false;
         }
@@ -106,10 +106,15 @@ public class UI_MainMenu : MonoBehaviour
 
         //playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
         //playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
+        if (SteamManager.Initialized)
+        {
+            AchievementList.FindFirstObjectByType<AchievementList>().CompleteAchievement("SteamAch_000_Support");
+        }
         Debug.Log("Loading Scene");
         canvasController.HidePlayerCursor();
         SceneManager.LoadScene("TutorialIsland"); // change after build
         //cameraRef.enabled = true;
+
 
     }
 
