@@ -148,6 +148,76 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3558554788676818642}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1 &7501582160166277218
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5361095995755719132}
+  - component: {fileID: 6819892356071610624}
+  - component: {fileID: 8856120565921912228}
+  m_Layer: 0
+  m_Name: HitDetector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5361095995755719132
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7501582160166277218}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.005, y: 0.951, z: -0.023}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1283460146543547471}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6819892356071610624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7501582160166277218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175f3f974e9a3154397aac32a7636f8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questKillComponent: {fileID: 0}
+  isDeadLocal: 0
+  currentHealth: 0
+  enemyRef: {fileID: 0}
+--- !u!65 &8856120565921912228
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7501582160166277218}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 4194304
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.25, y: 1.73, z: 0.23}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8935178689593762710
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,6 +329,9 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 5361095995755719132}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4464455659198594872}
@@ -377,7 +450,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3dda93df9528e342be47e2675a4d2f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolPoints: []
+  questKillComponent: {fileID: 0}
+  isDeadLocal: 0
+  currentHealth: 0
+  enemyRef: {fileID: 0}
+  patrolPoint: {fileID: 0}
   player: {fileID: 0}
   playerStealth: {fileID: 0}
   patrolSpeed: 2

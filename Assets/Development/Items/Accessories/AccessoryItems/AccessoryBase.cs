@@ -60,7 +60,7 @@ public class AccessoryBase : MonoBehaviour
             case EAccessoryItems.BottleCap:
                 accessoryOffset = new Vector3(0, 0, 0);
                 itemMesh.mesh = meshList[0];
-                itemMesh.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                itemMesh.transform.localRotation = Quaternion.Euler(-90, 0, 0);
                 itemMesh.transform.localScale = new Vector3(0.31f, 0.31f, 0.31f);
                 itemMaterial.material = materialList[0];
                 accessoryName = "Bottle Cap Hat";
@@ -69,7 +69,7 @@ public class AccessoryBase : MonoBehaviour
             case EAccessoryItems.Monocle:
                 accessoryOffset = new Vector3(0, 0, 0);
                 itemMesh.mesh = meshList[1];
-                itemMesh.transform.rotation = Quaternion.Euler(-95, 0, 0);
+                itemMesh.transform.localRotation = Quaternion.Euler(-95, 0, 0);
                 itemMesh.transform.localScale = new Vector3(1.75f, 1.75f, 1.75f);
                 itemMaterial.material = materialList[1];
                 accessoryName = "Monocle";
@@ -78,7 +78,7 @@ public class AccessoryBase : MonoBehaviour
             case EAccessoryItems.Feather:
                 accessoryOffset = new Vector3(0, 0, 0);
                 itemMesh.mesh = meshList[2];
-                itemMesh.transform.rotation = Quaternion.Euler(-97, 0, 0);
+                itemMesh.transform.localRotation = Quaternion.Euler(-97, 0, 0);
                 itemMesh.transform.localScale = new Vector3(0.13f, 0.13f, 0.13f);
                 itemMaterial.material = materialList[2];
                 accessoryName = "Feather";
@@ -87,7 +87,7 @@ public class AccessoryBase : MonoBehaviour
             case EAccessoryItems.Anklet:
                 accessoryOffset = new Vector3(0, 0, 0);
                 itemMesh.mesh = meshList[3];
-                itemMesh.transform.rotation = Quaternion.Euler(-85, 0, 0);
+                itemMesh.transform.localRotation = Quaternion.Euler(-85, 0, 0);
                 itemMesh.transform.localScale = new Vector3(0.48f, 0.48f, 0.48f);
                 itemMaterial.material = materialList[3];
                 accessoryName = "Anklet";
@@ -96,7 +96,7 @@ public class AccessoryBase : MonoBehaviour
             case EAccessoryItems.Bread:
                 accessoryOffset = new Vector3(0, 0, 0);
                 itemMesh.mesh = meshList[4];
-                itemMesh.transform.rotation = Quaternion.Euler(-95, 0, 0);
+                itemMesh.transform.localRotation = Quaternion.Euler(-95, 0, 0);
                 itemMesh.transform.localScale = new Vector3(3.5f, 3.5f, 3.5f);
                 itemMaterial.material = materialList[4];
                 accessoryName = "Bread Slice Necklace";
@@ -105,7 +105,7 @@ public class AccessoryBase : MonoBehaviour
             case EAccessoryItems.Rose:
                 accessoryOffset = new Vector3(0, 0, 0);
                 itemMesh.mesh = meshList[5];
-                itemMesh.transform.rotation = Quaternion.Euler(-96, 0, 0);
+                itemMesh.transform.localRotation = Quaternion.Euler(-96, 0, 0);
                 itemMesh.transform.localScale = new Vector3(0.51f, 0.51f, 0.51f);
                 itemMaterial.material = materialList[5];
                 accessoryName = "Rosebud Hat";
@@ -114,7 +114,7 @@ public class AccessoryBase : MonoBehaviour
             case EAccessoryItems.Reciept:
                 accessoryOffset = new Vector3(0, 0, 0);
                 itemMesh.mesh = meshList[6];
-                itemMesh.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                itemMesh.transform.localRotation = Quaternion.Euler(-90, 0, 0);
                 itemMesh.transform.localScale = new Vector3(0.38f, 0.38f, 0.38f);
                 itemMaterial.material = materialList[6];
                 accessoryName = "Reciept Scarf";

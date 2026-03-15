@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AI_Carlos : MonoBehaviour
+public class AI_Carlos : EnemyBaseComponent
 {
     [SerializeField] private GameObject player;
     [SerializeField] private Vector3 targetPos;
