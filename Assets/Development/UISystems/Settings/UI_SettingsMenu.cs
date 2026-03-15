@@ -1,9 +1,10 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UI_SettingsMenu : UI_PauseMenu
+public class UI_SettingsMenu : MonoBehaviour
 {
     public GameObject parent;
     [Header("Settings")]
@@ -21,6 +22,8 @@ public class UI_SettingsMenu : UI_PauseMenu
     private bool audioOpen;
     [SerializeField] private GameObject accessParent;
     private bool accessOpen;
+    UI_PauseMenu pauseRef;
+    UI_MainMenu mainRef;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,6 +35,19 @@ public class UI_SettingsMenu : UI_PauseMenu
         accessButton.onClick.AddListener(OpenAccessOptions);
         accessBackButton.onClick.AddListener(OpenAccessOptions);
         SetFirstSettingsButton();
+        CheckIfMainMenu();
+    }
+
+    void CheckIfMainMenu()
+    {
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainMenu"))
+        {
+            mainRef = FindFirstObjectByType<UI_MainMenu>();
+        }
+        else
+        {
+            pauseRef = FindFirstObjectByType<UI_PauseMenu>();
+        }
     }
 
     public void SetFirstSettingsButton()
@@ -41,7 +57,13 @@ public class UI_SettingsMenu : UI_PauseMenu
 
     protected void CloseSettings()
     {
-
+        if (mainRef != null)
+        {
+            mainRef.OnSettingsOpen();
+        }else if (pauseRef != null)
+        {
+            pauseRef.OnSettingsOpen();
+        }
     }
     protected void OpenVideoOptions()
     {

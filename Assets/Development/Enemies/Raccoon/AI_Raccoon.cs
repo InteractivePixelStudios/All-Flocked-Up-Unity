@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AI_Raccoon : MonoBehaviour, I_EnemyBase
+public class AI_Raccoon : EnemyBaseComponent
 {
     [Header("Patrol")]
     public Transform[] patrolPoints;
@@ -42,7 +42,7 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
     [SerializeField] protected bool isRetreating;
 
     private int currentPointIndex = 0;
-    private enum EnemyState { Patrolling, Chasing, Climb, Search, Stop, Hit, Retreat }
+    public enum EnemyState { Patrolling, Chasing, Climb, Search, Stop, Hit, Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
     public bool IsDead = false;
@@ -53,7 +53,10 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
         animator = GetComponent<Animator>();
         FindWaypoints();
     }
-
+    public void SetCurrentState(EnemyState state)
+    {
+        currentState = state;
+    }
     void Update()
     {
         if (climbCooldown >= 0) climbCooldown -= Time.deltaTime;
