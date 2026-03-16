@@ -15,6 +15,7 @@ public class CameraController : Singleton<CameraController>
 
     InputAction lookAction; // Action for mouse input
     float x, y; // Mouse input values
+    private float lookSens = 1f;
 
     void Start()
     {
@@ -47,8 +48,13 @@ public class CameraController : Singleton<CameraController>
 
     void PlayerInput()
     {
-        x = lookAction.ReadValue<Vector2>().x;
-        y = lookAction.ReadValue<Vector2>().y;
+        x = lookAction.ReadValue<Vector2>().x * lookSens;
+        y = lookAction.ReadValue<Vector2>().y * lookSens;
+    }
+
+    public void SetLookSens(float value)
+    {
+        lookSens = value;
     }
 
     void CameraMovement()
