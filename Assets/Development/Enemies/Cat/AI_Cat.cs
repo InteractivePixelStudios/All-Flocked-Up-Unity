@@ -52,6 +52,7 @@ public class AI_Cat : EnemyBaseComponent
         playerStealth = player.GetComponent<PlayerStealthSystem>();
         animator = GetComponent<Animator>();
         icon = GetComponentInChildren<Enemy_AlertIcon>();
+        rigidbodyComp = GetComponent<Rigidbody>();
         FindWaypoints();
     }
 
@@ -175,6 +176,10 @@ public class AI_Cat : EnemyBaseComponent
 
     }
 
+    private void FixedUpdate()
+    {
+        animator.SetFloat("Speed", rigidbodyComp.maxLinearVelocity);
+    }
 
     private void FindWaypoints()
     {
@@ -262,7 +267,7 @@ public class AI_Cat : EnemyBaseComponent
         spawnedCollider.includeLayers = LayerMask.GetMask("Player");
         spawnedCollider.isTrigger = true;
         spawnedCollider.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-        //animator.SetTrigger("isKicking");
+        animator.SetTrigger("isClaw");
         swatCooldown = 3f;
         await Task.Delay(3000);
         Destroy(spawnedCollider);
@@ -271,8 +276,7 @@ public class AI_Cat : EnemyBaseComponent
 
     protected async void Pounce()
     {
-        var rb = GetComponent<Rigidbody>();
-        rb.linearVelocity = Vector3.zero;
+        rigidbodyComp.linearVelocity = Vector3.zero;
         Vector3 dirToPlayer = (player.transform.position-transform.position).normalized;
         dirToPlayer.y = 0;
         Vector3 force = dirToPlayer * pounceForce.z + Vector3.up * pounceForce.y;
@@ -283,7 +287,8 @@ public class AI_Cat : EnemyBaseComponent
         spawnedCollider.isTrigger = true;
         var comp = spawnedCollider.AddComponent<KickComponent>(); //used as damage comp
         comp.damage = 10;
-        swatCooldown = 3f;
+        animator.SetTrigger("isPounce");
+        pounceCooldown = 3f;
         await Task.Delay(3000);
         Destroy(spawnedCollider);
         Destroy(comp);

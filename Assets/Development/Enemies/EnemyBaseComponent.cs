@@ -7,7 +7,7 @@ public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
 {
     [SerializeField] private Q_KillComponent questKillComponent;
     public bool isDeadLocal;
-    public int currentHealth;
+    public int currentHealth = 10;
     public GameObject enemyRef;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     
