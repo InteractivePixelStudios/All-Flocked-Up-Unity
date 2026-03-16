@@ -48,7 +48,7 @@ public class CameraController : MonoBehaviour
         if (watchPlayer && player)
         {
             // Follow player
-            CameraMovement();
+           CameraMovement();
         }
         else if (respawnTarget)
         {
@@ -61,11 +61,18 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        PlayerInput();
+        if (playerState.CurrentState != PlayerState.PhotoMode)
+        {
+            PlayerInput();
+        }
     }
 
     void PlayerInput()
     {
+        
+        
+        
+        
         x = lookAction.ReadValue<Vector2>().x;
         y = lookAction.ReadValue<Vector2>().y;
     }
