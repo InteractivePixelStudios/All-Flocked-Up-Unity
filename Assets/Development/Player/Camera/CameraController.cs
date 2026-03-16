@@ -31,7 +31,7 @@ public class CameraController : Singleton<CameraController>
         if (watchPlayer && player != null)
         {
             // Follow player
-            CameraMovement();
+           CameraMovement();
         }
         else if (respawnTarget != null)
         {
@@ -44,7 +44,10 @@ public class CameraController : Singleton<CameraController>
 
     void Update()
     {
-        PlayerInput();
+        if (playerState.CurrentState != PlayerState.PhotoMode)
+        {
+            PlayerInput();
+        }
     }
 
     void PlayerInput()
