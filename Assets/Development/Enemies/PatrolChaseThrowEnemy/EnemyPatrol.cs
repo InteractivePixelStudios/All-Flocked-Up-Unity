@@ -33,7 +33,7 @@ public class EnemyPatrol : EnemyBaseComponent
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]
     [SerializeField] protected NavMeshAgent navAgent;
-    [SerializeField] protected Animator animator;
+    [SerializeField] protected Animator animController;
     [SerializeField] protected bool isHit;
     [SerializeField] protected bool isStopped;
     [SerializeField] protected bool isRetreating;
@@ -48,8 +48,9 @@ public class EnemyPatrol : EnemyBaseComponent
     {
         player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
-        animator = GetComponent<Animator>();
+        animController = GetComponent<Animator>();
         FindWaypoints();
+        currentState = EnemyState.Patrolling;
     }
     public void SetCurrentState(EnemyState state)
     {
@@ -216,17 +217,19 @@ public class EnemyPatrol : EnemyBaseComponent
     protected void StopMove()
     {
         navAgent.isStopped = true;
+        animController.SetFloat("Speed", 0f);
     }
 
     protected async void HitReact()
     {
         currentState = EnemyState.Stop;
-        animator.SetTrigger("isHit");
+        animController.SetTrigger("isHit");
         await Task.Delay(1000);
     }
 
     protected void Retreat()
     {
+        animController.SetFloat("Speed",navAgent.speed);
         var centerPoint = transform.position;
         var radius = 5f;
         Vector3 randomDirection = Random.insideUnitSphere * radius;
@@ -236,6 +239,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
    protected void ChasePlayer()
     {
+        animController.SetFloat("Speed", navAgent.speed);
         Vector3 targetPos = player.transform.position;
         targetPos.y = transform.position.y;
 
@@ -249,20 +253,20 @@ public class EnemyPatrol : EnemyBaseComponent
 
     protected void KickPlayer()
     {
-
         var spawnedCollider = kickColliderParent.AddComponent<SphereCollider>();
         var comp = spawnedCollider.AddComponent<KickComponent>();
         comp.damage = 1;
-        //animator.SetTrigger("isKicking");
+        animController.SetTrigger("isKicking");
         kickCooldown = 3f;
         Task.Delay(3000);
         Destroy(spawnedCollider);
         Destroy(comp);
+
     }
 
     protected void ThrowObject()
     {
-       // animator.SetTrigger("isThrowing");
+        animController.SetTrigger("isThrowing");
         var spawnedObj = Instantiate(throwObjectPrefab,objectSpawnPoint.position,objectSpawnPoint.rotation);
         spawnedObj.transform.position = objectSpawnPoint.transform.position;
         spawnedObj.transform.rotation = objectSpawnPoint.transform.rotation;
@@ -270,6 +274,7 @@ public class EnemyPatrol : EnemyBaseComponent
         SetThrowPoint();
         objRB.AddForce(objectSpawnPoint.forward*throwForce,ForceMode.Impulse);
         throwCooldown = 3f;
+
     }
 
     protected void SetThrowPoint()
@@ -296,6 +301,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
         navAgent.isStopped = false;
         navAgent.SetDestination(currentNode.transform.position);
+        animController.SetFloat("Speed",navAgent.speed);
 
     }
 
@@ -345,7 +351,7 @@ public class EnemyPatrol : EnemyBaseComponent
             connections.Add(new WaypointConnection { node = node.nextWaypoint });
 
         }
-        else Destroy(this.gameObject);
+        
 
         int randomIndex = Random.Range(0, connections.Count);
         Waypoint nextNode = connections[randomIndex].node;
