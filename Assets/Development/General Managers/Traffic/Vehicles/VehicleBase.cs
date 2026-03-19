@@ -35,29 +35,24 @@ public class VehicleBase :MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        var distance = Vector3.Distance(transform.position, currentNode.transform.position);
-        if (distance > 200f)
-        {
-            Debug.Log("Too far from currentNode");
-            Destroy(this.gameObject);
-           
-        }
-        if (isStopped)
-        {
-            StopVehicle();
-        }else if (!isStopped)
-        {
-            MoveVehicleToLocation();
-        }
-
         if (currentNode == null)
         {
             StopVehicle();
             Debug.Log("Cant find CurrentNode");
             return;
         }
+        if (!navAgent.hasPath && !navAgent.pathPending)
+        {
+            Destroy(this.gameObject);
+            manager.RemoveVehicleFromList(this);
 
-        if (navAgent.remainingDistance < 5f)
+        }
+        if (isStopped)
+        {
+            StopVehicle();
+        }
+
+        if (!navAgent.pathPending && navAgent.remainingDistance <= navAgent.stoppingDistance)
         {
             ChooseNextDirection(currentNode);
         }
@@ -93,13 +88,19 @@ public class VehicleBase :MonoBehaviour
 
         navAgent.isStopped = false;
         navAgent.SetDestination(currentNode.transform.position);
-
+        isMoving = true;
     }
 
     public virtual void StopVehicle()
     {
+        if (!navAgent.isStopped)
+        {
+            stopTimer = 5f; // reset when entering stop
+        }
+
         stopTimer -= Time.deltaTime;
-        if(stopTimer <= 0)
+
+        if (stopTimer <= 0)
         {
             Debug.Log("Car Stopped too long!");
             navAgent.isStopped = false;
@@ -109,14 +110,17 @@ public class VehicleBase :MonoBehaviour
         else
         {
             navAgent.isStopped = true;
+            isMoving = false;
         }
-        //Debug.Log("Stopping");
     }
 
     public virtual void TriggerCollisions()
     {
         Debug.Log("HitAnotherVehicle");
-        //StopVehicle();
+        if(isStopped)
+        {
+            StopVehicle();
+        }
         HonkHorn();
         navAgent.speed = 2;
         if (navAgent.isStopped)
@@ -166,7 +170,12 @@ public class VehicleBase :MonoBehaviour
 
         //if (connections.Count == 0)
         //    return;
-
+        if (connections.Count == 0)
+        {
+            Destroy(this.gameObject);
+            manager.RemoveVehicleFromList(this);
+            return;
+        }
         int randomIndex = Random.Range(0, connections.Count);
         Waypoint nextNode = connections[randomIndex].node;
         if (nextNode == null)

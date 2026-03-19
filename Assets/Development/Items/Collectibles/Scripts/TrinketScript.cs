@@ -40,6 +40,10 @@ public class TrinketScript : MonoBehaviour
     {
         SetIndex();
         playerRef.GetComponent<PlayerWingventory>().AddTrinketToInv(amt, index);
+        if (SteamManager.Initialized)
+        {
+            AchievementList.FindFirstObjectByType<AchievementList>().CompleteAchievement("SteamAch_009_Trinket");
+        }
         //Q_Collect collect;
         //TryGetComponent<Q_Collect>(out collect);
         //if(collect != null)
