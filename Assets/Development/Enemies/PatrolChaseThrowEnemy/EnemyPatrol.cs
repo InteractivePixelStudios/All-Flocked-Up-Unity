@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyPatrol : MonoBehaviour, I_EnemyBase
+public class EnemyPatrol : EnemyBaseComponent
 {
     [Header("Patrol")]
     public GameObject patrolPoint;
@@ -33,13 +33,13 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]
     [SerializeField] protected NavMeshAgent navAgent;
-    [SerializeField] protected Animator animator;
+    [SerializeField] protected Animator animController;
     [SerializeField] protected bool isHit;
     [SerializeField] protected bool isStopped;
     [SerializeField] protected bool isRetreating;
 
     private int currentPointIndex = 0;
-    private enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
+    public enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
     public bool IsDead = false;
@@ -48,8 +48,13 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
     {
         player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
-        animator = GetComponent<Animator>();
+        animController = GetComponent<Animator>();
         FindWaypoints();
+        currentState = EnemyState.Patrolling;
+    }
+    public void SetCurrentState(EnemyState state)
+    {
+        currentState = state;
     }
 
     void Update()
@@ -61,59 +66,59 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
         switch (currentState) 
         {
             case EnemyState.Patrolling:
-                if (playerStealth.GetStealth() < 10&& distanceToPlayer < detectionRange)
+                if (playerStealth.GetStealth() < 10&& distanceToPlayer < detectionRange && !isHit)
                     currentState = EnemyState.Chasing;
                 else if (isHit)
                     currentState = EnemyState.Hit;
                 break;
 
             case EnemyState.Chasing:
-                if (distanceToPlayer > detectionRange)
+                if (distanceToPlayer > detectionRange && !isHit)
                     currentState = EnemyState.Patrolling;
-                else if (distanceToPlayer < kickRange)
+                else if (distanceToPlayer < kickRange && !isHit)
                     currentState = EnemyState.Kicking;
-                else if(distanceToPlayer < throwRange)
+                else if(distanceToPlayer < throwRange && !isHit)
                     currentState = EnemyState.Throwing;
                 else if(isHit)
                     currentState = EnemyState.Hit;
                 break; 
 
             case EnemyState.Kicking:
-                if (distanceToPlayer > kickRange)
+                if (distanceToPlayer > kickRange && !isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Throwing:
-                if(distanceToPlayer > throwRange)
+                if(distanceToPlayer > throwRange && !isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Stop:
                 if (isHit)
                 {
-                    isHit = false;
-                    isStopped = true;
                     currentState = EnemyState.Retreat;
+                    isStopped = true;
+
                 }
                 break;
 
             case EnemyState.Retreat:
-                if (isStopped)
+                if (isStopped && !isHit)
                 {
                     isStopped = false;
-                    currentState = EnemyState.Patrolling;
-                }
-                else if (isHit)
-                {
                     currentState = EnemyState.Hit;
+                }
+                else if (!isHit)
+                {
+                    currentState = EnemyState.Patrolling;
                 }
                 break;
 
             case EnemyState.Hit:
                 isHit = true;
-                currentState = EnemyState.Stop;
                 break;
-        }
+
+    }
 
         switch (currentState)
         {
@@ -152,8 +157,12 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
                 Debug.Log("HitCalled");
                 break;
             case EnemyState.Retreat:
-                Retreat();
-                Debug.Log("RetreatCalled");
+                if (!isRetreating)
+                {
+                    isRetreating = true;
+                    Retreat();
+                    Debug.Log("RetreatCalled");
+                }
                 break;
         }
 
@@ -208,17 +217,19 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
     protected void StopMove()
     {
         navAgent.isStopped = true;
+        animController.SetFloat("Speed", 0f);
     }
 
     protected async void HitReact()
     {
-        TakeDamage(1);
-        animator.SetTrigger("isHit");
-        await Task.Delay(3000);
+        currentState = EnemyState.Stop;
+        animController.SetTrigger("isHit");
+        await Task.Delay(1000);
     }
 
     protected void Retreat()
     {
+        animController.SetFloat("Speed",navAgent.speed);
         var centerPoint = transform.position;
         var radius = 5f;
         Vector3 randomDirection = Random.insideUnitSphere * radius;
@@ -228,6 +239,7 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 
    protected void ChasePlayer()
     {
+        animController.SetFloat("Speed", navAgent.speed);
         Vector3 targetPos = player.transform.position;
         targetPos.y = transform.position.y;
 
@@ -241,20 +253,20 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 
     protected void KickPlayer()
     {
-
         var spawnedCollider = kickColliderParent.AddComponent<SphereCollider>();
         var comp = spawnedCollider.AddComponent<KickComponent>();
         comp.damage = 1;
-        //animator.SetTrigger("isKicking");
+        animController.SetTrigger("isKicking");
         kickCooldown = 3f;
         Task.Delay(3000);
         Destroy(spawnedCollider);
         Destroy(comp);
+
     }
 
     protected void ThrowObject()
     {
-       // animator.SetTrigger("isThrowing");
+        animController.SetTrigger("isThrowing");
         var spawnedObj = Instantiate(throwObjectPrefab,objectSpawnPoint.position,objectSpawnPoint.rotation);
         spawnedObj.transform.position = objectSpawnPoint.transform.position;
         spawnedObj.transform.rotation = objectSpawnPoint.transform.rotation;
@@ -262,6 +274,7 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
         SetThrowPoint();
         objRB.AddForce(objectSpawnPoint.forward*throwForce,ForceMode.Impulse);
         throwCooldown = 3f;
+
     }
 
     protected void SetThrowPoint()
@@ -272,17 +285,6 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
         dir.y = 0;
         if (dir != Vector3.zero)
             objectSpawnPoint.transform.forward = dir;
-
-    }
-
-    public void TakeDamage(int damage)
-    {
-
-
-    }
-
-    public void OnDeath(bool IsDead)
-    {
 
     }
 
@@ -299,6 +301,7 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 
         navAgent.isStopped = false;
         navAgent.SetDestination(currentNode.transform.position);
+        animController.SetFloat("Speed",navAgent.speed);
 
     }
 
@@ -348,7 +351,7 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
             connections.Add(new WaypointConnection { node = node.nextWaypoint });
 
         }
-        else Destroy(this.gameObject);
+        
 
         int randomIndex = Random.Range(0, connections.Count);
         Waypoint nextNode = connections[randomIndex].node;

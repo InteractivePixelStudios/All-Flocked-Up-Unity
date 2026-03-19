@@ -116,6 +116,9 @@ public class CreditRoll : MonoBehaviour
     void SkipCredits()
     {
         SceneManager.LoadScene("MainMenu");
+        DestroyImmediate(AudioWizard.Instance.gameObject);
     }
+
+
 
 }

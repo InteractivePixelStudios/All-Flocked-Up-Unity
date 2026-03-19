@@ -1,9 +1,11 @@
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using System;
 
 public class AudioWizard : MonoBehaviour // This is being made in a way where the AudioWizard can just be dropped into a scene and it will handle everything.
 {
+
     public static AudioWizard Instance { get; private set; }
     [SerializeField] private GameObject ambienceLogicPrefab;
 

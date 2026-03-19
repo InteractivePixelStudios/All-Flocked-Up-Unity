@@ -27,7 +27,7 @@ public class GrabHoldObject : MonoBehaviour
 
         if(grabAction != null )
         {
-            grabAction.performed += CallGrab;
+            grabAction.performed += GrabObject;
             grabAction.started += CallHold;
             grabAction.canceled += CallRelease;
 
@@ -71,14 +71,14 @@ public class GrabHoldObject : MonoBehaviour
     {
 
         RaycastHit hit;
-        if(Physics.Raycast(grabPoint.transform.position, transform.forward, out hit, grabDistance, grabLayer))
+        if(Physics.Raycast(grabPoint.transform.position, transform.forward + (Vector3.down*2), out hit, grabDistance, grabLayer))
         {
             grabbedObject = hit.collider.gameObject;
             PickUpObject(grabbedObject);
 
         }
 
-        if (Physics.Raycast(grabPoint.transform.position, transform.forward, out hit, grabDistance, consumeLayer))
+        if (Physics.Raycast(grabPoint.transform.position, transform.forward + (Vector3.down * 2), out hit, grabDistance, consumeLayer))
         {
             grabbedObject = hit.collider.gameObject;
             var comp = hit.collider.gameObject.GetComponentInParent<PlayerHealth>();
@@ -94,9 +94,8 @@ public class GrabHoldObject : MonoBehaviour
 
         }
 
-        if (Physics.Raycast(grabPoint.transform.position, transform.forward, out hit, grabDistance, collectLayer))
+        if (Physics.Raycast(grabPoint.transform.position, transform.forward + (Vector3.down * 2), out hit, grabDistance, collectLayer))
         {
-            grabbedObject = hit.collider.gameObject;
             var comp = hit.collider.gameObject.GetComponent<TrinketScript>();
             comp.CollectTrinket(comp.value);
 

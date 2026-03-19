@@ -112,7 +112,7 @@ public class UI_CanvasController : MonoBehaviour
     private void Start()
     {
         input = FindFirstObjectByType<PlayerInput>();
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = input.gameObject;
         var agents = FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
         foreach (var agent in agents)
         {
@@ -120,8 +120,8 @@ public class UI_CanvasController : MonoBehaviour
         }
         if (SceneManager.GetActiveScene().name != "MainMenu")
         {
-            ShowPlayerCursor();
-            HidePlayerCursor();
+            //ShowPlayerCursor();
+            //HidePlayerCursor();
         }
 
         //SpawnMainMenu();
@@ -179,6 +179,10 @@ public class UI_CanvasController : MonoBehaviour
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
+        }else if (Gamepad.current != null && Gamepad.current.wasUpdatedThisFrame)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Confined;
         }
         Debug.Log("Cursor Toggle ON");
     }
@@ -186,14 +190,16 @@ public class UI_CanvasController : MonoBehaviour
     public void HidePlayerCursor()
     {
         SetPlayerMap();
-        //if (Mouse.current != null && Mouse.current.wasUpdatedThisFrame)
-        //{
-        //    Cursor.visible = false;
-        //    Cursor.lockState = CursorLockMode.Locked;
-        //}
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        if (Mouse.current != null && Mouse.current.wasUpdatedThisFrame)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else if (Gamepad.current != null && Gamepad.current.wasUpdatedThisFrame)
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
         Debug.Log("Cursor Toggle OFF");
     }
 
@@ -358,14 +364,24 @@ public class UI_CanvasController : MonoBehaviour
         }
     }
     //trash canvas
-    public void ShowTrashPrompt()
+    public void ShowTrashPrompt(TrashCanInteraction trashCan)
     {
-       activeTrashInstance= Instantiate(trashCanvas);
-        activeTrashInstance.InitCanvas();
-        if(activeTrashInstance != null )
+        if (activeTrashInstance == null)
         {
-            activeTrashInstance.DestroyCanvas();
+            activeTrashInstance = Instantiate(trashCanvas);
+            activeTrashInstance.SetTrashInstance(trashCan);
+            activeTrashInstance.SetCanvasReference(this);
+            ShowPlayerCursor();
+        }
+    }
+
+    public void CloseTrashPrompt()
+    {
+        if (activeTrashInstance != null)
+        {
+            Destroy(activeTrashInstance.gameObject);
             activeTrashInstance = null;
+            HidePlayerCursor();
         }
     }
     //race giver canvas
@@ -399,10 +415,10 @@ public class UI_CanvasController : MonoBehaviour
     {
         if(raceRewardInstance != null)
         {
+            Time.timeScale = 1;
             Destroy(raceRewardInstance.gameObject);
             raceRewardInstance = null;
             HidePlayerCursor();
-            Time.timeScale = 1;
 
         }
     }
@@ -613,6 +629,12 @@ public class UI_CanvasController : MonoBehaviour
         if(activeLanguageCanvas != null)
         {
             Destroy(activeLanguageCanvas.gameObject);
+            //HidePlayerCursor();
+            var menu = FindFirstObjectByType<UI_MainMenu>();
+            if(menu != null)
+            {
+                menu.SetSelectedObject(menu.startButton.gameObject);
+            }
             
         }
 

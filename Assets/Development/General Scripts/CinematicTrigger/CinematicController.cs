@@ -37,6 +37,7 @@ public class CinematicController : MonoBehaviour
         if (isCredits)
         {
             Destroy(FindFirstObjectByType<CreditRoll>().gameObject);
+            DestroyImmediate(AudioWizard.Instance.gameObject);
             SceneManager.LoadScene("MainMenu");
         }
     }

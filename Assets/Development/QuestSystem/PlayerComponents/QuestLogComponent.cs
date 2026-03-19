@@ -18,6 +18,11 @@ public class QuestLog : MonoBehaviour
     [SerializeField] private UI_CanvasController canvasController;
     [SerializeField]private PlayerNavArrow arrowPointer ;
 
+    private void Start()
+    {
+        canvasController = FindFirstObjectByType<UI_CanvasController>();
+    }
+
     //checks if quest in timed and shows the timer when  quest started
     private void GetIsQuestTimed(QuestDetails quest, QuestRuntimeInstance instance)
     {
