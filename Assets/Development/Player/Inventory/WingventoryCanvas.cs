@@ -31,10 +31,10 @@ public class WingventoryCanvas : MonoBehaviour
     [SerializeField] private GameObject mapParent;
     [SerializeField] private GameObject invParent;
     [Header("Trinket")]
-    [SerializeField] private int currentTrinketCount=>GetTrinketCount();
-    [SerializeField] private int currentkeyChainCount => GetKeychainCount();
-    [SerializeField] private int currentPrestoCount => GetPrestoCount();
-    [SerializeField] private LocalizedString currentObjective => GetCurrentQuestInfo();
+    private int currentTrinketCount=>GetTrinketCount();
+    private int currentkeyChainCount => GetKeychainCount();
+    private int currentPrestoCount => GetPrestoCount();
+    private LocalizedString currentObjective => GetCurrentQuestInfo();
     [SerializeField] private TextMeshProUGUI trinketCountText;
     [SerializeField] private TextMeshProUGUI keychainText;
     [SerializeField] private TextMeshProUGUI prestoText;
@@ -52,9 +52,9 @@ public class WingventoryCanvas : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        questLog = FindFirstObjectByType<QuestLog>();
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
-        playerWingventory = FindFirstObjectByType<PlayerWingventory>();
+        questLog = FindAnyObjectByType<QuestLog>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        playerWingventory = FindAnyObjectByType<PlayerWingventory>();
         GetTrinketCount();
         GetItemBoxes();
         leftBackPageButton.onClick.AddListener(GoCenterPage);
@@ -247,7 +247,7 @@ public class WingventoryCanvas : MonoBehaviour
 
     private void GetPlayerInv()
     {
-        var playerInv = FindFirstObjectByType<PlayerWingventory>().inventory;
+        var playerInv = FindAnyObjectByType<PlayerWingventory>().inventory;
         foreach (var item in playerInv)
         {
             playerInvItems.Add(item.Key, item.Value);

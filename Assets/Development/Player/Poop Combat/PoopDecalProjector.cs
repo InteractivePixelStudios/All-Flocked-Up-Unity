@@ -6,7 +6,7 @@ public class PoopDecalProjector : MonoBehaviour
 {
     [SerializeField] private DecalProjector projector;
     [SerializeField] private PlayerGroundMovement moveComp;
-    [SerializeField] private bool isFlying => moveComp.GetIsFlying();
+    private bool isFlying => moveComp.GetIsFlying();
 
     private void Start()
     {

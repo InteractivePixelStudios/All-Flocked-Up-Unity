@@ -5,7 +5,7 @@ using System.Linq;
 
 public class RaceBase : MonoBehaviour
 {
-    [SerializeField] private GameObject playerRef => GetPlayer();
+    private GameObject playerRef => GetPlayer();
     [SerializeField] private UI_CanvasController canvasController;
     public RaceData raceData => GetRaceData(currentRaceGiver.raceData);
     [SerializeField] private RaceCheckpoint checkpointPrefab;
@@ -24,7 +24,7 @@ public class RaceBase : MonoBehaviour
     [SerializeField] private bool timerStarted;
     [SerializeField] private bool countdownStarted;
     public bool countdownComplete;
-    [SerializeField] private StartingLine currentRaceStartingLine => raceData.GetStartLine();
+    private StartingLine currentRaceStartingLine => raceData.GetStartLine();
     public StartingLine raceStartLine => currentRaceStartingLine;
     [SerializeField] private List<CPURacer> currentRacerList = new();
     [SerializeField] private CPURacer racerPrefab;
@@ -38,7 +38,7 @@ public class RaceBase : MonoBehaviour
 
     private void Awake()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
         wallSpawner = GetComponent<RaceWallSpawner>();
     }
 
@@ -208,7 +208,7 @@ public class RaceBase : MonoBehaviour
     public void GiveRewards()
     {
         var reward = raceData.raceRewards;
-        FindFirstObjectByType<EXPSystem>().IncrementXP(reward);
+        FindAnyObjectByType<EXPSystem>().IncrementXP(reward);
     }
     private void SetStartLine()
     {

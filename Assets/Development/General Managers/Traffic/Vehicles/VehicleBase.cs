@@ -10,7 +10,7 @@ public class VehicleBase :MonoBehaviour
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [SerializeField] protected NavMeshAgent navAgent;
-    [SerializeField] private float vehicleSpeed => navAgent.speed;
+    private float vehicleSpeed => navAgent.speed;
     [SerializeField] protected float detectRadius=2f;
     [SerializeField] protected LayerMask playerLayer;
     [SerializeField] protected LayerMask enemyLayer;

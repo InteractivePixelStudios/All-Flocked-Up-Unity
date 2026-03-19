@@ -111,18 +111,18 @@ public class UI_CanvasController : MonoBehaviour
 
     private void Start()
     {
-        input = FindFirstObjectByType<PlayerInput>();
+        input = FindAnyObjectByType<PlayerInput>();
         player = input.gameObject;
-        var agents = FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
-        foreach (var agent in agents)
-        {
-            enemies.Add(agent);  
-        }
-        if (SceneManager.GetActiveScene().name != "MainMenu")
-        {
-            //ShowPlayerCursor();
-            //HidePlayerCursor();
-        }
+        //var agents = FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
+        //foreach (var agent in agents)
+        //{
+        //    enemies.Add(agent);  
+        //}
+        //if (SceneManager.GetActiveScene().name != "MainMenu")
+        //{
+        //    //ShowPlayerCursor();
+        //    //HidePlayerCursor();
+        //}
 
         //SpawnMainMenu();
         //OpenLanguageSelect(); //remove after testing
