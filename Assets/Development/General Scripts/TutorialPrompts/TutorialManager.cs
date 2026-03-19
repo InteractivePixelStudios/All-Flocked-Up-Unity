@@ -26,12 +26,14 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] protected bool speakWithQ2;
     [SerializeField] protected bool speakWithQ3;
     [SerializeField] protected bool tutComplete;
+    [SerializeField] protected AchievementUnlocker achievement;
 
     private void Start()
     {
         canvasController = FindFirstObjectByType<UI_CanvasController>();
         playerInput = FindFirstObjectByType<PlayerInput>();
         playerMove = playerInput.gameObject.GetComponent<PlayerGroundMovement>();
+        achievement = GetComponent<AchievementUnlocker>();
         TogglePrompt(promptIndex);
 
     }
@@ -39,6 +41,14 @@ public class TutorialManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (tutComplete)
+        {
+            if (SteamManager.Initialized)
+            {
+                AchievementList.FindFirstObjectByType<AchievementList>().CompleteAchievement("SteamAch_001_Coo");
+            }
+            
+        }
         switch (tutIndex)
         {
             case 0:

@@ -74,8 +74,8 @@ MonoBehaviour:
   currentNode: {fileID: 0}
   previousNode: {fileID: 0}
   rigidbodyComp: {fileID: 4601167841555802787}
-  icon: {fileID: 0}
-  animator: {fileID: 0}
+  icon: {fileID: 3144678671041933072}
+  animator: {fileID: 5548204724219369021}
   isHit: 0
   isStopped: 0
   isRetreating: 0
@@ -399,7 +399,8 @@ PrefabInstance:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: c557f2e4697a0d44096b077e92a68f71, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: c557f2e4697a0d44096b077e92a68f71, type: 3}
@@ -514,3 +515,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6113523591080228929, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
   m_PrefabInstance: {fileID: 8191776260014527669}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3144678671041933072 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+  m_PrefabInstance: {fileID: 8191776260014527669}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2316b6484c94344083a600a5096cc7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

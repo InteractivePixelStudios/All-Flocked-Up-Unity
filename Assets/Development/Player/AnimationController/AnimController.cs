@@ -15,6 +15,7 @@ public class AnimController : MonoBehaviour
     [SerializeField] private PlayerWingventory wingventoryComp;
     [SerializeField] private PlayerPeckComponent peckComp;
     [SerializeField] private PlayerInteraction interactionComp;
+    [SerializeField] private PlayerHealth healthComp;
 
     [Header("Parameters")]
     private bool isPecking => peckComp.GetIsPecking();
@@ -22,6 +23,8 @@ public class AnimController : MonoBehaviour
     private bool isDiving => flightMoveComp.GetIsDiving();
 
     private bool isPooping;
+
+    private bool isHit => healthComp.GetIsHit();
     [SerializeField] private float forwardSpeed=> groundMoveComp.GetSpeedForward();
     [SerializeField] private float sideSpeed => groundMoveComp.GetSpeedSide();
     [SerializeField] private bool isGliding =>flightMoveComp.GetIsGliding();
@@ -48,6 +51,7 @@ public class AnimController : MonoBehaviour
         interactionComp = GetComponent<PlayerInteraction>();
         wingventoryComp = GetComponent<PlayerWingventory>();
         peckComp = GetComponent<PlayerPeckComponent>();
+        healthComp = GetComponent<PlayerHealth>();
     }
 
     // Update is called once per frame
@@ -69,6 +73,7 @@ public class AnimController : MonoBehaviour
         ToggleDiveTrigger();
         ToggleFlapTrigger();
         ToggleSlowFlap();
+        ToggleHit();
     }
 
     private float GetSpeed()
@@ -80,6 +85,16 @@ public class AnimController : MonoBehaviour
     private float GetSideSpeed()
     {
         return sideSpeed;
+    }
+
+    private bool GetIsHit()
+    {
+        return isHit;
+    }
+
+    private void ToggleHit()
+    {
+        playerAnimator.SetBool("isHit", GetIsHit());
     }
 
 
