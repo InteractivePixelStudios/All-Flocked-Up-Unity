@@ -22,7 +22,7 @@ public class DialogueBase : MonoBehaviour
     public LocalizedString[] currentResponseOptions;
     public string responseReturnID;
     [SerializeField] private UI_CanvasController canvasController;
-    [SerializeField] private bool typerComplete {  get; set; }
+    private bool typerComplete {  get; set; }
 
     [SerializeField] private string DIALOGUEFILENAME = "DialogueSpreadsheet.csv";
     [SerializeField]private List<DialogueLineData> dialogueList = new List<DialogueLineData>();
