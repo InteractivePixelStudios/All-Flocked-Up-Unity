@@ -25,7 +25,7 @@ public class TrafficLightChanger : MonoBehaviour
 
     void Awake()
     {
-        trafficManager = FindFirstObjectByType<TrafficManager>();
+        trafficManager = FindAnyObjectByType<TrafficManager>();
         greenLight.SetActive(false);
         yellowLight.SetActive(false);
         redLight.SetActive(false);

@@ -46,7 +46,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
     void Start()
     {
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
         animController = GetComponent<Animator>();
         FindWaypoints();

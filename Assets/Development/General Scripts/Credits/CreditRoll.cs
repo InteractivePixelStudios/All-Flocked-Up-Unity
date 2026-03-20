@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using System.Threading.Tasks;
 using System.Data;
 using UnityEngine.SceneManagement;
+using FMOD.Studio;
 
 public class CreditRoll : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class CreditRoll : MonoBehaviour
     [SerializeField] private float timePerName;
     [SerializeField] private float currentTime;
     [SerializeField] private bool inReady;
-    [SerializeField] private bool outReady;  
+    [SerializeField] private bool outReady;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -117,6 +118,7 @@ public class CreditRoll : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
         DestroyImmediate(AudioWizard.Instance.gameObject);
+
     }
 
 

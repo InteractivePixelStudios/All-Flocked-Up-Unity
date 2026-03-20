@@ -27,10 +27,10 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     {
         questGiverComp = GetComponent<QuestGiver>();
         navAgentComponent = GetComponent<NavMeshAgent>();
-        dialogue = FindFirstObjectByType<DialogueBase>();
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        dialogue = FindAnyObjectByType<DialogueBase>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
         Debug.Log("NPC LOADED");
-        homeLocation = FindFirstObjectByType<LargeNest>().gameObject;
+        homeLocation = FindAnyObjectByType<LargeNest>().gameObject;
     }
 
     public void Update()

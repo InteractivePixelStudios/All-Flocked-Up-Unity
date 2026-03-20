@@ -42,9 +42,9 @@ public class UI_MainMenu : MonoBehaviour
         controlsButton.onClick.AddListener(OnControlsOpen);
         creditsButton.onClick.AddListener(PlayCredits);
         quitButton.onClick.AddListener(QuitGame);
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
-        playerRef = FindFirstObjectByType<PlayerFlightMovement>().gameObject;
-        cameraRef = FindFirstObjectByType<CameraController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        playerRef = FindAnyObjectByType<PlayerFlightMovement>().gameObject;
+        cameraRef = FindAnyObjectByType<CameraController>();
         menuOpen = true;
         playerRef.transform.position = playerSpawnPoint.transform.position ;
         playerRef.transform.rotation  = playerSpawnPoint.transform.rotation;
@@ -121,7 +121,7 @@ public class UI_MainMenu : MonoBehaviour
         //playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
         if (SteamManager.Initialized)
         {
-            AchievementList.FindFirstObjectByType<AchievementList>().CompleteAchievement("SteamAch_000_Support");
+            AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_000_Support");
         }
         Debug.Log("Loading Scene");
         canvasController.HidePlayerCursor();

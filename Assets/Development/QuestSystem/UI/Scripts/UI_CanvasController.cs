@@ -630,7 +630,7 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeLanguageCanvas.gameObject);
             //HidePlayerCursor();
-            var menu = FindFirstObjectByType<UI_MainMenu>();
+            var menu = FindAnyObjectByType<UI_MainMenu>();
             if(menu != null)
             {
                 menu.SetSelectedObject(menu.startButton.gameObject);

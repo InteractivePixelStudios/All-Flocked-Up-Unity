@@ -48,8 +48,8 @@ public class UI_NestMenu : MonoBehaviour
 
     private void Awake()
     {
-        dayNightSystem = FindFirstObjectByType<S_DayNightCycle>();
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        dayNightSystem = FindAnyObjectByType<S_DayNightCycle>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
 
     }
     void Start()

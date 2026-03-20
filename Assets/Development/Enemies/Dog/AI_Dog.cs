@@ -40,7 +40,7 @@ public class AI_Dog : EnemyBaseComponent
 
     void Start()
     {
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
         animator = GetComponent<Animator>();
         FindWaypoints();

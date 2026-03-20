@@ -162,7 +162,7 @@ public class UI_AccessOptions : UI_SettingsMenu
 
     protected void SetContrastMode(bool value)
     {
-        var ui = FindObjectsByType<UnityEngine.UI.Graphic>(FindObjectsSortMode.None);
+        var ui = FindObjectsByType<UnityEngine.UI.Graphic>();
         foreach(var element in ui)
         {
             if (!value)

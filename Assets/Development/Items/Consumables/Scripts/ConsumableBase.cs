@@ -55,7 +55,7 @@ public class ConsumableBase : MonoBehaviour
     {
         consumableMesh = GetComponent<MeshFilter>().sharedMesh;
         consumableParticles = GetComponent<ParticleSystem>();
-        playerPoop = FindFirstObjectByType<Pooper>();
+        playerPoop = FindAnyObjectByType<Pooper>();
         playerRef = playerPoop.gameObject;
     }
 

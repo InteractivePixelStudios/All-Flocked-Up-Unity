@@ -56,7 +56,7 @@ public class TrafficManager : MonoBehaviour
     private void InitLights()
     {
         trafficLights.Clear();
-        trafficLights.AddRange(FindObjectsByType<TrafficLightChanger>(FindObjectsSortMode.None));
+        trafficLights.AddRange(FindObjectsByType<TrafficLightChanger>());
     }
 
     private void SetLights()
@@ -65,7 +65,7 @@ public class TrafficManager : MonoBehaviour
     }
     private void FindWaypoints()
     {
-        var waypointsArray = FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
+        var waypointsArray = FindObjectsByType<Waypoint>();
         foreach (var waypoint in waypointsArray)
         {
             if (waypoint.CompareTag("Traffic"))

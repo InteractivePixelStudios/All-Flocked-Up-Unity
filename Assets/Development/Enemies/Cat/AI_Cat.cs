@@ -48,7 +48,7 @@ public class AI_Cat : EnemyBaseComponent
 
     void Start()
     {
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
         animator = GetComponent<Animator>();
         icon = GetComponentInChildren<Enemy_AlertIcon>();

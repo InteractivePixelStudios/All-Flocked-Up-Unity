@@ -18,7 +18,7 @@ public class TrashCanInteraction : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
         TryGetComponent<Q_SearchTrash>(out questComp);
     }
 

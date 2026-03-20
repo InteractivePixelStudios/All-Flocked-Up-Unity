@@ -17,8 +17,8 @@ public class ShopLocation : ShopManager
     {
         base.Start();
         SpawnItemsInSlots();
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
-        inventoryRef = FindFirstObjectByType<PlayerWingventory>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        inventoryRef = FindAnyObjectByType<PlayerWingventory>();
     }
 
     // Update is called once per frame

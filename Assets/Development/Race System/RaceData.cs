@@ -25,7 +25,7 @@ public class RaceData : ScriptableObject
     public void GetCheckPoints()
     {
         checkpointSpawns.Clear();
-        RaceCheckpoint[] checkpoints = Object.FindObjectsByType<RaceCheckpoint>(FindObjectsSortMode.InstanceID);
+        RaceCheckpoint[] checkpoints = Object.FindObjectsByType<RaceCheckpoint>();
         foreach (var point in checkpoints)
         {
             if(point.raceID == raceID)
@@ -41,7 +41,7 @@ public class RaceData : ScriptableObject
     //gets startLine gameobject and uses transform for starting location spawning
     public StartingLine GetStartLine()
     {
-        StartingLine[] line = Object.FindObjectsByType<StartingLine>(FindObjectsSortMode.None);
+        StartingLine[] line = Object.FindObjectsByType<StartingLine>();
         foreach(var obj in line)
         {
             if (obj.raceID == raceID)

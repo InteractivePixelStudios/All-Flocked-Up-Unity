@@ -19,7 +19,7 @@ public class CameraController : Singleton<CameraController>
 
     void Start()
     {
-        player = FindFirstObjectByType<PlayerFlightMovement>().transform;
+        player = FindAnyObjectByType<PlayerFlightMovement>().transform;
         lookAction = InputSystem.actions.FindAction("Look");
         transform.position = player.position + new Vector3(0, 5, -10);
         transform.LookAt(player);

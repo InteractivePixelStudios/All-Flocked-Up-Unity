@@ -8,7 +8,7 @@ public class PlayerFinder : Singleton<PlayerFinder>
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         camRef = GetComponent<CinemachineCamera>();
     }
 

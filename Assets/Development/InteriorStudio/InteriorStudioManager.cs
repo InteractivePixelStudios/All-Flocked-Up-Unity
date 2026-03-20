@@ -224,7 +224,7 @@ public class InteriorStudioManager : EditorWindow
     private void DestroyAndRemoveInterior(string name)
     {
         shellNames.Remove(name);
-        var interiors = Object.FindObjectsByType<ShellSpawner>(FindObjectsSortMode.None);
+        var interiors = Object.FindObjectsByType<ShellSpawner>();
         foreach (var interior in interiors)
         {
             if(interior.name == name)

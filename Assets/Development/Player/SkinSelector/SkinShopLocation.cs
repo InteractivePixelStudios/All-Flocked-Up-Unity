@@ -18,7 +18,7 @@ public class SkinShopLocation : MonoBehaviour
 
             if (SteamManager.Initialized)
             {
-                AchievementList.FindFirstObjectByType<AchievementList>().CompleteAchievement("SteamAch_006_Skin");
+                AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_006_Skin");
             }
         }
     }

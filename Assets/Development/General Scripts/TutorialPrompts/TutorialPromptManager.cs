@@ -7,7 +7,7 @@ public class TutorialPromptManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
     }
 
     // Update is called once per frame

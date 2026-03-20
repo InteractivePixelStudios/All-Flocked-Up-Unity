@@ -61,7 +61,7 @@ public class NestBase : MonoBehaviour
     {
         if (isActiveNest)
         {
-            canvasController = FindFirstObjectByType<UI_CanvasController>();
+            canvasController = FindAnyObjectByType<UI_CanvasController>();
             canvasController.OpenNestMenu();
         }
     }

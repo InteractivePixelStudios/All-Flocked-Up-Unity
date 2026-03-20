@@ -8,8 +8,8 @@ public class MainMenuSceneController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
-        playerPoop = FindFirstObjectByType<PoopSystem>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        playerPoop = FindAnyObjectByType<PoopSystem>();
         canvasController.OpenLanguageSelect();
     }
 

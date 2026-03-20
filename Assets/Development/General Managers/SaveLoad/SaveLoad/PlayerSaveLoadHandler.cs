@@ -12,7 +12,7 @@ public class PlayerSaveLoadHandler : MonoBehaviour
     void Start()
     {
         saveData = new SaveData();
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         if(saveData.sceneName == null)
         {
             saveData.sceneName = SceneManager.GetActiveScene().name;
@@ -71,8 +71,8 @@ public class PlayerSaveLoadHandler : MonoBehaviour
         player.GetComponent<EXPSystem>().GiveLevels(loaded.level);
         player.GetComponent<QuestLog>().activeQuests = loaded.activeQuests;
         player.GetComponent<QuestLog>().completedQuests = loaded.completedQuests;
-        FindFirstObjectByType<RaceBase>().completedRaces = loaded.completedRaces;
-        FindFirstObjectByType<S_DayNightCycle>().timeOfDay = loaded.timeOfDay;
+        FindAnyObjectByType<RaceBase>().completedRaces = loaded.completedRaces;
+        FindAnyObjectByType<S_DayNightCycle>().timeOfDay = loaded.timeOfDay;
         player.GetComponent<PlayerWingventory>().playerTrinketQuantity = loaded.trinkets;
         player.GetComponent<PlayerSkinSelector>().SetLoadedMaterial(loaded.playerSkin);
         player.transform.position = loaded.position;

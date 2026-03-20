@@ -44,7 +44,7 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     void Start()
     {
-        var cams = FindObjectsByType<Camera>(FindObjectsSortMode.None);
+        var cams = FindObjectsByType<Camera>();
         foreach (var cam in cams)
         {
             if (cam.CompareTag("MainCamera"))
