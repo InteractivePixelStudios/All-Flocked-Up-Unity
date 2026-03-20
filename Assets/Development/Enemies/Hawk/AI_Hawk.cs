@@ -41,7 +41,7 @@ public class AI_Hawk : EnemyBaseComponent
     void Start()
     {
         birdRB = GetComponent<Rigidbody>(); 
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
         birdRB.useGravity = false;
         birdRB.linearDamping = 0.2f;

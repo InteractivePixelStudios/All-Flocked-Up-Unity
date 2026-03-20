@@ -15,7 +15,7 @@ public class DebugManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        playerRef = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        playerRef = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
 
     }
 

@@ -18,7 +18,7 @@ public class Wearable_Base : MonoBehaviour
 
     private void Start()
     {
-        playerRef = FindFirstObjectByType<PlayerStealthSystem>();
+        playerRef = FindAnyObjectByType<PlayerStealthSystem>();
     }
 
     void Update()

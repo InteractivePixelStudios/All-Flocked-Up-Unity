@@ -27,7 +27,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
         ragdoll = GetComponent<RagdollController>();
         animController = GetComponent<AnimController>();
         if (currentHealth <= 0)

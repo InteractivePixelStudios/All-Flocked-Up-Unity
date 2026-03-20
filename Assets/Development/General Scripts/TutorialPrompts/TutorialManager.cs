@@ -30,8 +30,8 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
-        playerInput = FindFirstObjectByType<PlayerInput>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        playerInput = FindAnyObjectByType<PlayerInput>();
         playerMove = playerInput.gameObject.GetComponent<PlayerGroundMovement>();
         achievement = GetComponent<AchievementUnlocker>();
         TogglePrompt(promptIndex);
@@ -45,7 +45,7 @@ public class TutorialManager : MonoBehaviour
         {
             if (SteamManager.Initialized)
             {
-                AchievementList.FindFirstObjectByType<AchievementList>().CompleteAchievement("SteamAch_001_Coo");
+                AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_001_Coo");
             }
             
         }

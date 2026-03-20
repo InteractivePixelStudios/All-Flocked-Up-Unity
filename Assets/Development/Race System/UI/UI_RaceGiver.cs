@@ -17,8 +17,8 @@ public class UI_RaceGiver : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
-        raceBase = FindFirstObjectByType<RaceBase>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        raceBase = FindAnyObjectByType<RaceBase>();
         acceptRaceButton.onClick.AddListener(AcceptRace);
         cancelButton.onClick.AddListener(CancelRace);
         GetRaceInfo();

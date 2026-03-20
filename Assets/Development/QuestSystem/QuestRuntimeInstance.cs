@@ -58,7 +58,7 @@ public class QuestRuntimeInstance
     {
 
         questMechanicsObjects.Clear();
-        IQuestMechanic[] mechanics = Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+        IQuestMechanic[] mechanics = Object.FindObjectsByType<MonoBehaviour>()
     .OfType<IQuestMechanic>()
     .ToArray();
         foreach (var mechanic in mechanics)
@@ -126,7 +126,7 @@ public class QuestRuntimeInstance
             if (objectiveProgress[obj.objectiveID] < obj.quantityToComplete)
                 return false;
             //not sure if this triggers properly
-            GameObject.FindFirstObjectByType<EXPSystem>().IncrementXP(objectiveProgress[obj.objectiveID]);
+            GameObject.FindAnyObjectByType<EXPSystem>().IncrementXP(objectiveProgress[obj.objectiveID]);
         }
 
         return true;
@@ -135,7 +135,7 @@ public class QuestRuntimeInstance
     //Advances Stage index. If not complete, Start quest.
     public void AdvanceStage()
     {
-        GameObject.FindFirstObjectByType<EXPSystem>().IncrementXP(questData.stages[currentStageIndex].expReward);
+        GameObject.FindAnyObjectByType<EXPSystem>().IncrementXP(questData.stages[currentStageIndex].expReward);
         currentStageIndex++;
         GetQuestObjects();
         if (!IsComplete)

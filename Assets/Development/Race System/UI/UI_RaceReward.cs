@@ -35,7 +35,7 @@ public class UI_RaceReward: MonoBehaviour
     {
         newRecordImage.gameObject.SetActive(false);
         acceptRewardButton.onClick.AddListener(AcceptReward);
-        raceBase = FindFirstObjectByType<RaceBase>();
+        raceBase = FindAnyObjectByType<RaceBase>();
         GetReward();
         UpdateStandings();
         UpdateRaceBestTime();
@@ -160,7 +160,7 @@ public class UI_RaceReward: MonoBehaviour
 
     private void GiveRaceRewards()
     {
-        var EXP = FindFirstObjectByType<EXPSystem>();
+        var EXP = FindAnyObjectByType<EXPSystem>();
         EXP.IncrementXP(raceBase.raceData.raceRewards);
     }
 

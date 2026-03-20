@@ -42,7 +42,7 @@ public class UI_QuestLog : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        questLog = FindFirstObjectByType<QuestLog>();
+        questLog = FindAnyObjectByType<QuestLog>();
         foreach(var quest in questLog.activeQuests)
         {
             instanceList.Add(quest);

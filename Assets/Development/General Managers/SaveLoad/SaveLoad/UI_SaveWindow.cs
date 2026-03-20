@@ -87,7 +87,7 @@ public class UI_SaveWindow : MonoBehaviour
 
     void CloseWindow()
     {
-        var menu = FindFirstObjectByType<UI_MainMenu>();
+        var menu = FindAnyObjectByType<UI_MainMenu>();
         menu.CloseSaveWindow();
     }
     

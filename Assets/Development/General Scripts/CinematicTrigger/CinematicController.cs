@@ -16,7 +16,7 @@ public class CinematicController : MonoBehaviour
     {
         splineDollyRef = GetComponentInChildren<CinemachineSplineDolly>(); 
         isPlaying = true;
-        var obj = FindFirstObjectByType<CinemachineBrain>();
+        var obj = FindAnyObjectByType<CinemachineBrain>();
     }
 
     // Update is called once per frame
@@ -36,7 +36,7 @@ public class CinematicController : MonoBehaviour
         this.gameObject.SetActive(false);
         if (isCredits)
         {
-            Destroy(FindFirstObjectByType<CreditRoll>().gameObject);
+            Destroy(FindAnyObjectByType<CreditRoll>().gameObject);
             DestroyImmediate(AudioWizard.Instance.gameObject);
             SceneManager.LoadScene("MainMenu");
         }

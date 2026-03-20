@@ -34,7 +34,7 @@ public class LoadingScreen : MonoBehaviour
     async void DestroyCanvas()
     {
 
-        var menu = FindFirstObjectByType<UI_MainMenu>();
+        var menu = FindAnyObjectByType<UI_MainMenu>();
         if(menu != null)
         {
 

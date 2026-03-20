@@ -42,11 +42,11 @@ public class UI_SettingsMenu : MonoBehaviour
     {
         if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainMenu"))
         {
-            mainRef = FindFirstObjectByType<UI_MainMenu>();
+            mainRef = FindAnyObjectByType<UI_MainMenu>();
         }
         else
         {
-            pauseRef = FindFirstObjectByType<UI_PauseMenu>();
+            pauseRef = FindAnyObjectByType<UI_PauseMenu>();
         }
     }
 

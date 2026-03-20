@@ -18,8 +18,8 @@ public class UI_RaceFail : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
-        race = FindFirstObjectByType<RaceBase>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        race = FindAnyObjectByType<RaceBase>();
         retryButton.onClick.AddListener(RetryRace);
         cancelButton.onClick.AddListener(CloseRace);
         GetRequiredTime();

@@ -29,7 +29,8 @@ public class DialogueBase : MonoBehaviour
     public DialogueLineData currentDialogueLineData;
 
     [SerializeField] private List<Sprite> birdImageList = new();
-    [SerializeField] NPC_Vocalizer npcSpeech;
+    [SerializeField] private NPC_Vocalizer npcSpeech;
+    private bool skipLine;
 
 
     [SerializeField]private string retriggerDialogueLineID;
@@ -117,6 +118,11 @@ public class DialogueBase : MonoBehaviour
         //SendResponseOptions();
     }
 
+    public void SetSkipLine(bool value)
+    {
+        skipLine = value;
+    }
+
     //Finds the sprite with the given name
     private Sprite FindBirdImage(string imageName)
     {
@@ -150,6 +156,7 @@ public class DialogueBase : MonoBehaviour
     //Sets the current dialogue and calls TypeText
     public void PrintDialogue(string dialogueLineID)
     {
+        skipLine = false;
         typerComplete = false;
         SetCurrentDialogue(dialogueLineID);
 
@@ -190,14 +197,22 @@ public class DialogueBase : MonoBehaviour
     //calls the function from the dialogue canvas
     public void ClearDialogue()
     {
+        QuestGiver giver;
+        TryGetComponent<QuestGiver>(out giver);
+        var log = FindAnyObjectByType<QuestLog>();
+        if (giver != null && giver.hasQuest)
+        {
+            giver.InteractWithNPC(log);
+        }
         canvasController.activeDialogueInstance.ClearDialogueCanvas();
         isRetrigger = true;
+
     }
 
-    public bool SkipDialogue(Action SkipLine)
+    public bool SkipDialogue()
     {
 
-        return true;
+        return skipLine;
     }
 
     //sets the text speed to type (in ms)
@@ -220,16 +235,16 @@ public class DialogueBase : MonoBehaviour
         foreach (char c in resolvedText)
         {
             temp += c;
-
-            canvasController.activeDialogueInstance.UpdateDialogueUI(
-                currentDialogueName,
-                temp,
-                currentDialogueImage
-
-
-            );
-            npcSpeech.Speech();
-            await Task.Delay(speed);
+            if (!skipLine)
+            {
+                canvasController.activeDialogueInstance.UpdateDialogueUI(currentDialogueName, temp, currentDialogueImage);
+                npcSpeech.Speech();
+                await Task.Delay(speed);
+            }
+            else
+            {
+                canvasController.activeDialogueInstance.UpdateDialogueUI(currentDialogueName, resolvedText, currentDialogueImage);
+            }
         }
 
         await Task.Delay(500);

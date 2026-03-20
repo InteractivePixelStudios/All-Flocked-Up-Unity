@@ -20,7 +20,7 @@ public class QuestLog : MonoBehaviour
 
     private void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
     }
 
     //checks if quest in timed and shows the timer when  quest started

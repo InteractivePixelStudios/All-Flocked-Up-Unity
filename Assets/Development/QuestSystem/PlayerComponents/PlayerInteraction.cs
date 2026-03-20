@@ -293,7 +293,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnLevelWasLoaded(int level)
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
     }
 }
 

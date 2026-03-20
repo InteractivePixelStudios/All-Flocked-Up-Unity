@@ -49,7 +49,7 @@ public class AI_Raccoon : EnemyBaseComponent
 
     void Start()
     {
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         animator = GetComponent<Animator>();
         FindWaypoints();
     }
@@ -179,7 +179,7 @@ public class AI_Raccoon : EnemyBaseComponent
 
     private void FindWaypoints()
     {
-        var waypointsArray = FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
+        var waypointsArray = FindObjectsByType<Waypoint>();
         foreach (var waypoint in waypointsArray)
         {
             if (waypoint.CompareTag("Racoon"))

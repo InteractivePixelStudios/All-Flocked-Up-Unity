@@ -8,8 +8,8 @@ public class Q_SearchTrash : MonoBehaviour, IQuestMechanic
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
-        questLog = FindFirstObjectByType<QuestLog>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        questLog = FindAnyObjectByType<QuestLog>();
     }
 
     // Update is called once per frame
@@ -26,7 +26,7 @@ public class Q_SearchTrash : MonoBehaviour, IQuestMechanic
 
     public void GetQuestLog()
     {
-        questLog = FindFirstObjectByType<QuestLog>();
+        questLog = FindAnyObjectByType<QuestLog>();
     }
 
     public string GetObjectiveID() => objectiveID;

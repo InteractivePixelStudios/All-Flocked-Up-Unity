@@ -9,7 +9,7 @@ public class LevelTransition : MonoBehaviour
 
     private void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 

@@ -28,9 +28,9 @@ public class PlayerSkinSelector : MonoBehaviour
     }
     private void Start()
     {
-        shopLocation = FindFirstObjectByType<SkinShopLocation>();
+        shopLocation = FindAnyObjectByType<SkinShopLocation>();
         playerSpawnPoint = shopLocation.playerSpawnPoint;
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
     }
 
     public void StartSkinSelector()

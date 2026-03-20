@@ -62,7 +62,7 @@ public class UI_SaveSlot : MonoBehaviour
 
     public void CallSave()
     {
-        SaveData data = FindFirstObjectByType<PlayerSaveLoadHandler>().saveData;
+        SaveData data = FindAnyObjectByType<PlayerSaveLoadHandler>().saveData;
         SaveSlotManager.SaveToSlot(slotInfo.slotIndex, data, true);
         UpdateSlotUI(data.playerName,data.lastSaved.ToString());
         Debug.Log("SaveButtonPressed");
@@ -79,7 +79,7 @@ public class UI_SaveSlot : MonoBehaviour
             if (loadedData != null)
             {
                 Debug.Log("SlotFound");
-                var handler = FindFirstObjectByType<PlayerSaveLoadHandler>();
+                var handler = FindAnyObjectByType<PlayerSaveLoadHandler>();
                 handler.saveData = loadedData;
                 handler.ApplyLoadedData(); 
 

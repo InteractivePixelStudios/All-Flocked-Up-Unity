@@ -9,7 +9,7 @@ public class UI_TrashCanvas : MonoBehaviour
     [SerializeField] private Button reward1Button;
     [SerializeField] private Button reward2Button;
     [SerializeField] private TrashCanInteraction trashCanInstance;
-    private UI_CanvasController canvasController;
+    [SerializeField]private UI_CanvasController canvasController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

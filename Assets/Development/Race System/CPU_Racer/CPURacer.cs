@@ -80,7 +80,7 @@ public class CPURacer : MonoBehaviour
         flightComponent = GetComponent<RacerFlightComponent>();
         body = GetComponent<Rigidbody>();
         navAgentComponent = GetComponent<NavMeshAgent>();
-        raceBase = FindFirstObjectByType<RaceBase>();
+        raceBase = FindAnyObjectByType<RaceBase>();
         SetRacerStats();
         GetCheckpoints();
         if (raceBase.countdownComplete)

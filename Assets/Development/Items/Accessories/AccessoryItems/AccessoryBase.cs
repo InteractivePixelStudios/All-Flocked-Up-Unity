@@ -31,7 +31,7 @@ public class AccessoryBase : MonoBehaviour
     {
         itemMesh = GetComponent<MeshFilter>();
         itemMaterial = GetComponent<MeshRenderer>();
-        stealthComponent = FindFirstObjectByType<PlayerStealthSystem>();
+        stealthComponent = FindAnyObjectByType<PlayerStealthSystem>();
         SetItemState();
     }
 
