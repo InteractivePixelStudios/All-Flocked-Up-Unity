@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections.Generic;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class VehicleBase :MonoBehaviour
 {
@@ -41,12 +42,12 @@ public class VehicleBase :MonoBehaviour
             Debug.Log("Cant find CurrentNode");
             return;
         }
-        if (!navAgent.hasPath && !navAgent.pathPending)
-        {
-            Destroy(this.gameObject);
-            manager.RemoveVehicleFromList(this);
+        //if (!navAgent.hasPath && !navAgent.pathPending)
+        //{
+        //    manager.RemoveVehicleFromList(this);
+        //   // Destroy(this.gameObject);
 
-        }
+        //}
         if (isStopped)
         {
             StopVehicle();
@@ -102,7 +103,6 @@ public class VehicleBase :MonoBehaviour
 
         if (stopTimer <= 0)
         {
-            Debug.Log("Car Stopped too long!");
             navAgent.isStopped = false;
             isStopped = false;
             isMoving = true;
@@ -116,7 +116,6 @@ public class VehicleBase :MonoBehaviour
 
     public virtual void TriggerCollisions()
     {
-        Debug.Log("HitAnotherVehicle");
         if(isStopped)
         {
             StopVehicle();
@@ -137,53 +136,28 @@ public class VehicleBase :MonoBehaviour
     {
         if (node == null)
             return;
-        connections.Clear();
-        connections.AddRange(node.connections);
-
-        if (connections.Count == 0 && node.nextWaypoint != null)
+        Waypoint next;
+        next = node.nextWaypoint;
+        if (next == null)
         {
-            connections.Add(new WaypointConnection { node = node.nextWaypoint });
-
-        }
-        if (connections.Count == 0 && node.nextWaypoint == null)
-        {
-            if (node.branches.Count > 0)
+            var num = Random.Range(0, 1);
+            if (node.branches.Count > 0 && num == 0)
             {
-                node.nextWaypoint = node.branches[0];
+                next = node.branches[0];
+                previousNode = currentNode;
+                SetMoveToLocation(next);
+                MoveVehicleToLocation();
             }
-            
+            else return;
+
         }
-        //if (node.branches.Count>0)
-        //{
-        //    var chance = Random.Range(0, 1);
-        //    if (chance != 0)
-        //    {
-        //        node.nextWaypoint = node.branches[Random.Range(0, node.branches.Count-1)];
-        //    }
-            
-        //}
-        if(connections.Count ==0 && node.branches.Count == 0 && node.nextWaypoint == null)
+        else
         {
-            Destroy(this.gameObject);
-            manager.RemoveVehicleFromList(this);
+            previousNode = currentNode;
+            SetMoveToLocation(next);
+            MoveVehicleToLocation();
         }
 
-        //if (connections.Count == 0)
-        //    return;
-        if (connections.Count == 0)
-        {
-            Destroy(this.gameObject);
-            manager.RemoveVehicleFromList(this);
-            return;
-        }
-        int randomIndex = Random.Range(0, connections.Count);
-        Waypoint nextNode = connections[randomIndex].node;
-        if (nextNode == null)
-            return;
-        previousNode = currentNode;
-        SetMoveToLocation(nextNode);
-        MoveVehicleToLocation();
-        
     }
 
     protected virtual void HonkHorn()

@@ -329,29 +329,24 @@ public class AI_Cat : EnemyBaseComponent
 
     protected void ChooseNextDirection(Waypoint node)
     {
-        connections.Clear();
 
-        foreach (var connection in node.connections)
-            connections.Add(connection);
-
-        if (connections.Count == 0 && node.nextWaypoint != null)
-        {
-            connections.Add(new WaypointConnection { node = node.nextWaypoint });
-
-        }
-        else
+        if (node.nextWaypoint == null)
         {
             FindRandomWaypoint();
             return;
         }
+        else
+        {
+            Waypoint nextNode = node.nextWaypoint;
+            if (nextNode == null)
+                return;
+            previousNode = currentNode;
+            SetMoveToLocation(nextNode);
+            MoveCatToLocation();
+        }
 
-        int randomIndex = Random.Range(0, connections.Count);
-        Waypoint nextNode = connections[randomIndex].node;
-        if (nextNode == null)
-            return;
-        previousNode = currentNode;
-        SetMoveToLocation(nextNode);
-        MoveCatToLocation();
+
+
 
     }
 }
