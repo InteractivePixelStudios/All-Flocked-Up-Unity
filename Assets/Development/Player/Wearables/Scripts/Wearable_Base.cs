@@ -1,9 +1,11 @@
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Wearable_Base : MonoBehaviour
 {
     public bool isGrabbed;
+    public bool isRemoving;
     [SerializeField] private Vector3 objectOffset;
     [SerializeField] protected Quaternion objectRotOffset;
     [SerializeField] private Quaternion objectRotation;
@@ -14,11 +16,14 @@ public class Wearable_Base : MonoBehaviour
     [SerializeField] private float forwadForce;
     [SerializeField] private float verticalForce;
 
-    [SerializeField] private PlayerStealthSystem playerRef;
+    [SerializeField] private GameObject playerRef;
+    PlayerInput input;
+    InputAction removeAction;
+
 
     private void Start()
     {
-        playerRef = FindAnyObjectByType<PlayerStealthSystem>();
+        playerRef = FindAnyObjectByType<PlayerStealthSystem>().gameObject;
     }
 
     void Update()
@@ -27,25 +32,19 @@ public class Wearable_Base : MonoBehaviour
         {
             UpdatePosition();
         }
-        if (Input.GetKeyDown(KeyCode.R) && isGrabbed)
-        {
-            RemoveObject();
-        }
+
     }
 
-    public void LookForObject()
+    public void LookForObject(RaycastHit hit)
     {
         Debug.Log("Called");
-        RaycastHit hit;
-        if(Physics.Raycast(transform.position, transform.forward, out hit, grabDistance, wearableLayer))
-        {
             wornObject = hit.collider.gameObject;
             if(wornObject != null )
             {
                 SetOffset();
                 GrabObject(hit.collider.gameObject,objectOffset,objectRotOffset);
             }
-        }
+        
     }
 
     public virtual void SetOffset()
@@ -68,6 +67,13 @@ public class Wearable_Base : MonoBehaviour
             wornObject = wearable;
             Debug.Log("Grabbed");
             GiveStealth();
+            input = playerRef.GetComponent<PlayerInput>();
+            removeAction = input.currentActionMap.FindAction("Interact");
+            if(removeAction != null)
+            {
+                removeAction.performed += RemoveObject;
+            }
+
         }
     }
 
@@ -81,7 +87,7 @@ public class Wearable_Base : MonoBehaviour
     }
 
 
-    public void RemoveObject()
+    public void RemoveObject(InputAction.CallbackContext ctx)
     {
         if(wornObject != null)
         {
@@ -94,16 +100,20 @@ public class Wearable_Base : MonoBehaviour
             rb.linearVelocity = new Vector3(forwadForce,verticalForce, 0).normalized;
             wornObject = null;
             RemoveStealth();
+            Debug.Log("RemovingObject");
+            removeAction.performed -= RemoveObject;
         }
     }
 
     protected void GiveStealth()
     {
-        playerRef.ToggleStealthOn();
+        playerRef.GetComponent<PlayerStealthSystem>().ToggleStealthOn();
+        playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
     }
 
     protected void RemoveStealth()
     {
-        playerRef.ToggleStealthOff();
+        playerRef.GetComponent<PlayerStealthSystem>().ToggleStealthOff();
+        playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
     }
 }

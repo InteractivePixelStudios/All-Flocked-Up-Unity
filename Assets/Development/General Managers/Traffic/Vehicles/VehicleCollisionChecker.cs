@@ -22,8 +22,6 @@ public class VehicleCollisionChecker : MonoBehaviour
         {
             vehicleBase = other.GetComponent<VehicleBase>();
             vehicleBase.TriggerCollisions();
-            this.gameObject.GetComponent<VehicleBase>().TriggerCollisions();
-
         } 
     }
 

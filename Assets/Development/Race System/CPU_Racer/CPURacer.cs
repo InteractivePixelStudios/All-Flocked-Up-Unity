@@ -93,7 +93,7 @@ public class CPURacer : MonoBehaviour
     //raycasts for groundcheck and obstacle detection... if has targetlocation and isMoving then it moves
     public void Update()
     {
-        if(!raceBase.countdownComplete) { return; }
+        if(!raceBase.countdownComplete)return;
         if (wantsToFly)
         {
             RacerFly();

@@ -13,7 +13,6 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     [SerializeField] private List<string> dialogueStartLineID = new();
     [SerializeField] private string retriggerDialogueLineID;
     int index;
-    private bool isRetrigger;
     [SerializeField] private GameObject homeLocation;
     [SerializeField] private QuestGiver questGiverComp;
     public bool dialogueFirst;
@@ -56,7 +55,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     //called from PlayerInteraction... opens and prints dialogue
     public void InteractWithNPCDialogue()
     {
-
+        dialogue.SetNPCRef(this);
         if (dialogue.isRetrigger)
         {
             dialogue.PrintDialogue(retriggerDialogueLineID);

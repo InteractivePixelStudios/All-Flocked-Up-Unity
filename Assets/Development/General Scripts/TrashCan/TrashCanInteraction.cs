@@ -32,7 +32,7 @@ public class TrashCanInteraction : MonoBehaviour
     {
         if (inRange)
         {
-            HidePlayer();
+            //HidePlayer();
             canvasController.ShowTrashPrompt(this);
             Debug.Log("interacted");
         }

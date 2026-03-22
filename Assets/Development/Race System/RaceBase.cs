@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.InputSystem;
 
 
 public class RaceBase : MonoBehaviour
@@ -181,10 +182,10 @@ public class RaceBase : MonoBehaviour
     {
         raceStarted = false;
         GetRaceResults();
-        DestroyCheckpoints();
         raceStarted = false;
         DestroyRacers();
         canvasController.OpenRaceRewards();
+        DestroyCheckpoints();
     }
 
     private void RaceFailed()
@@ -325,12 +326,12 @@ public class RaceBase : MonoBehaviour
 
     public void StopPlayerMove()
     {
-        playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
+        playerRef.GetComponent<PlayerInput>().enabled = false;
     }
 
     public void StartPlayerMove()
     {
-        playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
+        playerRef.GetComponent<PlayerInput>().enabled = true;
     }
 
     [ContextMenu("RespawnPlayer")]
