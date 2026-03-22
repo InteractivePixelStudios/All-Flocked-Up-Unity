@@ -1,4 +1,5 @@
 using System.Net;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class RaceCheckpoint : MonoBehaviour
     public int checkpointNumber;
     private GameObject hitObject;
    private int num;
+    [SerializeField] private ParticleSystem checkpointParticle;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -23,11 +25,14 @@ public class RaceCheckpoint : MonoBehaviour
         GetComponent<SphereCollider>().enabled = true;
     }
     //calls UpdateCheckpoints on raceBase
-    private void TriggerCheckpoint()
+    private  void TriggerCheckpoint()
     {
         if (raceBase != null && raceBase.checkpointIndex == checkpointNumber)
         {
             raceBase.UpdateCheckpoints(checkpointNumber);
+            checkpointParticle.Play();
+            GetComponent<MeshRenderer>().enabled = false;
+            
             
         }
 

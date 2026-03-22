@@ -341,25 +341,20 @@ public class EnemyPatrol : EnemyBaseComponent
     protected void ChooseNextDirection(Waypoint node)
     {
         if(node == null) return;
-        connections.Clear();
 
-        foreach (var connection in node.connections)
-            connections.Add(connection);
-
-        if (connections.Count == 0 && node.nextWaypoint != null)
+        if (node.nextWaypoint == null)
         {
-            connections.Add(new WaypointConnection { node = node.nextWaypoint });
-
-        }
-        
-
-        int randomIndex = Random.Range(0, connections.Count);
-        Waypoint nextNode = connections[randomIndex].node;
-        if (nextNode == null)
+            FindRandomWaypoint();
             return;
-        previousNode = currentNode;
-        SetMoveToLocation(nextNode);
-        MoveHumanToLocation();
-
+        }
+        else
+        {
+            Waypoint nextNode = node.nextWaypoint;
+            if (nextNode == null)
+                return;
+            previousNode = currentNode;
+            SetMoveToLocation(nextNode);
+            MoveHumanToLocation();
+        }
     }
 }

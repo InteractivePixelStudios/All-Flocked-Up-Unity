@@ -38,14 +38,14 @@ public class UI_TrashCanvas : MonoBehaviour
     public void GiveRewardOne()
     {
         trashCanInstance.GiveRewardOne();
-        trashCanInstance.ShowPlayer();
+        //trashCanInstance.ShowPlayer();
         canvasController.CloseTrashPrompt();
     }
 
     public void GiveRewardTwo()
     {
         trashCanInstance.GiveRewardTwo();
-        trashCanInstance.ShowPlayer();
+        //trashCanInstance.ShowPlayer();
         canvasController.CloseTrashPrompt();
     }
 

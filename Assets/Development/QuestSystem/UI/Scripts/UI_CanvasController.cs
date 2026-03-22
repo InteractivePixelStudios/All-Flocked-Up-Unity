@@ -93,6 +93,7 @@ public class UI_CanvasController : MonoBehaviour
     public UI_LanguageSelector activeLanguageCanvas;
     [Header("PlayerInputComponent")]
     [SerializeField] private PlayerInput input;
+    bool isUIMap;
     [Header("Health")]
     [SerializeField] private RespawnController respawnCanvasPrefab;
     public RespawnController activeRespawnCanvas;
@@ -159,6 +160,7 @@ public class UI_CanvasController : MonoBehaviour
         input.SwitchCurrentActionMap("Player");
         player.GetComponent<PlayerGroundMovement>().enabled = true;
         player.GetComponent<PlayerFlightMovement>().enabled = true;
+        isUIMap = false;
        // ResumeEnemy();
         Debug.Log("PLAYERMAP");
     }
@@ -168,6 +170,7 @@ public class UI_CanvasController : MonoBehaviour
         input.SwitchCurrentActionMap("UI");
         player.GetComponent<PlayerGroundMovement>().enabled = false;
         player.GetComponent<PlayerFlightMovement>().enabled = false;
+        isUIMap = true;
         //FreezeEnemies();
         Debug.Log("UIMAP");
     }
@@ -223,8 +226,10 @@ public class UI_CanvasController : MonoBehaviour
     //quest giver canvas
     public void ShowQuestGiver(QuestGiver questGiver)
     {
-
-        ShowPlayerCursor();
+        if (!isUIMap && activeDialogueInstance != null)
+        {
+            ShowPlayerCursor();
+        }
         activeGiverInstance = Instantiate(questGiverCanvas);
         activeGiverInstance.currentquestGiver = questGiver;
         activeGiverInstance.canvasController = this;
@@ -237,7 +242,10 @@ public class UI_CanvasController : MonoBehaviour
     {
         if (questGiverCanvas != null)
         {
-            HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
             Destroy(activeGiverInstance.gameObject);
             activeGiverInstance = null;
         }
@@ -248,14 +256,20 @@ public class UI_CanvasController : MonoBehaviour
         activeRewardInstance=Instantiate(questRewardsCanvas);
         activeRewardInstance.quest = quest;
         activeRewardInstance.canvasController = this;
-        ShowPlayerCursor();
+        if (!isUIMap)
+        {
+            ShowPlayerCursor();
+        }
     }
     //quest reward canvas
     public void DestroyQuestReward()
     {
         if (activeRewardInstance != null)
         {
-            HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
             Destroy(activeRewardInstance.gameObject);
             activeRewardInstance = null;
         }
@@ -315,7 +329,10 @@ public class UI_CanvasController : MonoBehaviour
     {
 
             activeLogInstance = Instantiate(questLogCanvas);
+        if (!isUIMap)
+        {
             ShowPlayerCursor();
+        }
 
     }
 
@@ -326,7 +343,10 @@ public class UI_CanvasController : MonoBehaviour
         {
             activeLogInstance.CloseQuestLog();
             activeLogInstance=null;
-            HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
         }
     }
 
@@ -337,7 +357,10 @@ public class UI_CanvasController : MonoBehaviour
         if(activeDialogueInstance == null)
         {
             activeDialogueInstance = Instantiate(dialogueCanvas);
-            ShowPlayerCursor();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
         }
 
     }
@@ -357,10 +380,13 @@ public class UI_CanvasController : MonoBehaviour
         if(activeDialogueInstance != null)
         {
             Debug.Log("DialogueCLosedFromCanvas");
-            HidePlayerCursor() ;
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
             //activeDialogueInstance.DestroyDialogue();
             Destroy(activeDialogueInstance.gameObject);
-
+            activeDialogueInstance = null;
         }
     }
     //trash canvas
@@ -371,7 +397,10 @@ public class UI_CanvasController : MonoBehaviour
             activeTrashInstance = Instantiate(trashCanvas);
             activeTrashInstance.SetTrashInstance(trashCan);
             activeTrashInstance.SetCanvasReference(this);
-            ShowPlayerCursor();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
         }
     }
 
@@ -381,15 +410,21 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeTrashInstance.gameObject);
             activeTrashInstance = null;
-            HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
         }
     }
     //race giver canvas
     public void OpenRaceGiver()
     {
         raceGiverInstance = Instantiate(raceGiverCanvas);
-        ShowPlayerCursor();
-        Time.timeScale = 0;
+        if (!isUIMap)
+        {
+            ShowPlayerCursor();
+        }
+
     }
     //race giver canvas
     public void CloseRaceGiver()
@@ -398,28 +433,35 @@ public class UI_CanvasController : MonoBehaviour
         {
             raceGiverInstance.CloseRaceGiver();
             raceGiverInstance = null;
-            HidePlayerCursor();
-            Time.timeScale = 1;
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
+
         }
     }
     //race rewards canavas
     public void OpenRaceRewards()
     {
         raceRewardInstance = Instantiate(raceRewardCanvas);
+        raceRewardInstance.SetCanvasControllerRef(this);
         SendStandings();
-        ShowPlayerCursor();
-        Time.timeScale = 0;
+        if (!isUIMap)
+        {
+            ShowPlayerCursor();
+        }
     }
     //race rewards canvas
     public void CloseRaceRewards()
     {
         if(raceRewardInstance != null)
         {
-            Time.timeScale = 1;
             Destroy(raceRewardInstance.gameObject);
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
             raceRewardInstance = null;
-            HidePlayerCursor();
-
         }
     }
     //race fail canvas
@@ -427,8 +469,10 @@ public class UI_CanvasController : MonoBehaviour
     {
         raceFailInstance = Instantiate(raceFailCanvas);
         SendStandings();
-        ShowPlayerCursor() ;
-        Time.timeScale = 0;
+        if (!isUIMap)
+        {
+            ShowPlayerCursor();
+        }
     }
     //race fail canvas
     public void CloseRaceFail()
@@ -436,9 +480,11 @@ public class UI_CanvasController : MonoBehaviour
         if(raceFailInstance != null)
         {
             Destroy(raceFailInstance.gameObject);
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
             raceFailInstance = null;
-            HidePlayerCursor();
-            Time.timeScale = 1;
         }
     }
 
@@ -475,7 +521,10 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenWingventory()
     {
         activeWingventory = Instantiate(wingventoryCanvas);
-        ShowPlayerCursor();
+        if (!isUIMap)
+        {
+            ShowPlayerCursor();
+        }
     }
 
     public void CloseWingventory()
@@ -484,7 +533,10 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeWingventory.gameObject);
             activeWingventory = null;
-            HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
         }
     }
 
@@ -492,8 +544,11 @@ public class UI_CanvasController : MonoBehaviour
     {
         activeNestInstance = Instantiate(nestMenuCanvas);
         activeNestInstance.canvasController = this; 
-        activeNestInstance.playerStats = player.GetComponent<PlayerCounter>();    
-        ShowPlayerCursor();
+        activeNestInstance.playerStats = player.GetComponent<PlayerCounter>();
+        if (!isUIMap)
+        {
+            ShowPlayerCursor();
+        }
     }
 
     public void CloseNestMenu()
@@ -502,7 +557,10 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeNestInstance.gameObject);
             activeNestInstance = null;
-            HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
         }
 
     }
@@ -516,7 +574,10 @@ public class UI_CanvasController : MonoBehaviour
         activeShopCanvas.currentItem = item;
         activeShopCanvas.canvasController = this;
         shopLocationRef = location;
-        ShowPlayerCursor();
+        if (!isUIMap)
+        {
+            ShowPlayerCursor();
+        }
     }
 
     public void CloseShopUI()
@@ -525,7 +586,10 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeShopCanvas.gameObject);
             activeShopCanvas = null;
-            HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
         }
     }
 
@@ -534,7 +598,10 @@ public class UI_CanvasController : MonoBehaviour
         if(activePauseMenu== null)
         {
             activePauseMenu =Instantiate(pauseMenuCanvas);
-            ShowPlayerCursor() ;
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
             Time.timeScale = 0;
             
         }
@@ -548,7 +615,10 @@ public class UI_CanvasController : MonoBehaviour
             activePauseMenu.ClosePauseUI();
             Destroy(activePauseMenu.gameObject);
             activePauseMenu = null;
-            HidePlayerCursor() ;
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
         }
 
     }
@@ -559,7 +629,10 @@ public class UI_CanvasController : MonoBehaviour
         if (activeBugReporter == null)
         {
             activeBugReporter = Instantiate(bugReporterCanvas);
-            ShowPlayerCursor();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
             Time.timeScale = 0;
         }
     }
@@ -570,7 +643,10 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeBugReporter.gameObject);
             activeBugReporter = null;
-            HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
             Time.timeScale = 1;
         }
     }
@@ -580,7 +656,10 @@ public class UI_CanvasController : MonoBehaviour
         if(activeDebugMenu == null)
         {
             activeDebugMenu = Instantiate(debugMenuCanvas);
-            ShowPlayerCursor();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
         }
     }
 
@@ -590,7 +669,10 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeDebugMenu.gameObject);
             activeDebugMenu = null;
-            HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
         }
     }
 
@@ -599,7 +681,10 @@ public class UI_CanvasController : MonoBehaviour
         if(activeMapCanvas == null)
         {
             activeMapCanvas = Instantiate(mainMapCanvas);
-            ShowPlayerCursor();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
             Time.timeScale = 0;
         }
     }
@@ -610,7 +695,10 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeMapCanvas.gameObject);
             activeMapCanvas = null;
-            HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
             Time.timeScale = 1;
         }
     }
@@ -620,7 +708,10 @@ public class UI_CanvasController : MonoBehaviour
         activeLanguageCanvas = Instantiate(languageSelectPrefab);
         if(activeLanguageCanvas != null)
         {
-            ShowPlayerCursor();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
         }
     }
 
@@ -646,7 +737,10 @@ public class UI_CanvasController : MonoBehaviour
         if(activeRespawnCanvas != null)
         {
             activeRespawnCanvas.canvasController = this;
-            ShowPlayerCursor();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
         }
     }
 
@@ -654,8 +748,11 @@ public class UI_CanvasController : MonoBehaviour
     {
         if(activeRespawnCanvas != null)
         {
-            Destroy(activeRespawnCanvas.gameObject); 
-            HidePlayerCursor();
+            Destroy(activeRespawnCanvas.gameObject);
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
         }
     }
 
@@ -666,7 +763,10 @@ public class UI_CanvasController : MonoBehaviour
             activeLevelTransition = Instantiate(levelTransitionPrefab);
             activeLevelTransition.sceneName = cachedLevelName;
             activeLevelTransition.transitionObj = transitionObj;
-            ShowPlayerCursor() ;
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
         }
     }
 
@@ -675,7 +775,10 @@ public class UI_CanvasController : MonoBehaviour
         if (activeLevelTransition != null)
         {
             Destroy(activeLevelTransition.gameObject);
-            HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
         }
     }
 
@@ -705,7 +808,10 @@ public class UI_CanvasController : MonoBehaviour
         if(activeSkinSelector == null)
         {
             activeSkinSelector = Instantiate(skinSelectorPrefab);
-            ShowPlayerCursor();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
         }
     }
 
@@ -714,7 +820,10 @@ public class UI_CanvasController : MonoBehaviour
         if(activeSkinSelector != null)
         {
             Destroy(activeSkinSelector.gameObject);
-            HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
         }
     }
 

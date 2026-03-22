@@ -12,6 +12,7 @@ using UnityEngine.UI;
 public class UI_RaceReward: MonoBehaviour
 {
     [SerializeField] private Button acceptRewardButton;
+    [SerializeField] private UI_CanvasController canvasController;
 
 
     [SerializeField] private TextMeshProUGUI raceNameText;
@@ -28,6 +29,11 @@ public class UI_RaceReward: MonoBehaviour
 
     [SerializeField] private GameObject textPrefab;
     [SerializeField] private List<string> racerNames = new();
+
+    public void SetCanvasControllerRef(UI_CanvasController instance)
+    {
+        canvasController = instance;
+    }
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -99,7 +105,7 @@ public class UI_RaceReward: MonoBehaviour
         raceBase.completedRaces.Add(raceBase.raceData);
         Destroy(raceBase.currentRaceGiver.GetComponent<RaceGiver>());
         GiveRaceRewards();
-        Destroy(this.gameObject);
+        canvasController.CloseRaceRewards();
         raceBase.StartPlayerMove();
     }
 

@@ -122,7 +122,8 @@ public class QuestLog : MonoBehaviour
     {
         // purely update UI / notify player
         canvasController.ShowQuestNotif("Objective Complete");
-        
+        arrowPointer.DestroyArrow();
+
         Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
     }
 
@@ -139,7 +140,6 @@ public class QuestLog : MonoBehaviour
                 activeQuests.RemoveAt(i);
                 currentQuestGiver.quests.RemoveAt(0);
                 hasQuest = false;
-                arrowPointer.DestroyArrow();
                 currentQuestGiver.GetComponent<NPCBase>().dialogueFirst = true;
             }
             if(currentQuestGiver.quests.Count <= 0)
