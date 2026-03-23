@@ -21,6 +21,7 @@ public class CameraController : Singleton<CameraController>
     {
         player = FindAnyObjectByType<PlayerFlightMovement>().transform;
         lookAction = InputSystem.actions.FindAction("Look");
+        respawnTarget = FindAnyObjectByType<NestBase>().transform;
         transform.position = player.position + new Vector3(0, 5, -10);
         transform.LookAt(player);
     }

@@ -134,7 +134,7 @@ public class EnemyPatrol : EnemyBaseComponent
                 if (kickCooldown <= 0)
                 {
                     KickPlayer();
-                    Debug.Log("KickCalled");
+
                     kickCooldown = 3f;
                     currentState = EnemyState.Chasing;
                 }
@@ -143,25 +143,25 @@ public class EnemyPatrol : EnemyBaseComponent
                 if (throwCooldown <= 0)
                 {
                     ThrowObject();
-                    Debug.Log("ThrowCalled");
+
                     throwCooldown = 3f;
                     currentState = EnemyState.Chasing;
                 }
                 break;
             case EnemyState.Stop:
                 StopMove();
-                Debug.Log("StopCalled");
+
                 break;
             case EnemyState.Hit:
                 HitReact();
-                Debug.Log("HitCalled");
+
                 break;
             case EnemyState.Retreat:
                 if (!isRetreating)
                 {
                     isRetreating = true;
                     Retreat();
-                    Debug.Log("RetreatCalled");
+
                 }
                 break;
         }
@@ -180,7 +180,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
         }
         FindRandomWaypoint();
-        Debug.Log("CheckforWaypoints");
+
     }
 
 
@@ -189,7 +189,7 @@ public class EnemyPatrol : EnemyBaseComponent
         if (waypoints.Count == 0) return;
        // var randomIndex = Random.Range(0, waypoints.Count);
         this.currentNode = waypoints[1];     
-        Debug.Log("H");
+
     }
 
 

@@ -20,7 +20,7 @@ public class TrafficLightChanger : MonoBehaviour
     [SerializeField] private LayerMask trafficLayer;
     [SerializeField]private bool redLightStop;
 
-    private TrafficLightTrigger trigger;
+    [SerializeField]private TrafficLightTrigger trigger;
     public float lightTimer;
 
     void Awake()

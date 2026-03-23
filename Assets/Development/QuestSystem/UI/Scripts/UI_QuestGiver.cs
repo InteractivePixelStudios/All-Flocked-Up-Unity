@@ -26,6 +26,7 @@ public class UI_QuestGiver : MonoBehaviour
         cancelButton.onClick.AddListener(CloseQuestGiverUI);
         Debug.Log(currentquestGiver.quests[0].ToString());
         EventSystem.current.SetSelectedGameObject(acceptQuestButton.gameObject);
+        Cursor.visible = true;
         
     }
 

@@ -99,10 +99,15 @@ public class Pooper : MonoBehaviour
     private void OnAimStarted(InputAction.CallbackContext ctx)
     {
         isAiming = true;
-        Debug.Log("Aiming started");
-        endRot = startRot * Quaternion.Euler(0f, 180f, 0f);
-        spinTime = 0f;
-        isTurning = true;
+        if (groundComp.GetIsFlying() == false)
+        {
+            Debug.Log("Aiming started");
+            endRot = startRot * Quaternion.Euler(0f, 180f, 0f);
+            spinTime = 0f;
+            isTurning = true;
+        }
+        else return;
+
         //Show aiming UI here if needed
 
     }

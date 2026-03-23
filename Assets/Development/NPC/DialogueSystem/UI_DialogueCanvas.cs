@@ -89,7 +89,6 @@ public class UI_DialogueCanvas : MonoBehaviour
 
     public void DestroyDialogue()
     {
-        Cursor.visible = true;
         canvasController.CloseDialogue();
     }
 

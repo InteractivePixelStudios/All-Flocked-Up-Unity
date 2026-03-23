@@ -5,30 +5,40 @@ using UnityEngine.UI;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using System;
 
 public class UI_MainMap : MonoBehaviour
 {
     [SerializeField] private List<Sprite> mapImages = new();
-    private int levelIndex;
     [SerializeField] private GameObject[] markerOverlays;
     [SerializeField] private GameObject markerIconPrefab;
     [SerializeField] private Image bgImage;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
-        
+        SwitchMapImage();
     }
-
-    private void SwitchMapImage(int index)
+    private void SwitchMapImage()
     {
         if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainMenu")) { return; }
-        bgImage.sprite = mapImages[index];
-        if(index > 0)
+        if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("TutorialIsland"))
         {
-            markerOverlays[index - 1].SetActive(false);
+            markerOverlays[0].SetActive(true);
+            markerOverlays[1].SetActive(false);
+            bgImage.sprite = mapImages[0];
         }
-        markerOverlays[index].SetActive(true);
+        else if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("KensingtonMarket"))
+        {
+            markerOverlays[0].SetActive(false);
+            markerOverlays[1].SetActive(true);
+            bgImage.sprite = mapImages[1];
+        }
+        else
+        {
+            markerOverlays[0].SetActive(false);
+            markerOverlays[1].SetActive(false);
+            bgImage.sprite = mapImages[1];
+        }
     }
 
     void PlaceMarkerIcon()
@@ -36,9 +46,4 @@ public class UI_MainMap : MonoBehaviour
        
     }
 
-    private void OnLevelWasLoaded(int level)
-    {
-        levelIndex = level-1;
-        SwitchMapImage(levelIndex);
-    }
 }

@@ -27,7 +27,6 @@ public class AI_Cat : EnemyBaseComponent
     public float pounceCooldown = 3f;
     [Header("Waypoints")]
     [SerializeField] private List<Waypoint> waypoints;
-    [SerializeField] private List<WaypointConnection> connections = new();
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]

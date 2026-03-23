@@ -226,7 +226,7 @@ public class UI_CanvasController : MonoBehaviour
     //quest giver canvas
     public void ShowQuestGiver(QuestGiver questGiver)
     {
-        if (!isUIMap && activeDialogueInstance != null)
+        if (!isUIMap || activeDialogueInstance == null)
         {
             ShowPlayerCursor();
         }

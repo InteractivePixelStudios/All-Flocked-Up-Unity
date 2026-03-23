@@ -54,7 +54,7 @@ public class PlayerGroundMovement : MonoBehaviour
     //playerInput
     float x, z;
     bool crouching, sprinting;
-    bool isJumping = false;
+    [SerializeField]bool isJumping = false;
     //bool isFlying = false;
     float sprintTimer = 0f;
 
