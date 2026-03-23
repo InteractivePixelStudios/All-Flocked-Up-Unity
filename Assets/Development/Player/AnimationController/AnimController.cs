@@ -43,11 +43,11 @@ public class AnimController : MonoBehaviour
         flightMoveComp = GetComponent<PlayerFlightMovement>();
         groundCheckComp = GetComponentInChildren<GroundCheck>();
         poopComp = GetComponent<Pooper>();
-        dialogueBaseComp = FindAnyObjectByType<DialogueBase>();
         stealthComp =  GetComponent<PlayerStealthSystem>();
         interactionComp = GetComponent<PlayerInteraction>();
         wingventoryComp = GetComponent<PlayerWingventory>();
         peckComp = GetComponent<PlayerPeckComponent>();
+        dialogueBaseComp = GetComponentInChildren<DialogueBase>();
     }
 
     // Update is called once per frame

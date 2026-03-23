@@ -86,8 +86,8 @@ public class PlayerFlightMovement : MonoBehaviour
 
         // check if player hits spacebar
         flapAction.started += ctx => FlapUp();
-        diveAction.started += ctx => Dive();
-        stallAction.started += ctx => AirStall();
+        diveAction.performed += ctx => Dive();
+        stallAction.performed += ctx => AirStall();
 
         diveAction.Disable();
         stallAction.Disable();
@@ -99,7 +99,9 @@ public class PlayerFlightMovement : MonoBehaviour
         if (isFlying && !isStalling)
         {
             if (groundCheck.IsGrounded())
+            {
                 ReturnToWalkState();
+            }
 
             PlayerInput();
         }
@@ -145,6 +147,7 @@ public class PlayerFlightMovement : MonoBehaviour
     {
         if (horizontalMovement < 0 || horizontalMovement > 0)
         {
+
             transform.Rotate(new Vector3(0, rotateSpeed * horizontalMovement * Time.deltaTime, 0));
 
             Vector3 currentAngle = meshTransform.eulerAngles + new Vector3(0, 0, -horizontalMovement) * tiltSpeed * Time.deltaTime;
@@ -233,7 +236,7 @@ public class PlayerFlightMovement : MonoBehaviour
 
     async void FlapUp()
     {
-        if (isFlying)
+        if (isFlying && !isDiving && !isStalling)
         {
             if (playerStamina.UseStamina(flapStaminaAmount))
             {
@@ -246,13 +249,15 @@ public class PlayerFlightMovement : MonoBehaviour
         }
     }
 
-    void Dive()
+    async void Dive()
     {
         if (isDiving || !isFlying) return;
 
         isDiving = true;
         playerBody.AddForce(transform.forward * diveSpeed);
         playerBody.AddForce(Vector3.down * diveSpeed);
+        await Task.Delay(1500);
+        isDiving = false;
     }
 
     void AirStall()

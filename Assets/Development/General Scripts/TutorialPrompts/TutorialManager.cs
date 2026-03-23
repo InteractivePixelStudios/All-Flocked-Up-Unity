@@ -93,9 +93,12 @@ public class TutorialManager : MonoBehaviour
                     canvasController.DestroyPrompt();
                     if (playerMove.GetIsFlying() == false)
                     {
+                        canvasController.ShowPlayerCursor();
+                        Cursor.visible = false;
                         jumpCount = 0;
                         promptIndex++;
                         tutIndex = 3;
+                        
                     }
                 }
                 return;
@@ -107,7 +110,7 @@ public class TutorialManager : MonoBehaviour
                 }
                 if (hasOverview)
                 {
-                    if (playerInput.actions.FindAction("Fire").WasPressedThisFrame())
+                    if (playerInput.actions.FindAction("Click").WasPressedThisFrame())
                     {
                         canvasController.DestroyPrompt();
                         tutIndex = 4;
@@ -128,7 +131,7 @@ public class TutorialManager : MonoBehaviour
                     return;
                 }
 
-                if (playerInput.actions.FindAction("Jump").WasPressedThisFrame()|| cinematicPrefabList[cinematicIndex].GetComponent<CinematicController>().isPlaying == false)
+                if (playerInput.actions.FindAction("Click").WasPressedThisFrame()|| cinematicPrefabList[cinematicIndex].GetComponent<CinematicController>().isPlaying == false)
                 {
                     canvasController.DestroyPrompt();
                     promptIndex++;
@@ -154,9 +157,11 @@ public class TutorialManager : MonoBehaviour
                 }
                 if (hasOverview)
                 {
-                    if (playerInput.actions.FindAction("Fire").WasPressedThisFrame())
+                    if (playerInput.actions.FindAction("Click").WasPressedThisFrame())
                     {
                         canvasController.DestroyPrompt();
+                        Cursor.visible = true;
+                        canvasController.HidePlayerCursor();
                         tutIndex = 6;
                     }
                 }
