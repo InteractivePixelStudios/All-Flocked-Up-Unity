@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using System.Linq;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] protected bool hasMoved;
     [SerializeField] protected bool hasJumped;
     protected int jumpCount;
+    [SerializeField] protected bool introComplete;
+    [SerializeField]protected int introIndex;
     [SerializeField] protected bool hasTakeoff;
     [SerializeField] protected bool hasOverview;
     [SerializeField] protected bool speakWithQ1;
@@ -27,6 +30,13 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] protected bool speakWithQ3;
     [SerializeField] protected bool tutComplete;
     [SerializeField] protected AchievementUnlocker achievement;
+
+
+    protected int arrowIndex;
+
+    protected int controlBindIndex=1;
+
+    protected int keyboardBindIndex=1;
 
     private void Start()
     {
@@ -52,7 +62,47 @@ public class TutorialManager : MonoBehaviour
         switch (tutIndex)
         {
             case 0:
-                if (playerInput.actions.FindAction("Move").WasPressedThisFrame() && !tutComplete)
+                TogglePrompt(promptIndex);
+                if (!introComplete && !tutComplete)
+                {
+                    if (playerInput.actions.FindAction("Fire").WasPressedThisFrame())
+                    {
+                        if (introIndex > 5)
+                        {
+                            introComplete = true;
+                        }
+                        else
+                        {
+                            canvasController.DestroyPrompt();
+                            promptIndex++;
+                            introIndex++;
+                            TogglePrompt(introIndex);
+                            IncrementBindIndex();
+                            if (canvasController.activeTutPrompt.GetNumberArrowPointer() - 1 <= introIndex)
+                            {
+                                canvasController.activeTutPrompt.SetArrowIndex(introIndex);
+                            }
+                        }
+                    }
+                            
+                    
+                }
+                if (introComplete)
+                {
+                    if (playerInput.actions.FindAction("Fire").WasPressedThisFrame())
+                    {
+                        canvasController.DestroyPrompt();
+
+                        IncrementBindIndex();
+                        tutIndex = 1;
+                    }
+                }
+                return;
+            case 1:
+                TogglePrompt(promptIndex);
+
+                UpdateBindSprites(keyboardBindIndex, controlBindIndex);
+                if (playerInput.actions.FindAction("Move").WasPressedThisFrame() && introComplete && !tutComplete)
                 {
                     hasMoved = true;
                 }
@@ -61,13 +111,15 @@ public class TutorialManager : MonoBehaviour
                 {
                     canvasController.DestroyPrompt();
                     promptIndex++;
-                    tutIndex = 1;
+                    IncrementBindIndex();
+                    tutIndex = 2;
 
                 }
                 return;
-            case 1:
+            case 2:
                 TogglePrompt(promptIndex);
-                if (playerInput.actions.FindAction("Jump").WasPressedThisFrame() && hasMoved && !hasJumped && !tutComplete)
+                UpdateBindSprites(keyboardBindIndex, controlBindIndex);
+                if (playerInput.actions.FindAction("Jump").WasPressedThisFrame() && introComplete && hasMoved && !hasJumped && !tutComplete)
                 {
                     hasJumped = true;
                 }
@@ -76,15 +128,17 @@ public class TutorialManager : MonoBehaviour
                     canvasController.DestroyPrompt();
                     promptIndex++;
                     jumpCount = 1;
-                    tutIndex = 2;
+                    IncrementBindIndex();
+                    tutIndex = 3;
 
                 }
 
 
                 return;
-            case 2:
+            case 3:
                 TogglePrompt(promptIndex);
-                if (playerMove.GetIsFlying() && hasMoved && hasJumped && !hasTakeoff && !tutComplete && jumpCount > 0)
+                UpdateBindSprites(keyboardBindIndex, controlBindIndex);
+                if (playerMove.GetIsFlying() && introComplete && hasMoved && hasJumped && !hasTakeoff && !tutComplete && jumpCount > 0)
                 {
                     hasTakeoff = true;
                 }
@@ -97,14 +151,16 @@ public class TutorialManager : MonoBehaviour
                         Cursor.visible = false;
                         jumpCount = 0;
                         promptIndex++;
-                        tutIndex = 3;
+                        IncrementBindIndex();
+                        tutIndex = 4;
                         
                     }
                 }
                 return;
-            case 3:
+            case 4:
                 TogglePrompt(promptIndex);
-                if (!hasOverview && hasMoved && hasJumped && hasTakeoff && !tutComplete)
+                UpdateBindSprites(keyboardBindIndex, controlBindIndex);
+                if (!hasOverview && introComplete && hasMoved && hasJumped && hasTakeoff && !tutComplete)
                 {
                     hasOverview = true;
                 }
@@ -113,20 +169,22 @@ public class TutorialManager : MonoBehaviour
                     if (playerInput.actions.FindAction("Click").WasPressedThisFrame())
                     {
                         canvasController.DestroyPrompt();
-                        tutIndex = 4;
+                        IncrementBindIndex();
+                        tutIndex =5;
                     }
                 }
                 return;
-            case 4:
+            case 5:
                 isPlayingCinematic = true;
                 TogglePrompt(promptIndex);
-
+                UpdateBindSprites(0, 0);
                 if (!isPlayingCinematic) return;
 
                 if (cinematicIndex > cinematicPrefabList.Count)
                 {
                     canvasController.DestroyPrompt();
-                    tutIndex = 5;
+                    IncrementBindIndex();
+                    tutIndex = 6;
                     isPlayingCinematic = false;
                     return;
                 }
@@ -143,15 +201,17 @@ public class TutorialManager : MonoBehaviour
                     else if (cinematicIndex > cinematicPrefabList.Count)
                     {
                         canvasController.DestroyPrompt();
-                        tutIndex = 5;
+                        IncrementBindIndex();
+                        tutIndex = 6;
                         isPlayingCinematic = false;
                     }
                 }
 
                 return;
-            case 5:
+            case 6:
                 TogglePrompt(promptIndex);
-                if (!hasOverview && hasMoved && hasJumped && hasTakeoff && !tutComplete)
+                UpdateBindSprites(keyboardBindIndex, controlBindIndex);
+                if (!hasOverview && introComplete && hasMoved && hasJumped && hasTakeoff && !tutComplete)
                 {
                     hasOverview = true;
                 }
@@ -162,12 +222,57 @@ public class TutorialManager : MonoBehaviour
                         canvasController.DestroyPrompt();
                         Cursor.visible = true;
                         canvasController.HidePlayerCursor();
-                        tutIndex = 6;
+                        IncrementBindIndex();
+                        tutIndex = 7;
                     }
                 }
                 return;
-            case 6:
-
+            case 7:
+                TogglePrompt(promptIndex);
+                UpdateBindSprites(keyboardBindIndex, controlBindIndex);
+                if (hasOverview)
+                {
+                    if (playerInput.actions.FindAction("Click").WasPressedThisFrame())
+                    {
+                        canvasController.DestroyPrompt();
+                        Cursor.visible = true;
+                        canvasController.HidePlayerCursor();
+                        IncrementBindIndex();
+                        tutIndex = 8;
+                    }
+                }
+                return;
+            case 8:
+                TogglePrompt(promptIndex);
+                UpdateBindSprites(keyboardBindIndex, controlBindIndex);
+                if (hasOverview)
+                {
+                    if (playerInput.actions.FindAction("Click").WasPressedThisFrame())
+                    {
+                        canvasController.DestroyPrompt();
+                        Cursor.visible = true;
+                        canvasController.HidePlayerCursor();
+                        IncrementBindIndex();
+                        tutIndex = 9;
+                    }
+                }
+                return;
+            case 9:
+                TogglePrompt(promptIndex);
+                UpdateBindSprites(keyboardBindIndex, controlBindIndex);
+                if (hasOverview)
+                {
+                    if (playerInput.actions.FindAction("Click").WasPressedThisFrame())
+                    {
+                        canvasController.DestroyPrompt();
+                        Cursor.visible = true;
+                        canvasController.HidePlayerCursor();
+                        IncrementBindIndex();
+                        tutIndex = 10;
+                    }
+                }return;
+            case 10:
+                tutComplete = true;
                 return;
         }
     }
@@ -182,6 +287,16 @@ public class TutorialManager : MonoBehaviour
     {
         canvasController.cachedTutPromptIndex = index;
         canvasController.activeTutPrompt.UpdatePrompt();
+    }
+
+    void UpdateBindSprites(int keyBindIndex, int controllerBindIndex)
+    {
+        canvasController.activeTutPrompt.UpdateBindSprites(keyBindIndex, controllerBindIndex);
+    }
+
+    void IncrementBindIndex()
+    {
+        canvasController.activeTutPrompt.IncrementBindIndex();
     }
 
 

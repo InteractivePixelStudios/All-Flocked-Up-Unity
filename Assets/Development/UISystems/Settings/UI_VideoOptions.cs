@@ -103,6 +103,7 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     protected void InitResolutionDD()
     {
+        resolDropdown.ClearOptions();
         resolDropdown.onValueChanged.RemoveAllListeners();
         resolutions = Screen.resolutions;
         var options = new List<string>();
@@ -126,7 +127,7 @@ public class UI_VideoOptions : UI_SettingsMenu
             }
         }
 
-        resolDropdown.ClearOptions();
+
         resolDropdown.AddOptions(options);
         resolDropdown.SetValueWithoutNotify(currentIndex);
         resolDropdown.RefreshShownValue();
@@ -151,8 +152,8 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     protected void InitFullscreenDD()
     {
-        fsDropDown.onValueChanged.RemoveAllListeners();
         fsDropDown.ClearOptions();
+        fsDropDown.onValueChanged.RemoveAllListeners();
         var saved = PlayerPrefs.GetInt("FullscreenMode",-1);
         var modes = new List<string>
     {
@@ -195,8 +196,8 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     protected void InitQualityDD()
     {
-        qualityDropdown.onValueChanged.RemoveAllListeners();
         qualityDropdown.ClearOptions();
+        qualityDropdown.onValueChanged.RemoveAllListeners();
         var saved = PlayerPrefs.GetInt("QualityLevel", -1);
         var qualityNames = QualitySettings.names.ToList();
         qualityDropdown.AddOptions(qualityNames);
@@ -229,8 +230,8 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     protected void InitAAQualityDD()
     {
-        AADropdown.onValueChanged.RemoveAllListeners();
         AADropdown.ClearOptions();
+        AADropdown.onValueChanged.RemoveAllListeners();
         AADropdown.AddOptions(new List<string> {"None", "FXAA","SMAA" });
         var camData = mainCameraRef.GetComponent<UniversalAdditionalCameraData>();
         var saved = PlayerPrefs.GetInt("AAQuality", -1);
@@ -269,8 +270,8 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     protected void InitFrameLimitDD()
     {
-        frameLimitDropdown.onValueChanged.RemoveAllListeners();
         frameLimitDropdown.ClearOptions();
+        frameLimitDropdown.onValueChanged.RemoveAllListeners();
         var options = new List<string>()
         {
             "30FPS",
@@ -338,8 +339,8 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     protected void InitTextureQualityDD()
     {
-        textureQualDropdown.onValueChanged.RemoveAllListeners();
         textureQualDropdown.ClearOptions();
+        textureQualDropdown.onValueChanged.RemoveAllListeners();
         var options = new List<string>()
         {
             "Full Resolution",
@@ -378,8 +379,8 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     protected void InitShadowQualityDD()
     {
-        shadowQualDropdown.onValueChanged.RemoveAllListeners();
         shadowQualDropdown.ClearOptions();
+        shadowQualDropdown.onValueChanged.RemoveAllListeners();
         var options = new List<string>()
         {
             "High",

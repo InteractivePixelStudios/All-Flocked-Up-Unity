@@ -50,6 +50,8 @@ public class Pooper : MonoBehaviour
     {
         groundComp = GetComponent<PlayerGroundMovement>();
         playerInput = GetComponentInParent<PlayerInput>();
+        cam = FindAnyObjectByType<Camera>();
+        player = this.gameObject;
         Debug.Log($"PlayerInput: {playerInput != null}");
 
         //Set up input actions
@@ -146,7 +148,7 @@ public class Pooper : MonoBehaviour
                 //Get player velocity from pigeon rigidbody
                 Vector3 playerVelocity = pigeon.linearVelocity;
                 poopFunction.currentPoopType = poopType;
-                poopFunction.FirePoop(target, playerVelocity);
+                poopFunction.FirePoop(target +new  Vector3(0,10,0), playerVelocity);
             }
         }else
         if (poopSystem.TryPoop())
