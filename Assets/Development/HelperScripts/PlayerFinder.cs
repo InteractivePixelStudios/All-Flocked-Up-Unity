@@ -1,5 +1,6 @@
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerFinder : Singleton<PlayerFinder>
 {
@@ -10,12 +11,20 @@ public class PlayerFinder : Singleton<PlayerFinder>
     {
         player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         camRef = GetComponent<CinemachineCamera>();
+        if(SceneManager.GetActiveScene() != SceneManager.GetSceneByName("MainMenu"))
+        {
+            SetTrackingTarget();
+        }
+        SetTrackingTarget();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        //if(player != null && camRef.Target.TrackingTarget ==null)
+        //{
+        //    player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
+        //}
     }
 
     void SetTrackingTarget()
