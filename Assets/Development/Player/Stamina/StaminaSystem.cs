@@ -50,7 +50,11 @@ public class StaminaSystem : MonoBehaviour
             return true;
         }
         else
+        {
+            RegenStamina();
             return false;
+        }
+
     }
 
     public float GetCurrentStamina()

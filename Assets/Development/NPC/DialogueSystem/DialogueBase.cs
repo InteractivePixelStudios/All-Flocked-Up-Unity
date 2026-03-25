@@ -55,6 +55,7 @@ public class DialogueBase : MonoBehaviour
     {
         LoadDialogueSheet();
         npcSpeech = GetComponent<NPC_Vocalizer>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
 
     }
     //loads the CSV and adds each line as a string into importedLines, trims each line into lineData and sets the currentDialogueLine based on currentDialogueIndex
@@ -209,6 +210,7 @@ public class DialogueBase : MonoBehaviour
         npcRef.TryGetComponent<QuestGiver>(out giver);
         if (giver.hasQuest)
         {
+            
             canvasController.ShowQuestGiver(giver);
             Debug.Log(giver + "Shows the quest");
         }
@@ -233,29 +235,33 @@ public class DialogueBase : MonoBehaviour
     //waits 2s after text done to show buttons
     public async void TypeText(int speed)
     {
-        typerComplete = false;
-
-        string resolvedText = await currentDialogueText.GetLocalizedStringAsync().Task;
-
-
-        string temp = "";
-        foreach (char c in resolvedText)
+        if (canvasController.activeDialogueInstance != null)
         {
-            temp += c;
-            if (!skipLine)
-            {
-                canvasController.activeDialogueInstance.UpdateDialogueUI(currentDialogueName, temp, currentDialogueImage);
-                npcSpeech.Speech();
-                await Task.Delay(speed);
-            }
-            else
-            {
-                canvasController.activeDialogueInstance.UpdateDialogueUI(currentDialogueName, resolvedText, currentDialogueImage);
-            }
-        }
 
-        await Task.Delay(500);
-        ShowResponseButtons(true);
+            typerComplete = false;
+
+            string resolvedText = await currentDialogueText.GetLocalizedStringAsync().Task;
+
+
+            string temp = "";
+            foreach (char c in resolvedText)
+            {
+                temp += c;
+                if (!skipLine)
+                {
+                    canvasController.activeDialogueInstance.UpdateDialogueUI(currentDialogueName, temp, currentDialogueImage);
+                    npcSpeech.Speech();
+                    await Task.Delay(speed);
+                }
+                else
+                {
+                    canvasController.activeDialogueInstance.UpdateDialogueUI(currentDialogueName, resolvedText, currentDialogueImage);
+                }
+            }
+
+            await Task.Delay(500);
+            ShowResponseButtons(true);
+        }
     }
     //sends the current response options to the dialogue canvas
     public void SendResponseOptions()
@@ -274,6 +280,12 @@ public class DialogueBase : MonoBehaviour
             
         }
         
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        npcSpeech = GetComponent<NPC_Vocalizer>();
     }
 
 }

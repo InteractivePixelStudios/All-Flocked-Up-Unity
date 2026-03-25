@@ -49,7 +49,7 @@ public class GarbageCollector : MonoBehaviour
                 trashCount++;
                 AddTrash(trashCount);
             }
-            Destroy(other.gameObject);
+            other.gameObject.GetComponent<MeshRenderer>().enabled = false ;
         }
     }
 }
