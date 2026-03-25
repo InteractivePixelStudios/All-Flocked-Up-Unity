@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,6 +22,7 @@ public class PoopProjectile : MonoBehaviour
 
     [SerializeField] private PoopSplatDecal decalPrefab;
     [SerializeField] private ParticleSystem splashParticle;
+    [SerializeField] EventReference splatSFX;
 
 
     private void Awake()
@@ -80,7 +82,7 @@ public class PoopProjectile : MonoBehaviour
         SpawnPoopDecal(transform.position,hit);
         Instantiate(splashParticle,transform.position,Quaternion.identity* Quaternion.Euler(-90,0,0));
         //source?.HandleHitEffects(poopType, collision.contacts[0].point); // Trigger hit effects
-
+        AudioWizard.Instance.PlayOneshotSound(splatSFX, transform.position);
         if (collision.gameObject.CompareTag("Cat"))
         {
             //poopable.OnPoopHit(poopType);

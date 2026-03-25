@@ -151,9 +151,9 @@ public class Pooper : MonoBehaviour
                 poopFunction.FirePoop(target +new  Vector3(0,10,0), playerVelocity);
             }
         }else
-        if (poopSystem.TryPoop())
+        if (isAiming)
         {
-            if (isAiming)
+            if (poopSystem.TryPoop())
             {
                 poopFunction.FireGroundPoop();
             }

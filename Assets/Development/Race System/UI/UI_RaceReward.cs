@@ -79,7 +79,7 @@ public class UI_RaceReward: MonoBehaviour
         LocalizedString localizedString = new LocalizedString
         {
             TableReference = "AFU_Races",
-            TableEntryReference = raceBase.currentRaceGiver.raceData.name
+            TableEntryReference = raceBase.raceData.name
         };
 
         localizedString.GetLocalizedStringAsync().Completed += handle =>
@@ -102,6 +102,7 @@ public class UI_RaceReward: MonoBehaviour
     //gives rewards to player
     private void AcceptReward()
     {
+        Debug.Log("Clicked");
         raceBase.completedRaces.Add(raceBase.raceData);
         Destroy(raceBase.currentRaceGiver.GetComponent<RaceGiver>());
         GiveRaceRewards();

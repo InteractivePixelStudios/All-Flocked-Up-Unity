@@ -106,6 +106,7 @@ public class UI_CanvasController : MonoBehaviour
     [SerializeField] private TutorialPrompt promptPrefab;
     public TutorialPrompt activeTutPrompt;
     public int cachedTutPromptIndex;
+    public int cachedIntroIndex;
     [Header("SkinSelector")]
     [SerializeField] private UI_SkinSelector skinSelectorPrefab;
     public UI_SkinSelector activeSkinSelector;
@@ -157,22 +158,30 @@ public class UI_CanvasController : MonoBehaviour
 
     public void SetPlayerMap()
     {
-        input.SwitchCurrentActionMap("Player");
-        player.GetComponent<PlayerGroundMovement>().enabled = true;
-        player.GetComponent<PlayerFlightMovement>().enabled = true;
-        isUIMap = false;
-       // ResumeEnemy();
-        Debug.Log("PLAYERMAP");
+        if (isUIMap)
+        {
+            input.SwitchCurrentActionMap("Player");
+            player.GetComponent<PlayerGroundMovement>().enabled = true;
+            player.GetComponent<PlayerFlightMovement>().enabled = true;
+            isUIMap = false;
+            // ResumeEnemy();
+            Debug.Log("PLAYERMAP");
+        }
+        else return;
     }
 
     public void SetUIMap()
     {
-        input.SwitchCurrentActionMap("UI");
-        player.GetComponent<PlayerGroundMovement>().enabled = false;
-        player.GetComponent<PlayerFlightMovement>().enabled = false;
-        isUIMap = true;
-        //FreezeEnemies();
-        Debug.Log("UIMAP");
+        if (!isUIMap)
+        {
+            input.SwitchCurrentActionMap("UI");
+            player.GetComponent<PlayerGroundMovement>().enabled = false;
+            player.GetComponent<PlayerFlightMovement>().enabled = false;
+            isUIMap = true;
+            //FreezeEnemies();
+            Debug.Log("UIMAP");
+        }
+        else return;
     }
     //cursor on
     public void ShowPlayerCursor()
@@ -410,7 +419,7 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeTrashInstance.gameObject);
             activeTrashInstance = null;
-            if (isUIMap)
+            if (isUIMap && activeRewardInstance!=null)
             {
                 HidePlayerCursor();
             }
@@ -788,6 +797,7 @@ public class UI_CanvasController : MonoBehaviour
         {
             activeTutPrompt = Instantiate(promptPrefab);
             activeTutPrompt.promptIndex = cachedTutPromptIndex;
+            activeTutPrompt.arrowIndex = cachedIntroIndex;
             activeTutPrompt.canvasController = this;
             //ShowPlayerCursor() ;
         }

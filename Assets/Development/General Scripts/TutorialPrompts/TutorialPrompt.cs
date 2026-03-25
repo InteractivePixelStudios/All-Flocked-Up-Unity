@@ -18,7 +18,7 @@ public class TutorialPrompt : MonoBehaviour
     public UI_CanvasController canvasController;
 
     [SerializeField] protected GameObject[] arrowPointers;
-    protected int arrowIndex;
+    public int arrowIndex;
     [SerializeField] private Image controlBindImage;
     [SerializeField] protected Sprite[] controlBindSprites;
     protected int controlBindIndex = 1;
@@ -28,7 +28,7 @@ public class TutorialPrompt : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        UpdatePrompt();
+        UpdatePrompt(promptIndex);
         SetArrowPointers(arrowIndex);
     }
 
@@ -52,6 +52,7 @@ public class TutorialPrompt : MonoBehaviour
     public void SetArrowIndex(int index)
     {
         arrowIndex = index;
+        SetArrowPointers(arrowIndex);
     }
 
     public void HideArrowPointers()
@@ -100,9 +101,9 @@ public class TutorialPrompt : MonoBehaviour
 
     }
 
-    public void UpdatePrompt()
+    public void UpdatePrompt(int index)
     {
-        promptText.SetText(prompts[promptIndex]);
+        promptText.SetText(prompts[index]);
     }
 
 
