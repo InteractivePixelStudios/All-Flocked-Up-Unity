@@ -40,6 +40,7 @@ public class UI_AudioOptions : UI_SettingsMenu
     {
         float saved = PlayerPrefs.GetFloat("MasterVolume", 1f);
         mainVolSlider.value = saved;
+        mainVolSlider.SetValueWithoutNotify(saved);
         SetMainVol(saved);
         SetMainVolText(saved);
         mainVolSlider.onValueChanged.AddListener(OnMainVolChanged);
@@ -69,6 +70,7 @@ public class UI_AudioOptions : UI_SettingsMenu
     {
         float saved = PlayerPrefs.GetFloat("SFXVolume", 0.5f);
         sfxVolSlider.value = saved;
+        sfxVolSlider.SetValueWithoutNotify(saved);
         SetSFXVol(saved);
         SetSFXVolText(saved);
         sfxVolSlider.onValueChanged.AddListener(OnSFXVolChanged);
@@ -96,6 +98,7 @@ public class UI_AudioOptions : UI_SettingsMenu
     {
         float saved = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
         musicVolSlider.value = saved;
+        musicVolSlider.SetValueWithoutNotify(saved);
         SetMusicVol(saved);
         SetMusicVolText(saved);
 

@@ -36,7 +36,7 @@ public class UI_RaceFail : MonoBehaviour
         LocalizedString localizedString = new LocalizedString
         {
             TableReference = "AFU_Races",
-            TableEntryReference = race.currentRaceGiver.raceData.name
+            TableEntryReference = race.raceData.name
         };
 
         localizedString.GetLocalizedStringAsync().Completed += handle =>

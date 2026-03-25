@@ -114,7 +114,6 @@ public class UI_AccessOptions : UI_SettingsMenu
 
     protected async void InitLanguageDD()
     {
-        languageDropdown.ClearOptions();
         await settings.GetInitializationOperation().Task;
         var locales = settings.GetAvailableLocales().Locales;
         List<string> options = new();
@@ -126,10 +125,11 @@ public class UI_AccessOptions : UI_SettingsMenu
             options.Add(locale.LocaleName);
             if (i == saveLang)
             {
-                i = langIndex;
+                langIndex =i;
                 
             }
         }
+        languageDropdown.ClearOptions();
         languageDropdown.AddOptions(options);
         languageDropdown.value = langIndex;
         languageDropdown.RefreshShownValue();

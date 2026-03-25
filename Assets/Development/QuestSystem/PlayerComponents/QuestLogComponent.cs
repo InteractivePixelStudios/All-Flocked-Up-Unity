@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -101,20 +102,22 @@ public class QuestLog : MonoBehaviour
         hasQuest = true;
         currentQuestGiver = questGiver;
         GetIsQuestTimed(questData, instance);
+        arrowPointer.destination = instance.destination;
+        arrowPointer.EnablePointerArrow(instance.destination);
 
-        
+
     }
     //updates the quest Objective... call this on quest mechanics or anytime you want to complete an objective... send the objectiveID and number of times completed (usually 1 but can be other if needed)
     //otherwise checks if quest is completed
     public void UpdateQuestObjective(string objectiveID, int amount)
     {
-        foreach (var quest in activeQuests)
+        foreach (var quest in activeQuests.ToList())
         {
-            //throws an error when a quest is complete...stupid
+            
                 quest.UpdateObjective(objectiveID, amount);
         }
 
-        CheckForCompletedQuests();
+
     }
 
     //shows the quest notif when an objective is completed
@@ -123,7 +126,9 @@ public class QuestLog : MonoBehaviour
         // purely update UI / notify player
         canvasController.ShowQuestNotif("Objective Complete");
         arrowPointer.DestroyArrow();
-
+        arrowPointer.destination = quest.destination;
+        arrowPointer.EnablePointerArrow(quest.destination);
+        CheckForCompletedQuests();
         Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
     }
 
@@ -139,7 +144,8 @@ public class QuestLog : MonoBehaviour
                 canvasController.EndTimer();
                 activeQuests.RemoveAt(i);
                 currentQuestGiver.quests.RemoveAt(0);
-                hasQuest = false;
+                arrowPointer.DestroyArrow();
+                currentQuestGiver.hasQuest = false;
                 currentQuestGiver.GetComponent<NPCBase>().dialogueFirst = true;
             }
             if(currentQuestGiver.quests.Count <= 0)

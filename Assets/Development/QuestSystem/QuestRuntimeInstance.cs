@@ -21,7 +21,7 @@ public class QuestRuntimeInstance
 
     public List<GameObject> questMechanicsObjects = new List<GameObject>();
     [SerializeField] private PlayerNavArrow arrowPointer;
-    GameObject destination;
+    public GameObject destination;
 
     public void Start()
     {
@@ -100,10 +100,10 @@ public class QuestRuntimeInstance
     //Takes ObjectiveID and amount and increments. Checks if stage is complete and advances if true.
     public void UpdateObjective(string objectiveID, int amount)
     {
+        if (!objectiveProgress.ContainsKey(objectiveID)) { return; }
         GetObjectiveDestination(objectiveID); 
-        arrowPointer.destination = destination; 
+
         arrowPointer.EnablePointerArrow(destination);
-        if (!objectiveProgress.ContainsKey(objectiveID)) {  return; }
 
         objectiveProgress[objectiveID] += amount;
         questLog.OnObjectiveUpdated(this, objectiveID, objectiveProgress[objectiveID]);

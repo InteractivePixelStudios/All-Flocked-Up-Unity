@@ -299,7 +299,7 @@ public class RaceBase : MonoBehaviour
                 else if (racer.CompareTag("Player"))
                 {
                     playerFinishTime = currentTime;
-                    StopPlayerMove();
+                    racer.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
                 }
                 Debug.Log($"{racer.name} finished the race!");
             }
