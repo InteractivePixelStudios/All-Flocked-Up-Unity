@@ -22,5 +22,6 @@ public class EXPSeed : MonoBehaviour
     private void EXPConsume()
     {
         playerXP.IncrementXP(value);
+        playerRef.GetComponent<PlayerPeckComponent>().Peck();
     }
 }

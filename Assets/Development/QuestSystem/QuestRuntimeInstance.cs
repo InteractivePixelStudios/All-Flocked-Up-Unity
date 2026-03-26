@@ -103,6 +103,7 @@ public class QuestRuntimeInstance
         if (!objectiveProgress.ContainsKey(objectiveID)) { return; }
         GetObjectiveDestination(objectiveID); 
 
+
         arrowPointer.EnablePointerArrow(destination);
 
         objectiveProgress[objectiveID] += amount;

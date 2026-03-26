@@ -16,6 +16,7 @@ public class TrinketScript : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerRef = other.gameObject;
+            CollectTrinket(value);
         }
     }
 
@@ -43,7 +44,7 @@ public class TrinketScript : MonoBehaviour
         if (SteamManager.Initialized)
         {
             AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_009_Trinket");
-        }
+        }playerRef.GetComponent<PlayerPeckComponent>().Peck();
         //Q_Collect collect;
         //TryGetComponent<Q_Collect>(out collect);
         //if(collect != null)

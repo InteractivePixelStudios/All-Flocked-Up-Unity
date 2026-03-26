@@ -18,6 +18,8 @@ public class QuestLog : MonoBehaviour
     public float currentTime;
     [SerializeField] private UI_CanvasController canvasController;
     [SerializeField]private PlayerNavArrow arrowPointer ;
+    ObjectiveDetails[] currentObjectives;
+    int objIndex;
 
     private void Start()
     {
@@ -104,6 +106,9 @@ public class QuestLog : MonoBehaviour
         GetIsQuestTimed(questData, instance);
         arrowPointer.destination = instance.destination;
         arrowPointer.EnablePointerArrow(instance.destination);
+        canvasController.ShowTracker();
+        currentObjectives = instance.GetCurrentObjectives();
+        canvasController.activeTrackerInstance.SetTracker(instance.questID,currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription,0);
 
 
     }
@@ -123,13 +128,22 @@ public class QuestLog : MonoBehaviour
     //shows the quest notif when an objective is completed
     public void OnObjectiveUpdated(QuestRuntimeInstance quest, string objectiveID, int newValue)
     {
-        // purely update UI / notify player
+        var obj = quest.GetCurrentObjectives();
+        canvasController.DestroyTracker();
+        canvasController.ShowTracker();
+        canvasController.activeTrackerInstance.SetTracker(quest.questID,currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription,IncrementIndex());
         canvasController.ShowQuestNotif("Objective Complete");
+        //canvasController.activeTrackerInstance.IncrementTrackerIndex();
         arrowPointer.DestroyArrow();
         arrowPointer.destination = quest.destination;
         arrowPointer.EnablePointerArrow(quest.destination);
         CheckForCompletedQuests();
         Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
+    }
+
+    int IncrementIndex()
+    {
+        return objIndex++;
     }
 
     //checks through activeQuests for completed quest and shows rewards.Removed from activeQuests and added to completedQuests list... also destroys the questgiver component form the NPC so it remains just a dialogue NPC
@@ -145,6 +159,7 @@ public class QuestLog : MonoBehaviour
                 activeQuests.RemoveAt(i);
                 currentQuestGiver.quests.RemoveAt(0);
                 arrowPointer.DestroyArrow();
+                canvasController.DestroyTracker();
                 currentQuestGiver.hasQuest = false;
                 currentQuestGiver.GetComponent<NPCBase>().dialogueFirst = true;
             }
