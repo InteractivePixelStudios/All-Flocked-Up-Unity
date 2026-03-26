@@ -17,6 +17,7 @@ public class PlayerFlightMovement : MonoBehaviour
     bool isDiving = false;
     bool isSlowFlap = false;
     bool isStalling = false;
+    bool isSpeedUp = false;
 
     [Header("Flight Speeds: ")]
     [SerializeField] float baseGlideSpeed = 400f;
@@ -171,10 +172,9 @@ public class PlayerFlightMovement : MonoBehaviour
 
         }
 
-        if (forwardMovement > 0)
+        if (forwardMovement > 0 && !flapUp)
         {
-            if (gliding)
-                gliding = false;
+            isSpeedUp = true;
 
             Vector3 glideDownAmount = transform.forward * glideDownSpeed * Time.deltaTime;
             glideDownAmount.y = playerBody.linearVelocity.y - (glideDownDropSpeed * Time.deltaTime);
@@ -204,6 +204,7 @@ public class PlayerFlightMovement : MonoBehaviour
         else
         {
             isSlowFlap = false;
+            isSpeedUp = false;
             if (!gliding)
                 gliding = true;
 
@@ -221,12 +222,11 @@ public class PlayerFlightMovement : MonoBehaviour
                     meshTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, meshTransform.eulerAngles.z));
             }
         }
-        Debug.Log(isSlowFlap);
     }
 
     void ForwardGlide()
     {
-        if (gliding)
+        if (gliding && !isSpeedUp)
         {
             Vector3 forwardGlideAmount = transform.forward * baseGlideSpeed * Time.deltaTime;
             forwardGlideAmount.y = playerBody.linearVelocity.y;
