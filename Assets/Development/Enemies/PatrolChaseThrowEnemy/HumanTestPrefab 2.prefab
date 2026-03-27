@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4895386601597912085
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7337802932682717551}
+  m_Layer: 0
+  m_Name: ThrowSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7337802932682717551
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4895386601597912085}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.046, z: 0.074}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5671447167867663518}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7501582160166277218
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,9 +42,9 @@ GameObject:
   - component: {fileID: 5361095995755719132}
   - component: {fileID: 6819892356071610624}
   - component: {fileID: 8856120565921912228}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HitDetector
-  m_TagString: Untagged
+  m_TagString: Human
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,7 +78,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questKillComponent: {fileID: 0}
   isDeadLocal: 0
-  currentHealth: 0
+  currentHealth: 10
   enemyRef: {fileID: 0}
 --- !u!65 &8856120565921912228
 BoxCollider:
@@ -121,6 +152,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
       propertyPath: m_Name
       value: HumanTestPrefab 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
+      propertyPath: m_TagString
+      value: Human
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -262,7 +301,7 @@ MonoBehaviour:
   throwForce: 10
   throwCooldown: 3
   throwObjectPrefab: {fileID: 7223603121043193624, guid: ddfe1037d733d5146aca18c4e9629336, type: 3}
-  objectSpawnPoint: {fileID: 0}
+  objectSpawnPoint: {fileID: 7337802932682717551}
   waypoints: []
   connections: []
   currentNode: {fileID: 0}
@@ -359,6 +398,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Male_SlimNPC
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_TagString
+      value: Human
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2815812639130619378, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
@@ -368,7 +415,10 @@ PrefabInstance:
     - {fileID: -3280247431958610335, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
     - {fileID: 7149219775663905931, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
     - {fileID: -8006270869017123868, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6985832860574207950, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7337802932682717551}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
 --- !u!4 &3012089712872398011 stripped
@@ -389,6 +439,11 @@ SkinnedMeshRenderer:
 --- !u!137 &5084460869434076392 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 7550298962454812600, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+  m_PrefabInstance: {fileID: 3334826325816081232}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5671447167867663518 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6985832860574207950, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
   m_PrefabInstance: {fileID: 3334826325816081232}
   m_PrefabAsset: {fileID: 0}
 --- !u!137 &5831600673659533613 stripped

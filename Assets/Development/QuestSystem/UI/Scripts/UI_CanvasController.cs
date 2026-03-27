@@ -8,6 +8,7 @@ using UnityEngine.Localization;
 using Unity.Cinemachine;
 using UnityEngine.AI;
 using System.Linq;
+using NUnit.Framework;
 
 public class UI_CanvasController : MonoBehaviour
 {
@@ -419,7 +420,7 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeTrashInstance.gameObject);
             activeTrashInstance = null;
-            if (isUIMap && activeRewardInstance!=null)
+            if (isUIMap || activeRewardInstance!=null)
             {
                 HidePlayerCursor();
             }
@@ -484,9 +485,9 @@ public class UI_CanvasController : MonoBehaviour
         }
     }
     //race fail canvas
-    public void CloseRaceFail()
+    public void CloseRaceFail(bool retry)
     {
-        if(raceFailInstance != null)
+        if (raceFailInstance != null)
         {
             Destroy(raceFailInstance.gameObject);
             if (isUIMap)
@@ -495,6 +496,12 @@ public class UI_CanvasController : MonoBehaviour
             }
             raceFailInstance = null;
         }
+        if (retry)
+        {
+            var raceBase = FindAnyObjectByType<RaceBase>();
+            raceBase.ResetRace();
+        }
+        else return;
     }
 
     public void OpenCountdownCanvas()

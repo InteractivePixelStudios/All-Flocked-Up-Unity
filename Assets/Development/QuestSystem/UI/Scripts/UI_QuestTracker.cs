@@ -2,8 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
-using UnityEngine.ProBuilder.MeshOperations;
-using static UnityEditor.Rendering.MaterialUpgrader;
+
 
 public class UI_QuestTracker : MonoBehaviour
 {

@@ -52,6 +52,13 @@ public class EnemyPatrol : EnemyBaseComponent
         FindWaypoints();
         currentState = EnemyState.Patrolling;
     }
+
+    public  void SetIsHit()
+    {
+        Debug.Log("setIsHit");
+        isHit = true;
+        isHit = false;
+    }
     public void SetCurrentState(EnemyState state)
     {
         currentState = state;
@@ -66,30 +73,34 @@ public class EnemyPatrol : EnemyBaseComponent
         switch (currentState) 
         {
             case EnemyState.Patrolling:
-                if (playerStealth.GetStealth() < 10&& distanceToPlayer < detectionRange && !isHit)
+                if (isHit)currentState = EnemyState.Hit;
+               else if (playerStealth.GetStealth() < 10&& distanceToPlayer < detectionRange && !isHit)
                     currentState = EnemyState.Chasing;
-                else if (isHit)
-                    currentState = EnemyState.Hit;
+
                 break;
 
             case EnemyState.Chasing:
-                if (distanceToPlayer > detectionRange && !isHit)
+                if (isHit)
+                    currentState = EnemyState.Hit;
+                else if (distanceToPlayer > detectionRange && !isHit)
                     currentState = EnemyState.Patrolling;
                 else if (distanceToPlayer < kickRange && !isHit)
                     currentState = EnemyState.Kicking;
                 else if(distanceToPlayer < throwRange && !isHit)
                     currentState = EnemyState.Throwing;
-                else if(isHit)
-                    currentState = EnemyState.Hit;
                 break; 
 
             case EnemyState.Kicking:
+                if (isHit)
+                    currentState = EnemyState.Hit;
                 if (distanceToPlayer > kickRange && !isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Throwing:
-                if(distanceToPlayer > throwRange && !isHit)
+                if (isHit)
+                    currentState = EnemyState.Hit;
+                if (distanceToPlayer > throwRange && !isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
@@ -103,14 +114,12 @@ public class EnemyPatrol : EnemyBaseComponent
                 break;
 
             case EnemyState.Retreat:
-                if (isStopped && !isHit)
+                if (isHit)
+                    currentState = EnemyState.Hit;
+                else if (isStopped && !isHit)
                 {
                     isStopped = false;
                     currentState = EnemyState.Hit;
-                }
-                else if (!isHit)
-                {
-                    currentState = EnemyState.Patrolling;
                 }
                 break;
 
@@ -130,14 +139,21 @@ public class EnemyPatrol : EnemyBaseComponent
             case EnemyState.Chasing:
                 ChasePlayer();
                 break;
-            case EnemyState.Kicking:
-                if (kickCooldown <= 0)
+            case EnemyState.Kicking: // throws until kick anim done
+                if (throwCooldown <= 0)
                 {
-                    KickPlayer();
+                    ThrowObject();
 
-                    kickCooldown = 3f;
+                    throwCooldown = 3f;
                     currentState = EnemyState.Chasing;
                 }
+                //if (kickCooldown <= 0)
+                //{
+                //    KickPlayer();
+
+                //    kickCooldown = 3f;
+                //    currentState = EnemyState.Chasing;
+                //}
                 break;
             case EnemyState.Throwing:
                 if (throwCooldown <= 0)
@@ -192,49 +208,38 @@ public class EnemyPatrol : EnemyBaseComponent
 
     }
 
-
-
-
-    //void Patrol()
-    //{
-    //    if (patrolPoints.Length == 0) return;
-
-    //    Vector3 targetPos = patrolPoints[currentPointIndex].position;
-    //    targetPos.y = transform.position.y;
-
-    //    transform.position = Vector3.MoveTowards(transform.position, targetPos, patrolSpeed * Time.deltaTime);
-
-    //    Vector3 dir = (targetPos - transform.position).normalized;
-    //    dir.y = 0;
-    //    if (dir != Vector3.zero)
-    //        transform.forward = dir;
-
-    //    if (Vector3.Distance(transform.position, targetPos) < 0.2f)
-    //    {
-    //        currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
-    //    }
-    //}
     protected void StopMove()
     {
         navAgent.isStopped = true;
         animController.SetFloat("Speed", 0f);
     }
 
-    protected async void HitReact()
+    protected  void HitReact()
     {
-        currentState = EnemyState.Stop;
         animController.SetTrigger("isHit");
-        await Task.Delay(1000);
+        isHit = false;
+        currentState = EnemyState.Retreat;
     }
-
+    public override void OnHit()
+    {
+        isHit = true;
+        Debug.Log("HitHuman");
+        SetCurrentState(EnemyState.Hit);
+    }
     protected void Retreat()
     {
         animController.SetFloat("Speed",navAgent.speed);
-        var centerPoint = transform.position;
-        var radius = 5f;
-        Vector3 randomDirection = Random.insideUnitSphere * radius;
-        Vector3 randomPosition = centerPoint + randomDirection;
-        navAgent.SetDestination(randomPosition);
+        Debug.Log("retreating");
+        //var centerPoint = transform.position;
+        //var radius = 5f;
+        //Vector3 randomDirection = Random.insideUnitSphere * radius;
+        //Vector3 randomPosition = centerPoint + randomDirection;
+        if (currentNode != null)
+        {
+            navAgent.SetDestination(currentNode.transform.position);
+        }
+        Task.Delay(2000);
+        isRetreating = false;
     }
 
    protected void ChasePlayer()
@@ -264,15 +269,22 @@ public class EnemyPatrol : EnemyBaseComponent
 
     }
 
-    protected void ThrowObject()
+    protected async void ThrowObject()
     {
+        Vector3 facingDir = (player.transform.position - transform.position).normalized;
+        float diff = Vector3.Dot(transform.forward, facingDir);
+        if(diff <0.5f)
+        {
+            return;
+        }
         animController.SetTrigger("isThrowing");
+        await Task.Delay(1200);
         var spawnedObj = Instantiate(throwObjectPrefab,objectSpawnPoint.position,objectSpawnPoint.rotation);
         spawnedObj.transform.position = objectSpawnPoint.transform.position;
         spawnedObj.transform.rotation = objectSpawnPoint.transform.rotation;
         var objRB = spawnedObj.GetComponent<Rigidbody>();
         SetThrowPoint();
-        objRB.AddForce(objectSpawnPoint.forward*throwForce,ForceMode.Impulse);
+        objRB.AddForce((objectSpawnPoint.forward+(Vector3.down*0.5f))*throwForce,ForceMode.Impulse);
         throwCooldown = 3f;
 
     }

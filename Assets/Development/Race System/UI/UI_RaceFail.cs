@@ -49,14 +49,13 @@ public class UI_RaceFail : MonoBehaviour
 
     private void RetryRace()
     {
-        Destroy(this.gameObject);
-        race.ResetRace();
+        canvasController.OpenRaceFail();
+
 
     }
 
     private void CloseRace()
     {
-       Destroy(this.gameObject);
-        race.StartPlayerMove();
+        canvasController.OpenRaceFail();
     }
 }
