@@ -26,48 +26,31 @@ public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
-        {
-            isDeadLocal = true;
-            OnDeath(isDeadLocal);
-            Debug.Log("Enemy Is Dead");
+        TriggerStateChangeOnHit();
+        //currentHealth -= damage;
+        //if (currentHealth <= 0)
+        //{
+        //    isDeadLocal = true;
+        //    OnDeath(isDeadLocal);
+        //    Debug.Log("Enemy Is Dead");
 
-        }
+        //}
     }
 
     public void OnDeath(bool IsDead)
     {
         TriggerStateChangeOnHit();
     }
-
-    protected void TriggerStateChangeOnHit()
+    public void TriggerStateChangeOnHit()
     {
-        if(this is EnemyPatrol)
-        {
-            enemyRef.GetComponent<EnemyPatrol>().SetCurrentState(EnemyPatrol.EnemyState.Hit);
-        }
-        else if(this is AI_Cat)
-        {
-            enemyRef.GetComponent<AI_Cat>().SetCurrentState(AI_Cat.EnemyState.Hit);
-        }
-        else if (this is AI_Dog)
-        {
-            enemyRef.GetComponent<AI_Dog>().SetCurrentState(AI_Dog.EnemyState.Hit);
-        }
-        else if (this is AI_Hawk)
-        {
-            enemyRef.GetComponent<AI_Hawk>().SetCurrentState(AI_Hawk.EnemyState.Hit);
-        }
-        else if (this is AI_Carlos)
-        {
-            //enemyRef.GetComponent<AI_Carlos>().
-        }
-        else if(this is AI_Raccoon)
-        {
-            enemyRef.GetComponent<AI_Raccoon>().SetCurrentState(AI_Raccoon.EnemyState.Hit);
-        }
+        OnHit();
     }
+
+    public virtual void OnHit()
+    {
+        Debug.Log("CallBaseOnHit");
+    }
+
 
 
 }

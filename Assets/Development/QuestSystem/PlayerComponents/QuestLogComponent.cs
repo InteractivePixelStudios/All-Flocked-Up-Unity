@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -147,14 +148,16 @@ public class QuestLog : MonoBehaviour
     }
 
     //checks through activeQuests for completed quest and shows rewards.Removed from activeQuests and added to completedQuests list... also destroys the questgiver component form the NPC so it remains just a dialogue NPC
-    public void CheckForCompletedQuests()
+    public async void CheckForCompletedQuests()
     {
         for (int i = activeQuests.Count - 1; i >= 0; i--)
         {
             if (activeQuests[i].IsComplete)
             {
+                await Task.Delay(1000);
                 completedQuests.Add(activeQuests[i].questData);
                 canvasController.ShowQuestReward(activeQuests[i].questData);
+                canvasController.activeRewardInstance.SetRewardText(activeQuests[i].GetCachedTrinkets(), activeQuests[i].GetCachedExp(), activeQuests[i].GetItemRewards() ) ;
                 canvasController.EndTimer();
                 activeQuests.RemoveAt(i);
                 currentQuestGiver.quests.RemoveAt(0);
@@ -172,6 +175,11 @@ public class QuestLog : MonoBehaviour
             }
 
         }
+    }
+
+    private void FindRewards(int questIndex)
+    {
+
     }
 
     //checks if player has quest and returns bool

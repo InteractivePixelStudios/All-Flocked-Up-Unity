@@ -104,12 +104,12 @@ public class PoopProjectile : MonoBehaviour
             Debug.Log("EnemyHit");
         }
 
-        if (collision.gameObject.CompareTag("Raccoon"))
-        {
-            //poopable.OnPoopHit(poopType);
-            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
-            Debug.Log("EnemyHit");
-        }
+        //if (collision.gameObject.CompareTag("Raccoon"))
+        //{
+        //    //poopable.OnPoopHit(poopType);
+        //    obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+        //    Debug.Log("EnemyHit");
+        //}
         if (collision.gameObject.CompareTag("NPC"))
         {
             obj.GetComponent<NPCBase>().HitReact();

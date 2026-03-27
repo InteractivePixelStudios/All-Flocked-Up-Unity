@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -13,7 +14,10 @@ public class QuestRuntimeInstance
     public Dictionary<string, int> objectiveProgress = new(); //Dictionary stores the objectives from the current Stage Index
 
     public bool IsComplete => currentStageIndex >= questData.stages.Length;
+    private GameObject player;
     public QuestLog questLog;
+    private EXPSystem expComp;
+    private PlayerWingventory invComp;
     public float currentTime;
 
     public bool isQuestFailed = false;
@@ -22,17 +26,38 @@ public class QuestRuntimeInstance
     public List<GameObject> questMechanicsObjects = new List<GameObject>();
     [SerializeField] private PlayerNavArrow arrowPointer;
     public GameObject destination;
+    private int cachedExp;
+    private int cachedTrinkets;
+    private string[] itemRewards;
 
     public void Start()
     {
         
     }
 
+    public int GetCachedExp()
+    {
+        return cachedExp;
+    }
+
+    public int GetCachedTrinkets()
+    {
+        return cachedTrinkets;
+    }
+
+    public string[] GetItemRewards()
+    {
+        return itemRewards;
+    }
+
     //Gets objectives and for each sets an objectiveID
     public void StartQuest()
     {
-        questLog = GameObject.Find("Player").GetComponent<QuestLog>();
-        arrowPointer = GameObject.Find("Player").GetComponent<PlayerNavArrow>();
+        questLog = GameObject.FindAnyObjectByType<QuestLog>();
+        player = questLog.gameObject;
+        arrowPointer = player.GetComponent<PlayerNavArrow>();
+        expComp = player.GetComponent<EXPSystem>();
+        invComp = player.GetComponent<PlayerWingventory>();
 
         var objectives = GetCurrentObjectives();
         foreach (var obj in objectives)
@@ -127,7 +152,8 @@ public class QuestRuntimeInstance
             if (objectiveProgress[obj.objectiveID] < obj.quantityToComplete)
                 return false;
             //not sure if this triggers properly
-            GameObject.FindAnyObjectByType<EXPSystem>().IncrementXP(objectiveProgress[obj.objectiveID]);
+            cachedExp += obj.bonusEXP;
+            
         }
 
         return true;
@@ -136,7 +162,10 @@ public class QuestRuntimeInstance
     //Advances Stage index. If not complete, Start quest.
     public void AdvanceStage()
     {
-        GameObject.FindAnyObjectByType<EXPSystem>().IncrementXP(questData.stages[currentStageIndex].expReward);
+        
+        cachedExp += questData.stages[currentStageIndex].expReward;
+        cachedTrinkets += questData.stages[currentStageIndex].trinketReward;
+        itemRewards.AddRange(questData.itemRewards);
         currentStageIndex++;
         GetQuestObjects();
         if (!IsComplete)
@@ -151,6 +180,9 @@ public class QuestRuntimeInstance
     //calls the quest log function to remove quest
     public void CompleteQuest()
     {
+        expComp.IncrementXP(cachedExp);
+        invComp.AddTrinketToInv(cachedTrinkets, 0);
+        GiveItemReward();
         questLog.CheckForCompletedQuests();
     }
 

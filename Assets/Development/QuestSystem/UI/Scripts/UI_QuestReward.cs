@@ -25,7 +25,6 @@ public class UI_QuestReward : MonoBehaviour
     {
         acceptReward.onClick.AddListener(AcceptReward);
         SetQuestNameText(quest.questName);
-        SetRewardText(quest.itemRewards.ToString());
         EventSystem.current.SetSelectedGameObject(acceptReward.gameObject);
 
     }
@@ -44,18 +43,18 @@ public class UI_QuestReward : MonoBehaviour
         };
     }
 
-    public void SetRewardText(string reward)
+    public void SetRewardText(int trinket, int exp,string[] reward)
     {
-        trinketText.SetText(reward);
-        expText.SetText(reward);
-        itemImage.sprite = FindItemSprite();
+        trinketText.SetText(trinket.ToString());
+        expText.SetText(exp.ToString());
+        itemImage.sprite = FindItemSprite(reward);
     }
 
-    Sprite FindItemSprite()
+    Sprite FindItemSprite(string[] rewards)
     {
         foreach(var item in itemSprites)
         {
-            if (item.name.CompareTo(quest.itemRewards[0].name) == 0)
+            if (item.name.CompareTo(rewards) == 0)
             {
                 Sprite found = item;
                 return found;
