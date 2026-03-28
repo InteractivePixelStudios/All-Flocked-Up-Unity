@@ -498,6 +498,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 9557472
   Exists: 1
+--- !u!114 &-1230441621409891680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/World/TrashCans
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/World/TrashCans
+  Guid:
+    Data1: -93282537
+    Data2: 1275875526
+    Data3: 1350429825
+    Data4: -1576111553
+  Banks:
+  - {fileID: 591164384298374099}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 3
+  MaxDistance: 15
+  Length: 30000
 --- !u!114 &-281887107944519751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,13 +605,14 @@ MonoBehaviour:
   - {fileID: -4602053606157684420}
   - {fileID: -4942760936848228028}
   - {fileID: -8732018220470247719}
+  - {fileID: -1230441621409891680}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1049129095624132089}
   StringsBanks:
   - {fileID: 7968650986646313413}
   cacheVersion: 131858
-  cacheTime: 639095173608788476
+  cacheTime: 639103159707144957
   SerializableEventsDict:
   - key: event:/Ambience/WorldBirds
     index: 0
@@ -602,6 +630,8 @@ MonoBehaviour:
     index: 6
   - key: event:/ItemPickup
     index: 7
+  - key: event:/World/TrashCans
+    index: 8
 --- !u!114 &73506915100599220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -664,7 +694,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639067573279288103
+  lastModified: 639103159707144957
   FileSizes: []
   Exists: 1
 --- !u!114 &1049129095624132089
@@ -682,7 +712,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639067573279238238
+  lastModified: 639103155898972128
   FileSizes: []
   Exists: 1
 --- !u!114 &1180671633683509754
@@ -846,7 +876,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Player.bank
   Name: Player
   StudioPath: bank:/Player
-  lastModified: 639067573279278129
+  lastModified: 639094675309066342
   FileSizes: []
   Exists: 1
 --- !u!114 &6756548285779738446
@@ -864,7 +894,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 639095173608788476
+  lastModified: 639094682942264456
   FileSizes: []
   Exists: 1
 --- !u!114 &6985391345815627086
@@ -882,7 +912,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639067573279258180
+  lastModified: 639094675308420193
   FileSizes: []
   Exists: 1
 --- !u!114 &7419841717107519623
@@ -950,10 +980,10 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639067573279248211
+  lastModified: 639103155898977368
   FileSizes:
   - Name: 
-    Value: 1630
+    Value: 1688
   Exists: 1
 --- !u!114 &8435538054931725827
 MonoBehaviour:
