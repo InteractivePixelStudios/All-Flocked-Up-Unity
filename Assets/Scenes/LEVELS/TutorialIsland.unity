@@ -1830,15 +1830,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9069256473970103701, guid: 0d3d2314e85dc1d4ba35c8e682b14126, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 364.44
+      value: 366.024
       objectReference: {fileID: 0}
     - target: {fileID: 9069256473970103701, guid: 0d3d2314e85dc1d4ba35c8e682b14126, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 17.67
+      value: 17.56
       objectReference: {fileID: 0}
     - target: {fileID: 9069256473970103701, guid: 0d3d2314e85dc1d4ba35c8e682b14126, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 813.41
+      value: 812.542
       objectReference: {fileID: 0}
     - target: {fileID: 9069256473970103701, guid: 0d3d2314e85dc1d4ba35c8e682b14126, type: 3}
       propertyPath: m_LocalRotation.w
@@ -15574,6 +15574,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3569887676213852972, guid: 8f031cbb55cf82e41952f6a772e05997, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 1652122585}
     - target: {fileID: 3569887676213852972, guid: 8f031cbb55cf82e41952f6a772e05997, type: 3}
       propertyPath: promptPrefab
       value: 
@@ -61700,6 +61704,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 058e5b1170c2112448c131f02d1aa368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerFinder
+--- !u!114 &1652122585 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1836649217848156910, guid: e4290b8d24308b9459c6b32627fc659f, type: 3}
+  m_PrefabInstance: {fileID: 1652122582}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1652122583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1652306300 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4d0253008774b1149ae24db064e007bf, type: 3}
@@ -62327,7 +62342,7 @@ Transform:
   m_GameObject: {fileID: 1676492081}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.000045854602, z: -0, w: 1}
-  m_LocalPosition: {x: 1.4599915, y: 4.92, z: 85.97}
+  m_LocalPosition: {x: 1.4599915, y: 4.86, z: 86.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -49,13 +49,13 @@ public class UI_RaceFail : MonoBehaviour
 
     private void RetryRace()
     {
-        canvasController.OpenRaceFail();
+        canvasController.CloseRaceFail(true);
 
 
     }
 
     private void CloseRace()
     {
-        canvasController.OpenRaceFail();
+        canvasController.CloseRaceFail(false);
     }
 }

@@ -129,7 +129,7 @@ public class QuestRuntimeInstance
         GetObjectiveDestination(objectiveID); 
 
 
-        arrowPointer.EnablePointerArrow(destination);
+        arrowPointer.SetDestination(destination);
 
         objectiveProgress[objectiveID] += amount;
         questLog.OnObjectiveUpdated(this, objectiveID, objectiveProgress[objectiveID]);
@@ -180,6 +180,7 @@ public class QuestRuntimeInstance
     //calls the quest log function to remove quest
     public void CompleteQuest()
     {
+        arrowPointer.DestroyArrow();
         expComp.IncrementXP(cachedExp);
         invComp.AddTrinketToInv(cachedTrinkets, 0);
         GiveItemReward();

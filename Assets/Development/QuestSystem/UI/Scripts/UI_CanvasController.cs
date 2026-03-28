@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Localization;
 using Unity.Cinemachine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using System.Linq;
 using NUnit.Framework;
 
@@ -111,6 +112,7 @@ public class UI_CanvasController : MonoBehaviour
     [Header("SkinSelector")]
     [SerializeField] private UI_SkinSelector skinSelectorPrefab;
     public UI_SkinSelector activeSkinSelector;
+    Dictionary<Graphic, Color> cachedUIColors = new();
 
     private void Start()
     {
@@ -129,6 +131,8 @@ public class UI_CanvasController : MonoBehaviour
 
         //SpawnMainMenu();
         //OpenLanguageSelect(); //remove after testing
+        var ui = FindObjectsByType<UnityEngine.UI.Graphic>();
+        CacheUIColors(ui);
     }
 
 
@@ -220,7 +224,7 @@ public class UI_CanvasController : MonoBehaviour
     public void ShowTimer()
     {
         activeTimerInstance = Instantiate(timerCanvas);
-
+        ApplySavedContrast();
     }
     //quest timer canvas
     public void EndTimer()
@@ -241,6 +245,7 @@ public class UI_CanvasController : MonoBehaviour
             ShowPlayerCursor();
         }
         activeGiverInstance = Instantiate(questGiverCanvas);
+        ApplySavedContrast();
         activeGiverInstance.currentquestGiver = questGiver;
         activeGiverInstance.canvasController = this;
         activeGiverInstance.UpdateUIText(questGiver.quests[0].questName, questGiver.quests[0].questLogDescription, questGiver.quests[0].questName); // change last one to rewards
@@ -264,6 +269,7 @@ public class UI_CanvasController : MonoBehaviour
     public void ShowQuestReward(QuestDetails quest)
     {
         activeRewardInstance=Instantiate(questRewardsCanvas);
+        ApplySavedContrast();
         activeRewardInstance.quest = quest;
         activeRewardInstance.canvasController = this;
         if (!isUIMap)
@@ -289,6 +295,7 @@ public class UI_CanvasController : MonoBehaviour
     public void ShowTracker()
     {
         activeTrackerInstance = Instantiate(questTrackerCanvas);
+        ApplySavedContrast();
 
     }
     //quest tracker canvas
@@ -311,6 +318,7 @@ public class UI_CanvasController : MonoBehaviour
             return;
         }
         activeNotifInstance = Instantiate(questNotifCanvas);
+        ApplySavedContrast();
         activeNotifInstance.SetNotifText(text);
         activeNotifInstance.ShowQuestNotif();
         
@@ -339,6 +347,7 @@ public class UI_CanvasController : MonoBehaviour
     {
 
             activeLogInstance = Instantiate(questLogCanvas);
+        ApplySavedContrast();
         if (!isUIMap)
         {
             ShowPlayerCursor();
@@ -367,6 +376,7 @@ public class UI_CanvasController : MonoBehaviour
         if(activeDialogueInstance == null)
         {
             activeDialogueInstance = Instantiate(dialogueCanvas);
+            ApplySavedContrast();
             if (!isUIMap)
             {
                 ShowPlayerCursor();
@@ -405,6 +415,7 @@ public class UI_CanvasController : MonoBehaviour
         if (activeTrashInstance == null)
         {
             activeTrashInstance = Instantiate(trashCanvas);
+            ApplySavedContrast();
             activeTrashInstance.SetTrashInstance(trashCan);
             activeTrashInstance.SetCanvasReference(this);
             if (!isUIMap)
@@ -430,6 +441,7 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenRaceGiver()
     {
         raceGiverInstance = Instantiate(raceGiverCanvas);
+        ApplySavedContrast();
         if (!isUIMap)
         {
             ShowPlayerCursor();
@@ -454,6 +466,7 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenRaceRewards()
     {
         raceRewardInstance = Instantiate(raceRewardCanvas);
+        ApplySavedContrast();
         raceRewardInstance.SetCanvasControllerRef(this);
         SendStandings();
         if (!isUIMap)
@@ -478,6 +491,7 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenRaceFail()
     {
         raceFailInstance = Instantiate(raceFailCanvas);
+        ApplySavedContrast();
         SendStandings();
         if (!isUIMap)
         {
@@ -537,6 +551,7 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenWingventory()
     {
         activeWingventory = Instantiate(wingventoryCanvas);
+        ApplySavedContrast();
         if (!isUIMap)
         {
             ShowPlayerCursor();
@@ -559,6 +574,7 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenNestMenu()
     {
         activeNestInstance = Instantiate(nestMenuCanvas);
+        ApplySavedContrast();
         activeNestInstance.canvasController = this; 
         activeNestInstance.playerStats = player.GetComponent<PlayerCounter>();
         if (!isUIMap)
@@ -584,6 +600,7 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenShopUI(ShopItem item, ShopLocation location)
     {
         activeShopCanvas = Instantiate(shopUICanvas);
+        ApplySavedContrast();
         shopLocationRef = location;
         activeShopCanvas.transform.SetParent(shopLocationRef.transform);
         activeShopCanvas.transform.localPosition = Vector3.zero + new Vector3(0,1.5f,0);
@@ -614,6 +631,7 @@ public class UI_CanvasController : MonoBehaviour
         if(activePauseMenu== null)
         {
             activePauseMenu =Instantiate(pauseMenuCanvas);
+            ApplySavedContrast();
             if (!isUIMap)
             {
                 ShowPlayerCursor();
@@ -645,6 +663,7 @@ public class UI_CanvasController : MonoBehaviour
         if (activeBugReporter == null)
         {
             activeBugReporter = Instantiate(bugReporterCanvas);
+            ApplySavedContrast();
             if (!isUIMap)
             {
                 ShowPlayerCursor();
@@ -672,6 +691,7 @@ public class UI_CanvasController : MonoBehaviour
         if(activeDebugMenu == null)
         {
             activeDebugMenu = Instantiate(debugMenuCanvas);
+            ApplySavedContrast();
             if (!isUIMap)
             {
                 ShowPlayerCursor();
@@ -697,6 +717,7 @@ public class UI_CanvasController : MonoBehaviour
         if(activeMapCanvas == null)
         {
             activeMapCanvas = Instantiate(mainMapCanvas);
+            ApplySavedContrast();
             if (!isUIMap)
             {
                 ShowPlayerCursor();
@@ -722,7 +743,8 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenLanguageSelect()
     {
         activeLanguageCanvas = Instantiate(languageSelectPrefab);
-        if(activeLanguageCanvas != null)
+        ApplySavedContrast();
+        if (activeLanguageCanvas != null)
         {
             if (!isUIMap)
             {
@@ -750,7 +772,8 @@ public class UI_CanvasController : MonoBehaviour
     public void OpenRespawn()
     {
         activeRespawnCanvas = Instantiate(respawnCanvasPrefab);
-        if(activeRespawnCanvas != null)
+        ApplySavedContrast();
+        if (activeRespawnCanvas != null)
         {
             activeRespawnCanvas.canvasController = this;
             if (!isUIMap)
@@ -777,6 +800,7 @@ public class UI_CanvasController : MonoBehaviour
         if (activeLevelTransition == null)
         {
             activeLevelTransition = Instantiate(levelTransitionPrefab);
+            ApplySavedContrast();
             activeLevelTransition.sceneName = cachedLevelName;
             activeLevelTransition.transitionObj = transitionObj;
             if (!isUIMap)
@@ -803,6 +827,7 @@ public class UI_CanvasController : MonoBehaviour
         if(activeTutPrompt == null)
         {
             activeTutPrompt = Instantiate(promptPrefab);
+            ApplySavedContrast();
             activeTutPrompt.promptIndex = cachedTutPromptIndex;
             activeTutPrompt.arrowIndex = cachedIntroIndex;
             activeTutPrompt.canvasController = this;
@@ -825,6 +850,7 @@ public class UI_CanvasController : MonoBehaviour
         if(activeSkinSelector == null)
         {
             activeSkinSelector = Instantiate(skinSelectorPrefab);
+            ApplySavedContrast();
             if (!isUIMap)
             {
                 ShowPlayerCursor();
@@ -842,6 +868,59 @@ public class UI_CanvasController : MonoBehaviour
                 HidePlayerCursor();
             }
         }
+    }
+
+    public void SetContrastMode(bool value)
+    {
+        var ui = FindObjectsByType<UnityEngine.UI.Graphic>();
+
+        foreach (var element in ui)
+        {
+            if (!cachedUIColors.ContainsKey(element))
+            {
+                cachedUIColors[element] = element.color;
+            }
+
+            if (!value)
+            {
+                if (cachedUIColors.TryGetValue(element, out var originalColor))
+                    element.color = originalColor;
+            }
+            else
+            {
+                if (element is UnityEngine.UI.Text || element is TMPro.TextMeshProUGUI)
+                    element.color = Color.white;
+                else
+                    element.color = Color.gray;
+            }
+        }
+    }
+
+    protected void CacheUIColors(Graphic[] ui)
+    {
+
+        foreach (var element in ui)
+        {
+            if (!cachedUIColors.ContainsKey(element))
+            {
+                cachedUIColors.Add(element, element.color);
+            }
+
+        }
+    }
+
+    protected void CacheIfMissing(Graphic element)
+    {
+        if (!cachedUIColors.ContainsKey(element))
+        {
+            cachedUIColors.Add(element, element.color);
+        }
+    }
+
+     void ApplySavedContrast()
+    {
+        bool value = PlayerPrefs.GetInt("HighContrastMode", 0) == 1;
+        SetContrastMode(value);
     }
 
 
