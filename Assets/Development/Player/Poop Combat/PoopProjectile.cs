@@ -87,6 +87,7 @@ public class PoopProjectile : MonoBehaviour
         {
             //poopable.OnPoopHit(poopType);
             obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            Destroy(gameObject);
             Debug.Log("EnemyHit");
         }
 
@@ -94,13 +95,15 @@ public class PoopProjectile : MonoBehaviour
         {
             //poopable.OnPoopHit(poopType);
             obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            Destroy(gameObject);
             Debug.Log("EnemyHit");
         }
 
         if (collision.gameObject.CompareTag("Human"))
         {
             //poopable.OnPoopHit(poopType);
-            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            obj.GetComponentInParent<EnemyPatrol>().TakeDamage(10);
+            Destroy(gameObject);
             Debug.Log("EnemyHit");
         }
 
@@ -113,12 +116,14 @@ public class PoopProjectile : MonoBehaviour
         if (collision.gameObject.CompareTag("NPC"))
         {
             obj.GetComponent<NPCBase>().HitReact();
+            Destroy(gameObject);
             Debug.Log("NPCHit");
         }
         if (collision.gameObject.CompareTag("Vehicle"))
         {
             var vehicle = collision.gameObject.GetComponent<VehicleScript>();
             vehicle.TriggerCollisions();
+            Destroy(gameObject);
             Debug.Log("CarHit");
         }
         if (!collision.gameObject.CompareTag("Player"))

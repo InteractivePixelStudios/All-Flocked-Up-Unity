@@ -4967,6 +4967,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3569887676213852972, guid: 8f031cbb55cf82e41952f6a772e05997, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 763325450}
     - target: {fileID: 5285818879667603142, guid: 8f031cbb55cf82e41952f6a772e05997, type: 3}
       propertyPath: m_Name
       value: QuestPackage
@@ -9745,6 +9749,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2096829235}
     m_Modifications:
+    - target: {fileID: 390127742066841103, guid: 92f1f3c2ef32baf43848c8f5be92047c, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 1799510479947580111, guid: 92f1f3c2ef32baf43848c8f5be92047c, type: 3}
     - target: {fileID: -8679921383154817045, guid: a8a57b401ec91324a8ef565bac269faf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 114.94
@@ -9789,10 +9797,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Street_Eighth (5)
       objectReference: {fileID: 0}
-    - target: {fileID: 390127742066841103, guid: 92f1f3c2ef32baf43848c8f5be92047c, type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 1799510479947580111, guid: 92f1f3c2ef32baf43848c8f5be92047c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -19023,46 +19027,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1218135063739776030, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
-      propertyPath: maxPoop
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 5360852943576176621, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
-      propertyPath: stepHeight
-      value: 0.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 5360852943576176621, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
-      propertyPath: stepSmoothing
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6730209831753822934, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
-      propertyPath: MaxStamina
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 7662461018856128867, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: cam
       value: 
       objectReference: {fileID: 763325450}
-    - target: {fileID: 7749742485669867956, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
-      propertyPath: forwardVelocity
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7749742485669867956, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
-      propertyPath: verticalVelocity
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8014389700419794481, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8014389700419794481, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.232
-      objectReference: {fileID: 0}
-    - target: {fileID: 8014389700419794481, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.211
-      objectReference: {fileID: 0}
     - target: {fileID: 8608166696854051247, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: m_Name
       value: Player
@@ -19110,10 +19078,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5180987628949794137, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1887484219}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
 --- !u!1 &982328216 stripped
 GameObject:
@@ -40965,30 +40930,6 @@ MonoBehaviour:
   m_IgnoreFromBuild: 0
   m_ApplyToChildren: 0
   m_AffectedAgents: ffffffff
---- !u!1 &1887484217 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5180987628949794137, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
-  m_PrefabInstance: {fileID: 982262015}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1887484219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1887484217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1929a66cfb2f8ef4b9446035d0b94bfb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NPC_Vocalizer
-  speechEventRef:
-    Guid:
-      Data1: -365079154
-      Data2: 1306255037
-      Data3: 134290610
-      Data4: -1955566084
-    Path: event:/Footsteps/Player_Footsteps
 --- !u!1 &1888711345
 GameObject:
   m_ObjectHideFlags: 0

@@ -50,7 +50,7 @@ public class AI_Cat : EnemyBaseComponent
         player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
         animator = GetComponent<Animator>();
-        icon = GetComponentInChildren<Enemy_AlertIcon>();
+        icon = GetComponent<Enemy_AlertIcon>();
         rigidbodyComp = GetComponent<Rigidbody>();
         FindWaypoints();
     }
@@ -64,42 +64,42 @@ public class AI_Cat : EnemyBaseComponent
     {
         if (swatCooldown >= 0) swatCooldown -= Time.deltaTime;
         if (pounceCooldown >= 0) pounceCooldown -= Time.deltaTime;
-        if (canSeePlayer) { icon.gameObject.SetActive(true); icon.playerSeen = true; } else if(!canSeePlayer) { icon.playerSeen = false; icon.gameObject.SetActive(false); }
+        if (canSeePlayer) {  icon.SetPlayerSeen(true); } else if(!canSeePlayer) { icon.SetPlayerSeen(false); }
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float distanceToNode = Vector3.Distance(transform.position, currentNode.transform.position);
 
         switch (currentState)
         {
             case EnemyState.Patrolling:
-                if (playerStealth.GetStealth()<10 && distanceToPlayer < detectionRange && !isHit)
+                if (playerStealth.GetStealth()<10 && distanceToPlayer < detectionRange && !this.isHit)
                     currentState = EnemyState.Chasing;
-                else if (isHit)
+                else if (this.isHit)
                     currentState = EnemyState.Hit;
                 break;
 
             case EnemyState.Chasing:
-                if (distanceToPlayer > detectionRange && !isHit)
+                if (distanceToPlayer > detectionRange && !this.isHit)
                     currentState = EnemyState.Patrolling;
-                else if (distanceToPlayer < swatRange && !isHit)
+                else if (distanceToPlayer < swatRange && !this.isHit)
                     currentState = EnemyState.Swat;
-                else if (distanceToPlayer < pounceRange && !isHit)
+                else if (distanceToPlayer < pounceRange && !this.isHit)
                     currentState = EnemyState.Pounce;
-                else if (isHit)
+                else if (this.isHit)
                     currentState = EnemyState.Hit;
                 break;
 
             case EnemyState.Swat:
-                if (distanceToPlayer > swatRange && !isHit)
+                if (distanceToPlayer > swatRange && !this.isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Pounce:
-                if (distanceToPlayer > pounceRange && !isHit)
+                if (distanceToPlayer > pounceRange && !this.isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Stop:
-                if (isHit)
+                if (this.isHit)
                 {
                     currentState = EnemyState.Retreat;
                     isStopped = true;
@@ -108,19 +108,19 @@ public class AI_Cat : EnemyBaseComponent
                 break;
 
             case EnemyState.Retreat:
-                if (isStopped && !isHit)
+                if (isStopped && !this.isHit)
                 {
                     isStopped = false;
                     currentState = EnemyState.Hit;
                 }
-                else if (!isHit)
+                else if (!this.isHit)
                 {
                     currentState = EnemyState.Patrolling;
                 }
                 break;
 
             case EnemyState.Hit:
-                isHit = true;
+                this.isHit = true;
                 break;
         }
 
@@ -129,7 +129,7 @@ public class AI_Cat : EnemyBaseComponent
             case EnemyState.Patrolling:
                 canSeePlayer = false;
                 MoveCatToLocation();
-                if (distanceToNode < 1f && !isHit)
+                if (distanceToNode < 1f && !this.isHit)
                     ChooseNextDirection(currentNode);
                 break;
             case EnemyState.Chasing:
@@ -137,7 +137,7 @@ public class AI_Cat : EnemyBaseComponent
                 ChasePlayer();
                 break;
             case EnemyState.Swat:
-                if (swatCooldown <= 0 && !isHit)
+                if (swatCooldown <= 0 && !this.isHit)
                 {
                     SwatPlayer();
                     Debug.Log("SwatCalled");
@@ -146,7 +146,7 @@ public class AI_Cat : EnemyBaseComponent
                 }
                 break;
             case EnemyState.Pounce:
-                if (pounceCooldown <= 0 && !isHit)
+                if (pounceCooldown <= 0 && !this.isHit)
                 {
                     Pounce();
                     Debug.Log("PounceCalled");
@@ -156,18 +156,15 @@ public class AI_Cat : EnemyBaseComponent
                 break;
             case EnemyState.Stop:
                 StopMove();
-                Debug.Log("StopCalled");
                 break;
             case EnemyState.Hit:
                 HitReact();
-                Debug.Log("HitCalled");
                 break;
             case EnemyState.Retreat:
                 if (!isRetreating)
                 {
                     isRetreating = true;
                     Retreat();
-                    Debug.Log("RetreatCalled");
                 }
                 RetreatToLocation();
                 break;
@@ -193,7 +190,6 @@ public class AI_Cat : EnemyBaseComponent
 
         }
         FindRandomWaypoint();
-        Debug.Log("CheckforWaypoints");
     }
 
 
@@ -210,12 +206,18 @@ public class AI_Cat : EnemyBaseComponent
         rigidbodyComp.linearVelocity = Vector3.zero;
     }
 
-    protected async void HitReact()
+    protected void HitReact()
     {
-        currentState = EnemyState.Stop;
         animator.SetTrigger("isHit");
-        await Task.Delay(1000);
-        //currentState = EnemyState.Retreat;
+        isHit = false;
+        currentState = EnemyState.Retreat;
+    }
+
+    public override void OnHit()
+    {
+        isHit = true;
+        Debug.Log("HitCat");
+        SetCurrentState(EnemyState.Hit);
     }
 
     protected void Retreat()
@@ -259,14 +261,13 @@ public class AI_Cat : EnemyBaseComponent
 
     protected async void SwatPlayer()
     {
-
+        animator.SetTrigger("isClaw");
         var spawnedCollider = swatColliderParent.AddComponent<SphereCollider>();
         var comp = spawnedCollider.AddComponent<KickComponent>(); //used as damage comp
-        comp.damage = 10;
+        comp.damage = 3;
         spawnedCollider.includeLayers = LayerMask.GetMask("Player");
         spawnedCollider.isTrigger = true;
         spawnedCollider.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-        animator.SetTrigger("isClaw");
         swatCooldown = 3f;
         await Task.Delay(3000);
         Destroy(spawnedCollider);
@@ -275,7 +276,9 @@ public class AI_Cat : EnemyBaseComponent
 
     protected async void Pounce()
     {
+        animator.SetTrigger("isPounce");
         rigidbodyComp.linearVelocity = Vector3.zero;
+        await Task.Delay(1000);
         Vector3 dirToPlayer = (player.transform.position-transform.position).normalized;
         dirToPlayer.y = 0;
         Vector3 force = dirToPlayer * pounceForce.z + Vector3.up * pounceForce.y;
@@ -285,11 +288,9 @@ public class AI_Cat : EnemyBaseComponent
         spawnedCollider.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         spawnedCollider.isTrigger = true;
         var comp = spawnedCollider.AddComponent<KickComponent>(); //used as damage comp
-        comp.damage = 10;
-        animator.SetTrigger("isPounce");
-        pounceCooldown = 3f;
-        await Task.Delay(3000);
+        comp.damage = 3;
         Destroy(spawnedCollider);
+        pounceCooldown = 3f;
         Destroy(comp);
     }
 

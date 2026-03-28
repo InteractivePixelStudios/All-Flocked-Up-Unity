@@ -148,8 +148,12 @@ public class VehicleBase :MonoBehaviour
                 SetMoveToLocation(next);
                 MoveVehicleToLocation();
             }
-            else return;
-
+            else
+            {
+                manager.RemoveVehicleFromList(this);
+                Destroy(this.gameObject);
+                
+            }
         }
         else
         {

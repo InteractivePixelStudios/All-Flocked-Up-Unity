@@ -105,8 +105,6 @@ public class QuestLog : MonoBehaviour
         hasQuest = true;
         currentQuestGiver = questGiver;
         GetIsQuestTimed(questData, instance);
-        arrowPointer.destination = instance.destination;
-        arrowPointer.EnablePointerArrow(instance.destination);
         canvasController.ShowTracker();
         currentObjectives = instance.GetCurrentObjectives();
         canvasController.activeTrackerInstance.SetTracker(instance.questID,currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription,0);
@@ -135,9 +133,7 @@ public class QuestLog : MonoBehaviour
         canvasController.activeTrackerInstance.SetTracker(quest.questID,currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription,IncrementIndex());
         canvasController.ShowQuestNotif("Objective Complete");
         //canvasController.activeTrackerInstance.IncrementTrackerIndex();
-        arrowPointer.DestroyArrow();
-        arrowPointer.destination = quest.destination;
-        arrowPointer.EnablePointerArrow(quest.destination);
+        arrowPointer.SetDestination (quest.destination);
         CheckForCompletedQuests();
         Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
     }
@@ -161,7 +157,6 @@ public class QuestLog : MonoBehaviour
                 canvasController.EndTimer();
                 activeQuests.RemoveAt(i);
                 currentQuestGiver.quests.RemoveAt(0);
-                arrowPointer.DestroyArrow();
                 canvasController.DestroyTracker();
                 currentQuestGiver.hasQuest = false;
                 currentQuestGiver.GetComponent<NPCBase>().dialogueFirst = true;

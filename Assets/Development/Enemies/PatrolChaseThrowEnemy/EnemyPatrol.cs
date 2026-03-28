@@ -28,15 +28,17 @@ public class EnemyPatrol : EnemyBaseComponent
     [SerializeField] private Transform objectSpawnPoint;
     [Header("Waypoints")]
     [SerializeField] private List<Waypoint> waypoints;
-    [SerializeField] private List<WaypointConnection> connections = new();
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]
     [SerializeField] protected NavMeshAgent navAgent;
     [SerializeField] protected Animator animController;
+    [SerializeField] protected Enemy_AlertIcon alertIcon;
     [SerializeField] protected bool isHit;
     [SerializeField] protected bool isStopped;
     [SerializeField] protected bool isRetreating;
+    [SerializeField] protected bool isIdleStart;
+    bool canSeePlayer;
 
     private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
@@ -49,6 +51,7 @@ public class EnemyPatrol : EnemyBaseComponent
         player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
         animController = GetComponent<Animator>();
+        alertIcon = GetComponent<Enemy_AlertIcon>();
         FindWaypoints();
         currentState = EnemyState.Patrolling;
     }
@@ -69,43 +72,44 @@ public class EnemyPatrol : EnemyBaseComponent
         if(kickCooldown>=0) kickCooldown -= Time.deltaTime;
         if(throwCooldown>=0)throwCooldown -= Time.deltaTime;
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-
+        if(distanceToPlayer < detectionRange) { canSeePlayer = true; if (!canSeePlayer) { alertIcon.SetPlayerSeen(false); }else alertIcon.SetPlayerSeen(true);}
         switch (currentState) 
         {
             case EnemyState.Patrolling:
-                if (isHit)currentState = EnemyState.Hit;
-               else if (playerStealth.GetStealth() < 10&& distanceToPlayer < detectionRange && !isHit)
+                if (this.isHit)currentState = EnemyState.Hit;
+                if (this.isIdleStart &&!this.isHit) currentState = EnemyState.Stop;
+                else if (playerStealth.GetStealth() < 10 && distanceToPlayer < detectionRange && !this.isHit)
                     currentState = EnemyState.Chasing;
 
                 break;
 
             case EnemyState.Chasing:
-                if (isHit)
+                if (this.isHit)
                     currentState = EnemyState.Hit;
-                else if (distanceToPlayer > detectionRange && !isHit)
+                else if (distanceToPlayer > detectionRange && !this.isHit)
                     currentState = EnemyState.Patrolling;
-                else if (distanceToPlayer < kickRange && !isHit)
+                else if (distanceToPlayer < kickRange && !this.isHit)
                     currentState = EnemyState.Kicking;
-                else if(distanceToPlayer < throwRange && !isHit)
+                else if(distanceToPlayer < throwRange && !this.isHit)
                     currentState = EnemyState.Throwing;
                 break; 
 
             case EnemyState.Kicking:
-                if (isHit)
+                if (this.isHit)
                     currentState = EnemyState.Hit;
                 if (distanceToPlayer > kickRange && !isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Throwing:
-                if (isHit)
+                if (this.isHit)
                     currentState = EnemyState.Hit;
-                if (distanceToPlayer > throwRange && !isHit)
+                if (distanceToPlayer > throwRange && !this.isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Stop:
-                if (isHit)
+                if (this.isHit)
                 {
                     currentState = EnemyState.Retreat;
                     isStopped = true;
@@ -114,9 +118,9 @@ public class EnemyPatrol : EnemyBaseComponent
                 break;
 
             case EnemyState.Retreat:
-                if (isHit)
+                if (this.isHit)
                     currentState = EnemyState.Hit;
-                else if (isStopped && !isHit)
+                else if (isStopped && !this.isHit)
                 {
                     isStopped = false;
                     currentState = EnemyState.Hit;
@@ -124,7 +128,7 @@ public class EnemyPatrol : EnemyBaseComponent
                 break;
 
             case EnemyState.Hit:
-                isHit = true;
+                this.isHit = true;
                 break;
 
     }
@@ -187,6 +191,7 @@ public class EnemyPatrol : EnemyBaseComponent
     private void FindWaypoints()
     {
         var waypointArray = patrolPoint.GetComponentsInChildren<Waypoint>();
+        Debug.Log(waypointArray);
         foreach (var waypoint in waypointArray)
         {
             if (waypoint.CompareTag("Human"))
@@ -204,7 +209,7 @@ public class EnemyPatrol : EnemyBaseComponent
     {
         if (waypoints.Count == 0) return;
        // var randomIndex = Random.Range(0, waypoints.Count);
-        this.currentNode = waypoints[1];     
+        this.currentNode = waypoints[0];     
 
     }
 

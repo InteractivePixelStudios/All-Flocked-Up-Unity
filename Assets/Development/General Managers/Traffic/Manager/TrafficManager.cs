@@ -185,6 +185,7 @@ public class TrafficManager : MonoBehaviour
     {
         vehicles.Remove(vehicle);
         vehicleCache++;
+        SpawnNewCar();
     }
 
     private  void CallSpawnNew()
