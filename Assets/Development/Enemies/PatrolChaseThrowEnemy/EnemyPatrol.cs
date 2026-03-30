@@ -123,7 +123,7 @@ public class EnemyPatrol : EnemyBaseComponent
                 else if (isStopped && !this.isHit)
                 {
                     isStopped = false;
-                    currentState = EnemyState.Hit;
+                    currentState = EnemyState.Patrolling;
                 }
                 break;
 
@@ -245,6 +245,7 @@ public class EnemyPatrol : EnemyBaseComponent
         }
         Task.Delay(2000);
         isRetreating = false;
+        isStopped = false;
     }
 
    protected void ChasePlayer()

@@ -25,7 +25,7 @@ public class WingventoryCanvas : MonoBehaviour
 
     [Header("Inv/Accessory")]
     [SerializeField] private PlayerWingventory playerWingventory;
-    [SerializeField] private Dictionary<GameObject, int> playerInvItems = new();
+    public Dictionary<string, int> playerInvItems = new();
     [SerializeField] private UI_CanvasController canvasController;
     [SerializeField] private GameObject questParent;
     [SerializeField] private GameObject mapParent;
@@ -195,11 +195,17 @@ public class WingventoryCanvas : MonoBehaviour
 
     private LocalizedString GetCurrentQuestInfo()
     {
-        var objective = questLog.activeQuests[0].questData.stages[0].objectivesToComplete[0].objectiveDescription;
-        if (objective != null)
+        if (questLog.activeQuests.Count > 0)
         {
-            return objective;
-        }else return null;
+            var objective = questLog.activeQuests[0].questData.stages[0].objectivesToComplete[0].objectiveDescription;
+            if (objective != null)
+            {
+                return objective;
+            }
+            else return null;
+        }
+        else return null;
+
 
     }
 
@@ -236,11 +242,12 @@ public class WingventoryCanvas : MonoBehaviour
             var button = buttonObj.GetComponent<UI_ItemButton>();
             buttonObj.transform.localPosition = Vector3.zero;
             buttonObj.transform.localRotation = Quaternion.identity;
-
+            button.SetWingRef(playerWingventory);
 
             button.itemQuantityText.SetText(item.Value.ToString());
             button.itemRef = item.Key;
-            //button.itemImage = item.Key;
+
+            button.itemImage.sprite = playerWingventory.FindItemSprite(item.Key);
             boxIndex++;
         }
     }
@@ -253,4 +260,8 @@ public class WingventoryCanvas : MonoBehaviour
             playerInvItems.Add(item.Key, item.Value);
         }
     }
+
+
+
+
 }

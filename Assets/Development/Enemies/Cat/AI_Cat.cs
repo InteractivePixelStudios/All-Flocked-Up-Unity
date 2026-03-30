@@ -238,6 +238,7 @@ public class AI_Cat : EnemyBaseComponent
         {
             isRetreating = false;
             isHit = false;
+            isStopped = false;
             currentState = EnemyState.Patrolling;
         }
         Vector3 dir = (retreatLocation - transform.position).normalized;
