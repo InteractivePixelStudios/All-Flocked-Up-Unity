@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -54,7 +55,7 @@ public class PlayerGroundMovement : MonoBehaviour
     //playerInput
     float x, z;
     bool crouching, sprinting;
-    bool isJumping = false;
+    [SerializeField]bool isJumping = false;
     //bool isFlying = false;
     float sprintTimer = 0f;
 
@@ -85,7 +86,7 @@ public class PlayerGroundMovement : MonoBehaviour
     {
         // === refactored for PSC - Jacob. hope this works :0 ===
         //return isFlying;
-        return playerStateController.CurrentState == PlayerState.FlyMove;;
+        return playerStateController.CurrentState == PlayerState.FlyMove;
     }
 
     private void Awake()
@@ -193,13 +194,6 @@ public class PlayerGroundMovement : MonoBehaviour
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y - 90 + (90 * z + 45 * x * z), rotationLerpSpeed), transform.eulerAngles.z);
         else
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y + (90 * x), rotationLerpSpeed), transform.eulerAngles.z);
-
-        // check whether adding speed will bring player over max speed
-        if (x > 0 && xMag > currentMaxSpeed) x = 0;
-        if (x < 0 && xMag < -currentMaxSpeed) x = 0;
-        if (z > 0 && yMag > currentMaxSpeed) z = 0;
-        if (z < 0 && yMag < -currentMaxSpeed) z = 0;
-
 
         //Apply forces to playerBody
         playerBody.AddForce(transform.forward * Mathf.Abs(z) * currentSpeed * Time.deltaTime);

@@ -41,7 +41,7 @@ public class EXPSystem : MonoBehaviour
 
     private void OnLevelUpEffect()
     {
-        GameObject playerRef = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        GameObject playerRef = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         playerRef.GetComponent<PlayerHealth>().maxHealth += 5;
         playerRef.GetComponent<StaminaSystem>().AddMaxStamina(2);
         playerRef.GetComponent<PoopSystem>().AddMaxPoop(1);

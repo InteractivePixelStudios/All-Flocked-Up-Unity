@@ -44,7 +44,7 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     void Start()
     {
-        var cams = FindObjectsByType<Camera>(FindObjectsSortMode.None);
+        var cams = FindObjectsByType<Camera>();
         foreach (var cam in cams)
         {
             if (cam.CompareTag("MainCamera"))
@@ -66,8 +66,8 @@ public class UI_VideoOptions : UI_SettingsMenu
         InitFOVSlider();
         InitInvertToggle();
         InitVsyncToggle();
-
         LoadSettings();
+        EventSystem.current.SetSelectedGameObject(resolDropdown.gameObject);
     }
 
     public void SetFirstVideoButton()
@@ -98,11 +98,16 @@ public class UI_VideoOptions : UI_SettingsMenu
             SetTextureQuality(PlayerPrefs.GetInt("TextureQuality"));
         if (PlayerPrefs.HasKey("ShadowQuality"))
             SetShadowQuality(PlayerPrefs.GetInt("ShadowQuality"));
+        if (PlayerPrefs.HasKey("FrameLimit"))
+            SetFrameLimit(PlayerPrefs.GetInt("FrameLimit"));
+        if(PlayerPrefs.HasKey("InvertCam"))
+            SetInvertCamState(PlayerPrefs.GetInt("InvertCam") == 0);
 
     }
 
     protected void InitResolutionDD()
     {
+        resolDropdown.ClearOptions();
         resolDropdown.onValueChanged.RemoveAllListeners();
         resolutions = Screen.resolutions;
         var options = new List<string>();
@@ -126,7 +131,7 @@ public class UI_VideoOptions : UI_SettingsMenu
             }
         }
 
-        resolDropdown.ClearOptions();
+
         resolDropdown.AddOptions(options);
         resolDropdown.SetValueWithoutNotify(currentIndex);
         resolDropdown.RefreshShownValue();
@@ -151,8 +156,8 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     protected void InitFullscreenDD()
     {
-        fsDropDown.onValueChanged.RemoveAllListeners();
         fsDropDown.ClearOptions();
+        fsDropDown.onValueChanged.RemoveAllListeners();
         var saved = PlayerPrefs.GetInt("FullscreenMode",-1);
         var modes = new List<string>
     {
@@ -195,8 +200,8 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     protected void InitQualityDD()
     {
-        qualityDropdown.onValueChanged.RemoveAllListeners();
         qualityDropdown.ClearOptions();
+        qualityDropdown.onValueChanged.RemoveAllListeners();
         var saved = PlayerPrefs.GetInt("QualityLevel", -1);
         var qualityNames = QualitySettings.names.ToList();
         qualityDropdown.AddOptions(qualityNames);
@@ -229,8 +234,8 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     protected void InitAAQualityDD()
     {
-        AADropdown.onValueChanged.RemoveAllListeners();
         AADropdown.ClearOptions();
+        AADropdown.onValueChanged.RemoveAllListeners();
         AADropdown.AddOptions(new List<string> {"None", "FXAA","SMAA" });
         var camData = mainCameraRef.GetComponent<UniversalAdditionalCameraData>();
         var saved = PlayerPrefs.GetInt("AAQuality", -1);
@@ -264,13 +269,12 @@ public class UI_VideoOptions : UI_SettingsMenu
         }
         PlayerPrefs.SetInt("AAQuality", index);
         PlayerPrefs.Save();
-        Debug.Log("AASet!");
     }
 
     protected void InitFrameLimitDD()
     {
-        frameLimitDropdown.onValueChanged.RemoveAllListeners();
         frameLimitDropdown.ClearOptions();
+        frameLimitDropdown.onValueChanged.RemoveAllListeners();
         var options = new List<string>()
         {
             "30FPS",
@@ -333,13 +337,12 @@ public class UI_VideoOptions : UI_SettingsMenu
         }
         PlayerPrefs.SetInt("FrameLimit", rate);
         PlayerPrefs.Save();
-        Debug.Log("FrameLimitSet!");
     }
 
     protected void InitTextureQualityDD()
     {
-        textureQualDropdown.onValueChanged.RemoveAllListeners();
         textureQualDropdown.ClearOptions();
+        textureQualDropdown.onValueChanged.RemoveAllListeners();
         var options = new List<string>()
         {
             "Full Resolution",
@@ -373,13 +376,12 @@ public class UI_VideoOptions : UI_SettingsMenu
         QualitySettings.globalTextureMipmapLimit = index;
         PlayerPrefs.SetInt("TextureQuality", index);
         PlayerPrefs.Save();
-        Debug.Log("TextureQualitySet!");
     }
 
     protected void InitShadowQualityDD()
     {
-        shadowQualDropdown.onValueChanged.RemoveAllListeners();
         shadowQualDropdown.ClearOptions();
+        shadowQualDropdown.onValueChanged.RemoveAllListeners();
         var options = new List<string>()
         {
             "High",
@@ -418,7 +420,6 @@ public class UI_VideoOptions : UI_SettingsMenu
         }
         PlayerPrefs.SetInt("ShadowQuality", index);
         PlayerPrefs.Save();
-        Debug.Log("ShadowQualitySet!");
     }
 
     private int GetShadowQualityIndex()
@@ -436,6 +437,8 @@ public class UI_VideoOptions : UI_SettingsMenu
     protected void InitRenderSlider()
     {
         renderDisSlider.onValueChanged.RemoveAllListeners();
+        var saved = PlayerPrefs.GetFloat("RenderDistance", mainCameraRef.farClipPlane);
+        renderDisSlider.SetValueWithoutNotify(saved);
         renderDisSlider.onValueChanged.AddListener(OnRenderDistanceChanged);
     }
     protected void OnRenderDistanceChanged(float value)
@@ -464,6 +467,8 @@ public class UI_VideoOptions : UI_SettingsMenu
     protected void InitCamSensSlider()
     {
         camSensSlider.onValueChanged.RemoveAllListeners();
+        var saved = PlayerPrefs.GetFloat("CameraSensitivity", 1f);
+        camSensSlider.SetValueWithoutNotify(saved);
         camSensSlider.onValueChanged.AddListener(OnCamSensitivityChanged);
     }
 
@@ -490,6 +495,7 @@ public class UI_VideoOptions : UI_SettingsMenu
     protected void InitFOVSlider()
     {
         fovSlider.onValueChanged.RemoveAllListeners();
+        var saved = PlayerPrefs.GetFloat("FOV", mainCameraRef.fieldOfView);
         fovSlider.onValueChanged.AddListener(OnFOVChanged);
     }
 
@@ -519,6 +525,7 @@ public class UI_VideoOptions : UI_SettingsMenu
     protected void InitVsyncToggle()
     {
         vsyncToggle.onValueChanged.RemoveAllListeners();
+        var saved = PlayerPrefs.GetInt("Vsync", QualitySettings.vSyncCount);
         vsyncToggle.onValueChanged.AddListener(OnVsyncToggled);
     }
 
@@ -538,6 +545,7 @@ public class UI_VideoOptions : UI_SettingsMenu
     protected void InitInvertToggle()
     {
         invertCamToggle.onValueChanged.RemoveAllListeners();
+        var saved = PlayerPrefs.GetInt("InvertCam", 0);
         invertCamToggle.onValueChanged.AddListener(OnInvertCamToggled);
     }
 
@@ -546,8 +554,9 @@ public class UI_VideoOptions : UI_SettingsMenu
         SetInvertCamState(value);
     }
 
-    protected void SetInvertCamState(bool value)
+    protected void SetInvertCamState( bool value)
     {
-        //need to use player cam controller
+        PlayerPrefs.SetInt("InvertCam", value ? 1 : 0);
+        PlayerPrefs.Save();
     }
 }

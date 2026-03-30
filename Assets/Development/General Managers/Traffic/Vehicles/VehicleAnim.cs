@@ -4,9 +4,9 @@ public class VehicleAnim : MonoBehaviour
 {
     [SerializeField] private Animator animComp;
     [SerializeField] private VehicleBase vehicleBase;
-    [SerializeField] private bool isMoving =>vehicleBase.GetIsMoving();
-    [SerializeField] private bool isLeftTurn => vehicleBase.GetIsLeftTurn();
-    [SerializeField] private bool isRightTurn=> vehicleBase.GetIsRightTurn();
+    private bool isMoving =>vehicleBase.GetIsMoving();
+    private bool isLeftTurn => vehicleBase.GetIsLeftTurn();
+    private bool isRightTurn=> vehicleBase.GetIsRightTurn();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class AI_Hawk : MonoBehaviour,I_EnemyBase
+public class AI_Hawk : EnemyBaseComponent
 {
     [SerializeField] private bool isCooper;
     private enum birdType { CooperHawk, RedTailHawk}
     private birdType currentType=birdType.CooperHawk;
-    private enum EnemyState { Patrolling, Chasing, Dive, Roll, Stop, Hit, Retreat,Perch }
+    public enum EnemyState { Patrolling, Chasing, Dive, Roll, Stop, Hit, Retreat,Perch }
     private EnemyState currentState = EnemyState.Patrolling;
     private GameObject player;
     private PlayerStealthSystem playerStealth;
@@ -41,7 +41,7 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
     void Start()
     {
         birdRB = GetComponent<Rigidbody>(); 
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
         birdRB.useGravity = false;
         birdRB.linearDamping = 0.2f;
@@ -67,7 +67,10 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
         
     }
 
-
+    public void SetCurrentState(EnemyState state)
+    {
+        currentState = state;
+    }
     protected void UpdateCooper()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
@@ -382,16 +385,7 @@ public class AI_Hawk : MonoBehaviour,I_EnemyBase
         }
     }
 
-    public void OnDeath(bool isDead)
-    {
-        Destroy(gameObject);
-    }
-
-    public void TakeDamage(int damage)
-    {
-        currentState = EnemyState.Retreat;
-    }
-
+ 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))

@@ -1,12 +1,17 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
+using UnityEngine.ProBuilder.MeshOperations;
 
 
 public class PlayerWingventory : MonoBehaviour
 {
    public int playerTrinketQuantity = 0;
-   public Dictionary<GameObject,int> inventory = new();
+    public int playerKeychainQuantity = 0;
+    public int playerPrestoQuantity = 0;
+   public Dictionary<string,int> inventory = new();
+    [SerializeField] private List<ConsumableBase> consumables = new();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,16 +26,22 @@ public class PlayerWingventory : MonoBehaviour
         
     }
 
-    public void AddItemToInv(GameObject item, int quantity)
+    public void AddItemToInv(string item, int quantity)
     {
-        if (inventory.ContainsKey(item) && item.GetComponent<ConsumableBase>())
+        if (inventory.ContainsKey(item))
         {
             inventory[item] += quantity;
         }
-        else inventory.Add(item, quantity);
+        else
+        {
+            foreach(var consumable in consumables)
+            {
+                if(consumable.name == item) { inventory.Add(consumable.name, quantity); }
+            }
+        }
     }
 
-    public void RemoveItemFromInv(GameObject item, int quantity)
+    public void RemoveItemFromInv(string item, int quantity)
     {
         if (inventory.ContainsKey(item))
         {
@@ -52,28 +63,69 @@ public class PlayerWingventory : MonoBehaviour
 
     }
 
-    public void UseConsumeItem(GameObject item)
+    public void UseConsumeItem(string item)
     {
-        if (inventory.ContainsKey(item))
+        foreach(var consumable in consumables)
         {
-            item.GetComponent<ConsumableBase>().UseConsumable();
+            if(consumable.name == item)
+            {
+                if (inventory.ContainsKey(consumable.name))
+                {
+                    consumable.GetComponent<ConsumableBase>().UseConsumable();
+                }
+            }
+        }
+
+    }
+
+    public void DropItem(string item)
+    {
+        foreach (var consumable in consumables)
+        {
+            if (consumable.name == item)
+            {
+                if (inventory.ContainsKey(consumable.name))
+                {
+                    inventory.Remove(consumable.name);
+                    Instantiate(consumable);
+                    //Update this later to throw the object
+                }
+            }
         }
     }
 
-    public void DropItem(GameObject item)
+    public void AddTrinketToInv(int amt, int index)
     {
-        if (inventory.ContainsKey(item))
+        if (index == 2)
         {
-            inventory.Remove(item);
-            Instantiate(item);
-            //Update this later to throw the object
+            playerTrinketQuantity += amt;
+        }
+        else if(index == 1)
+        {
+            playerKeychainQuantity += amt;
+        }
+        else if (index == 3)
+        {
+            playerPrestoQuantity += amt;
+        }
+        else if (index == 0)
+        {
+            playerTrinketQuantity += amt;
         }
     }
 
-    public void AddTrinketToInv(int amt)
+    public Sprite FindItemSprite(string item)
     {
-        playerTrinketQuantity += amt;
+        Sprite sprite;
+        foreach (var consumable in consumables)
+        {
+            if (consumable.name == item)
+            {
+                sprite = consumable.invSprite;
+                return sprite;
+            }
+            else continue;
+        }return null;
     }
 
-    
 }

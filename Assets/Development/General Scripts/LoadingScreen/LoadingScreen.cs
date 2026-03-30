@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using TMPro;
 using System.Threading.Tasks;
+using UnityEngine.EventSystems;
 
 public class LoadingScreen : MonoBehaviour
 {
@@ -32,6 +33,14 @@ public class LoadingScreen : MonoBehaviour
 
     async void DestroyCanvas()
     {
+
+        var menu = FindAnyObjectByType<UI_MainMenu>();
+        if(menu != null)
+        {
+
+            menu.SetSelectedObject(menu.startButton.gameObject);
+            Debug.Log("MenuButtonSet");
+        }
         await Task.Delay(3000);
         Destroy(this.gameObject);
     }

@@ -16,8 +16,8 @@ public class BorderHawkSpawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        hudRef = FindFirstObjectByType<UI_HudController>();
-        var zoneArray = Object.FindObjectsByType<BorderHawkSpawner>(FindObjectsSortMode.None);
+        hudRef = FindAnyObjectByType<UI_HudController>();
+        var zoneArray = Object.FindObjectsByType<BorderHawkSpawner>();
         foreach (var zone in zoneArray)
         {
             zones.Add(zone);

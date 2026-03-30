@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CameraController : MonoBehaviour
+public class CameraController : Singleton<CameraController>
 {
     public Transform player;           // Assign in Inspector or via script
     public Transform respawnTarget;    // Assign the object to watch after death
@@ -16,6 +16,7 @@ public class CameraController : MonoBehaviour
 
     InputAction lookAction; // Action for mouse input
     float x, y; // Mouse input values
+    private float lookSens = 1f;
 
     void Start()
     {
@@ -32,6 +33,7 @@ public class CameraController : MonoBehaviour
         }
             
         lookAction = InputSystem.actions.FindAction("Look");
+        respawnTarget = FindAnyObjectByType<NestBase>().transform;
         transform.position = player.position + new Vector3(0, 5, -10);
         transform.LookAt(player);
     }
@@ -69,12 +71,13 @@ public class CameraController : MonoBehaviour
 
     void PlayerInput()
     {
-        
-        
-        
-        
-        x = lookAction.ReadValue<Vector2>().x;
-        y = lookAction.ReadValue<Vector2>().y;
+        x = lookAction.ReadValue<Vector2>().x * lookSens;
+        y = lookAction.ReadValue<Vector2>().y * lookSens;
+    }
+
+    public void SetLookSens(float value)
+    {
+        lookSens = value;
     }
 
     void CameraMovement()
@@ -96,5 +99,10 @@ public class CameraController : MonoBehaviour
     public void SwitchToPlayer()
     {
         watchPlayer = true;
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        this.enabled = true;
     }
 }

@@ -16,7 +16,7 @@ public class Q_Collect : MonoBehaviour,IQuestMechanic
 
     public void GetQuestLog()
     {
-        questLog = FindFirstObjectByType<QuestLog>();
+        questLog = FindAnyObjectByType<QuestLog>();
     }
 
     public void OnDestroy()

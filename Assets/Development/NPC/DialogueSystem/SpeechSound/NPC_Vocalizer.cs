@@ -1,16 +1,22 @@
 using UnityEngine;
+using FMODUnity;
+using FMOD.Studio;
 
 public class NPC_Vocalizer : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] private EventReference speechEventRef;
+    [SerializeField] private EventInstance speechEventInstance;
+
+    public void PlaySpeechSound()
     {
-        
+        RuntimeManager.PlayOneShot(speechEventRef, transform.position);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Speech()
     {
-        
+        speechEventInstance = RuntimeManager.CreateInstance(speechEventRef);
+
+        speechEventInstance.start();
+        speechEventInstance.release();
     }
 }

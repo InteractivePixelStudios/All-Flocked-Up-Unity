@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -11,7 +12,7 @@ public class UI_MainMenu : MonoBehaviour
     [SerializeField] private GameObject mainCanvas;
     [SerializeField] private GameObject settingsCanvas;
     [SerializeField] private GameObject controlsCanvas;
-    [SerializeField] private Button startButton;
+    public Button startButton;
     [SerializeField] private Button loadButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button controlsButton;
@@ -27,6 +28,8 @@ public class UI_MainMenu : MonoBehaviour
     private string savePath;
     private bool menuOpen;
     [SerializeField] private Vector3 cameraOffset;
+    [SerializeField] UI_LanguageSelector lang;
+    public bool firstSelected;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -39,9 +42,9 @@ public class UI_MainMenu : MonoBehaviour
         controlsButton.onClick.AddListener(OnControlsOpen);
         creditsButton.onClick.AddListener(PlayCredits);
         quitButton.onClick.AddListener(QuitGame);
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
-        playerRef = FindFirstObjectByType<PlayerFlightMovement>().gameObject;
-        cameraRef = FindFirstObjectByType<CameraController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        playerRef = FindAnyObjectByType<PlayerFlightMovement>().gameObject;
+        cameraRef = FindAnyObjectByType<CameraController>();
         menuOpen = true;
         playerRef.transform.position = playerSpawnPoint.transform.position ;
         playerRef.transform.rotation  = playerSpawnPoint.transform.rotation;
@@ -50,22 +53,30 @@ public class UI_MainMenu : MonoBehaviour
         //playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
         //playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
         //cameraRef.enabled = false;
-        //EventSystem.current.SetSelectedGameObject(startButton.gameObject);
         canvasController.ShowPlayerCursor();
+        settingsCanvas.GetComponent<UI_SettingsMenu>().parent = this.gameObject;
+
     }
+    public void SetSelectedObject(GameObject obj)
+    {
+        EventSystem.current.SetSelectedGameObject(obj);
+    }
+
 
     private void Update()
     {
-        //if (menuOpen)
-        //{
-        //    cameraRef.transform.forward = playerSpawnPoint.transform.forward;
-        //}
-        //else return;
+
+        if (lang == null && !firstSelected)
+        {
+            SetSelectedObject(startButton.gameObject);
+            firstSelected = true;
+        }
+        else return;
     }
 
-    protected void OnSettingsOpen()
+    public void OnSettingsOpen()
     {
-        if (settingsCanvas == null)
+        if (!settingsOpen)
         {
             mainCanvas.SetActive(false);
             settingsCanvas.SetActive(true);
@@ -74,15 +85,16 @@ public class UI_MainMenu : MonoBehaviour
         }
         else
         {
-            mainCanvas.SetActive(!settingsOpen);
+            mainCanvas.SetActive(true);
             settingsCanvas.SetActive(false);
             settingsOpen = false;
+            EventSystem.current.SetSelectedGameObject(startButton.gameObject);
         }
     }
 
     protected void OnControlsOpen()
     {
-        if (controlsCanvas == null)
+        if (!controlsOpen)
         {
             mainCanvas.SetActive(false);
             controlsCanvas.SetActive(true);
@@ -93,13 +105,13 @@ public class UI_MainMenu : MonoBehaviour
             mainCanvas.SetActive(!controlsOpen);
             controlsCanvas.SetActive(false);
             controlsOpen= false;
+            EventSystem.current.SetSelectedGameObject(startButton.gameObject);
         }
     }
 
     protected void PlayCredits()
     {
-        //Needs to either trigger cinematic camera or change scene to a credits scene
-
+        SceneManager.LoadScene("CreditScene");
     }
 
     protected void StartNewGame()
@@ -107,10 +119,15 @@ public class UI_MainMenu : MonoBehaviour
 
         //playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
         //playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
+        if (SteamManager.Initialized)
+        {
+            AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_000_Support");
+        }
         Debug.Log("Loading Scene");
         canvasController.HidePlayerCursor();
-        SceneManager.LoadScene("AlexTestScene"); // change after build
+        SceneManager.LoadScene("TutorialIsland"); // change after build
         //cameraRef.enabled = true;
+
 
     }
 

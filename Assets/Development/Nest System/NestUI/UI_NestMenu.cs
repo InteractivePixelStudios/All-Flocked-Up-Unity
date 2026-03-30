@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class UI_NestMenu : MonoBehaviour
 {
@@ -47,8 +48,8 @@ public class UI_NestMenu : MonoBehaviour
 
     private void Awake()
     {
-        dayNightSystem = FindFirstObjectByType<S_DayNightCycle>();
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        dayNightSystem = FindAnyObjectByType<S_DayNightCycle>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
 
     }
     void Start()
@@ -64,6 +65,7 @@ public class UI_NestMenu : MonoBehaviour
         //sbNextPage.onClick.AddListener(SBNextPage);
         //sbPrevPage.onClick.AddListener(SBPrevPage);
         GetStats();
+        EventSystem.current.SetSelectedGameObject(invButton.gameObject);
 
     }
 

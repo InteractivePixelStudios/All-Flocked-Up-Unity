@@ -22,19 +22,23 @@ public class DialogueBase : MonoBehaviour
     public LocalizedString[] currentResponseOptions;
     public string responseReturnID;
     [SerializeField] private UI_CanvasController canvasController;
-    [SerializeField] private bool typerComplete {  get; set; }
+    private bool typerComplete {  get; set; }
 
     [SerializeField] private string DIALOGUEFILENAME = "DialogueSpreadsheet.csv";
     [SerializeField]private List<DialogueLineData> dialogueList = new List<DialogueLineData>();
     public DialogueLineData currentDialogueLineData;
 
     [SerializeField] private List<Sprite> birdImageList = new();
+    [SerializeField] private NPC_Vocalizer npcSpeech;
+    private bool skipLine;
 
 
     [SerializeField]private string retriggerDialogueLineID;
     public bool isRetrigger;
 
    [SerializeField] private int currentTextSpeed;
+
+    [SerializeField] private NPCBase npcRef;
     public int textSpeed=>currentTextSpeed=100;// this speed is in ms
 
     public bool GetIsTyping()
@@ -42,9 +46,16 @@ public class DialogueBase : MonoBehaviour
         return typerComplete;
     }
 
+    public void SetNPCRef(NPCBase npc)
+    {
+        npcRef = npc;
+    }
+
     void Start()
     {
         LoadDialogueSheet();
+        npcSpeech = GetComponent<NPC_Vocalizer>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
 
     }
     //loads the CSV and adds each line as a string into importedLines, trims each line into lineData and sets the currentDialogueLine based on currentDialogueIndex
@@ -85,6 +96,7 @@ public class DialogueBase : MonoBehaviour
 
 
 
+
             };
             dialogueList.Add(dialogueLine);
             currentDialogueLineData = dialogueLine;
@@ -112,6 +124,11 @@ public class DialogueBase : MonoBehaviour
         }
         //TypeText(textSpeed);
         //SendResponseOptions();
+    }
+
+    public void SetSkipLine(bool value)
+    {
+        skipLine = value;
     }
 
     //Finds the sprite with the given name
@@ -147,6 +164,7 @@ public class DialogueBase : MonoBehaviour
     //Sets the current dialogue and calls TypeText
     public void PrintDialogue(string dialogueLineID)
     {
+        skipLine = false;
         typerComplete = false;
         SetCurrentDialogue(dialogueLineID);
 
@@ -179,7 +197,7 @@ public class DialogueBase : MonoBehaviour
         }
         else
         {
-            ClearDialogue(); 
+            ClearDialogue();
         }
         typerComplete = false;
     }
@@ -188,13 +206,22 @@ public class DialogueBase : MonoBehaviour
     public void ClearDialogue()
     {
         canvasController.activeDialogueInstance.ClearDialogueCanvas();
+        QuestGiver giver;
+        npcRef.TryGetComponent<QuestGiver>(out giver);
+        if (giver.hasQuest)
+        {
+            
+            canvasController.ShowQuestGiver(giver);
+            Debug.Log(giver + "Shows the quest");
+        }
         isRetrigger = true;
+
     }
 
-    public bool SkipDialogue(Action SkipLine)
+    public bool SkipDialogue()
     {
 
-        return true;
+        return skipLine;
     }
 
     //sets the text speed to type (in ms)
@@ -208,27 +235,33 @@ public class DialogueBase : MonoBehaviour
     //waits 2s after text done to show buttons
     public async void TypeText(int speed)
     {
-        typerComplete = false;
-
-        string resolvedText = await currentDialogueText.GetLocalizedStringAsync().Task;
-
-
-        string temp = "";
-        foreach (char c in resolvedText)
+        if (canvasController.activeDialogueInstance != null)
         {
-            temp += c;
 
-            canvasController.activeDialogueInstance.UpdateDialogueUI(
-                currentDialogueName,
-                temp,
-                currentDialogueImage
-            );
+            typerComplete = false;
 
-            await Task.Delay(speed);
+            string resolvedText = await currentDialogueText.GetLocalizedStringAsync().Task;
+
+
+            string temp = "";
+            foreach (char c in resolvedText)
+            {
+                temp += c;
+                if (!skipLine)
+                {
+                    canvasController.activeDialogueInstance.UpdateDialogueUI(currentDialogueName, temp, currentDialogueImage);
+                    npcSpeech.Speech();
+                    await Task.Delay(speed);
+                }
+                else
+                {
+                    canvasController.activeDialogueInstance.UpdateDialogueUI(currentDialogueName, resolvedText, currentDialogueImage);
+                }
+            }
+
+            await Task.Delay(500);
+            ShowResponseButtons(true);
         }
-
-        await Task.Delay(2000);
-        ShowResponseButtons(true);
     }
     //sends the current response options to the dialogue canvas
     public void SendResponseOptions()
@@ -247,6 +280,12 @@ public class DialogueBase : MonoBehaviour
             
         }
         
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        npcSpeech = GetComponent<NPC_Vocalizer>();
     }
 
 }

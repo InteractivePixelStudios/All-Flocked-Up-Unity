@@ -4,10 +4,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AI_Dog : MonoBehaviour, I_EnemyBase
+public class AI_Dog : EnemyBaseComponent
 {
     [Header("Patrol")]
-    public Transform[] patrolPoints;
+    public GameObject patrolPoints;
     public GameObject player;
     private PlayerStealthSystem playerStealth;
     public float patrolSpeed = 3f;
@@ -33,19 +33,23 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
     [SerializeField] protected bool isRetreating;
 
     private int currentPointIndex = 0;
-    private enum EnemyState { Patrolling, Chasing, Bite, Stop, Hit, Retreat }
+    public enum EnemyState { Patrolling, Chasing, Bite, Stop, Hit, Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
     public bool IsDead = false;
 
     void Start()
     {
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
         animator = GetComponent<Animator>();
         FindWaypoints();
     }
 
+    public void SetCurrentState(EnemyState state)
+    {
+        currentState = state;
+    }
     void Update()
     {
         if (biteCooldown >= 0) biteCooldown -= Time.deltaTime;
@@ -140,7 +144,7 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
 
     private void FindWaypoints()
     {
-        var waypointsArray = FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
+        var waypointsArray = patrolPoints.GetComponentsInChildren<Waypoint>();
         foreach (var waypoint in waypointsArray)
         {
             if (waypoint.CompareTag("Dog"))
@@ -157,8 +161,6 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
     private void FindRandomWaypoint()
     {
         var randomIndex = Random.Range(0, waypoints.Count);
-        var transform = waypoints[randomIndex].transform.position;
-        this.transform.position = transform;
         this.currentNode = waypoints[randomIndex];
         Debug.Log("H");
     }
@@ -212,18 +214,6 @@ public class AI_Dog : MonoBehaviour, I_EnemyBase
         await Task.Delay(3000);
         Destroy(spawnedCollider);
         Destroy(comp);
-    }
-
-
-    public void TakeDamage(int damage)
-    {
-
-
-    }
-
-    public void OnDeath(bool IsDead)
-    {
-
     }
 
     protected virtual void SetMoveToLocation(Waypoint location)

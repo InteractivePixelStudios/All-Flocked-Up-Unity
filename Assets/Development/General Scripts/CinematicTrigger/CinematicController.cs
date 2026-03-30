@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class CinematicController : MonoBehaviour
@@ -8,12 +9,14 @@ public class CinematicController : MonoBehaviour
    public CinemachineSplineDolly splineDollyRef;
     [SerializeField] bool isCredits;
     public bool isPlaying;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         splineDollyRef = GetComponentInChildren<CinemachineSplineDolly>(); 
         isPlaying = true;
+        var obj = FindAnyObjectByType<CinemachineBrain>();
     }
 
     // Update is called once per frame
@@ -33,7 +36,9 @@ public class CinematicController : MonoBehaviour
         this.gameObject.SetActive(false);
         if (isCredits)
         {
-            Destroy(FindFirstObjectByType<CreditRoll>().gameObject);
+            Destroy(FindAnyObjectByType<CreditRoll>().gameObject);
+            DestroyImmediate(AudioWizard.Instance.gameObject);
+            SceneManager.LoadScene("MainMenu");
         }
     }
 

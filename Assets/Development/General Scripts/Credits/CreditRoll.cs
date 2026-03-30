@@ -5,11 +5,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 using System.Threading.Tasks;
+using System.Data;
+using UnityEngine.SceneManagement;
+using FMOD.Studio;
 
 public class CreditRoll : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI roleText;
+    [SerializeField] private Button skipButton;
     [SerializeField] private List<Sprite> splashImages;
     [SerializeField] private Dictionary<string, string> creditsNamesList;
     [SerializeField] private List<string> nameList = new();
@@ -20,19 +24,14 @@ public class CreditRoll : MonoBehaviour
     [SerializeField] private float timePerName;
     [SerializeField] private float currentTime;
     [SerializeField] private bool inReady;
-    [SerializeField] private bool outReady;  
+    [SerializeField] private bool outReady;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         nameText.alpha = 0f;
         roleText.alpha = 0f;
-        creditsNamesList = new()
-        {
-            {"Test1","Test1"},
-            {"Test2","Test2"},
-            {"Test3","Test3"}
-        };
-        ReadNameDictionary();
+        currentImage.gameObject.SetActive(false);
+        skipButton.onClick.AddListener(SkipCredits);
     }
 
     // Update is called once per frame
@@ -48,13 +47,14 @@ public class CreditRoll : MonoBehaviour
     {
         if (currentTime <= 0)
         {
-            if(nameIndex <= nameList.Count - 1)
+            if(nameIndex < nameList.Count)
             {
                 CycleNames();
                 currentTime = timePerName;
             }
             else
             {
+                if (!currentImage.gameObject.activeInHierarchy) { currentImage.gameObject.SetActive(true); }
                 CycleImage();
                 currentTime = timePerName;
             }
@@ -62,16 +62,7 @@ public class CreditRoll : MonoBehaviour
         currentTime -= Time.deltaTime;
     }
 
-    private void ReadNameDictionary()
-    {
-        nameList.Clear();
-        roleList.Clear();
-        foreach (KeyValuePair<string, string> kvp in creditsNamesList)
-        {
-            nameList.Add(kvp.Key);
-            roleList.Add(kvp.Value);
-        }
-    }
+
 
     private async void CycleNames()
     {
@@ -80,7 +71,7 @@ public class CreditRoll : MonoBehaviour
         Debug.Log("CycleCalled");
         nameText.SetText(nameList[nameIndex]);
         roleText.SetText(roleList[nameIndex]);
-        await Task.Delay(2000);
+        await Task.Delay(5000);
         nameIndex++;
 
     }
@@ -90,6 +81,7 @@ public class CreditRoll : MonoBehaviour
         currentImage.sprite = splashImages[imageIndex];
         await Task.Delay(6000);
         imageIndex++;
+
 
     }
 
@@ -121,5 +113,14 @@ public class CreditRoll : MonoBehaviour
             outReady = false;
         }
     }
+
+    void SkipCredits()
+    {
+        SceneManager.LoadScene("MainMenu");
+        DestroyImmediate(AudioWizard.Instance.gameObject);
+
+    }
+
+
 
 }

@@ -10,6 +10,7 @@ public class TrashCanInteraction : MonoBehaviour
     [SerializeField] private bool looted;
     [SerializeField] private ParticleSystem trashParticles;
     [SerializeField] private UI_CanvasController canvasController;
+    private Q_SearchTrash questComp;
 
     [SerializeField] private int regenAmt;
     [SerializeField] private int poopRegen;
@@ -17,7 +18,8 @@ public class TrashCanInteraction : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        TryGetComponent<Q_SearchTrash>(out questComp);
     }
 
     // Update is called once per frame
@@ -30,8 +32,9 @@ public class TrashCanInteraction : MonoBehaviour
     {
         if (inRange)
         {
-            HidePlayer();
-            canvasController.ShowTrashPrompt();
+            //HidePlayer();
+            canvasController.ShowTrashPrompt(this);
+            Debug.Log("interacted");
         }
     }
 
@@ -58,7 +61,7 @@ public class TrashCanInteraction : MonoBehaviour
         }
     }
 
-    private void ShowPlayer()
+    public void ShowPlayer()
     {
         if (playerRef != null)
         {
@@ -73,7 +76,12 @@ public class TrashCanInteraction : MonoBehaviour
             looted = true;
             ToggleParticles(looted);
             FillPlayerPoop();
-            CloseUI();
+            //CloseUI();
+
+            if (questComp != null)
+            {
+                questComp.SearchTrash();
+            }
         }
     }
 
@@ -84,7 +92,12 @@ public class TrashCanInteraction : MonoBehaviour
             looted = true;
             ToggleParticles(looted);
             FillPlayerStats();
-            CloseUI();
+           // CloseUI();
+
+            if (questComp != null)
+            {
+                questComp.SearchTrash();
+            }
         }
     }
 
@@ -122,8 +135,7 @@ public class TrashCanInteraction : MonoBehaviour
     {
         if (this != null)
         {
-            ShowPlayer();
-            Destroy(this.gameObject);
+            canvasController.CloseTrashPrompt();
         }
     }
 

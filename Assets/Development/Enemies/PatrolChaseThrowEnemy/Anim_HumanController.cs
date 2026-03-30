@@ -15,7 +15,8 @@ public class Anim_HumanController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        animator = GetComponent<Animator>();
+        enemy = GetComponent<EnemyPatrol>();
     }
 
     // Update is called once per frame
@@ -24,16 +25,12 @@ public class Anim_HumanController : MonoBehaviour
         
     }
 
-    void ToggleWalk(bool walking)
+    public void ToggleWalk(bool walking, float speed)
     {
-        if (walking && speed>0.1)
-        {
-            animator.SetBool("isWalking", true);
-        }
-        else animator.SetBool("isWalking", true);
+       
     }
 
-    void ToggleHit(bool hit)
+    public void ToggleHit(bool hit)
     {
         if (hit)
         {
@@ -42,7 +39,7 @@ public class Anim_HumanController : MonoBehaviour
         animator.SetBool("isHit", false);
     }
 
-    void ToggleSitting(bool sitting)
+    public void ToggleSitting(bool sitting)
     {
         if (sitting)
         {
@@ -51,7 +48,7 @@ public class Anim_HumanController : MonoBehaviour
         animator.SetBool("isSitting", false);
     }
 
-    void ToggleThrowing(bool throwing)
+    public void ToggleThrowing(bool throwing)
     {
         if (throwing)
         {
@@ -60,7 +57,7 @@ public class Anim_HumanController : MonoBehaviour
         else animator.SetBool("isThrowing", false);
     }
 
-    void ToggleKicking(bool kicking)
+    public void ToggleKicking(bool kicking)
     {
         if (kicking)
         {

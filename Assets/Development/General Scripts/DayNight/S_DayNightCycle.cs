@@ -29,7 +29,7 @@ public class S_DayNightCycle : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        skybox = FindFirstObjectByType<SkyboxParallaxer>();
+        skybox = FindAnyObjectByType<SkyboxParallaxer>();
     }
 
     // Update is called once per frame
