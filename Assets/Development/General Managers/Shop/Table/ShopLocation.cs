@@ -82,7 +82,7 @@ public class ShopLocation : ShopManager
 
     public void BuyAndRemoveItem(ShopItem item)
     {
-        inventoryRef.inventory.Add(item.gameObject,1);
+        inventoryRef.inventory.Add(item.name,1);
     }
 
 
