@@ -1,4 +1,5 @@
 using NUnit.Framework.Constraints;
+using Steamworks;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -6,12 +7,14 @@ public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
 {
     [SerializeField] private Q_KillComponent questKillComponent;
     public bool isDeadLocal;
-    public int currentHealth;
+    public int currentHealth = 10;
+    public GameObject enemyRef;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     
     void Awake()
     {
         questKillComponent = GetComponent<Q_KillComponent>();
+        enemyRef = this.gameObject;
     }
 
 
@@ -23,21 +26,31 @@ public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        if (currentHealth <= 0)
-        {
-            isDeadLocal = true;
-            OnDeath(isDeadLocal);
-            Debug.Log("Enemy Is Dead");
+        TriggerStateChangeOnHit();
+        //currentHealth -= damage;
+        //if (currentHealth <= 0)
+        //{
+        //    isDeadLocal = true;
+        //    OnDeath(isDeadLocal);
+        //    Debug.Log("Enemy Is Dead");
 
-        }
+        //}
     }
 
     public void OnDeath(bool IsDead)
     {
-        Debug.Log("OnDeath Triggered");
-        questKillComponent.KillComplete();
+        TriggerStateChangeOnHit();
     }
+    public void TriggerStateChangeOnHit()
+    {
+        OnHit();
+    }
+
+    public virtual void OnHit()
+    {
+        Debug.Log("CallBaseOnHit");
+    }
+
 
 
 }

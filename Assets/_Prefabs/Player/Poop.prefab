@@ -66,10 +66,12 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: f96821bbefeea864b9b418af4b8615ac, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -87,9 +89,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!135 &1743025187917897487
 SphereCollider:
@@ -128,7 +132,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 413241728
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -154,9 +158,16 @@ MonoBehaviour:
   speed: 15
   decalPrefab: {fileID: 19645291115763371, guid: 869a478023eee6d49bd7a4ad963aea7a, type: 3}
   splashParticle: {fileID: 1251939771617490355, guid: 1f6684a619b508544b8195e4dcef5665, type: 3}
+  splatSFX:
+    Guid:
+      Data1: 1965529891
+      Data2: 1116207704
+      Data3: -958216022
+      Data4: -1593549837
+    Path: event:/Splats/Player_Splats
 --- !u!96 &4811352426452455203
 TrailRenderer:
-  serializedVersion: 3
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -175,6 +186,8 @@ TrailRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -196,9 +209,11 @@ TrailRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Time: 5
   m_PreviewTimeScale: 1
   m_Parameters:
@@ -257,7 +272,6 @@ TrailRenderer:
     shadowBias: 0.5
     generateLightingData: 0
   m_MinVertexDistance: 0.1
-  m_MaskInteraction: 0
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
@@ -269,6 +283,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9130257834756290456}
     m_Modifications:
+    - target: {fileID: 3115491785002489707, guid: aedfa165dd3b83440a5380d980a34e32, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0a7f0105cc3dc174fa92d456e2345bfb, type: 2}
     - target: {fileID: 3928882821719076886, guid: aedfa165dd3b83440a5380d980a34e32, type: 3}
       propertyPath: prewarm
       value: 1
@@ -292,6 +310,14 @@ PrefabInstance:
     - target: {fileID: 4231668975010060261, guid: aedfa165dd3b83440a5380d980a34e32, type: 3}
       propertyPath: m_Name
       value: PoopParticle
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231668975010060261, guid: aedfa165dd3b83440a5380d980a34e32, type: 3}
+      propertyPath: m_Layer
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4231668975010060261, guid: aedfa165dd3b83440a5380d980a34e32, type: 3}
+      propertyPath: m_TagString
+      value: Poop
       objectReference: {fileID: 0}
     - target: {fileID: 8546899832567904014, guid: aedfa165dd3b83440a5380d980a34e32, type: 3}
       propertyPath: m_LocalPosition.x

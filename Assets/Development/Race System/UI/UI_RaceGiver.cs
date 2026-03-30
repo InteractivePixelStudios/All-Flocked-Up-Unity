@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
@@ -16,11 +17,12 @@ public class UI_RaceGiver : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
-        raceBase = FindFirstObjectByType<RaceBase>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        raceBase = FindAnyObjectByType<RaceBase>();
         acceptRaceButton.onClick.AddListener(AcceptRace);
         cancelButton.onClick.AddListener(CancelRace);
         GetRaceInfo();
+        EventSystem.current.SetSelectedGameObject(acceptRaceButton.gameObject);
     }
 
     // Update is called once per frame
@@ -30,7 +32,7 @@ public class UI_RaceGiver : MonoBehaviour
         LocalizedString localizedString = new LocalizedString
         {
             TableReference = "AFU_Races",
-            TableEntryReference = raceBase.currentRaceGiver.raceData.name
+            TableEntryReference = raceBase.raceData.name
         };
 
         localizedString.GetLocalizedStringAsync().Completed += handle =>
@@ -40,7 +42,7 @@ public class UI_RaceGiver : MonoBehaviour
         LocalizedString localizedDescString = new LocalizedString
         {
             TableReference = "AFU_Races",
-            TableEntryReference = raceBase.currentRaceGiver.raceData.raceDescription.GetLocalizedString()
+            TableEntryReference = raceBase.raceData.raceDescription.GetLocalizedString()
         };
 
         localizedDescString.GetLocalizedStringAsync().Completed += handle =>

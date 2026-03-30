@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
 public class UI_RaceReward: MonoBehaviour
 {
     [SerializeField] private Button acceptRewardButton;
+    [SerializeField] private UI_CanvasController canvasController;
 
 
     [SerializeField] private TextMeshProUGUI raceNameText;
@@ -28,17 +30,22 @@ public class UI_RaceReward: MonoBehaviour
     [SerializeField] private GameObject textPrefab;
     [SerializeField] private List<string> racerNames = new();
 
+    public void SetCanvasControllerRef(UI_CanvasController instance)
+    {
+        canvasController = instance;
+    }
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         newRecordImage.gameObject.SetActive(false);
         acceptRewardButton.onClick.AddListener(AcceptReward);
-        raceBase = FindFirstObjectByType<RaceBase>();
+        raceBase = FindAnyObjectByType<RaceBase>();
         GetReward();
         UpdateStandings();
         UpdateRaceBestTime();
-
+        EventSystem.current.SetSelectedGameObject(acceptRewardButton.gameObject);
     }
 
     public void GetRaceStandings(GameObject racer,float time)
@@ -72,7 +79,7 @@ public class UI_RaceReward: MonoBehaviour
         LocalizedString localizedString = new LocalizedString
         {
             TableReference = "AFU_Races",
-            TableEntryReference = raceBase.currentRaceGiver.raceData.name
+            TableEntryReference = raceBase.raceData.name
         };
 
         localizedString.GetLocalizedStringAsync().Completed += handle =>
@@ -95,10 +102,11 @@ public class UI_RaceReward: MonoBehaviour
     //gives rewards to player
     private void AcceptReward()
     {
+        Debug.Log("Clicked");
         raceBase.completedRaces.Add(raceBase.raceData);
         Destroy(raceBase.currentRaceGiver.GetComponent<RaceGiver>());
         GiveRaceRewards();
-        Destroy(this.gameObject);
+        canvasController.CloseRaceRewards();
         raceBase.StartPlayerMove();
     }
 
@@ -159,7 +167,7 @@ public class UI_RaceReward: MonoBehaviour
 
     private void GiveRaceRewards()
     {
-        var EXP = FindFirstObjectByType<EXPSystem>();
+        var EXP = FindAnyObjectByType<EXPSystem>();
         EXP.IncrementXP(raceBase.raceData.raceRewards);
     }
 

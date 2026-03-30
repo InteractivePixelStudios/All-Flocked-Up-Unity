@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine.Localization;
+using UnityEngine.EventSystems;
 
 public class UI_QuestLog : MonoBehaviour
 {
@@ -41,7 +42,7 @@ public class UI_QuestLog : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        questLog = FindFirstObjectByType<QuestLog>();
+        questLog = FindAnyObjectByType<QuestLog>();
         foreach(var quest in questLog.activeQuests)
         {
             instanceList.Add(quest);
@@ -49,6 +50,7 @@ public class UI_QuestLog : MonoBehaviour
         GetCurrentQuests();
         trackQuestButton.onClick.AddListener(()=>TrackQuest(currentQuest));
         HideRewardImages(currentQuest);
+        EventSystem.current.SetSelectedGameObject(trackQuestButton.gameObject);
     }
 
     public void TrackQuest(QuestRuntimeInstance questID)

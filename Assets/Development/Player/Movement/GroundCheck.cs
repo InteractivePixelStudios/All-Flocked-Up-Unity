@@ -8,6 +8,7 @@ public class GroundCheck : MonoBehaviour
 
     public bool IsGrounded()
     {
+
         // create a sphere and check if the player is on the ground, if player is on ground return true
         if (Physics.CheckSphere(transform.position, checkDistance, groundMask))
         {

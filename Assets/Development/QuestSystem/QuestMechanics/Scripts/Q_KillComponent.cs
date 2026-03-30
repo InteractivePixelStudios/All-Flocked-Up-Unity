@@ -13,7 +13,7 @@ public class Q_KillComponent : MonoBehaviour, IQuestMechanic
 
     public void GetQuestLog()
     {
-        questLog = FindFirstObjectByType<QuestLog>();
+        questLog = FindAnyObjectByType<QuestLog>();
     }
 
     public void KillComplete()

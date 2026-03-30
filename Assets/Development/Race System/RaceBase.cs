@@ -1,11 +1,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.InputSystem;
 
 
 public class RaceBase : MonoBehaviour
 {
-    [SerializeField] private GameObject playerRef => GetPlayer();
+    private GameObject playerRef => GetPlayer();
     [SerializeField] private UI_CanvasController canvasController;
     public RaceData raceData => GetRaceData(currentRaceGiver.raceData);
     [SerializeField] private RaceCheckpoint checkpointPrefab;
@@ -24,7 +25,7 @@ public class RaceBase : MonoBehaviour
     [SerializeField] private bool timerStarted;
     [SerializeField] private bool countdownStarted;
     public bool countdownComplete;
-    [SerializeField] private StartingLine currentRaceStartingLine => raceData.GetStartLine();
+    private StartingLine currentRaceStartingLine => raceData.GetStartLine();
     public StartingLine raceStartLine => currentRaceStartingLine;
     [SerializeField] private List<CPURacer> currentRacerList = new();
     [SerializeField] private CPURacer racerPrefab;
@@ -38,7 +39,7 @@ public class RaceBase : MonoBehaviour
 
     private void Awake()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
         wallSpawner = GetComponent<RaceWallSpawner>();
     }
 
@@ -149,11 +150,12 @@ public class RaceBase : MonoBehaviour
 
     private void SpawnCheckpoints()
     {
+        int count = activeCheckpoints.Count;
         foreach (var checkpoint in activeCheckpoints)
         {
             checkpoint.ShowCheckpoint();
         }
-        lastCheckpoint = activeCheckpoints[activeCheckpoints.Count - 1];
+        lastCheckpoint = activeCheckpoints[count-1];
     }
 
     public void UpdateCheckpoints(int hitPoint)
@@ -180,10 +182,10 @@ public class RaceBase : MonoBehaviour
     {
         raceStarted = false;
         GetRaceResults();
-        DestroyCheckpoints();
         raceStarted = false;
         DestroyRacers();
         canvasController.OpenRaceRewards();
+        DestroyCheckpoints();
     }
 
     private void RaceFailed()
@@ -207,7 +209,7 @@ public class RaceBase : MonoBehaviour
     public void GiveRewards()
     {
         var reward = raceData.raceRewards;
-        FindFirstObjectByType<EXPSystem>().IncrementXP(reward);
+        FindAnyObjectByType<EXPSystem>().IncrementXP(reward);
     }
     private void SetStartLine()
     {
@@ -297,7 +299,7 @@ public class RaceBase : MonoBehaviour
                 else if (racer.CompareTag("Player"))
                 {
                     playerFinishTime = currentTime;
-                    StopPlayerMove();
+                    racer.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
                 }
                 Debug.Log($"{racer.name} finished the race!");
             }
@@ -324,12 +326,12 @@ public class RaceBase : MonoBehaviour
 
     public void StopPlayerMove()
     {
-        playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
+        playerRef.GetComponent<PlayerInput>().enabled = false;
     }
 
     public void StartPlayerMove()
     {
-        playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
+        playerRef.GetComponent<PlayerInput>().enabled = true;
     }
 
     [ContextMenu("RespawnPlayer")]

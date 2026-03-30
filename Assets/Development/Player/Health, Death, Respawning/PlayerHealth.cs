@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
@@ -5,11 +6,12 @@ public class PlayerHealth : MonoBehaviour
     [Header("Player Health Settings")]
     public int maxHealth = 100;
     public int currentHealth;
+    private bool isHit;
 
 
     [Header("Death Settings")]
     [SerializeField] private bool isDead = false;
-    [SerializeField] private float deathDelay = 2f; // Delay before respawning or performing death actions
+    [SerializeField] private float deathDelay = 0.5f; // Delay before respawning or performing death actions
 
     [Header("Respawn Settings")]
     [SerializeField] private Canvas playerCanvas;
@@ -21,10 +23,13 @@ public class PlayerHealth : MonoBehaviour
     private RagdollController ragdoll;
     [SerializeField]UI_CanvasController canvasController;
 
+    AnimController animController;
+
     void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
         ragdoll = GetComponent<RagdollController>();
+        animController = GetComponent<AnimController>();
         if (currentHealth <= 0)
         {
             currentHealth = maxHealth;
@@ -33,12 +38,6 @@ public class PlayerHealth : MonoBehaviour
         {
             rb = GetComponent<Rigidbody>(); 
         }
-    }
-
-    void Update()
-    {
-
-
     }
 
     public void Heal(int amount)
@@ -56,16 +55,21 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int Damage)
     {
-        if (currentHealth <= 0)
-        {
-            return; 
-        }
-        currentHealth -= Damage;
+        if (isDead) { return; }
         if (currentHealth <= 0)
         {
             currentHealth = 0;
             StartCoroutine(DelayBeforeDie(deathDelay));
         }
+        currentHealth -= Damage;
+        isHit = true;
+        Task.Delay(500);
+        isHit = false;
+    }
+
+    public bool GetIsHit()
+    {
+        return isHit;
     }
     private System.Collections.IEnumerator DelayBeforeDie(float delay)
     {

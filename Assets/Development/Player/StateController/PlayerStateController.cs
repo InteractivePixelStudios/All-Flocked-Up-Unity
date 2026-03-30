@@ -30,6 +30,10 @@ public class PlayerStateController : MonoBehaviour
     public void EnterFlyMode()
     {
         CurrentState = PlayerState.FlyMove;
+        if (SteamManager.Initialized)
+        {
+            AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_003_Fly");
+        }
     }
 
     public void ExitFlyMode()

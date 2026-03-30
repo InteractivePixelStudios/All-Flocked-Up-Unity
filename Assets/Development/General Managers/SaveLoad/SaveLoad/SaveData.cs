@@ -17,7 +17,7 @@ public class SaveData
     public DateTime lastSaved;
     public int poop;
     public float stamina;
-    public Dictionary<GameObject, int> inventory = new();
+    public Dictionary<string, int> inventory = new();
     public List<QuestRuntimeInstance> activeQuests = new();
     public List<QuestDetails> completedQuests = new();
     public List<RaceData> completedRaces = new();

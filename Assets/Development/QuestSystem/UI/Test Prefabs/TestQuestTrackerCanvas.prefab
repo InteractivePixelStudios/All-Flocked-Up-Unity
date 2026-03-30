@@ -104,6 +104,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -169,9 +170,9 @@ MonoBehaviour:
       data:
         m_Localized:
           m_TableReference:
-            m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+            m_TableCollectionName: 
           m_TableEntryReference:
-            m_KeyId: 317408098045952
+            m_KeyId: 0
             m_Key: 
           m_FallbackState: 0
           m_WaitForCompletion: 0
@@ -313,6 +314,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -378,9 +380,9 @@ MonoBehaviour:
       data:
         m_Localized:
           m_TableReference:
-            m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+            m_TableCollectionName: 
           m_TableEntryReference:
-            m_KeyId: 317380814098432
+            m_KeyId: 0
             m_Key: 
           m_FallbackState: 0
           m_WaitForCompletion: 0
@@ -548,6 +550,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questTrackerCanvas: {fileID: 4576787873431407986}
+  nameText: {fileID: 1645179130778914365}
+  descText: {fileID: 4576819031894626090}
 --- !u!223 &742698524373427105
 Canvas:
   m_ObjectHideFlags: 0
@@ -566,6 +570,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
+  m_UseReflectionProbes: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
@@ -583,10 +588,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

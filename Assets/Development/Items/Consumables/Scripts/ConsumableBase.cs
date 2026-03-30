@@ -49,40 +49,40 @@ public class ConsumableBase : MonoBehaviour
     //[SerializeField] private float flightSpeedModifier;
     [Header("Particles")]
     [SerializeField] private ParticleSystem consumableParticles;
+    public Sprite invSprite;
 
-    //gets comps
-    private void Awake()
+
+    private void Start()
     {
         consumableMesh = GetComponent<MeshFilter>().sharedMesh;
         consumableParticles = GetComponent<ParticleSystem>();
-        playerPoop = FindFirstObjectByType<Pooper>();
+        playerPoop = FindAnyObjectByType<Pooper>();
         playerRef = playerPoop.gameObject;
+        playerHealth = playerRef.GetComponent<PlayerHealth>();
+        playerStamina = playerRef.GetComponent<StaminaSystem>();
     }
 
     //trigger checks if player and sets the playerRef, then calls effect and destroy
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Player"))
-    //    {
-    //        //playerRef = other.gameObject;
-    //        ConsumableEffect(consumableType);
-    //        Destroy(gameObject);
-    //    }
-    //}
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            //playerRef = other.gameObject;
+            ConsumableEffect(consumableType);
+        }
+    }
     //switch case based on consumabletype enum... this is what triggers each effect when collected
     private void ConsumableEffect(E_ConsumableType consumableType)
     {
         switch (consumableType)
         {
             case E_ConsumableType.Health:
-                //isHealth = true;
-                playerHealth = playerRef.GetComponent<PlayerHealth>();
-                if (playerHealth.currentHealth <= playerHealth.maxHealth) { playerRef.GetComponent<PlayerWingventory>().AddItemToInv(this.gameObject, 1); }
+                if (playerHealth.currentHealth <= playerHealth.maxHealth) { playerRef.GetComponent<PlayerWingventory>().AddItemToInv(this.name, 1); }
                 HealEffect(positiveEffectValue, positiveModifier);
                 CheckForReaction();
+                Destroy(gameObject);
                 break;
             case E_ConsumableType.Stamina:
-                playerStamina = playerRef.GetComponent<StaminaSystem>();
                 //Change me to add to INV
                 //if (playerHealth.currentHealth <= playerHealth.maxHealth) { playerRef.GetComponent<PlayerWingventory>().AddItemToInv(this.gameObject, 1); }
                 StaminaEffect(positiveEffectValue,positiveModifier);
@@ -103,6 +103,7 @@ public class ConsumableBase : MonoBehaviour
                 CheckForReaction();
                 break;
         }
+        Destroy(gameObject);
     }
     //switch case based on reaction effects... this is what neg effect triggers when collected
     private void ReactionEffect(E_ReactionType reactionType)
@@ -246,7 +247,6 @@ public class ConsumableBase : MonoBehaviour
     public void UseConsumable()
     {
         ConsumableEffect(consumableType);
-        Destroy(gameObject);
     }
     
 }

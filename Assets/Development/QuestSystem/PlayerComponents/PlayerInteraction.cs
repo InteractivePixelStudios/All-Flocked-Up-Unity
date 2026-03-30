@@ -198,11 +198,10 @@ public class PlayerInteraction : MonoBehaviour
                 var comp = wearableObj.GetComponent<Wearable_Base>();
                 if (!comp.isGrabbed)
                 {
-                    comp.LookForObject();
                     comp.attachPoint = attachPoint;
+                    comp.LookForObject(hit);
                     Debug.Log("Attached");
                 }
-                else if (comp.isGrabbed) { comp.RemoveObject(); Debug.Log("remove"); }
                 else Debug.Log("skipped"); return;
             }
 
@@ -293,7 +292,7 @@ public class PlayerInteraction : MonoBehaviour
 
     private void OnLevelWasLoaded(int level)
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
     }
 }
 

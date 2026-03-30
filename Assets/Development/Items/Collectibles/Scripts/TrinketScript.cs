@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class TrinketScript : MonoBehaviour
@@ -15,6 +16,7 @@ public class TrinketScript : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerRef = other.gameObject;
+            CollectTrinket(value);
         }
     }
 
@@ -39,6 +41,17 @@ public class TrinketScript : MonoBehaviour
     {
         SetIndex();
         playerRef.GetComponent<PlayerWingventory>().AddTrinketToInv(amt, index);
+        if (SteamManager.Initialized)
+        {
+            AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_009_Trinket");
+        }playerRef.GetComponent<PlayerPeckComponent>().Peck();
+        //Q_Collect collect;
+        //TryGetComponent<Q_Collect>(out collect);
+        //if(collect != null)
+        //{
+        //    collect.CompleteObjective();
+        //}
+        //await Task.Delay(500);
         Destroy(this.gameObject);
     }
 }

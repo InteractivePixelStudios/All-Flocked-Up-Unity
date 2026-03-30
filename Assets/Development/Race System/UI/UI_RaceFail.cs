@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Localization;
 using UnityEngine.UI;
 
@@ -17,13 +18,13 @@ public class UI_RaceFail : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
-        race = FindFirstObjectByType<RaceBase>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        race = FindAnyObjectByType<RaceBase>();
         retryButton.onClick.AddListener(RetryRace);
         cancelButton.onClick.AddListener(CloseRace);
         GetRequiredTime();
         GetRaceInfo();
-
+        EventSystem.current.SetSelectedGameObject(retryButton.gameObject);
     }
     private void GetRequiredTime()
     {
@@ -35,7 +36,7 @@ public class UI_RaceFail : MonoBehaviour
         LocalizedString localizedString = new LocalizedString
         {
             TableReference = "AFU_Races",
-            TableEntryReference = race.currentRaceGiver.raceData.name
+            TableEntryReference = race.raceData.name
         };
 
         localizedString.GetLocalizedStringAsync().Completed += handle =>
@@ -48,14 +49,13 @@ public class UI_RaceFail : MonoBehaviour
 
     private void RetryRace()
     {
-        Destroy(this.gameObject);
-        race.ResetRace();
+        canvasController.CloseRaceFail(true);
+
 
     }
 
     private void CloseRace()
     {
-       Destroy(this.gameObject);
-        race.StartPlayerMove();
+        canvasController.CloseRaceFail(false);
     }
 }

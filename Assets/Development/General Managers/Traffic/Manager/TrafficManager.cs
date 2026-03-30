@@ -11,6 +11,9 @@ public class TrafficManager : MonoBehaviour
     [SerializeField] private List<TrafficLightChanger> groupALights;
     [SerializeField] private List<TrafficLightChanger> groupBLights;
     [SerializeField] private List<Waypoint> waypoints;
+    [SerializeField] private List<Waypoint> respawnWaypoints;
+    [SerializeField]float respawnDelay = 2f;
+    int vehicleCache;
     private int lastIndex;
     [SerializeField] private int numberOfCars;
     [SerializeField] private List<VehicleBase> vehicleTypes = new();
@@ -44,10 +47,18 @@ public class TrafficManager : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
+        respawnDelay -= Time.deltaTime;
 
         if (timer <= 0)
         {
             SwitchLightGroups();
+        }
+        if(respawnDelay <= 0 && vehicleCache > 0 && vehicles.Count < numberOfCars)
+        {
+
+                CallSpawnNew();
+                respawnDelay = 2f;
+            
         }
     }
 
@@ -56,7 +67,7 @@ public class TrafficManager : MonoBehaviour
     private void InitLights()
     {
         trafficLights.Clear();
-        trafficLights.AddRange(FindObjectsByType<TrafficLightChanger>(FindObjectsSortMode.None));
+        trafficLights.AddRange(FindObjectsByType<TrafficLightChanger>());
     }
 
     private void SetLights()
@@ -65,12 +76,17 @@ public class TrafficManager : MonoBehaviour
     }
     private void FindWaypoints()
     {
-        var waypointsArray = FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
+        var waypointsArray = FindObjectsByType<Waypoint>();
         foreach (var waypoint in waypointsArray)
         {
             if (waypoint.CompareTag("Traffic"))
             {
                 waypoints.Add(waypoint);
+                if (waypoint.gameObject.layer == LayerMask.NameToLayer("TrafficWaypoints"))
+                {
+                    respawnWaypoints.Add(waypoint);
+                }
+                else continue;
             }
 
         }
@@ -168,22 +184,29 @@ public class TrafficManager : MonoBehaviour
     public void RemoveVehicleFromList(VehicleBase vehicle)
     {
         vehicles.Remove(vehicle);
+        vehicleCache++;
         SpawnNewCar();
+    }
+
+    private  void CallSpawnNew()
+    {
+
+                SpawnNewCar();
+                vehicleCache--;
+            
+        
     }
 
     private void SpawnNewCar()
     {
-        var randomIndex = Random.Range(0, waypoints.Count - 1);
-        if (randomIndex != lastIndex)
-        {
-            Transform waypoint = waypoints[randomIndex].transform;
-            var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)], waypoint.position, waypoint.rotation);
+        var randomIndex = Random.Range(0, respawnWaypoints.Count - 1);
+            Waypoint waypoint = respawnWaypoints[randomIndex];
+            var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)], waypoint.transform.position, waypoint.transform.rotation);
             vehicles.Add(car);
-            car.transform.position = waypoint.position;
-            car.currentNode = waypoints[randomIndex];
+            car.transform.position = waypoint.transform.position;
+            car.currentNode = respawnWaypoints[randomIndex];
             car.manager = this;
 
-        }
-
     }
+    
 }

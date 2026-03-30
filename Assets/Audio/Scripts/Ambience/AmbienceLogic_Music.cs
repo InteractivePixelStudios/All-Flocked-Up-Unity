@@ -4,15 +4,21 @@ using FMODUnity;
 public class AmbienceLogic_Music : MonoBehaviour
 {
     [SerializeField] EventReference musicTimelineEvent; // Assign in Inspector
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private FMOD.Studio.EventInstance timeLineInstance;
+    private bool musicCreated = false; // This is to prevent multiple instances of the music timeline from being created.
     void Start()
     {
-        RuntimeManager.PlayOneShot(musicTimelineEvent); // This will play the music timeline event - it loops itself.
+        CreateMusicTimeline();
     }
 
-    public void AdjustVolume(float volume)
+    private void CreateMusicTimeline()
     {
-        // Placeholder for future volume adjustment logic - right now I have no idea how volume works with FMOD.
+        if (!musicCreated)
+        {
+            timeLineInstance = RuntimeManager.CreateInstance(musicTimelineEvent);
+            timeLineInstance.setTimelinePosition(390000);
+            timeLineInstance.start();
+            musicCreated = true;
+        }
     }
 }

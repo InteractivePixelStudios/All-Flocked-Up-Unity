@@ -1,0 +1,157 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7388276549945039491
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5013285576480041836}
+  - component: {fileID: 3634453929485385432}
+  m_Layer: 0
+  m_Name: Human_Generator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5013285576480041836
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388276549945039491}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 39.66028, y: 0.1, z: 252.22124}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3634453929485385432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7388276549945039491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b750e2fa57e188d40b1284f049323bb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HumanGeneratorManager
+  BodyTypeMeshes:
+  - {fileID: 135181320058188095, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+  - {fileID: -56624613878343123, guid: b41d9300d1549b747b80cf7a24682447, type: 3}
+  - {fileID: 6661711185847945148, guid: 0d645b988c8874c4f9e6e3f596837f6d, type: 3}
+  - {fileID: -6558858486717934601, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}
+  skinnyMaleClothes:
+  - clothes:
+    - {fileID: -383359715584260494, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+    - {fileID: 1092570720151281805, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+    - {fileID: 4995093551023303409, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+    - {fileID: -8898321746637967306, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+  - clothes:
+    - {fileID: 9127018764301550205, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+  - clothes:
+    - {fileID: -2168637295052739121, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+    - {fileID: 7550298962454812600, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+  - clothes:
+    - {fileID: -2337769140420405412, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+    - {fileID: 7507444011655803076, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+  - clothes:
+    - {fileID: 492987013806896603, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+    - {fileID: -4366331720299066379, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+  builtMaleClothes:
+  - clothes:
+    - {fileID: -3808850040534145773, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+    - {fileID: 7940060295078768173, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+    - {fileID: 3516388389416602377, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+    - {fileID: -1917447969469263197, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+  - clothes:
+    - {fileID: 334583689568429012, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+    - {fileID: -7131985999916050293, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+  - clothes:
+    - {fileID: -2612001797126349816, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+    - {fileID: 1115111328288483097, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+  - clothes:
+    - {fileID: 2529982284915936882, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+    - {fileID: 6319675816936100514, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+    - {fileID: -4532614168071956477, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+  - clothes:
+    - {fileID: 2698968124620725519, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+    - {fileID: -1098913383184264097, guid: 55b4b91790826034b98ac7f11c126494, type: 3}
+  heavysetMaleClothes:
+  - clothes:
+    - {fileID: -7351750748590041569, guid: b41d9300d1549b747b80cf7a24682447, type: 3}
+    - {fileID: -4276745255704508200, guid: b41d9300d1549b747b80cf7a24682447, type: 3}
+    - {fileID: -937894089654032782, guid: b41d9300d1549b747b80cf7a24682447, type: 3}
+    - {fileID: 2350576116152616611, guid: b41d9300d1549b747b80cf7a24682447, type: 3}
+  - clothes:
+    - {fileID: -2098308166501529966, guid: b41d9300d1549b747b80cf7a24682447, type: 3}
+  - clothes:
+    - {fileID: -6175629571278786566, guid: b41d9300d1549b747b80cf7a24682447, type: 3}
+    - {fileID: -2936459438780480568, guid: b41d9300d1549b747b80cf7a24682447, type: 3}
+  - clothes:
+    - {fileID: 1792792461956128120, guid: b41d9300d1549b747b80cf7a24682447, type: 3}
+    - {fileID: 8748200590074198011, guid: b41d9300d1549b747b80cf7a24682447, type: 3}
+  - clothes:
+    - {fileID: -982697012288777607, guid: b41d9300d1549b747b80cf7a24682447, type: 3}
+    - {fileID: 3372094650459917362, guid: b41d9300d1549b747b80cf7a24682447, type: 3}
+  skinnyFemaleClothes:
+  - clothes:
+    - {fileID: 4119027347744398422, guid: 0d645b988c8874c4f9e6e3f596837f6d, type: 3}
+    - {fileID: 7364808087413174974, guid: 0d645b988c8874c4f9e6e3f596837f6d, type: 3}
+    - {fileID: 5552154356049060573, guid: 0d645b988c8874c4f9e6e3f596837f6d, type: 3}
+  - clothes:
+    - {fileID: -47928183437149704, guid: 0d645b988c8874c4f9e6e3f596837f6d, type: 3}
+  - clothes:
+    - {fileID: -4829498400742006476, guid: 0d645b988c8874c4f9e6e3f596837f6d, type: 3}
+    - {fileID: 8141582440190840214, guid: 0d645b988c8874c4f9e6e3f596837f6d, type: 3}
+    - {fileID: -5681022008492474877, guid: 0d645b988c8874c4f9e6e3f596837f6d, type: 3}
+  - clothes:
+    - {fileID: -5001363972059579874, guid: 0d645b988c8874c4f9e6e3f596837f6d, type: 3}
+    - {fileID: 8493033694374265729, guid: 0d645b988c8874c4f9e6e3f596837f6d, type: 3}
+  - clothes:
+    - {fileID: 3153034560603067577, guid: 0d645b988c8874c4f9e6e3f596837f6d, type: 3}
+    - {fileID: -43370249989320011, guid: 0d645b988c8874c4f9e6e3f596837f6d, type: 3}
+  builtFemaleClothes:
+  - clothes:
+    - {fileID: -1970266744794624596, guid: 6e7476050b5b5c745a2deb98f213c933, type: 3}
+    - {fileID: 2123411667875424662, guid: 6e7476050b5b5c745a2deb98f213c933, type: 3}
+    - {fileID: 2123411667875424662, guid: 6e7476050b5b5c745a2deb98f213c933, type: 3}
+  - clothes:
+    - {fileID: -5812807321746715619, guid: 6e7476050b5b5c745a2deb98f213c933, type: 3}
+  - clothes:
+    - {fileID: -7632313126120471259, guid: 6e7476050b5b5c745a2deb98f213c933, type: 3}
+    - {fileID: 8115454483470460574, guid: 6e7476050b5b5c745a2deb98f213c933, type: 3}
+    - {fileID: 2946077560843318618, guid: 6e7476050b5b5c745a2deb98f213c933, type: 3}
+    - {fileID: -750592983122967533, guid: 6e7476050b5b5c745a2deb98f213c933, type: 3}
+  - clothes:
+    - {fileID: -6030338793325537143, guid: 6e7476050b5b5c745a2deb98f213c933, type: 3}
+    - {fileID: -1977884869836211620, guid: 6e7476050b5b5c745a2deb98f213c933, type: 3}
+  - clothes:
+    - {fileID: 5016730506660007674, guid: 6e7476050b5b5c745a2deb98f213c933, type: 3}
+    - {fileID: -4101093088992988114, guid: 6e7476050b5b5c745a2deb98f213c933, type: 3}
+  heavysetFemaleClothes:
+  - clothes:
+    - {fileID: -3282834980136180337, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}
+    - {fileID: 8627690211266850481, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}
+    - {fileID: 439093240073948138, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}
+  - clothes:
+    - {fileID: 583620278626043131, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}
+  - clothes:
+    - {fileID: -3228014878202156937, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}
+    - {fileID: 389748381350856030, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}
+    - {fileID: -3228014878202156937, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}
+  - clothes:
+    - {fileID: 5502144261480021611, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}
+    - {fileID: 4739125604063261179, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}
+    - {fileID: 808776120663159393, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}
+  - clothes:
+    - {fileID: -7885109369877424179, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}
+    - {fileID: -7631338361652802691, guid: 5d4a755156c5f4e4aaf95edbd840ca98, type: 3}

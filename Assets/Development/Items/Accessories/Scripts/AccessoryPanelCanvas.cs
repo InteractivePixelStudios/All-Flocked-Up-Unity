@@ -20,7 +20,7 @@ public class AccessoryPanelCanvas : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        accessoryComponent = FindFirstObjectByType<PlayerAccessoryComponent>();
+        accessoryComponent = FindAnyObjectByType<PlayerAccessoryComponent>();
         bottleCapButton.onClick.AddListener(EquipBottleCap);
         monocleButton.onClick.AddListener(EquipMonocle);
         featherButton.onClick.AddListener(EquipFeather);

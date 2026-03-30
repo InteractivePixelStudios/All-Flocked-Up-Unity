@@ -16,7 +16,7 @@ public class UI_LanguageSelector : MonoBehaviour
     {
         Init();
         confirmButton.onClick.AddListener(DestroyCanvas);
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
         EventSystem.current.SetSelectedGameObject(confirmButton.gameObject);
     }
 

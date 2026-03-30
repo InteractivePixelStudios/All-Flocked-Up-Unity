@@ -16,7 +16,7 @@ public class Q_InteractComponent : MonoBehaviour, IQuestMechanic
 
     public void GetQuestLog()
     {
-        questLog = FindFirstObjectByType<QuestLog>();
+        questLog = FindAnyObjectByType<QuestLog>();
     }
 
     public void InteractWithObjective()

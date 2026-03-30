@@ -28,7 +28,7 @@ public class Q_LocationComponent : MonoBehaviour, IQuestMechanic
 
     public void GetQuestLog()
     {
-        questLog = FindFirstObjectByType<QuestLog>();
+        questLog = FindAnyObjectByType<QuestLog>();
     }
 
     public string GetObjectiveID() => objectiveID;

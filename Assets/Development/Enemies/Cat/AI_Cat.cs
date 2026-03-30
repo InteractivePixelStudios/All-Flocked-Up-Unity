@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AI_Cat : MonoBehaviour, I_EnemyBase
+public class AI_Cat : EnemyBaseComponent
 {
     [Header("Patrol")]
     public GameObject patrolPoints;
@@ -12,6 +12,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
     public PlayerStealthSystem playerStealth;
     public float patrolSpeed = 3f;
     public float chaseSpeed = 5f;
+    Vector3 retreatLocation;
     [Header("Detection")]
     public float detectionRange = 5f;
     public float loseSightRange = 8f;
@@ -26,7 +27,6 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
     public float pounceCooldown = 3f;
     [Header("Waypoints")]
     [SerializeField] private List<Waypoint> waypoints;
-    [SerializeField] private List<WaypointConnection> connections = new();
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]
@@ -39,7 +39,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
     [SerializeField] protected bool canSeePlayer;
 
     private int currentPointIndex = 0;
-    private enum EnemyState { Patrolling, Chasing, Swat, Pounce, Stop, Hit, Retreat }
+    public enum EnemyState { Patrolling, Chasing, Swat, Pounce, Stop, Hit, Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
     public bool IsDead = false;
@@ -47,75 +47,80 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
 
     void Start()
     {
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
         animator = GetComponent<Animator>();
-        icon = GetComponentInChildren<Enemy_AlertIcon>();
+        icon = GetComponent<Enemy_AlertIcon>();
+        rigidbodyComp = GetComponent<Rigidbody>();
         FindWaypoints();
+    }
+
+    public void SetCurrentState(EnemyState state)
+    {
+        currentState = state;
     }
 
     void Update()
     {
         if (swatCooldown >= 0) swatCooldown -= Time.deltaTime;
         if (pounceCooldown >= 0) pounceCooldown -= Time.deltaTime;
-        if (canSeePlayer) { icon.gameObject.SetActive(true); icon.playerSeen = true; } else if(!canSeePlayer) { icon.playerSeen = false; icon.gameObject.SetActive(false); }
+        if (canSeePlayer) {  icon.SetPlayerSeen(true); } else if(!canSeePlayer) { icon.SetPlayerSeen(false); }
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         float distanceToNode = Vector3.Distance(transform.position, currentNode.transform.position);
 
         switch (currentState)
         {
             case EnemyState.Patrolling:
-                if (playerStealth.GetStealth()<10 && distanceToPlayer < detectionRange)
+                if (playerStealth.GetStealth()<10 && distanceToPlayer < detectionRange && !this.isHit)
                     currentState = EnemyState.Chasing;
-                else if (isHit)
+                else if (this.isHit)
                     currentState = EnemyState.Hit;
                 break;
 
             case EnemyState.Chasing:
-                if (distanceToPlayer > detectionRange)
+                if (distanceToPlayer > detectionRange && !this.isHit)
                     currentState = EnemyState.Patrolling;
-                else if (distanceToPlayer < swatRange)
+                else if (distanceToPlayer < swatRange && !this.isHit)
                     currentState = EnemyState.Swat;
-                else if (distanceToPlayer < pounceRange)
+                else if (distanceToPlayer < pounceRange && !this.isHit)
                     currentState = EnemyState.Pounce;
-                else if (isHit)
+                else if (this.isHit)
                     currentState = EnemyState.Hit;
                 break;
 
             case EnemyState.Swat:
-                if (distanceToPlayer > swatRange)
+                if (distanceToPlayer > swatRange && !this.isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Pounce:
-                if (distanceToPlayer > pounceRange)
+                if (distanceToPlayer > pounceRange && !this.isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Stop:
-                if (isHit)
+                if (this.isHit)
                 {
-                    isHit = false;
-                    isStopped = true;
                     currentState = EnemyState.Retreat;
+                    isStopped = true;
+                    
                 }
                 break;
 
             case EnemyState.Retreat:
-                if (isStopped)
+                if (isStopped && !this.isHit)
                 {
                     isStopped = false;
-                    currentState = EnemyState.Patrolling;
-                }
-                else if (isHit)
-                {
                     currentState = EnemyState.Hit;
+                }
+                else if (!this.isHit)
+                {
+                    currentState = EnemyState.Patrolling;
                 }
                 break;
 
             case EnemyState.Hit:
-                isHit = true;
-                currentState = EnemyState.Stop;
+                this.isHit = true;
                 break;
         }
 
@@ -124,7 +129,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
             case EnemyState.Patrolling:
                 canSeePlayer = false;
                 MoveCatToLocation();
-                if (distanceToNode < 1f)
+                if (distanceToNode < 1f && !this.isHit)
                     ChooseNextDirection(currentNode);
                 break;
             case EnemyState.Chasing:
@@ -132,7 +137,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
                 ChasePlayer();
                 break;
             case EnemyState.Swat:
-                if (swatCooldown <= 0)
+                if (swatCooldown <= 0 && !this.isHit)
                 {
                     SwatPlayer();
                     Debug.Log("SwatCalled");
@@ -141,7 +146,7 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
                 }
                 break;
             case EnemyState.Pounce:
-                if (pounceCooldown <= 0)
+                if (pounceCooldown <= 0 && !this.isHit)
                 {
                     Pounce();
                     Debug.Log("PounceCalled");
@@ -151,20 +156,26 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
                 break;
             case EnemyState.Stop:
                 StopMove();
-                Debug.Log("StopCalled");
                 break;
             case EnemyState.Hit:
                 HitReact();
-                Debug.Log("HitCalled");
                 break;
             case EnemyState.Retreat:
-                Retreat();
-                Debug.Log("RetreatCalled");
+                if (!isRetreating)
+                {
+                    isRetreating = true;
+                    Retreat();
+                }
+                RetreatToLocation();
                 break;
         }
 
     }
 
+    private void FixedUpdate()
+    {
+        animator.SetFloat("Speed", rigidbodyComp.maxLinearVelocity);
+    }
 
     private void FindWaypoints()
     {
@@ -179,7 +190,6 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
 
         }
         FindRandomWaypoint();
-        Debug.Log("CheckforWaypoints");
     }
 
 
@@ -196,23 +206,45 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
         rigidbodyComp.linearVelocity = Vector3.zero;
     }
 
-    protected async void HitReact()
+    protected void HitReact()
     {
-        isHit = true;
         animator.SetTrigger("isHit");
-        TakeDamage(10);
-        await Task.Delay(1000);
         isHit = false;
         currentState = EnemyState.Retreat;
     }
 
+    public override void OnHit()
+    {
+        isHit = true;
+        Debug.Log("HitCat");
+        SetCurrentState(EnemyState.Hit);
+    }
+
     protected void Retreat()
     {
-        var radius = 5f;
+        var radius = 2000f;
         Vector3 randomDirection = Random.insideUnitSphere * radius;
         randomDirection.y = 0f;
-        Vector3 randomPosition = transform.position + randomDirection;
-        rigidbodyComp.MovePosition(randomPosition);
+        retreatLocation = transform.position + randomDirection;
+        Debug.Log(retreatLocation);
+        isRetreating = true;
+        
+    }
+
+    void RetreatToLocation()
+    {
+        transform.position = Vector3.MoveTowards(transform.position, retreatLocation, chaseSpeed * Time.deltaTime);
+        if (Vector3.Distance(transform.position, retreatLocation) < 5)
+        {
+            isRetreating = false;
+            isHit = false;
+            isStopped = false;
+            currentState = EnemyState.Patrolling;
+        }
+        Vector3 dir = (retreatLocation - transform.position).normalized;
+        dir.y = 0;
+        if (dir != Vector3.zero)
+            transform.forward = dir;
     }
 
     protected void ChasePlayer()
@@ -230,14 +262,13 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
 
     protected async void SwatPlayer()
     {
-
+        animator.SetTrigger("isClaw");
         var spawnedCollider = swatColliderParent.AddComponent<SphereCollider>();
         var comp = spawnedCollider.AddComponent<KickComponent>(); //used as damage comp
-        comp.damage = 10;
+        comp.damage = 3;
         spawnedCollider.includeLayers = LayerMask.GetMask("Player");
         spawnedCollider.isTrigger = true;
         spawnedCollider.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
-        //animator.SetTrigger("isKicking");
         swatCooldown = 3f;
         await Task.Delay(3000);
         Destroy(spawnedCollider);
@@ -246,8 +277,9 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
 
     protected async void Pounce()
     {
-        var rb = GetComponent<Rigidbody>();
-        rb.linearVelocity = Vector3.zero;
+        animator.SetTrigger("isPounce");
+        rigidbodyComp.linearVelocity = Vector3.zero;
+        await Task.Delay(1000);
         Vector3 dirToPlayer = (player.transform.position-transform.position).normalized;
         dirToPlayer.y = 0;
         Vector3 force = dirToPlayer * pounceForce.z + Vector3.up * pounceForce.y;
@@ -257,24 +289,10 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
         spawnedCollider.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         spawnedCollider.isTrigger = true;
         var comp = spawnedCollider.AddComponent<KickComponent>(); //used as damage comp
-        comp.damage = 10;
-        swatCooldown = 3f;
-        await Task.Delay(3000);
+        comp.damage = 3;
         Destroy(spawnedCollider);
+        pounceCooldown = 3f;
         Destroy(comp);
-    }
-
-
-
-    public void TakeDamage(int damage)
-    {
-        
-
-    }
-
-    public void OnDeath(bool IsDead)
-    {
-
     }
 
     protected virtual void SetMoveToLocation(Waypoint location)
@@ -312,29 +330,24 @@ public class AI_Cat : MonoBehaviour, I_EnemyBase
 
     protected void ChooseNextDirection(Waypoint node)
     {
-        connections.Clear();
 
-        foreach (var connection in node.connections)
-            connections.Add(connection);
-
-        if (connections.Count == 0 && node.nextWaypoint != null)
-        {
-            connections.Add(new WaypointConnection { node = node.nextWaypoint });
-
-        }
-        else
+        if (node.nextWaypoint == null)
         {
             FindRandomWaypoint();
             return;
         }
+        else
+        {
+            Waypoint nextNode = node.nextWaypoint;
+            if (nextNode == null)
+                return;
+            previousNode = currentNode;
+            SetMoveToLocation(nextNode);
+            MoveCatToLocation();
+        }
 
-        int randomIndex = Random.Range(0, connections.Count);
-        Waypoint nextNode = connections[randomIndex].node;
-        if (nextNode == null)
-            return;
-        previousNode = currentNode;
-        SetMoveToLocation(nextNode);
-        MoveCatToLocation();
+
+
 
     }
 }
