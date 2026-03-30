@@ -20,9 +20,10 @@ public class GraffitiZone : MonoBehaviour
     [SerializeField] public Slider sizeSlider;
     [SerializeField] public Image SizeImage;
 
-    [Header ("Spray Knowledge")]
+    [Header("Spray Knowledge")]
     [SerializeField] InputAction spray;
-    [SerializeField] public int textureSize = 1024;
+    [SerializeField] public GameObject decalPrefab;
+    [SerializeField] public float sprayDistance = 5f;
     [SerializeField] public int brushSize = 5;
     [SerializeField] public Color currentColor;
     [SerializeField] public bool isPainting = false;
@@ -66,7 +67,7 @@ public class GraffitiZone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     //change color based on slider value
@@ -115,62 +116,29 @@ public class GraffitiZone : MonoBehaviour
             Ray ray = grafittiCam.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                Renderer rend = hit.collider.GetComponent<Renderer>();
-                if (rend == null) return;
+            if (!Physics.Raycast(ray, out hit, sprayDistance))
+                return;
 
-                Texture2D tex = GetOrCreateTexture(rend);
-
-                Vector2 uv = hit.textureCoord;
-
-                int x = (int)(uv.x * textureSize);
-                int y = (int)(uv.y * textureSize);
-
-                Paint(tex, x, y);
-
-                tex.Apply();
-            }
+            SpawnDecal(hit);
         }
     }
 
-    Texture2D GetOrCreateTexture(Renderer rend)
+    void SpawnDecal(RaycastHit hit)
     {
-        if (paintTextures.ContainsKey(rend))
-            return paintTextures[rend];
+        Quaternion rot = Quaternion.LookRotation(hit.normal);
 
-        Texture2D tex = new Texture2D(textureSize, textureSize);
+        GameObject decal = Instantiate(
+            decalPrefab,
+            hit.point + hit.normal * 0.01f,
+            rot
+        );
 
-        Color[] pixels = new Color[textureSize * textureSize];
-        for (int i = 0; i < pixels.Length; i++)
-            pixels[i] = Color.white;
+        Renderer rend = decal.GetComponent<Renderer>();
 
-        tex.SetPixels(pixels);
-        tex.Apply();
-
-        rend.material.mainTexture = tex;
-
-        paintTextures.Add(rend, tex);
-
-        return tex;
-    }
-
-    void Paint(Texture2D tex, int x, int y)
-    {
-        for (int i = -brushSize; i <= brushSize; i++)
+        if (rend != null)
         {
-            for (int j = -brushSize; j <= brushSize; j++)
-            {
-                float dist = Mathf.Sqrt(i * i + j * j);
-
-                if (dist > brushSize) continue;
-
-                int px = x + i;
-                int py = y + j;
-
-                if (px >= 0 && px < tex.width && py >= 0 && py < tex.height)
-                    tex.SetPixel(px, py, currentColor);
-            }
+            rend.material = new Material(rend.material);
+            rend.material.color = currentColor;
         }
     }
 
