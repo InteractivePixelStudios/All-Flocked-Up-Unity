@@ -20,7 +20,7 @@ public class UI_RaceCountdown : MonoBehaviour
         }
         if(raceBase == null)
         {
-            raceBase = FindFirstObjectByType<RaceBase>();
+            raceBase = FindAnyObjectByType<RaceBase>();
         }
 
 

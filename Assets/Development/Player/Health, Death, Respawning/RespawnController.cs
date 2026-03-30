@@ -30,7 +30,7 @@ public class RespawnController : MonoBehaviour
             startLoc = transform.position;
             ragdoll = player.GetComponent<RagdollController>();
         }
-        respawnNests = FindObjectsByType<NestBase>(FindObjectsSortMode.None);
+        respawnNests = FindObjectsByType<NestBase>();
         nextButton.onClick.AddListener(NextNest);
         prevButton.onClick.AddListener(PreviousNest);
         respawnButton.onClick.AddListener(RespawnPlayer);

@@ -27,7 +27,7 @@ public class ShopConfirmUI : MonoBehaviour
         confirmButton.onClick.AddListener(BuyItem);
         cancelButton.onClick.AddListener(CloseWindow);
         leftButton.onClick.AddListener(shopLocation.MovePlayerToNextSlotLeft);
-        inventory = FindFirstObjectByType<PlayerWingventory>();
+        inventory = FindAnyObjectByType<PlayerWingventory>();
         
     }
 

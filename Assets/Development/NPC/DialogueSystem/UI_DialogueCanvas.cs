@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine.Localization;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 
 public class UI_DialogueCanvas : MonoBehaviour
@@ -23,31 +25,39 @@ public class UI_DialogueCanvas : MonoBehaviour
     [SerializeField] private string responseReturnID;
     [SerializeField] private bool hasButtons = false;
     UI_CanvasController canvasController;
+    PlayerInput playerInput;
+    InputAction skipAction;
 
     bool skipDialogue;
     public Action SkipLine { get; private set; }
     private void Awake()
     {
         dialogueCanvas = GetComponent<Canvas>();
-        dialogueBase = FindFirstObjectByType<DialogueBase>();
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        dialogueBase = FindAnyObjectByType<DialogueBase>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        playerInput = FindAnyObjectByType<PlayerInput>();
         //dialogueImage = GetComponent<Image>();
     }
     void Start()
     {
         textSpeed=dialogueBase.textSpeed;
+        skipAction = playerInput.currentActionMap.FindAction("Click");
+        if (skipAction != null)
+        {
+            skipAction.performed += SkipDialogueLine;
+        }
     }
     void Update()
     {
-
-        //if(Input.GetMouseButtonDown(0))
-        //{
-        //    if (responses != null)
-        //    {
-        //        // ProgressDialogueCanvas();
-        //    }
-        //}
+        
     }
+
+    private void SkipDialogueLine(InputAction.CallbackContext ctx)
+    {
+        dialogueBase.SetSkipLine(true);
+    }
+
+
 
     public void UpdateDialogueUI(string name,string dialogue, Sprite image)
     {
@@ -148,6 +158,7 @@ public class UI_DialogueCanvas : MonoBehaviour
         SetButtonText(response, text);
 
         response.onClick.AddListener(() => ResponseClicked(branchOption));
+        EventSystem.current.SetSelectedGameObject(response.gameObject);
         return response;
     }
 

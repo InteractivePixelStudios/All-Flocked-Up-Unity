@@ -44,7 +44,6 @@ public class PlayerAccessoryComponent : MonoBehaviour
         currentItem.transform.position = slot.transform.position;
         currentItem.transform.rotation = slot.transform.rotation;
         currentEquippedAccessories.Add(currentItem);
-        currentItem.transform.localPosition += accessoryOffset;
         
         
     }

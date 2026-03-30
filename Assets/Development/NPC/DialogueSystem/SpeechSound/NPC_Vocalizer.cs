@@ -4,8 +4,8 @@ using FMOD.Studio;
 
 public class NPC_Vocalizer : MonoBehaviour
 {
-    [SerializeField]EventReference speechEventRef;
-    [SerializeField] EventInstance speechEventInstance;
+    [SerializeField] private EventReference speechEventRef;
+    [SerializeField] private EventInstance speechEventInstance;
 
     public void PlaySpeechSound()
     {
@@ -14,9 +14,9 @@ public class NPC_Vocalizer : MonoBehaviour
 
     public void Speech()
     {
-        EventInstance speech = RuntimeManager.CreateInstance(speechEventRef);
+        speechEventInstance = RuntimeManager.CreateInstance(speechEventRef);
 
-        speech.start();
-        speech.release();
+        speechEventInstance.start();
+        speechEventInstance.release();
     }
 }

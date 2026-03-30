@@ -9,8 +9,8 @@ public class RaceGiver : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        race = FindFirstObjectByType<RaceBase>();
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        race = FindAnyObjectByType<RaceBase>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
     }
 
     //called by PlayerInteraction... spawns the race giver canvas

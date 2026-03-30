@@ -28,8 +28,9 @@ public class TrafficLightTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Vehicle")) { 
-            stoppedVehicle = other.gameObject.GetComponent<VehicleBase>();
+            stoppedVehicle = other.gameObject.GetComponent<VehicleScript>();
             stoppedVehicle.isStopped = true;
+            Debug.Log("HitLight");
 
         }
     }

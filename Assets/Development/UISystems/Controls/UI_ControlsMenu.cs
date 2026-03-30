@@ -8,14 +8,17 @@ using UnityEngine.InputSystem.Utilities;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using UnityEngine.EventSystems;
+using Unity.Cinemachine;
 
 public class UI_ControlsMenu : UI_PauseMenu
 {
     [Header("Controls")]
     [SerializeField] private Button closeControlsButton;
     [SerializeField] private Slider mouseSensSlider;
+    private float mouseSens;
     [SerializeField] private TextMeshProUGUI meshSensText;
     [SerializeField] private Slider controllerSensSlider;
+    private float controllerSens;
     [SerializeField] private TextMeshProUGUI controlSensText;
     [SerializeField] private GameObject remapParent;
     [SerializeField] private RectTransform remapBox;
@@ -34,6 +37,7 @@ public class UI_ControlsMenu : UI_PauseMenu
     [SerializeField] private GameObject currentNotif;
     [SerializeField] private bool isRebinding = false;
     [SerializeField] private string currentAction = " ";
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -45,6 +49,7 @@ public class UI_ControlsMenu : UI_PauseMenu
         InitKeybindBox();
         InitMouseSensSlider();
         InitControllerSensSlider();
+        
     }
 
 
@@ -62,32 +67,44 @@ public class UI_ControlsMenu : UI_PauseMenu
 
     protected void InitMouseSensSlider()
     {
+        mouseSens = PlayerPrefs.GetFloat("MouseSens", 1f);
 
+        mouseSensSlider.SetValueWithoutNotify(mouseSens);
+        mouseSensSlider.onValueChanged.AddListener((_) => OnMouseSensChanged());
     }
 
     protected void OnMouseSensChanged()
     {
-
+        mouseSens = mouseSensSlider.value;
+        ApplyMouseSens();
     }
 
     protected void ApplyMouseSens()
     {
-
+        CameraController.Instance.SetLookSens(mouseSens);
+        PlayerPrefs.SetFloat("MouseSens", mouseSens);
+        PlayerPrefs.Save();
     }
 
     protected void InitControllerSensSlider()
     {
+        controllerSens = PlayerPrefs.GetFloat("ControllerSens", 1f);
 
+        controllerSensSlider.SetValueWithoutNotify(controllerSens);
+        controllerSensSlider.onValueChanged.AddListener((_) => OnControllerSensChanged());
     }
 
     protected void OnControllerSensChanged()
     {
-
+        controllerSens = controllerSensSlider.value;
+        ApplyControllerSens();
     }
 
     protected void ApplyControllerSens()
     {
-
+        CameraController.Instance.SetLookSens(controllerSens);
+        PlayerPrefs.SetFloat("ControllerSens", controllerSens);
+        PlayerPrefs.Save();
     }
 
     protected new void OnControlsOpen()
@@ -156,9 +173,8 @@ public class UI_ControlsMenu : UI_PauseMenu
     protected Dictionary<string,string> GetAllKeybinds(InputActionAsset inputActions)
     {
        var keybinds = new Dictionary<string,string>();
-        foreach(var map in inputActions.actionMaps) 
-        {
-            foreach(var action in map)
+
+            foreach(var action in inputActions.FindActionMap("Player"))
             {
                 foreach(var binding in action.bindings)
                 {
@@ -171,7 +187,7 @@ public class UI_ControlsMenu : UI_PauseMenu
                     }
                 }
             }
-        }
+        
         return keybinds;
     }
 
@@ -238,8 +254,11 @@ public class UI_ControlsMenu : UI_PauseMenu
     protected void ApplyKeybind(string keyName)
     {
         UpdateNotif(keyName);
-        //PlayerPrefs.SetString(currentAction + " Key", keyName);
-        //PlayerPrefs.Save();
+        PlayerPrefs.SetString(currentAction + " Key", keyName);
+        PlayerPrefs.Save();
         isRebinding = false;
     }
+
+
+
 }

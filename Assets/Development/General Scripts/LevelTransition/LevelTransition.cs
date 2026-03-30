@@ -9,7 +9,7 @@ public class LevelTransition : MonoBehaviour
 
     private void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -32,6 +32,14 @@ public class LevelTransition : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             ShowTransitionPrompt();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            canvasController.CloseLevelTransition();
         }
     }
 }

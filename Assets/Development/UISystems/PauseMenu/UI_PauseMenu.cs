@@ -35,12 +35,12 @@ public class UI_PauseMenu : MonoBehaviour
     }
     public void Unpause()
     {
-        var controller = FindFirstObjectByType<UI_CanvasController>();
+        var controller = FindAnyObjectByType<UI_CanvasController>();
         controller.ResumeGame();
         controller.HidePlayerCursor();
     }
 
-    protected virtual void OnSettingsOpen()
+    public virtual void OnSettingsOpen()
     {
         if (!settingsOpen)
         {

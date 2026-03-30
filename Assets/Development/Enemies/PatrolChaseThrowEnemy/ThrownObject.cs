@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class ThrownObject : MonoBehaviour
@@ -10,5 +11,12 @@ public class ThrownObject : MonoBehaviour
             var player = other.GetComponent<PlayerHealth>();
             player.TakeDamage(damage);
         }
+        else DestroyCup();
+    }
+
+    async void DestroyCup()
+    {
+        await Task.Delay(2000);
+        Destroy(this.gameObject);
     }
 }

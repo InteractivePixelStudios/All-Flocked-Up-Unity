@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -13,7 +14,10 @@ public class QuestRuntimeInstance
     public Dictionary<string, int> objectiveProgress = new(); //Dictionary stores the objectives from the current Stage Index
 
     public bool IsComplete => currentStageIndex >= questData.stages.Length;
+    private GameObject player;
     public QuestLog questLog;
+    private EXPSystem expComp;
+    private PlayerWingventory invComp;
     public float currentTime;
 
     public bool isQuestFailed = false;
@@ -21,18 +25,39 @@ public class QuestRuntimeInstance
 
     public List<GameObject> questMechanicsObjects = new List<GameObject>();
     [SerializeField] private PlayerNavArrow arrowPointer;
-    GameObject destination;
+    public GameObject destination;
+    private int cachedExp;
+    private int cachedTrinkets;
+    private string[] itemRewards;
 
     public void Start()
     {
         
     }
 
+    public int GetCachedExp()
+    {
+        return cachedExp;
+    }
+
+    public int GetCachedTrinkets()
+    {
+        return cachedTrinkets;
+    }
+
+    public string[] GetItemRewards()
+    {
+        return itemRewards;
+    }
+
     //Gets objectives and for each sets an objectiveID
     public void StartQuest()
     {
-        questLog = GameObject.Find("Player").GetComponent<QuestLog>();
-        arrowPointer = GameObject.Find("Player").GetComponent<PlayerNavArrow>();
+        questLog = GameObject.FindAnyObjectByType<QuestLog>();
+        player = questLog.gameObject;
+        arrowPointer = player.GetComponent<PlayerNavArrow>();
+        expComp = player.GetComponent<EXPSystem>();
+        invComp = player.GetComponent<PlayerWingventory>();
 
         var objectives = GetCurrentObjectives();
         foreach (var obj in objectives)
@@ -58,7 +83,7 @@ public class QuestRuntimeInstance
     {
 
         questMechanicsObjects.Clear();
-        IQuestMechanic[] mechanics = Object.FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+        IQuestMechanic[] mechanics = Object.FindObjectsByType<MonoBehaviour>()
     .OfType<IQuestMechanic>()
     .ToArray();
         foreach (var mechanic in mechanics)
@@ -100,10 +125,11 @@ public class QuestRuntimeInstance
     //Takes ObjectiveID and amount and increments. Checks if stage is complete and advances if true.
     public void UpdateObjective(string objectiveID, int amount)
     {
+        if (!objectiveProgress.ContainsKey(objectiveID)) { return; }
         GetObjectiveDestination(objectiveID); 
-        arrowPointer.destination = destination; 
-        arrowPointer.EnablePointerArrow(destination);
-        if (!objectiveProgress.ContainsKey(objectiveID)) {  return; }
+
+
+        arrowPointer.SetDestination(destination);
 
         objectiveProgress[objectiveID] += amount;
         questLog.OnObjectiveUpdated(this, objectiveID, objectiveProgress[objectiveID]);
@@ -126,7 +152,8 @@ public class QuestRuntimeInstance
             if (objectiveProgress[obj.objectiveID] < obj.quantityToComplete)
                 return false;
             //not sure if this triggers properly
-            GameObject.FindFirstObjectByType<EXPSystem>().IncrementXP(objectiveProgress[obj.objectiveID]);
+            cachedExp += obj.bonusEXP;
+            
         }
 
         return true;
@@ -135,7 +162,10 @@ public class QuestRuntimeInstance
     //Advances Stage index. If not complete, Start quest.
     public void AdvanceStage()
     {
-        GameObject.FindFirstObjectByType<EXPSystem>().IncrementXP(questData.stages[currentStageIndex].expReward);
+        
+        cachedExp += questData.stages[currentStageIndex].expReward;
+        cachedTrinkets += questData.stages[currentStageIndex].trinketReward;
+        itemRewards.AddRange(questData.itemRewards);
         currentStageIndex++;
         GetQuestObjects();
         if (!IsComplete)
@@ -150,6 +180,10 @@ public class QuestRuntimeInstance
     //calls the quest log function to remove quest
     public void CompleteQuest()
     {
+        arrowPointer.DestroyArrow();
+        expComp.IncrementXP(cachedExp);
+        invComp.AddTrinketToInv(cachedTrinkets, 0);
+        GiveItemReward();
         questLog.CheckForCompletedQuests();
     }
 

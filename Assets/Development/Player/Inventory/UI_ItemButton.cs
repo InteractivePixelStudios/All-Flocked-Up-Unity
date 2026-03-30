@@ -10,7 +10,7 @@ public class UI_ItemButton : MonoBehaviour
     public TextMeshProUGUI itemQuantityText;
     [SerializeField] private Button useButton;
     [SerializeField] private Button dropButton;
-    public GameObject itemRef;
+    public string itemRef;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -27,6 +27,11 @@ public class UI_ItemButton : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetWingRef(PlayerWingventory wing)
+    {
+        wingventory = wing;
     }
 
     private void ShowOptions()

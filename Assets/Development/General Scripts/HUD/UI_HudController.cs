@@ -25,15 +25,15 @@ public class UI_HudController : MonoBehaviour
     [SerializeField] private Image poopBarImage;
 
     [SerializeField] private PlayerHealth healthComp;
-    [SerializeField] private float health => playerStats.GetStat(StatInfo.stats.Health);
+    private float health => playerStats.GetStat(StatInfo.stats.Health);
     [SerializeField] private float currentHealth;
     [SerializeField] private float startHealth;
     [SerializeField] private StaminaSystem staminaComp;
-    [SerializeField] private float stamina => playerStats.GetStat(StatInfo.stats.Stamina);
+    private float stamina => playerStats.GetStat(StatInfo.stats.Stamina);
     [SerializeField] private float currentStamina;
     [SerializeField] private float startStamina;
     [SerializeField] private PoopSystem poopComp;
-    [SerializeField] private float poop => playerStats.GetStat(StatInfo.stats.PoopAmount);
+    private float poop => playerStats.GetStat(StatInfo.stats.PoopAmount);
     [SerializeField] private float currentPoop;
     [SerializeField] private float startPoop;
 
@@ -50,7 +50,7 @@ public class UI_HudController : MonoBehaviour
     void Start()
     {
         currentTime = hawkTimer;
-        playerRef = FindFirstObjectByType<PlayerHealth>().gameObject;
+        playerRef = FindAnyObjectByType<PlayerHealth>().gameObject;
         healthComp = playerRef.GetComponent<PlayerHealth>();
         staminaComp = playerRef.GetComponent<StaminaSystem>();
         expComp = playerRef.GetComponent<EXPSystem>();

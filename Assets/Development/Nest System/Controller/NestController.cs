@@ -23,7 +23,7 @@ public class NestController : MonoBehaviour
 
     private void GetSmallNestObjects()
     {
-        SmallNest[] nestList=Object.FindObjectsByType<SmallNest>(FindObjectsSortMode.None) as SmallNest[];
+        SmallNest[] nestList=Object.FindObjectsByType<SmallNest>() as SmallNest[];
         foreach(var nest in nestList)
         {
             smallNests.Add(nest, nest.isActiveNest);

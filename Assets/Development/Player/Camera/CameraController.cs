@@ -15,11 +15,13 @@ public class CameraController : Singleton<CameraController>
 
     InputAction lookAction; // Action for mouse input
     float x, y; // Mouse input values
+    private float lookSens = 1f;
 
     void Start()
     {
-        player = FindFirstObjectByType<PlayerFlightMovement>().transform;
+        player = FindAnyObjectByType<PlayerFlightMovement>().transform;
         lookAction = InputSystem.actions.FindAction("Look");
+        respawnTarget = FindAnyObjectByType<NestBase>().transform;
         transform.position = player.position + new Vector3(0, 5, -10);
         transform.LookAt(player);
     }
@@ -47,8 +49,13 @@ public class CameraController : Singleton<CameraController>
 
     void PlayerInput()
     {
-        x = lookAction.ReadValue<Vector2>().x;
-        y = lookAction.ReadValue<Vector2>().y;
+        x = lookAction.ReadValue<Vector2>().x * lookSens;
+        y = lookAction.ReadValue<Vector2>().y * lookSens;
+    }
+
+    public void SetLookSens(float value)
+    {
+        lookSens = value;
     }
 
     void CameraMovement()

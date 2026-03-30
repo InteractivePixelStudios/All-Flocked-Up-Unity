@@ -25,16 +25,16 @@ public class WingventoryCanvas : MonoBehaviour
 
     [Header("Inv/Accessory")]
     [SerializeField] private PlayerWingventory playerWingventory;
-    [SerializeField] private Dictionary<GameObject, int> playerInvItems = new();
+    public Dictionary<string, int> playerInvItems = new();
     [SerializeField] private UI_CanvasController canvasController;
     [SerializeField] private GameObject questParent;
     [SerializeField] private GameObject mapParent;
     [SerializeField] private GameObject invParent;
     [Header("Trinket")]
-    [SerializeField] private int currentTrinketCount=>GetTrinketCount();
-    [SerializeField] private int currentkeyChainCount => GetKeychainCount();
-    [SerializeField] private int currentPrestoCount => GetPrestoCount();
-    [SerializeField] private LocalizedString currentObjective => GetCurrentQuestInfo();
+    private int currentTrinketCount=>GetTrinketCount();
+    private int currentkeyChainCount => GetKeychainCount();
+    private int currentPrestoCount => GetPrestoCount();
+    private LocalizedString currentObjective => GetCurrentQuestInfo();
     [SerializeField] private TextMeshProUGUI trinketCountText;
     [SerializeField] private TextMeshProUGUI keychainText;
     [SerializeField] private TextMeshProUGUI prestoText;
@@ -52,9 +52,9 @@ public class WingventoryCanvas : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        questLog = FindFirstObjectByType<QuestLog>();
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
-        playerWingventory = FindFirstObjectByType<PlayerWingventory>();
+        questLog = FindAnyObjectByType<QuestLog>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+        playerWingventory = FindAnyObjectByType<PlayerWingventory>();
         GetTrinketCount();
         GetItemBoxes();
         leftBackPageButton.onClick.AddListener(GoCenterPage);
@@ -195,11 +195,17 @@ public class WingventoryCanvas : MonoBehaviour
 
     private LocalizedString GetCurrentQuestInfo()
     {
-        var objective = questLog.activeQuests[0].questData.stages[0].objectivesToComplete[0].objectiveDescription;
-        if (objective != null)
+        if (questLog.activeQuests.Count > 0)
         {
-            return objective;
-        }else return null;
+            var objective = questLog.activeQuests[0].questData.stages[0].objectivesToComplete[0].objectiveDescription;
+            if (objective != null)
+            {
+                return objective;
+            }
+            else return null;
+        }
+        else return null;
+
 
     }
 
@@ -236,21 +242,26 @@ public class WingventoryCanvas : MonoBehaviour
             var button = buttonObj.GetComponent<UI_ItemButton>();
             buttonObj.transform.localPosition = Vector3.zero;
             buttonObj.transform.localRotation = Quaternion.identity;
-
+            button.SetWingRef(playerWingventory);
 
             button.itemQuantityText.SetText(item.Value.ToString());
             button.itemRef = item.Key;
-            //button.itemImage = item.Key;
+
+            button.itemImage.sprite = playerWingventory.FindItemSprite(item.Key);
             boxIndex++;
         }
     }
 
     private void GetPlayerInv()
     {
-        var playerInv = FindFirstObjectByType<PlayerWingventory>().inventory;
+        var playerInv = FindAnyObjectByType<PlayerWingventory>().inventory;
         foreach (var item in playerInv)
         {
             playerInvItems.Add(item.Key, item.Value);
         }
     }
+
+
+
+
 }
