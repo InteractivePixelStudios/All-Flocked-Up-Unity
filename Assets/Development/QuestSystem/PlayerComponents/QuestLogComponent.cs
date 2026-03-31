@@ -246,7 +246,7 @@ public class QuestLog : MonoBehaviour
         {
             if (reward != null) 
             {
-                inventory.AddItemToInv(reward, 1);
+                inventory.AddItemToInv(reward.name, 1);
             }
         }
     }

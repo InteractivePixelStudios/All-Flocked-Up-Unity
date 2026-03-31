@@ -807,6 +807,8 @@ public class UI_CanvasController : MonoBehaviour
             {
                 ShowPlayerCursor();
             }
+            player.GetComponent<PlayerGroundMovement>().enabled = true;
+            player.GetComponent<PlayerFlightMovement>().enabled = true;
         }
     }
 
@@ -855,6 +857,8 @@ public class UI_CanvasController : MonoBehaviour
             {
                 ShowPlayerCursor();
             }
+            player.GetComponent<PlayerGroundMovement>().enabled = true;
+            player.GetComponent<PlayerFlightMovement>().enabled = true;
         }
     }
 
