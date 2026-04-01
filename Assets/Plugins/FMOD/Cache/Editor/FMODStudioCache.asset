@@ -117,6 +117,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 60047
+--- !u!114 &-7977607058343985395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/PropCollision/Impact
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Impact
+  StudioPath: 
+  Min: 0
+  Max: 10
+  Default: 0
+  ID:
+    data1: 3220302367
+    data2: 2456279588
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-7867623950449250748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,6 +258,33 @@ MonoBehaviour:
   - Concrete
   - Wood
   Exists: 1
+--- !u!114 &-6343781107320008344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: snapshot:/New Snapshot
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: snapshot:/New Snapshot
+  Guid:
+    Data1: 1117129903
+    Data2: 1152662603
+    Data3: 1094399159
+    Data4: -347221972
+  Banks:
+  - {fileID: 1049129095624132089}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
 --- !u!114 &-6032764263856006980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -375,6 +426,35 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-4918397441080935492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/World/PropCollision
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/World/PropCollision
+  Guid:
+    Data1: 545641163
+    Data2: 1090547908
+    Data3: 1937329308
+    Data4: 1886933409
+  Banks:
+  - {fileID: 591164384298374099}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 5600823441476282664}
+  - {fileID: -7977607058343985395}
+  MinDistance: 0
+  MaxDistance: 10
+  Length: 0
 --- !u!114 &-4602053606157684420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,6 +578,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 9557472
   Exists: 1
+--- !u!114 &-1230441621409891680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/World/TrashCans
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/World/TrashCans
+  Guid:
+    Data1: -93282537
+    Data2: 1275875526
+    Data3: 1350429825
+    Data4: -1576111553
+  Banks:
+  - {fileID: 591164384298374099}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 3
+  MaxDistance: 15
+  Length: 30000
 --- !u!114 &-281887107944519751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,13 +685,16 @@ MonoBehaviour:
   - {fileID: -4602053606157684420}
   - {fileID: -4942760936848228028}
   - {fileID: -8732018220470247719}
+  - {fileID: -1230441621409891680}
+  - {fileID: -4918397441080935492}
+  - {fileID: -6343781107320008344}
   EditorParameters: []
   MasterBanks:
   - {fileID: 1049129095624132089}
   StringsBanks:
   - {fileID: 7968650986646313413}
   cacheVersion: 131858
-  cacheTime: 639095173608788476
+  cacheTime: 639106076837591268
   SerializableEventsDict:
   - key: event:/Ambience/WorldBirds
     index: 0
@@ -602,6 +712,12 @@ MonoBehaviour:
     index: 6
   - key: event:/ItemPickup
     index: 7
+  - key: event:/World/TrashCans
+    index: 8
+  - key: event:/World/PropCollision
+    index: 9
+  - key: snapshot:/New Snapshot
+    index: 10
 --- !u!114 &73506915100599220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -664,7 +780,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639067573279288103
+  lastModified: 639106076837591268
   FileSizes: []
   Exists: 1
 --- !u!114 &1049129095624132089
@@ -682,7 +798,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639067573279238238
+  lastModified: 639106076837395916
   FileSizes: []
   Exists: 1
 --- !u!114 &1180671633683509754
@@ -775,6 +891,33 @@ MonoBehaviour:
   - Name: Desktop
     Value: 506
   Exists: 1
+--- !u!114 &5600823441476282664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/PropCollision/Thunk
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Thunk
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 1788311022
+    data2: 832937910
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
+  - Value B
+  - Value C
+  Exists: 1
 --- !u!114 &5943723778678317517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -846,7 +989,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Player.bank
   Name: Player
   StudioPath: bank:/Player
-  lastModified: 639067573279278129
+  lastModified: 639094675309066342
   FileSizes: []
   Exists: 1
 --- !u!114 &6756548285779738446
@@ -864,7 +1007,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 639095173608788476
+  lastModified: 639106076837344041
   FileSizes: []
   Exists: 1
 --- !u!114 &6985391345815627086
@@ -882,7 +1025,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639067573279258180
+  lastModified: 639094675308420193
   FileSizes: []
   Exists: 1
 --- !u!114 &7419841717107519623
@@ -950,10 +1093,10 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639067573279248211
+  lastModified: 639106076837406225
   FileSizes:
   - Name: 
-    Value: 1630
+    Value: 1870
   Exists: 1
 --- !u!114 &8435538054931725827
 MonoBehaviour:

@@ -1,3 +1,4 @@
+/* Script managed by IPM */
 using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
@@ -98,6 +99,6 @@ public class AmbienceLogic_Bird : MonoBehaviour
 
 // NOTES
 
-// Script Change - Isaiah PM 
+// Script Change - IPM
 // I have changed this script from being area based trigger to hard coded referecnes to the tress in an area
 // This has been done to reduce the number of triggers and colliders in the scene and to avoid potential issues with multiple triggers overlapping.
