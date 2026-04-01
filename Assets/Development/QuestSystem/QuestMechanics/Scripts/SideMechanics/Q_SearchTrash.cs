@@ -20,7 +20,10 @@ public class Q_SearchTrash : MonoBehaviour, IQuestMechanic
 
     public void SearchTrash()
     {
-        questLog.UpdateQuestObjective(objectiveID, 1);
+        if(questLog.activeQuests.Count > 0)
+        {
+            questLog.UpdateQuestObjective(objectiveID, 1);
+        }
     }
 
 

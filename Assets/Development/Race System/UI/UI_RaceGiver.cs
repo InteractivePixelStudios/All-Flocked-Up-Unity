@@ -32,7 +32,7 @@ public class UI_RaceGiver : MonoBehaviour
         LocalizedString localizedString = new LocalizedString
         {
             TableReference = "AFU_Races",
-            TableEntryReference = raceBase.currentRaceGiver.raceData.name
+            TableEntryReference = raceBase.raceData.name
         };
 
         localizedString.GetLocalizedStringAsync().Completed += handle =>
@@ -42,7 +42,7 @@ public class UI_RaceGiver : MonoBehaviour
         LocalizedString localizedDescString = new LocalizedString
         {
             TableReference = "AFU_Races",
-            TableEntryReference = raceBase.currentRaceGiver.raceData.raceDescription.GetLocalizedString()
+            TableEntryReference = raceBase.raceData.raceDescription.GetLocalizedString()
         };
 
         localizedDescString.GetLocalizedStringAsync().Completed += handle =>

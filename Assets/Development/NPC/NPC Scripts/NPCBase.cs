@@ -16,6 +16,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     [SerializeField] private GameObject homeLocation;
     [SerializeField] private QuestGiver questGiverComp;
     public bool dialogueFirst;
+    private IconToggle questIcon;
     //on load
     public void Awake()
     {
@@ -30,6 +31,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         Debug.Log("NPC LOADED");
         homeLocation = FindAnyObjectByType<LargeNest>().gameObject;
+        questIcon = GetComponent<IconToggle>();
     }
 
     public void Update()
@@ -40,6 +42,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         }
         if(questGiverComp.hasQuest == false || questGiverComp == null)
         {
+            questIcon.enabled = false;
             targetLocation = homeLocation.transform;
             //isMoving = true;
         }
@@ -90,6 +93,8 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     {
 
     }
+
+ 
 
 
 }

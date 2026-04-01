@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 301411014645794962}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.296, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -305,7 +305,7 @@ Transform:
   m_GameObject: {fileID: 2458748855200337666}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.122}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -336,7 +336,7 @@ Transform:
   m_GameObject: {fileID: 2500670945299072242}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.073, z: 0.149}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -452,12 +452,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4186634654725249231}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.219, z: 0.243}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.0142032765, y: 0.00014449655, z: -0.00039440385, w: -0.99989915}
+  m_LocalPosition: {x: -0, y: -0.232, z: 0.211}
+  m_LocalScale: {x: 2.4828808, y: 2.4828808, z: 2.482881}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8952464106424959765}
+  m_Father: {fileID: 8182151460828042457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5553620582446087855
 GameObject:
@@ -10860,7 +10860,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8818452877007051669, guid: 27ecc67c54a441f43aea34ae30ebb858, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 5074474002350864302}
   m_SourcePrefab: {fileID: 100100000, guid: 27ecc67c54a441f43aea34ae30ebb858, type: 3}
 --- !u!4 &1078378833357629492 stripped
 Transform:
@@ -10872,12 +10875,36 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2683314690187272511, guid: 27ecc67c54a441f43aea34ae30ebb858, type: 3}
   m_PrefabInstance: {fileID: 4433759641108231884}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 5180987628949794137}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb8dd271ed8dd2643afbe7d22b8173ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5180987628949794137 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8818452877007051669, guid: 27ecc67c54a441f43aea34ae30ebb858, type: 3}
+  m_PrefabInstance: {fileID: 4433759641108231884}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5074474002350864302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5180987628949794137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1929a66cfb2f8ef4b9446035d0b94bfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPC_Vocalizer
+  speechEventRef:
+    Guid:
+      Data1: -365079154
+      Data2: 1306255037
+      Data3: 134290610
+      Data4: -1955566084
+    Path: event:/Footsteps/Player_Footsteps
 --- !u!1001 &7882916956589649140
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11532,9 +11559,6 @@ PrefabInstance:
       addedObject: {fileID: 5221389614442835616}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8014389700419794481}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2891378480202219124}
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
@@ -11569,6 +11593,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7638201141147483138, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8988307341082137951}
+    - targetCorrespondingSourceObject: {fileID: -8485937601302155225, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8014389700419794481}
     - targetCorrespondingSourceObject: {fileID: 7942611240609874833, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2272326430613247002}
@@ -12600,6 +12627,11 @@ SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 1283837351537997097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
   m_PrefabInstance: {fileID: 8914650961509115134}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &8182151460828042457 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8485937601302155225, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
+  m_PrefabInstance: {fileID: 8914650961509115134}
+  m_PrefabAsset: {fileID: 0}
 --- !u!137 &8321252749030686388 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -8589432558617421238, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
@@ -12840,9 +12872,9 @@ MonoBehaviour:
   threshold: 0.01
   stepRayUpper: {fileID: 2500670945299072242}
   stepRayLower: {fileID: 2458748855200337666}
-  stepHeight: 0.3
-  stepSmoothing: 1
-  stepCastDistance: 0.2
+  stepHeight: 0.35
+  stepSmoothing: 0.1
+  stepCastDistance: 0.3
   rotationLerpSpeed: 0.1
   sprintStaminaAmount: 0.2
   sprintTriggerStaminaTime: 0.5
@@ -12868,7 +12900,7 @@ MonoBehaviour:
   glideDownSpeed: 350
   glideDownDropSpeed: 1
   stallDownSpeed: 3
-  tiltSpeed: 100
+  tiltSpeed: 50
   diveSpeed: 100
   stallTime: 0.5
   stallHeight: 1
@@ -12984,6 +13016,15 @@ MonoBehaviour:
   playerTrinketQuantity: 0
   playerKeychainQuantity: 0
   playerPrestoQuantity: 0
+  inventoryPrefabList:
+  - {fileID: 3943473761783896074, guid: 737ce4ee60bbf024c9def86bf3d2bd14, type: 3}
+  - {fileID: 6246681715980741345, guid: 0a54840cdde938f46a8e29407f7cf9f6, type: 3}
+  - {fileID: 4567726112435861742, guid: 495f98a21b611bc41855c08497b7dbc4, type: 3}
+  - {fileID: 190577054808988160, guid: 2c418dc471a8d114b9eb12e5630da171, type: 3}
+  - {fileID: 7004370475826129043, guid: ba34f1e0fb329a040b2248c25013f786, type: 3}
+  - {fileID: 3157577530314214254, guid: 1542a388e2847914b8d647f64c739e25, type: 3}
+  - {fileID: 2769433764520600213, guid: d53f961c997061642a5d9b60c7c3c8c6, type: 3}
+  - {fileID: 300902396776574876, guid: 60cdbacdccab3244bae9fd570839709a, type: 3}
 --- !u!114 &5682136442268613181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13011,6 +13052,13 @@ MonoBehaviour:
   headSlot: {fileID: 6197911558244718780}
   neckSlot: {fileID: 5635981566747612132}
   monocleSlot: {fileID: 6399358809199908467}
+  isMonocle: 0
+  isAnklet: 0
+  isBread: 0
+  isRose: 0
+  isReciept: 0
+  isFeather: 0
+  isBottle: 0
 --- !u!114 &4441602835408521351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13054,8 +13102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60db7db76d5919b48af7afab7320d5d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPoop: 5
-  poopCooldown: 2
+  maxPoop: 15
+  poopCooldown: 1.5
   poopBonus: 0
   accessoryComponent: {fileID: 5682136442268613181}
   cooldownTimer: 1.5
@@ -13076,8 +13124,8 @@ MonoBehaviour:
   spawnPoint: {fileID: 6833759070502345426}
   projectilePrefab: {fileID: 6846412828355083065, guid: f2b7faadd86daf34fb84d125256a5103, type: 3}
   poolSize: 10
-  forwardVelocity: 3
-  verticalVelocity: 2
+  forwardVelocity: 5
+  verticalVelocity: 3
 --- !u!114 &9166902959186705048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13166,7 +13214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentStamina: 0
-  MaxStamina: 10
+  MaxStamina: 15
   staminaRegenSpeed: 2
 --- !u!114 &4196759041878272704
 MonoBehaviour:
@@ -13360,7 +13408,7 @@ SphereCollider:
     m_Bits: 256
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 536870655
+    m_Bits: 8388608
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0

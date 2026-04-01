@@ -1,11 +1,12 @@
 using UnityEngine;
 
-public class EnemyBase_HitDetect : EnemyBaseComponent
+public class EnemyBase_HitDetect : MonoBehaviour
 {
+    private EnemyBaseComponent enemyBase;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
-        
+        enemyBase = GetComponentInParent<EnemyBaseComponent>();
     }
 
     // Update is called once per frame
@@ -18,8 +19,8 @@ public class EnemyBase_HitDetect : EnemyBaseComponent
     {
         if (other.gameObject.CompareTag("Poop"))
         {
-            TriggerStateChangeOnHit();
-            Debug.Log("Enemy Hit by POOP");
+            enemyBase.TakeDamage(10);
+            
         }
     }
 }

@@ -36,7 +36,7 @@ public class UI_RaceFail : MonoBehaviour
         LocalizedString localizedString = new LocalizedString
         {
             TableReference = "AFU_Races",
-            TableEntryReference = race.currentRaceGiver.raceData.name
+            TableEntryReference = race.raceData.name
         };
 
         localizedString.GetLocalizedStringAsync().Completed += handle =>
@@ -49,14 +49,13 @@ public class UI_RaceFail : MonoBehaviour
 
     private void RetryRace()
     {
-        Destroy(this.gameObject);
-        race.ResetRace();
+        canvasController.CloseRaceFail(true);
+
 
     }
 
     private void CloseRace()
     {
-       Destroy(this.gameObject);
-        race.StartPlayerMove();
+        canvasController.CloseRaceFail(false);
     }
 }

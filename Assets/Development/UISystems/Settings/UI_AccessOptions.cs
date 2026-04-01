@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.Localization.Settings;
+using static UnityEngine.Rendering.DebugUI;
 
 public class UI_AccessOptions : UI_SettingsMenu
 {
@@ -15,11 +16,12 @@ public class UI_AccessOptions : UI_SettingsMenu
     [SerializeField] private Toggle highContrastToggle;
     [SerializeField] private Material cbMaterial;
     [SerializeField] private LocalizationSettings settings;
+    Dictionary<Graphic, Color> cachedTextColors = new();
+    UI_CanvasController canvasController;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        int mode = PlayerPrefs.GetInt("CBMode", 0);
-        Shader.SetGlobalFloat("_Mode", mode);
+
     }
 
     public void SetFirstAccessButton()
@@ -29,6 +31,7 @@ public class UI_AccessOptions : UI_SettingsMenu
 
     void Start()
     {
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
         InitCBModeDD();
         InitContrastModeDD();
         InitLanguageDD();
@@ -67,13 +70,17 @@ public class UI_AccessOptions : UI_SettingsMenu
     {
         switch (index)
         {
-            case 0: SetCBMode(ColorBlindMode.None); 
+            case 0:
+                SetCBMode(ColorBlindMode.None);
                 break;
-            case 1: SetCBMode(ColorBlindMode.Deuteranopia); 
+            case 1:
+                SetCBMode(ColorBlindMode.Deuteranopia);
                 break;
-            case 2: SetCBMode(ColorBlindMode.Protanopia); 
+            case 2:
+                SetCBMode(ColorBlindMode.Protanopia);
                 break;
-            case 3: SetCBMode(ColorBlindMode.Tritanopia); 
+            case 3:
+                SetCBMode(ColorBlindMode.Tritanopia);
                 break;
         }
     }
@@ -118,12 +125,18 @@ public class UI_AccessOptions : UI_SettingsMenu
         var locales = settings.GetAvailableLocales().Locales;
         List<string> options = new();
         int langIndex = 6;
-        languageDropdown.ClearOptions();
+        int saveLang = PlayerPrefs.GetInt("Language", 6);
         for (int i = 0; i < locales.Count; i++)
         {
             var locale = locales[i];
             options.Add(locale.LocaleName);
+            if (i == saveLang)
+            {
+                langIndex = i;
+
+            }
         }
+        languageDropdown.ClearOptions();
         languageDropdown.AddOptions(options);
         languageDropdown.value = langIndex;
         languageDropdown.RefreshShownValue();
@@ -143,9 +156,10 @@ public class UI_AccessOptions : UI_SettingsMenu
     {
         bool value = PlayerPrefs.GetInt("HighContrastMode", 0) == 1;
         highContrastToggle.isOn = value;
+        cachedTextColors.Clear();
 
-        ApplyContrastMode(value);
         highContrastToggle.onValueChanged.AddListener(OnContrastModeChanged);
+        ApplyContrastMode(value);
     }
 
     protected void OnContrastModeChanged(bool value)
@@ -157,30 +171,10 @@ public class UI_AccessOptions : UI_SettingsMenu
 
     protected void ApplyContrastMode(bool value)
     {
-        SetContrastMode(value);
+        canvasController.SetContrastMode(value);
     }
 
-    protected void SetContrastMode(bool value)
-    {
-        var ui = FindObjectsByType<UnityEngine.UI.Graphic>();
-        foreach(var element in ui)
-        {
-            if (!value)
-            {
-                if (element is UnityEngine.UI.Text || element is TMPro.TextMeshProUGUI)
-                    element.color = Color.black;
-                else
-                    element.color = Color.white;
-            }
-            else
-            {
-                if (element is UnityEngine.UI.Text || element is TMPro.TextMeshProUGUI)
-                    element.color = Color.white;
-                else
-                    element.color = Color.gray;
-            }
-        }
-    }
+   
 }
 
 public enum ColorBlindMode

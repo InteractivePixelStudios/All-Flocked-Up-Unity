@@ -40,6 +40,7 @@ public class UI_AudioOptions : UI_SettingsMenu
     {
         float saved = PlayerPrefs.GetFloat("MasterVolume", 1f);
         mainVolSlider.value = saved;
+        mainVolSlider.SetValueWithoutNotify(saved);
         SetMainVol(saved);
         SetMainVolText(saved);
         mainVolSlider.onValueChanged.AddListener(OnMainVolChanged);
@@ -67,8 +68,9 @@ public class UI_AudioOptions : UI_SettingsMenu
 
     protected void InitSFXSlider()
     {
-        float saved = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        float saved = PlayerPrefs.GetFloat("SFXVolume", 0.5f);
         sfxVolSlider.value = saved;
+        sfxVolSlider.SetValueWithoutNotify(saved);
         SetSFXVol(saved);
         SetSFXVolText(saved);
         sfxVolSlider.onValueChanged.AddListener(OnSFXVolChanged);
@@ -94,8 +96,9 @@ public class UI_AudioOptions : UI_SettingsMenu
 
     protected void InitMusicSlider()
     {
-        float saved = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        float saved = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
         musicVolSlider.value = saved;
+        musicVolSlider.SetValueWithoutNotify(saved);
         SetMusicVol(saved);
         SetMusicVolText(saved);
 
@@ -122,7 +125,7 @@ public class UI_AudioOptions : UI_SettingsMenu
 
     protected void InitAmbientSlider()
     {
-        float saved = PlayerPrefs.GetFloat("AmbientVolume", 1f);
+        float saved = PlayerPrefs.GetFloat("AmbientVolume", 0.5f);
         ambientVolSlider.value = saved;
         SetAmbientVol(saved);
         SetAmbientVolText(saved);
@@ -174,6 +177,7 @@ public class UI_AudioOptions : UI_SettingsMenu
 
     protected void InitOutputDropdown()
     {
+        outputDropdown.ClearOptions();
         FMODUnity.RuntimeManager.CoreSystem.getNumDrivers(out int numDrivers);
 
         List<string> devices = new();
@@ -184,7 +188,6 @@ public class UI_AudioOptions : UI_SettingsMenu
             devices.Add(name);
         }
 
-        outputDropdown.ClearOptions();
         outputDropdown.AddOptions(devices);
 
         int saved = PlayerPrefs.GetInt("AudioDriver", 0);

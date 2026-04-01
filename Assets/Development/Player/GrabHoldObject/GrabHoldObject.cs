@@ -89,7 +89,7 @@ public class GrabHoldObject : MonoBehaviour
             else
             {
                 var inv = GetComponentInParent<PlayerWingventory>();
-                inv.AddItemToInv(hit.collider.gameObject,1);
+                inv.AddItemToInv(hit.collider.gameObject.name,1);
             }
 
         }
