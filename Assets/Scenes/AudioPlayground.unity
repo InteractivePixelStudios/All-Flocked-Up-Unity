@@ -253,6 +253,10 @@ GameObject:
   - component: {fileID: 113340377}
   - component: {fileID: 113340376}
   - component: {fileID: 113340375}
+  - component: {fileID: 113340380}
+  - component: {fileID: 113340381}
+  - component: {fileID: 113340382}
+  - component: {fileID: 113340383}
   m_Layer: 0
   m_Name: Cube (10)
   m_TagString: Untagged
@@ -284,9 +288,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &113340376
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -380,6 +384,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -33.43, y: -23.398, z: 38.147}
+--- !u!114 &113340380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113340374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &113340381
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113340374}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: -0.0000038146973, y: -0.0000009536743, z: 0.0000076293945}
+--- !u!114 &113340382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113340374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &113340383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 113340374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1001 &153671938
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -687,9 +764,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 200162730}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 74.99847, y: -0.001, z: 10.0041}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.1024902, y: 0.499, z: 1.6702535}
+  m_LocalScale: {x: 0.04, y: 1, z: 0.04}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1282864365}
@@ -719,7 +796,7 @@ Transform:
   - {fileID: 707538645}
   - {fileID: 957322434}
   - {fileID: 1762223077}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2027478358}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &214361791
 GameObject:
@@ -927,6 +1004,10 @@ GameObject:
   - component: {fileID: 235139218}
   - component: {fileID: 235139217}
   - component: {fileID: 235139216}
+  - component: {fileID: 235139221}
+  - component: {fileID: 235139222}
+  - component: {fileID: 235139223}
+  - component: {fileID: 235139224}
   m_Layer: 0
   m_Name: Cube (15)
   m_TagString: Untagged
@@ -958,9 +1039,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &235139217
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1054,6 +1135,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: 16.693, y: -31.646, z: -10.197}
+--- !u!114 &235139221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235139215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &235139222
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235139215}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: -0.0000038146973, y: 0, z: 0.0000076293945}
+--- !u!114 &235139223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235139215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &235139224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 235139215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1001 &248371508
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2429,6 +2583,10 @@ GameObject:
   - component: {fileID: 707538643}
   - component: {fileID: 707538642}
   - component: {fileID: 707538641}
+  - component: {fileID: 707538646}
+  - component: {fileID: 707538647}
+  - component: {fileID: 707538648}
+  - component: {fileID: 707538649}
   m_Layer: 0
   m_Name: Cube (8)
   m_TagString: Untagged
@@ -2460,9 +2618,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &707538642
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2556,6 +2714,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: 16.693, y: -31.646, z: -10.197}
+--- !u!114 &707538646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 707538640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &707538647
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 707538640}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: -0.0000038146973, y: -0.0000014305115, z: 0.0000038146973}
+--- !u!114 &707538648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 707538640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &707538649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 707538640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &715159955
 GameObject:
   m_ObjectHideFlags: 0
@@ -2980,7 +3211,6 @@ Transform:
   - {fileID: 1073432812}
   - {fileID: 720111895}
   - {fileID: 586146464}
-  - {fileID: 2027478358}
   - {fileID: 190990391}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3118,6 +3348,10 @@ GameObject:
   - component: {fileID: 763424025}
   - component: {fileID: 763424024}
   - component: {fileID: 763424023}
+  - component: {fileID: 763424028}
+  - component: {fileID: 763424029}
+  - component: {fileID: 763424030}
+  - component: {fileID: 763424031}
   m_Layer: 0
   m_Name: Cube (5)
   m_TagString: Untagged
@@ -3149,9 +3383,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &763424024
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3245,6 +3479,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: 16.693, y: -31.646, z: -10.197}
+--- !u!114 &763424028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763424022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &763424029
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763424022}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: 0, z: 0.0000076293945}
+--- !u!114 &763424030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763424022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &763424031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763424022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &781259822
 GameObject:
   m_ObjectHideFlags: 0
@@ -3555,6 +3862,10 @@ GameObject:
   - component: {fileID: 848289999}
   - component: {fileID: 848289998}
   - component: {fileID: 848289997}
+  - component: {fileID: 848290002}
+  - component: {fileID: 848290003}
+  - component: {fileID: 848290004}
+  - component: {fileID: 848290005}
   m_Layer: 0
   m_Name: Cube (7)
   m_TagString: Untagged
@@ -3586,9 +3897,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &848289998
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3682,6 +3993,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: 16.693, y: -31.646, z: -10.197}
+--- !u!114 &848290002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848289996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &848290003
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848289996}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: 0.0000009536743, z: 0.0000038146973}
+--- !u!114 &848290004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848289996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &848290005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848289996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &889739866 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: aa467bc8e153b1e4c862de996d80b22b, type: 3}
@@ -3700,6 +4084,10 @@ GameObject:
   - component: {fileID: 890659019}
   - component: {fileID: 890659018}
   - component: {fileID: 890659017}
+  - component: {fileID: 890659022}
+  - component: {fileID: 890659023}
+  - component: {fileID: 890659024}
+  - component: {fileID: 890659025}
   m_Layer: 0
   m_Name: Cube (23)
   m_TagString: Untagged
@@ -3731,9 +4119,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &890659018
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3827,6 +4215,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -18.479, y: -21.788, z: 73.991}
+--- !u!114 &890659022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890659016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &890659023
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890659016}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: -0.0000038146973, z: 0}
+--- !u!114 &890659024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890659016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &890659025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890659016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &905740519 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 697ca3f90b5daed40b212f7efc361a02, type: 3}
@@ -4112,6 +4573,10 @@ GameObject:
   - component: {fileID: 957322432}
   - component: {fileID: 957322431}
   - component: {fileID: 957322430}
+  - component: {fileID: 957322435}
+  - component: {fileID: 957322436}
+  - component: {fileID: 957322437}
+  - component: {fileID: 957322438}
   m_Layer: 0
   m_Name: Cube (17)
   m_TagString: Untagged
@@ -4143,9 +4608,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &957322431
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4239,6 +4704,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: 16.693, y: -31.646, z: -10.197}
+--- !u!114 &957322435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957322429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &957322436
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957322429}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: -0.00000047683716, z: 0.0000038146973}
+--- !u!114 &957322437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957322429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &957322438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957322429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &983766181 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5c95c52130fdfbc46ae2a29543021ed9, type: 3}
@@ -4558,6 +5096,10 @@ GameObject:
   - component: {fileID: 1016526214}
   - component: {fileID: 1016526213}
   - component: {fileID: 1016526212}
+  - component: {fileID: 1016526217}
+  - component: {fileID: 1016526218}
+  - component: {fileID: 1016526219}
+  - component: {fileID: 1016526220}
   m_Layer: 0
   m_Name: Cube (14)
   m_TagString: Untagged
@@ -4589,9 +5131,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1016526213
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4685,6 +5227,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: 16.693, y: -31.646, z: -10.197}
+--- !u!114 &1016526217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016526211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1016526218
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016526211}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: -0.0000076293945, y: 0.00000047683716, z: 0}
+--- !u!114 &1016526219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016526211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1016526220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016526211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1039925051 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: aa467bc8e153b1e4c862de996d80b22b, type: 3}
@@ -4900,6 +5515,10 @@ GameObject:
   - component: {fileID: 1083912330}
   - component: {fileID: 1083912329}
   - component: {fileID: 1083912328}
+  - component: {fileID: 1083912333}
+  - component: {fileID: 1083912334}
+  - component: {fileID: 1083912335}
+  - component: {fileID: 1083912336}
   m_Layer: 0
   m_Name: Cube (13)
   m_TagString: Untagged
@@ -4931,9 +5550,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1083912329
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5027,6 +5646,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: 16.693, y: -31.646, z: -10.197}
+--- !u!114 &1083912333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083912327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1083912334
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083912327}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: -0.0000076293945, y: -0.00000047683716, z: 0.0000038146973}
+--- !u!114 &1083912335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083912327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1083912336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083912327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1086882099
 GameObject:
   m_ObjectHideFlags: 0
@@ -5040,6 +5732,10 @@ GameObject:
   - component: {fileID: 1086882102}
   - component: {fileID: 1086882101}
   - component: {fileID: 1086882100}
+  - component: {fileID: 1086882105}
+  - component: {fileID: 1086882106}
+  - component: {fileID: 1086882107}
+  - component: {fileID: 1086882108}
   m_Layer: 0
   m_Name: Cube (19)
   m_TagString: Untagged
@@ -5071,9 +5767,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1086882101
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5167,6 +5863,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -59.484, y: -62.383, z: 152.003}
+--- !u!114 &1086882105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086882099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1086882106
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086882099}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: -0.0000038146973, z: 0.0000019073486}
+--- !u!114 &1086882107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086882099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1086882108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1086882099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1095011529
 GameObject:
   m_ObjectHideFlags: 0
@@ -5180,6 +5949,10 @@ GameObject:
   - component: {fileID: 1095011532}
   - component: {fileID: 1095011531}
   - component: {fileID: 1095011530}
+  - component: {fileID: 1095011535}
+  - component: {fileID: 1095011536}
+  - component: {fileID: 1095011537}
+  - component: {fileID: 1095011538}
   m_Layer: 0
   m_Name: Cube (9)
   m_TagString: Untagged
@@ -5211,9 +5984,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1095011531
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5307,6 +6080,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -33.43, y: -23.398, z: 38.147}
+--- !u!114 &1095011535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095011529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1095011536
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095011529}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: -0.0000076293945, y: 0.0000047683716, z: 0.0000076293945}
+--- !u!114 &1095011537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095011529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1095011538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095011529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1144731988
 GameObject:
   m_ObjectHideFlags: 0
@@ -5423,6 +6269,10 @@ GameObject:
   - component: {fileID: 1166101590}
   - component: {fileID: 1166101589}
   - component: {fileID: 1166101588}
+  - component: {fileID: 1166101593}
+  - component: {fileID: 1166101594}
+  - component: {fileID: 1166101595}
+  - component: {fileID: 1166101596}
   m_Layer: 0
   m_Name: Cube (18)
   m_TagString: Untagged
@@ -5454,9 +6304,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1166101589
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5550,6 +6400,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -59.484, y: -62.383, z: 152.003}
+--- !u!114 &1166101593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166101587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1166101594
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166101587}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: -0.0000019073486, y: 0.0000038146973, z: 0.0000019073486}
+--- !u!114 &1166101595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166101587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1166101596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1166101587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1170632295 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 627031d328fa6634e9349f327fcebd35, type: 3}
@@ -5568,6 +6491,10 @@ GameObject:
   - component: {fileID: 1183647937}
   - component: {fileID: 1183647936}
   - component: {fileID: 1183647935}
+  - component: {fileID: 1183647940}
+  - component: {fileID: 1183647941}
+  - component: {fileID: 1183647942}
+  - component: {fileID: 1183647943}
   m_Layer: 0
   m_Name: Cube (22)
   m_TagString: Untagged
@@ -5599,9 +6526,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1183647936
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5695,6 +6622,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -18.479, y: -21.788, z: 73.991}
+--- !u!114 &1183647940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183647934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1183647941
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183647934}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: -0.0000038146973, z: 0}
+--- !u!114 &1183647942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183647934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1183647943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1183647934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1193358032 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 697ca3f90b5daed40b212f7efc361a02, type: 3}
@@ -6107,6 +7107,9 @@ GameObject:
   - component: {fileID: 1254195672}
   - component: {fileID: 1254195671}
   - component: {fileID: 1254195670}
+  - component: {fileID: 1254195677}
+  - component: {fileID: 1254195678}
+  - component: {fileID: 1254195679}
   m_Layer: 0
   m_Name: Cube (20)
   m_TagString: Untagged
@@ -6126,6 +7129,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
 --- !u!54 &1254195671
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6246,6 +7257,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &1254195677
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254195669}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1254195678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254195669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1254195679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254195669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1269493754
 GameObject:
   m_ObjectHideFlags: 0
@@ -6259,6 +7323,10 @@ GameObject:
   - component: {fileID: 1269493757}
   - component: {fileID: 1269493756}
   - component: {fileID: 1269493755}
+  - component: {fileID: 1269493760}
+  - component: {fileID: 1269493761}
+  - component: {fileID: 1269493762}
+  - component: {fileID: 1269493763}
   m_Layer: 0
   m_Name: Cube (4)
   m_TagString: Untagged
@@ -6290,9 +7358,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1269493756
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6386,6 +7454,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: 16.693, y: -31.646, z: -10.197}
+--- !u!114 &1269493760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269493754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1269493761
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269493754}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: -0.0000038146973, y: 0, z: 0.0000038146973}
+--- !u!114 &1269493762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269493754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1269493763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269493754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1270138944 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fd3455f0caa393d46bd81337458ac704, type: 3}
@@ -6404,6 +7545,10 @@ GameObject:
   - component: {fileID: 1282864363}
   - component: {fileID: 1282864362}
   - component: {fileID: 1282864361}
+  - component: {fileID: 1282864366}
+  - component: {fileID: 1282864367}
+  - component: {fileID: 1282864368}
+  - component: {fileID: 1282864369}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -6435,9 +7580,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1282864362
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6531,6 +7676,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -33.43, y: -23.398, z: 38.147}
+--- !u!114 &1282864366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282864360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1282864367
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282864360}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: -0.0000019073486, z: 0.000011444092}
+--- !u!114 &1282864368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282864360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1282864369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282864360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1001 &1327497314
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6620,6 +7838,10 @@ GameObject:
   - component: {fileID: 1333088252}
   - component: {fileID: 1333088251}
   - component: {fileID: 1333088250}
+  - component: {fileID: 1333088255}
+  - component: {fileID: 1333088256}
+  - component: {fileID: 1333088257}
+  - component: {fileID: 1333088258}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -6651,9 +7873,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1333088251
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6747,6 +7969,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -33.43, y: -23.398, z: 38.147}
+--- !u!114 &1333088255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333088249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1333088256
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333088249}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0.0000038146973, y: 0.0000019073486, z: 0.0000076293945}
+--- !u!114 &1333088257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333088249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1333088258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333088249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1334734767
 GameObject:
   m_ObjectHideFlags: 0
@@ -6760,6 +8055,10 @@ GameObject:
   - component: {fileID: 1334734770}
   - component: {fileID: 1334734769}
   - component: {fileID: 1334734768}
+  - component: {fileID: 1334734773}
+  - component: {fileID: 1334734774}
+  - component: {fileID: 1334734775}
+  - component: {fileID: 1334734776}
   m_Layer: 0
   m_Name: Cube (12)
   m_TagString: Untagged
@@ -6791,9 +8090,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1334734769
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6887,6 +8186,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -33.43, y: -23.398, z: 38.147}
+--- !u!114 &1334734773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334734767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1334734774
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334734767}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: -0.0000076293945, y: 0.0000009536743, z: 0.0000076293945}
+--- !u!114 &1334734775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334734767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1334734776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334734767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1336782994
 GameObject:
   m_ObjectHideFlags: 0
@@ -7078,6 +8450,10 @@ GameObject:
   - component: {fileID: 1439979483}
   - component: {fileID: 1439979482}
   - component: {fileID: 1439979481}
+  - component: {fileID: 1439979486}
+  - component: {fileID: 1439979487}
+  - component: {fileID: 1439979488}
+  - component: {fileID: 1439979489}
   m_Layer: 0
   m_Name: Cube (25)
   m_TagString: Untagged
@@ -7109,9 +8485,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1439979482
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7205,6 +8581,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -18.479, y: -21.788, z: 73.991}
+--- !u!114 &1439979486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439979480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1439979487
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439979480}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: -0.0000038146973, z: 0}
+--- !u!114 &1439979488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439979480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1439979489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1439979480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1440474272
 GameObject:
   m_ObjectHideFlags: 0
@@ -7218,6 +8667,10 @@ GameObject:
   - component: {fileID: 1440474275}
   - component: {fileID: 1440474274}
   - component: {fileID: 1440474273}
+  - component: {fileID: 1440474278}
+  - component: {fileID: 1440474279}
+  - component: {fileID: 1440474280}
+  - component: {fileID: 1440474281}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -7249,9 +8702,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1440474274
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7345,6 +8798,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -33.43, y: -23.398, z: 38.147}
+--- !u!114 &1440474278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440474272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1440474279
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440474272}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: 0.0000019073486, z: 0.0000076293945}
+--- !u!114 &1440474280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440474272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1440474281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440474272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1443394001
 GameObject:
   m_ObjectHideFlags: 0
@@ -7358,6 +8884,10 @@ GameObject:
   - component: {fileID: 1443394004}
   - component: {fileID: 1443394003}
   - component: {fileID: 1443394002}
+  - component: {fileID: 1443394007}
+  - component: {fileID: 1443394008}
+  - component: {fileID: 1443394009}
+  - component: {fileID: 1443394010}
   m_Layer: 0
   m_Name: Cube (3)
   m_TagString: Untagged
@@ -7389,9 +8919,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1443394003
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7485,6 +9015,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -33.43, y: -23.398, z: 38.147}
+--- !u!114 &1443394007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443394001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1443394008
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443394001}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: 0.0000019073486, z: 0.0000038146973}
+--- !u!114 &1443394009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443394001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1443394010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443394001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1001 &1451949185
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7638,15 +9241,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8952464106424959765, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 58.68
+      value: 61.67
       objectReference: {fileID: 0}
     - target: {fileID: 8952464106424959765, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.001
+      value: 0.561
       objectReference: {fileID: 0}
     - target: {fileID: 8952464106424959765, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.99
+      value: -16.65
       objectReference: {fileID: 0}
     - target: {fileID: 8952464106424959765, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7895,6 +9498,10 @@ GameObject:
   - component: {fileID: 1634227143}
   - component: {fileID: 1634227142}
   - component: {fileID: 1634227141}
+  - component: {fileID: 1634227146}
+  - component: {fileID: 1634227147}
+  - component: {fileID: 1634227148}
+  - component: {fileID: 1634227149}
   m_Layer: 0
   m_Name: Cube (21)
   m_TagString: Untagged
@@ -7926,9 +9533,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1634227142
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8022,6 +9629,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -59.484, y: -62.383, z: 152.003}
+--- !u!114 &1634227146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634227140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1634227147
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634227140}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: -0.0000038146973, y: 0.0000038146973, z: 0}
+--- !u!114 &1634227148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634227140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1634227149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634227140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1673328602 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 627031d328fa6634e9349f327fcebd35, type: 3}
@@ -8608,6 +10288,10 @@ GameObject:
   - component: {fileID: 1762223075}
   - component: {fileID: 1762223074}
   - component: {fileID: 1762223073}
+  - component: {fileID: 1762223078}
+  - component: {fileID: 1762223079}
+  - component: {fileID: 1762223080}
+  - component: {fileID: 1762223081}
   m_Layer: 0
   m_Name: Cube (26)
   m_TagString: Untagged
@@ -8639,9 +10323,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1762223074
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8735,6 +10419,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -18.479, y: -21.788, z: 73.991}
+--- !u!114 &1762223078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762223072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1762223079
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762223072}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: -0.0000038146973, z: 0.0000076293945}
+--- !u!114 &1762223080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762223072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1762223081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762223072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1762925882
 GameObject:
   m_ObjectHideFlags: 0
@@ -8748,6 +10505,10 @@ GameObject:
   - component: {fileID: 1762925885}
   - component: {fileID: 1762925884}
   - component: {fileID: 1762925883}
+  - component: {fileID: 1762925888}
+  - component: {fileID: 1762925889}
+  - component: {fileID: 1762925890}
+  - component: {fileID: 1762925891}
   m_Layer: 0
   m_Name: Cube (11)
   m_TagString: Untagged
@@ -8779,9 +10540,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &1762925884
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8875,6 +10636,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -33.43, y: -23.398, z: 38.147}
+--- !u!114 &1762925888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762925882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &1762925889
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762925882}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: 0.0000047683716, z: 0.0000076293945}
+--- !u!114 &1762925890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762925882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &1762925891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762925882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &1767252001
 GameObject:
   m_ObjectHideFlags: 0
@@ -9158,6 +10992,152 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1673328604}
   m_SourcePrefab: {fileID: 100100000, guid: 627031d328fa6634e9349f327fcebd35, type: 3}
+--- !u!1 &1924259589
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1924259594}
+  - component: {fileID: 1924259593}
+  - component: {fileID: 1924259592}
+  - component: {fileID: 1924259591}
+  - component: {fileID: 1924259590}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1924259590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924259589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params:
+  - Name: Parameter 2
+    Value: 0
+  OverrideAttenuation: 0
+  OverrideMinDistance: 0.5
+  OverrideMaxDistance: 10
+--- !u!65 &1924259591
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924259589}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1924259592
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924259589}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1924259593
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924259589}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1924259594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1924259589}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 59.532, y: -0.001, z: -13.767}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1943187045
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9607,6 +11587,10 @@ GameObject:
   - component: {fileID: 2002794724}
   - component: {fileID: 2002794723}
   - component: {fileID: 2002794722}
+  - component: {fileID: 2002794727}
+  - component: {fileID: 2002794728}
+  - component: {fileID: 2002794729}
+  - component: {fileID: 2002794730}
   m_Layer: 0
   m_Name: Cube (16)
   m_TagString: Untagged
@@ -9638,9 +11622,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &2002794723
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9734,6 +11718,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: 16.693, y: -31.646, z: -10.197}
+--- !u!114 &2002794727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002794721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &2002794728
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002794721}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: 0, z: 0.0000038146973}
+--- !u!114 &2002794729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002794721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &2002794730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002794721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &2027058846
 GameObject:
   m_ObjectHideFlags: 0
@@ -9747,6 +11804,10 @@ GameObject:
   - component: {fileID: 2027058849}
   - component: {fileID: 2027058848}
   - component: {fileID: 2027058847}
+  - component: {fileID: 2027058852}
+  - component: {fileID: 2027058853}
+  - component: {fileID: 2027058854}
+  - component: {fileID: 2027058855}
   m_Layer: 0
   m_Name: Cube (6)
   m_TagString: Untagged
@@ -9778,9 +11839,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &2027058848
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9874,6 +11935,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: 16.693, y: -31.646, z: -10.197}
+--- !u!114 &2027058852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027058846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &2027058853
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027058846}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: 0, y: 0.00000047683716, z: 0}
+--- !u!114 &2027058854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027058846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &2027058855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027058846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1 &2027478357
 GameObject:
   m_ObjectHideFlags: 0
@@ -9886,9 +12020,15 @@ GameObject:
   - component: {fileID: 2027478362}
   - component: {fileID: 2027478361}
   - component: {fileID: 2027478360}
+  - component: {fileID: 2027478366}
+  - component: {fileID: 2027478365}
+  - component: {fileID: 2027478364}
+  - component: {fileID: 2027478363}
+  - component: {fileID: 2027478368}
+  - component: {fileID: 2027478367}
   - component: {fileID: 2027478359}
   m_Layer: 0
-  m_Name: Metal (1)
+  m_Name: Collision Pad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9903,12 +12043,13 @@ Transform:
   m_GameObject: {fileID: 2027478357}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.26, y: -0.5, z: -22.61}
+  m_LocalPosition: {x: 58.3, y: -0.5, z: -24.5}
   m_LocalScale: {x: 25, y: 1, z: 25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 66238584}
-  m_Father: {fileID: 721240227}
+  - {fileID: 200162731}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2027478359
 MonoBehaviour:
@@ -10001,6 +12142,132 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2027478357}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &2027478363
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027478357}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02425003, y: 17.99193, z: 1}
+  m_Center: {x: -0.4878742, y: 8.495965, z: 0}
+--- !u!65 &2027478364
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027478357}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 17.972727, z: 0.023668213}
+  m_Center: {x: 0, y: 8.486363, z: 0.4881648}
+--- !u!65 &2027478365
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027478357}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.033428956, y: 17.991432, z: 1}
+  m_Center: {x: 0.48328474, y: 8.495716, z: 0}
+--- !u!65 &2027478366
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027478357}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 17.997097, z: 0.02505966}
+  m_Center: {x: 0, y: 8.4985485, z: -0.4874694}
+--- !u!65 &2027478367
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027478357}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.9075947, z: 1}
+  m_Center: {x: 0, y: 18.017582, z: 0}
+--- !u!65 &2027478368
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027478357}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1.8016672, z: 1}
+  m_Center: {x: 0, y: 0.4008336, z: 0}
 --- !u!1 &2032014051
 GameObject:
   m_ObjectHideFlags: 0
@@ -10014,6 +12281,10 @@ GameObject:
   - component: {fileID: 2032014054}
   - component: {fileID: 2032014053}
   - component: {fileID: 2032014052}
+  - component: {fileID: 2032014057}
+  - component: {fileID: 2032014058}
+  - component: {fileID: 2032014059}
+  - component: {fileID: 2032014060}
   m_Layer: 0
   m_Name: Cube (24)
   m_TagString: Untagged
@@ -10045,9 +12316,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!65 &2032014053
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10141,6 +12412,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 200162731}
   m_LocalEulerAnglesHint: {x: -18.479, y: -21.788, z: 73.991}
+--- !u!114 &2032014057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2032014051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
+  objectType: 0
+--- !u!135 &2032014058
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2032014051}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 0.86
+  m_Center: {x: -0.0000038146973, y: -0.0000038146973, z: 0.0000038146973}
+--- !u!114 &2032014059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2032014051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5ab3a27e9c61464c8f85b5950b88ec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VelReader
+--- !u!114 &2032014060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2032014051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 136604ac405ed914fa58d1319368af6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FMOD_AV_Spawner
+  visualizerPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  eventReference:
+    Guid:
+      Data1: 545641163
+      Data2: 1090547908
+      Data3: 1937329308
+      Data4: 1886933409
+    Path: event:/World/PropCollision
 --- !u!1001 &2056940076
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10489,7 +12833,8 @@ SceneRoots:
   - {fileID: 220131489}
   - {fileID: 1228401821}
   - {fileID: 749384928}
-  - {fileID: 200162731}
+  - {fileID: 2027478358}
   - {fileID: 248371508}
   - {fileID: 1480909737}
   - {fileID: 685597872}
+  - {fileID: 1924259594}
