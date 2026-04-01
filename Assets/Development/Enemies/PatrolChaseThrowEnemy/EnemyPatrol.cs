@@ -129,6 +129,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
             case EnemyState.Hit:
                 this.isHit = true;
+                currentState = EnemyState.Retreat;
                 break;
 
     }
@@ -233,19 +234,36 @@ public class EnemyPatrol : EnemyBaseComponent
     }
     protected void Retreat()
     {
+        navAgent.isStopped = false;
         animController.SetFloat("Speed",navAgent.speed);
         Debug.Log("retreating");
         //var centerPoint = transform.position;
         //var radius = 5f;
         //Vector3 randomDirection = Random.insideUnitSphere * radius;
-        //Vector3 randomPosition = centerPoint + randomDirection;
+        bool set = false;
         if (currentNode != null)
         {
             navAgent.SetDestination(currentNode.transform.position);
+            set = true;
         }
-        Task.Delay(2000);
-        isRetreating = false;
-        isStopped = false;
+        else
+        {
+            if (!set)
+            {
+                navAgent.SetDestination(transform.position + new Vector3(0, 0, 5));
+                set = true;
+            }
+            if(navAgent.remainingDistance <= 1f)
+            {
+                if(Physics.Raycast(transform.position,Vector3.forward, 2f, LayerMask.NameToLayer("PropBuilding")))
+                {
+                    isRetreating = false;
+                    isStopped = false;
+                }else 
+                isRetreating = false;
+                isStopped = false;
+            }
+        }
     }
 
    protected void ChasePlayer()
