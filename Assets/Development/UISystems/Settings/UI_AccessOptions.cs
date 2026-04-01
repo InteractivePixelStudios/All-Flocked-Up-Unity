@@ -6,22 +6,49 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.Localization.Settings;
-using static UnityEngine.Rendering.DebugUI;
 
 public class UI_AccessOptions : UI_SettingsMenu
 {
     [Header("Accessibility")]
     [SerializeField] private TMP_Dropdown cbModeDropdown;
+    private const int cbModeBase = 0;
     [SerializeField] private TMP_Dropdown languageDropdown;
+    private const int langBase = 6;
     [SerializeField] private Toggle highContrastToggle;
+    private const bool highConBase = false;
     [SerializeField] private Material cbMaterial;
     [SerializeField] private LocalizationSettings settings;
     Dictionary<Graphic, Color> cachedTextColors = new();
     UI_CanvasController canvasController;
+
+    [Header("Deafults")]
+    [SerializeField] private Button defaultButton;
+    [SerializeField] private Button confirmDefaultButton;
+    [SerializeField] private Button cancelDefaltButton;
+    [SerializeField] private GameObject confirmDefaultWindow;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
 
+    }
+
+    private void ShowConfirmWindow()
+    {
+        confirmDefaultWindow.SetActive(true);
+    }
+
+    private void HideConfirmWindow()
+    {
+        confirmDefaultWindow.SetActive(false);
+    }
+
+    private void DefaultSettings()
+    {
+        ResetCBMode();
+        ResetLanguage();
+        ResetHighContrast();
+        HideConfirmWindow();
     }
 
     public void SetFirstAccessButton()
@@ -37,6 +64,10 @@ public class UI_AccessOptions : UI_SettingsMenu
         InitLanguageDD();
         SetFirstAccessButton();
 
+        defaultButton.onClick.AddListener(ShowConfirmWindow);
+        confirmDefaultButton.onClick.AddListener(DefaultSettings);
+        cancelDefaltButton.onClick.AddListener(HideConfirmWindow);
+
     }
 
     protected void InitCBModeDD()
@@ -50,7 +81,7 @@ public class UI_AccessOptions : UI_SettingsMenu
             "Tritanopia"
         };
         cbModeDropdown.AddOptions(options);
-        int index = PlayerPrefs.GetInt("CBMode", 0);
+        int index = PlayerPrefs.GetInt("CBMode", cbModeBase);
         cbModeDropdown.value = index;
         cbModeDropdown.RefreshShownValue();
 
@@ -119,13 +150,20 @@ public class UI_AccessOptions : UI_SettingsMenu
         PlayerPrefs.Save();
     }
 
+    void ResetCBMode()
+    {
+        OnCBModeChanged(cbModeBase);
+        cbModeDropdown.value = cbModeBase;
+        cbModeDropdown.RefreshShownValue();
+    }
+
     protected async void InitLanguageDD()
     {
         await settings.GetInitializationOperation().Task;
         var locales = settings.GetAvailableLocales().Locales;
         List<string> options = new();
         int langIndex = 6;
-        int saveLang = PlayerPrefs.GetInt("Language", 6);
+        int saveLang = PlayerPrefs.GetInt("Language", langBase);
         for (int i = 0; i < locales.Count; i++)
         {
             var locale = locales[i];
@@ -151,6 +189,13 @@ public class UI_AccessOptions : UI_SettingsMenu
         settings.SetSelectedLocale(localeList[id]);
     }
 
+    void ResetLanguage()
+    {
+        OnLanguageChanged(langBase);
+        languageDropdown.value = langBase;
+        languageDropdown.RefreshShownValue();
+    }
+
 
     protected void InitContrastModeDD()
     {
@@ -172,6 +217,12 @@ public class UI_AccessOptions : UI_SettingsMenu
     protected void ApplyContrastMode(bool value)
     {
         canvasController.SetContrastMode(value);
+    }
+
+    void ResetHighContrast()
+    {
+        highContrastToggle.isOn = highConBase;
+        OnContrastModeChanged(highConBase);
     }
 
    

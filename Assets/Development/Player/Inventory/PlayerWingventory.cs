@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.ProBuilder.MeshOperations;
+using Unity.VisualScripting;
 
 
 public class PlayerWingventory : MonoBehaviour
@@ -87,7 +88,8 @@ public class PlayerWingventory : MonoBehaviour
                 if (inventory.ContainsKey(consumable.name))
                 {
                     inventory.Remove(consumable.name);
-                    Instantiate(consumable);
+                    var newItem = Instantiate(consumable, transform.position - new Vector3(0,-0.1f,4), transform.rotation);
+                    newItem.name = item;
                     //Update this later to throw the object
                 }
             }
