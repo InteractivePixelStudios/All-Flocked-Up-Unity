@@ -11042,15 +11042,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -92.28
+      value: 50.2986
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.002000004
+      value: -0.001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 35.29
+      value: -14.63026
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11695,16 +11695,19 @@ PrefabInstance:
       addedObject: {fileID: 7662461018856128867}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 655625950154952515}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6140654810100602953}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 9210624938459453585}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
       addedObject: {fileID: -1447483899446069544}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6140654810100602953}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 655625950154952515}
+      addedObject: {fileID: 148817058864596526}
     - targetCorrespondingSourceObject: {fileID: -8623369600474453144, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7158780317548020067}
@@ -13016,15 +13019,7 @@ MonoBehaviour:
   playerTrinketQuantity: 0
   playerKeychainQuantity: 0
   playerPrestoQuantity: 0
-  inventoryPrefabList:
-  - {fileID: 3943473761783896074, guid: 737ce4ee60bbf024c9def86bf3d2bd14, type: 3}
-  - {fileID: 6246681715980741345, guid: 0a54840cdde938f46a8e29407f7cf9f6, type: 3}
-  - {fileID: 4567726112435861742, guid: 495f98a21b611bc41855c08497b7dbc4, type: 3}
-  - {fileID: 190577054808988160, guid: 2c418dc471a8d114b9eb12e5630da171, type: 3}
-  - {fileID: 7004370475826129043, guid: ba34f1e0fb329a040b2248c25013f786, type: 3}
-  - {fileID: 3157577530314214254, guid: 1542a388e2847914b8d647f64c739e25, type: 3}
-  - {fileID: 2769433764520600213, guid: d53f961c997061642a5d9b60c7c3c8c6, type: 3}
-  - {fileID: 300902396776574876, guid: 60cdbacdccab3244bae9fd570839709a, type: 3}
+  consumables: []
 --- !u!114 &5682136442268613181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13052,13 +13047,6 @@ MonoBehaviour:
   headSlot: {fileID: 6197911558244718780}
   neckSlot: {fileID: 5635981566747612132}
   monocleSlot: {fileID: 6399358809199908467}
-  isMonocle: 0
-  isAnklet: 0
-  isBread: 0
-  isRose: 0
-  isReciept: 0
-  isFeather: 0
-  isBottle: 0
 --- !u!114 &4441602835408521351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13506,12 +13494,41 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 6231bf18167dc4141bb601bbb8a19459, type: 2}
   - {fileID: 2100000, guid: 8846203a7a6768346a40683d7de02add, type: 2}
   cam: {fileID: 0}
-  controller: {fileID: 0}
   camLocation: {fileID: 8008681998227219663}
   shopLocation: {fileID: 0}
   playerSpawnPoint: {fileID: 0}
   canvasController: {fileID: 0}
   isSelecting: 0
+--- !u!114 &655625950154952515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608166696854051247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c4d31dee1848314fa0d041b2c5a5446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1999436537559399414}
+  bones: []
+--- !u!114 &6140654810100602953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608166696854051247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RigLayers:
+  - m_Rig: {fileID: 7747984852429084375}
+    m_Active: 1
+  m_Effectors: []
 --- !u!114 &9210624938459453585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13524,20 +13541,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1a022da13c8e934cbe55bb063f30e55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  footstepEvent:
+  wingFlapUpEvent:
     Guid:
-      Data1: -365079154
-      Data2: 1306255037
-      Data3: 134290610
-      Data4: -1955566084
-    Path: event:/Footsteps/Player_Footsteps
-  wingFlapEvent:
+      Data1: -1087101897
+      Data2: 1146822974
+      Data3: 1767828878
+      Data4: 993421287
+    Path: event:/Wingflaps/Player_WingflapsUp
+  wingFlapDownEvent:
     Guid:
       Data1: -1351930368
       Data2: 1246639671
       Data3: 1664382870
       Data4: -2121684890
-    Path: event:/Wingflaps/Player_Wingflaps
+    Path: event:/Wingflaps/Player_WingflapsDown
   poopEvent:
     Guid:
       Data1: 1796020849
@@ -13555,8 +13572,6 @@ MonoBehaviour:
   surfaceDetectionLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  raycastDistance: 0.4
-  surfaceDetectionOrigin: {fileID: 3972957416381464004}
 --- !u!114 &-1447483899446069544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13569,7 +13584,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 981a831ef2f24c14ab9e0b0551615fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6140654810100602953
+--- !u!114 &148817058864596526
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -13578,27 +13593,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 8608166696854051247}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Script: {fileID: 11500000, guid: 84802b88fdc5f314b9d0a93f9800ad8d, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  m_RigLayers:
-  - m_Rig: {fileID: 7747984852429084375}
-    m_Active: 1
-  m_Effectors: []
---- !u!114 &655625950154952515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8608166696854051247}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c4d31dee1848314fa0d041b2c5a5446, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 1999436537559399414}
-  bones: []
+  m_EditorClassIdentifier: Assembly-CSharp::FootstepLogicV2
+  surfaceType: 0
+  surfaceDetectionLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  characterType: 0
+  raycastDistance: 0.06
+  surfaceDetectionOrigin: {fileID: 3972957416381464004}
+  footstepEvent:
+    Guid:
+      Data1: -365079154
+      Data2: 1306255037
+      Data3: 134290610
+      Data4: -1955566084
+    Path: event:/Footsteps/Player_Footsteps
 --- !u!1 &8695714181657318048 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8999790570853714338, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}

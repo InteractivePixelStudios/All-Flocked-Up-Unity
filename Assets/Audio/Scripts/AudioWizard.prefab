@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1384515519575913142}
   - component: {fileID: 2627184986464488094}
+  - component: {fileID: 5810902406055141109}
   m_Layer: 0
   m_Name: AudioWizard
   m_TagString: Untagged
@@ -49,3 +50,44 @@ MonoBehaviour:
   musicVolume: 0.5
   sfxVolume: 0.5
   ambienceVolume: 0.5
+  buttonHoverEvent:
+    Guid:
+      Data1: -2707515
+      Data2: 1228973299
+      Data3: 1615333282
+      Data4: 516785627
+    Path: event:/UI/Hover
+  buttonClickEvent:
+    Guid:
+      Data1: 1099454654
+      Data2: 1214943445
+      Data3: 615361669
+      Data4: -5698197
+    Path: event:/UI/Click
+--- !u!114 &5810902406055141109
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4768915598860424367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d70040e41f03242809ce09194f96f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SurfaceType
+  surfaceMaterialGroups:
+  - surfaceType: 0
+    materials: []
+  - surfaceType: 1
+    materials:
+    - {fileID: 2100000, guid: 8a7559263c43d404081ce45c8f5988eb, type: 2}
+  - surfaceType: 2
+    materials:
+    - {fileID: 2100000, guid: 9ff60c29ca88a2f44aa893cc57dbe705, type: 2}
+  - surfaceType: 3
+    materials:
+    - {fileID: 2100000, guid: 4380c73bb2e98034988fb74b84d3b337, type: 2}
+  - surfaceType: 4
+    materials:
+    - {fileID: 2100000, guid: 3ce98d312d327984d8c7b135866402b8, type: 2}
