@@ -4,6 +4,8 @@ using FMODUnity;
 using FMOD.Studio;
 
 /**
+---Notes---
+
  * FootstepLogicV2 is a new script that will eventually replace the existing footstep logic in ALL characters. 
  * It is designed to universal, will feature Character Type for pitch offsetting. 
  * This script is still in development and may not be fully functional yet - it will also be bloated with unnecessary code for right now.
@@ -13,28 +15,17 @@ using FMOD.Studio;
  * After a lot of consideration, this system will not work with every single object - it will now become Hybrid.
  * I will keep this new system, but also implement my old SurfaceType system for objects that use the same material but are two different surfaces (ie, tree and it's leaves). 
  * This will require level editing (which I wanted to avoid), so, it will be saved for last.
-*/
 
-[System.Serializable]
-public class SurfaceMaterialGroup
-{
-    public FootstepLogicV2.SurfaceTypes surfaceType;
-    public List<Material> materials;
-}
+ - Add logic to stop footstep sounds if the material changes mid-step - IPM
+ -
+ -
+ -
+
+*/
 
 [ExecuteInEditMode]
 public class FootstepLogicV2 : MonoBehaviour
 {
-    public enum SurfaceTypes
-    {
-        Default,
-        Grass,
-        Wood,
-        Stone,
-        Metal,
-        Water
-    }
-
     private enum CharacterTypes // Used for pitch offsetting and other character-specific audio adjustments. Optional.
     {
         Player,
@@ -43,9 +34,6 @@ public class FootstepLogicV2 : MonoBehaviour
         Bird,
         Human
     }
-
-    [Header("Surface Material Settings")] // At this scale, a Dictionary is not needed - but should we scale this project to dozens of creatures, I will upgrade this to a Dictionary.
-    [SerializeField] private List<SurfaceMaterialGroup> surfaceMaterialGroups;
 
     [Header("Surface Detection Settings")]
     [SerializeField] private SurfaceTypes surfaceType;
@@ -62,6 +50,16 @@ public class FootstepLogicV2 : MonoBehaviour
     private MeshRenderer currentSurfaceMeshRenderer; // Store the current surface's MeshRenderer for material detection.
     private Material currentSurfaceMaterial; // Store the current surface material for use.
 
+    [Header("Script References")]
+    private AudioWizard audioWizard;
+    private SurfaceType surfaceTypeScript;
+
+    private void Start()
+    {
+        audioWizard = AudioWizard.Instance; // Access the singleton instance
+        if (audioWizard != null)
+            surfaceTypeScript = audioWizard.gameObject.GetComponent<SurfaceType>(); // Get reference to SurfaceType script for material groups.
+    }
 
     private void Update()
     {
@@ -94,25 +92,33 @@ public class FootstepLogicV2 : MonoBehaviour
         if (!TryGetGround(out RaycastHit tempHit))
             return;
 
-        currentSurfaceMeshRenderer = tempHit.collider.GetComponent<MeshRenderer>();
-
-        if (currentSurfaceMeshRenderer != null)
+        tempHit.collider.TryGetComponent(out SurfaceIdentifier surfaceIdentifier); // Check for SurfaceIdentifier first for hybrid system.
+        if (surfaceIdentifier != null)
         {
-            currentSurfaceMaterial = currentSurfaceMeshRenderer.sharedMaterial;
+            surfaceType = surfaceIdentifier.SurfaceType;
         }
         else
         {
-            currentSurfaceMeshRenderer = tempHit.collider.GetComponentInChildren<MeshRenderer>();
+            currentSurfaceMeshRenderer = tempHit.collider.GetComponent<MeshRenderer>();
+
             if (currentSurfaceMeshRenderer != null)
+            {
                 currentSurfaceMaterial = currentSurfaceMeshRenderer.sharedMaterial;
+            }
             else
-                Debug.LogWarning($"No MeshRenderer found on {tempHit.collider.name} or its children. Surface type will default.");
+            {
+                currentSurfaceMeshRenderer = tempHit.collider.GetComponentInChildren<MeshRenderer>();
+                if (currentSurfaceMeshRenderer != null)
+                    currentSurfaceMaterial = currentSurfaceMeshRenderer.sharedMaterial;
+                else
+                    Debug.LogWarning($"No MeshRenderer found on {tempHit.collider.name} or its children. Surface type will default.");
+            }
+
+            GetSurfaceType();
+
+            Debug.Log($"Detected surface: {tempHit.collider.name} with material: {currentSurfaceMaterial?.name ?? "None"}");
+
         }
-
-        GetSurfaceType();
-
-        Debug.Log($"Detected surface: {tempHit.collider.name} with material: {currentSurfaceMaterial?.name ?? "None"}");
-
 
         EventInstance footstepInstance = RuntimeManager.CreateInstance(footstepEvent);
         footstepInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
@@ -124,7 +130,7 @@ public class FootstepLogicV2 : MonoBehaviour
 
     private void GetSurfaceType()
     {
-        foreach (var group in surfaceMaterialGroups)
+        foreach (var group in surfaceTypeScript.surfaceMaterialGroups)
         {
             if (group.materials.Contains(currentSurfaceMaterial))
             {

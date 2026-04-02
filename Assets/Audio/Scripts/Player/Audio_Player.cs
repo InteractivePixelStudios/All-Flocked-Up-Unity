@@ -2,11 +2,20 @@ using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
 
-//[ExecuteInEditMode]
+/*
+---Notes---
+- Wing flaps use two different events - for now this is fine, but I will be changing this.
+-
+-
+-
+-
+*/
+
 public class Audio_Player : MonoBehaviour // REMINDER - Clean this damn script up later - IPM.
 {
     [Header("FMOD Events")]
-    [SerializeField] EventReference wingFlapEvent; // Assign in Inspector
+    [SerializeField] EventReference wingFlapUpEvent; // Assign in Inspector
+    [SerializeField] EventReference wingFlapDownEvent; // Assign in Inspector
     [SerializeField] EventReference poopEvent; // Assign in Inspector
     [SerializeField] EventReference splatEvent; // Assign in Inspector
 
@@ -31,9 +40,18 @@ public class Audio_Player : MonoBehaviour // REMINDER - Clean this damn script u
         instance.release();
     }
 
-    public void WingFlap()
+    public void WingFlapUp()
     {
-        EventInstance wingFlapInstance = RuntimeManager.CreateInstance(wingFlapEvent);
+        EventInstance wingFlapInstance = RuntimeManager.CreateInstance(wingFlapUpEvent);
+        //wingFlapInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+
+        wingFlapInstance.start();
+        wingFlapInstance.release();
+    }
+
+    public void WingFlapDown()
+    {
+        EventInstance wingFlapInstance = RuntimeManager.CreateInstance(wingFlapDownEvent);
         //wingFlapInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
 
         wingFlapInstance.start();
