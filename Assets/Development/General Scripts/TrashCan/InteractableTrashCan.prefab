@@ -151,6 +151,7 @@ GameObject:
   - component: {fileID: 2475919307233097260}
   - component: {fileID: 7484760183340064428}
   - component: {fileID: 5860797765124390049}
+  - component: {fileID: 7507216090920053320}
   m_Layer: 0
   m_Name: InteractableTrashCan
   m_TagString: Untagged
@@ -5037,6 +5038,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2, y: 1.26, z: 0.91683984}
   m_Center: {x: -0.0014900118, y: -0.00000013411045, z: 0.45841986}
+--- !u!114 &7507216090920053320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4311400982581332165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b6397254fda21d40bff51f53886dee2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio_OmniLoop
+  loopEvent:
+    Guid:
+      Data1: -93282537
+      Data2: 1275875526
+      Data3: 1350429825
+      Data4: -1576111553
+    Path: event:/World/TrashCans
+  attenuationPrefab: {fileID: 4801155923225812077, guid: e65a6a69b9f34d94ead7ef3cc9167465, type: 3}
+  showAttenuationGizmo: 0
 --- !u!1 &4632346152579152284
 GameObject:
   m_ObjectHideFlags: 0
