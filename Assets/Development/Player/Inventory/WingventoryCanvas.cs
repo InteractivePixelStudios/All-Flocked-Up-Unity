@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine.Localization;
+using System.Net;
 
 public class WingventoryCanvas : MonoBehaviour
 {
@@ -246,6 +247,8 @@ public class WingventoryCanvas : MonoBehaviour
 
             button.itemQuantityText.SetText(item.Value.ToString());
             button.itemRef = item.Key;
+            button.SetWingUIRef(canvasController.activeWingventory);
+            button.itemCount = item.Value;
 
             button.itemImage.sprite = playerWingventory.FindItemSprite(item.Key);
             boxIndex++;
@@ -259,6 +262,19 @@ public class WingventoryCanvas : MonoBehaviour
         {
             playerInvItems.Add(item.Key, item.Value);
         }
+    }
+
+    public void RemoveItemFromInv(UI_ItemButton button)
+    {
+
+            Destroy(button);
+            if (currentItemButtons.ContainsKey(button))
+            {
+                currentItemButtons.Remove(button);
+                Debug.Log("Removed from dictionary");
+
+            }
+
     }
 
 

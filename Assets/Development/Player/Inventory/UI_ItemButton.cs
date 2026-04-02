@@ -5,8 +5,10 @@ using TMPro;
 public class UI_ItemButton : MonoBehaviour
 {
     [SerializeField] private PlayerWingventory wingventory;
+    private WingventoryCanvas wingUI;
     public Image itemImage;
     [SerializeField] private Button itemButton;
+    public int itemCount;
     public TextMeshProUGUI itemQuantityText;
     [SerializeField] private Button useButton;
     [SerializeField] private Button dropButton;
@@ -21,6 +23,11 @@ public class UI_ItemButton : MonoBehaviour
         useButton.onClick.AddListener(UseConsumeItem);
         dropButton.onClick.AddListener(DropItem);
         HideOptions();
+    }
+
+    public void SetWingUIRef(WingventoryCanvas UI)
+    {
+        wingUI = UI;
     }
 
     // Update is called once per frame
@@ -51,12 +58,21 @@ public class UI_ItemButton : MonoBehaviour
     private void UseConsumeItem()
     {
         wingventory.UseConsumeItem(itemRef);
+        itemCount--;
+        wingUI.RemoveItemFromInv(this);
         HideOptions();
     }
 
     private void DropItem()
     {
         wingventory.DropItem(itemRef);
-        HideOptions() ;
+        itemCount--;
+        HideOptions();
+        if (itemCount <= 0)
+        {
+            wingUI.RemoveItemFromInv(this);
+            Destroy(this.gameObject);
+        }
+
     }
 }
