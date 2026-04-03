@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 public class Audio_UI_Listener : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler
 {
     private AudioWizard audioWizard;
+    private bool canPlaySound;
 
     private void Start()
     {
@@ -12,13 +13,17 @@ public class Audio_UI_Listener : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (audioWizard != null)
+        if (audioWizard != null && canPlaySound)
+        {
+            canPlaySound = false;
             audioWizard.PlayButtonHoverSound();
+        }
+            
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        // You can add code here if you want to play a sound when the pointer exits the button.
+        canPlaySound = true;
     }
 
     public void OnSelect(BaseEventData eventData)
