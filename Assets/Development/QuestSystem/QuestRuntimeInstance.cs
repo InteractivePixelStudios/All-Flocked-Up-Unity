@@ -92,6 +92,7 @@ public class QuestRuntimeInstance
             {
                 GameObject mechanicObject = monoBehaviour.gameObject;
                 questMechanicsObjects.Add(mechanicObject);
+              
             }
             else continue;
         }

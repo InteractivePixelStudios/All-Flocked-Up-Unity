@@ -9,7 +9,8 @@ public class GreenState : ITrafficInterface
     public GreenState(TrafficLightChanger lightChanger) { this.lightChanger = lightChanger; }
     public void EnterTrafficState()
     {
-        this.lightChanger = lightChanger;
+       // lightChanger.SetState();
+        light = ETrafficLightState.Green;
 
     }
     public void UpdateTrafficState()
