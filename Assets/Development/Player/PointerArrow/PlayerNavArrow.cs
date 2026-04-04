@@ -50,6 +50,7 @@ public class PlayerNavArrow : MonoBehaviour
 
     void RotateArrow()
     {
+        if (spawnedArrow == null) return;
         Vector3 direction = destination.transform.position - this.transform.position;
         spawnedArrow.transform.rotation = Quaternion.LookRotation(direction);
     }

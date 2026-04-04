@@ -250,4 +250,9 @@ public class QuestLog : MonoBehaviour
             }
         }
     }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+    }
 }

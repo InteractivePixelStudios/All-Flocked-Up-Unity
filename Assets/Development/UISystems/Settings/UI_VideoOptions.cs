@@ -1,16 +1,11 @@
 
 using System.Linq;
 using TMPro;
-
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
-using System;
-using Unity.Mathematics;
-using Unity.VisualScripting;
-using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class UI_VideoOptions : UI_SettingsMenu
 {

@@ -17,7 +17,7 @@ BREAK,BREAK,BREAK,BREAK,BREAK,BREAK,BREAK,BREAK,,,,,,,,,,,,,,,,,
 0-15,Coobert,YOU ACTUALLY DID IT!!! You’re the bravest bird I know. Which is not a high bar but still!!,Coobert_Happy,0-15,0-16,BREAK,BREAK,,,,,,,,,,,,,,,,,
 0-16,Ruffle,OMG! HI!! You’re here!! Okay don’t freak out but I found the BEST stuff!!,Ruffle_Excited,0-16,0-17,( . . . ),0-17,,,,,,,,,,,,,,,,,
 0-17,Ruffle,It was in a garbage can!! Which means it’s premium.,Ruffle_Happy,0-17,0-18,( . . . ),0-18,,,,,,,,,,,,,,,,,
-0-18,Ruffle,"Okay so like — see shiny? Or crunchy? Or vaguely food-shaped? Just run over and eat! If you can't EAT it, try to GRAB it by HOLDING F or X BUTTON",Ruffle_Happy,0-18,0-19,( . . . ),0-19,,,,,,,,,,,,,,,,,
+0-18,Ruffle,Okay so like — see shiny? Or crunchy? Or vaguely food-shaped? Just run over and eat! If you can't EAT it try to GRAB it by HOLDING F or X BUTTON,Ruffle_Happy,0-18,0-19,( . . . ),0-19,,,,,,,,,,,,,,,,,
 0-19,Ruffle,If you're already full you can find it in your wingventory!  Press I OR UP DIRECTION PAD to check out what you got.,Ruffle_Happy,0-19,0-20,( . . . ),0-20,,,,,,,,,,,,,,,,,
 0-20,Ruffle, Now here’s the BEST part. Use LEFT CLICK OR RIGHT TRIGGER to poop on those pesky humans! And RIGHT CLICK OR LEFT TRIGGER to aim so you waste less!,Ruffle_Happy,0-20,0-21,( . . . ),0-21,,,,,,,,,,,,,,,,,
 0-21,Ruffle,When your poop meter gets low — You gotta eat. Garbage snacks fill it back up. Nature is BEAUTIFUL.,Ruffle_Happy,0-21,0-22,( . . . ),0-22,,,,,,,,,,,,,,,,,
@@ -29,44 +29,44 @@ BREAK,BREAK,BREAK,BREAK,BREAK,BREAK,BREAK,BREAK,,,,,,,,,,,,,,,,,
 0-27,Arnesto,Need to dive down quickly? Use Q. Maybe a softer approach? Hover with G or just glide on down.,Arnesto_Normal,0-27,0-28,( . . . ),0-30,,,,,,,,,,,,,,,,,
 0-28,Arnesto,Now let's see you put it all together. Look for race posters like the one on this sign and test your wings! Show me what you got!,Arnesto_Normal,0-28,0-28,BREAK,BREAK,,,,,,,,,,,,,,,,,
 1,Birdbooshka,Hello young fellow! You look like you're lost? How about some help?,Birdbooshka_Normal,1,2,You got that right... All my flo-,2,,,,,,,ID,Speaker,Dialogue,Image,BREAK/Continue,NextID,ResponseOptions,BranchID,,,
-2,Peep,All my flo-,Peep_Happy,2,3,( . . . ),3,,,,,,,test,Test,…,Image,test,test2,Check1|Check2|Check3,test2|test3|test4,,,Birdbooshka_Happy
-3,Birdbooshka,ANYWAYYY *Didn't ask your whole life story here*,Birdbooshka_Normal,3,4,( . . . ),4,,,,,,,test2,Test,…,Image,test2,test3,Hello1|Hello2,test5|test,,,Birdbooshka_Mad
-4,Birdbooshka,I have an old nest around here if you want it? It's a fixer-upper but still....good.,Birdbooshka_Normal,4,5,Ummm sure?,5,,,,,,,,,,,,,,,,,Birdbooshka_Neutral
+2,Peep,All my flo-,Peep_Excited,2,3,( . . . ),3,,,,,,,test,Test,…,Image,test,test2,Check1|Check2|Check3,test2|test3|test4,,,Birdbooshka_Happy
+3,Birdbooshka,ANYWAYYY *Didn't ask your whole life story here*,Birdbooshka_Mad,3,4,( . . . ),4,,,,,,,test2,Test,…,Image,test2,test3,Hello1|Hello2,test5|test,,,Birdbooshka_Mad
+4,Birdbooshka,I have an old nest around here if you want it? It's a fixer-upper but still....good.,Birdbooshka_Happy,4,5,Ummm sure?,5,,,,,,,,,,,,,,,,,Birdbooshka_Neutral
 5,Peep,Alright,Peep_Happy,5,6,( . . . ),6,,,,,,,test3,Test,…,Image,test3,test4,TEXT1,test,,,Birdbooshka_Sad
 6,Birdbooshka,GREAT! It's over near the picnic tables! ,Birdbooshka_Normal,6,7,Alright?,BREAK,,,,,,,test4,Test,…,Image,test4,test5,TEXT2,BREAK,,,Birdbooshka_Stressed
-7,Peep,Are pigeon nest supposed to look that....bad?,Peep_Happy,7,8,( . . . ),8,,,,,,,test5,Test,…,Image,none,test,TEXT3,BREAK,,,Coowella_Happy
-8,Birdbooshka,Back in my day we would sleep on spikes and be HAPPY. *SCOFF* Okay maybe you could spruce it up with a few sticks?,Birdbooshka_Normal,8,9,( . . . ),9,,,,,,,,,,,,,,,,,Coowella_Mad
+7,Peep,Are pigeon nest supposed to look that....bad?,Peep_Sad,7,8,( . . . ),8,,,,,,,test5,Test,…,Image,none,test,TEXT3,BREAK,,,Coowella_Happy
+8,Birdbooshka,Back in my day we would sleep on spikes and be HAPPY. *SCOFF* Okay maybe you could spruce it up with a few sticks?,Birdbooshka_Mad,8,9,( . . . ),9,,,,,,,,,,,,,,,,,Coowella_Mad
 9,Birdbooshka,Check the nest! Maybe I left a few laying around?,Birdbooshka_Normal,9,10,BREAK,BREAK,,,,,,,,,,,,,,,,,Coowella_Neutral
 10,Birdbooshka,Since you're new around here let me give you a few tips. ,Birdbooshka_Normal,10,11,( . . . ),11,,,,,,,,,,,,,,,,,Coowella_Sad
 11,Birdbooshka,Everybody knows us for pooping everywhere. But you need to fill up your tank first! There's bound to be some food around here.,Birdbooshka_Normal,11,12,BREAK,BREAK,,,,,,,,,,,,,,,,,Coowella_Stressed
 12,Birdbooshka,Now I say this because I care.... But you look.... weak. You'll get stronger but we all need some help sometimes.,Birdbooshka_Normal,12,13,( . . . ),13,,,,,,,,,,,,,,,,,Fowlfred_Stressed
 13,Birdbooshka,Try using that manhole for a boost so you have a better chance of getting to the top of that building. It's a great place to hide from angry humans!,Birdbooshka_Normal,13,14,BREAK,BREAK,,,,,,,,,,,,,,,,,Peep_Neutral
 14,Peep,How did you get up here so fast?!,Peep_Happy,14,15,( . . . ),15,,,,,,,,,,,,,,,,,Peep_Sad
-15,Birdbooshka,Fast...? You took so long I almost left!,Birdbooshka_Normal,15,16,( . . . ),16,,,,,,,,,,,,,,,,,Peep_Stressed
+15,Birdbooshka,Fast...? You took so long I almost left!,Birdbooshka_Excited,15,16,( . . . ),16,,,,,,,,,,,,,,,,,Peep_Stressed
 16,Birdbooshka,You know where to find food.You know how to stay safe. I've saved the best for last!,Birdbooshka_Normal,16,17,( . . . ),17,,,,,,,,,,,,,,,,,Wingo_Mad
 17,Birdbooshka,See those humans down there? You know what to do! Make me proud!,Birdbooshka_Normal,17,18,( . . . ),18,,,,,,,,,,,,,,,,,Wingo_Neutral
 18,Birdbooshka,I've taught you everything I know already. Time to go find some other birds to bother!,Birdbooshka_Normal,18,19,BREAK,BREAK,,,,,,,,,,,,,,,,,Wingo_Sad
-19,Wingo Starr,HEY!! HEY COO!!,Peep_Happy,19,20,( . . . ),20,,,,,,,,,,,,,,,,,Wingo_Stressed
-20,Peep,Do I know you?,Peep_Happy,20,21,( . . . ),21,,,,,,,,,,,,,,,,,Wingston_Happy
-21,Wingo Starr,Nope.,Peep_Happy,21,22,( . . . ),22,,,,,,,,,,,,,,,,,Wingston_Mad
-22,Wingo Starr,BUT has anybirdy told you that you look JUST like someone I know? Suspiciously idential *SQUINTS*,Peep_Happy,22,23,( . . . ),23,,,,,,,,,,,,,,,,,Wingston_Neutral
-23,Wingo Starr,You NEED to meet them!,Peep_Happy,23,24,( . . . ),24,,,,,,,,,,,,,,,,,Wingston_Sad
-24,Peep,That's...not helpful. Who is it?,Peep_Happy,24,25,( . . . ),25,,,,,,,,,,,,,,,,,Wingston_Stressed
-25,Wingo Starr, Since you're going anyways can you bring them this bread I owe?,Peep_Happy,25,26,( . . . ),26,,,,,,,,,,,,,,,,,
-26,Peep,Can't you do it yourself? I didn't agree to this?!,Peep_Happy,26,27,( . . . ),27,,,,,,,,,,,,,,,,,
-27,Wingo Starr,... I get by with a little help from my friends?,Peep_Happy,27,28,( . . . ),28,,,,,,,,,,,,,,,,,
-28,Peep,Of course you do.,Peep_Happy,28,29,( . . . ),29,,,,,,,,,,,,,,,,,
+19,Wingo Starr,HEY!! HEY COO!!,Wingo_Excited,19,20,( . . . ),20,,,,,,,,,,,,,,,,,Wingo_Stressed
+20,Peep,Do I know you?,Peep_Normal,20,21,( . . . ),21,,,,,,,,,,,,,,,,,Wingston_Happy
+21,Wingo Starr,Nope.,Wingo_Normal,21,22,( . . . ),22,,,,,,,,,,,,,,,,,Wingston_Mad
+22,Wingo Starr,BUT has anybirdy told you that you look JUST like someone I know? Suspiciously idential *SQUINTS*,Wingo_Happy,22,23,( . . . ),23,,,,,,,,,,,,,,,,,Wingston_Neutral
+23,Wingo Starr,You NEED to meet them!,Wingo_Excited,23,24,( . . . ),24,,,,,,,,,,,,,,,,,Wingston_Sad
+24,Peep,That's...not helpful. Who is it?,Peep_Normal,24,25,( . . . ),25,,,,,,,,,,,,,,,,,Wingston_Stressed
+25,Wingo Starr, Since you're going anyways can you bring them this bread I owe?,Wingo_Happy,25,26,( . . . ),26,,,,,,,,,,,,,,,,,
+26,Peep,Can't you do it yourself? I didn't agree to this?!,Peep_Normal,26,27,( . . . ),27,,,,,,,,,,,,,,,,,
+27,Wingo Starr,... I get by with a little help from my friends?,Wingo_Happy,27,28,( . . . ),28,,,,,,,,,,,,,,,,,
+28,Peep,Of course you do.,Peep_Mad,28,29,( . . . ),29,,,,,,,,,,,,,,,,,
 29,Arnesto,You look… familiar? Odd.,Arnesto_Normal,29,30,( . . . ),30,,,,,,,,,,,,,,,,,
-30,Peep,Wingo told me to bring this to you? ,Peep_Happy,30,31,( . . . ),31,,,,,,,,,,,,,,,,,
+30,Peep,Wingo told me to bring this to you? ,Peep_Normal,30,31,( . . . ),31,,,,,,,,,,,,,,,,,
 31,Arnesto,Ah the bread he owes. What a WILD night. Thank Wingo for me!,Arnesto_Normal,31,32,( . . . ),32,,,,,,,,,,,,,,,,,
-32,Peep,Oh I'm not going back there. I've never met them in my life… and they kind of scare me.,Peep_Happy,32,33,( . . . ),33,,,,,,,,,,,,,,,,,
+32,Peep,Oh I'm not going back there. I've never met them in my life… and they kind of scare me.,Peep_Excited,32,33,( . . . ),33,,,,,,,,,,,,,,,,,
 33,Arnesto,There are lots of us around! Us pigeons have strong genes *winks*,Arnesto_Normal,33,34,( . . . ),34,,,,,,,,,,,,,,,,,
 34,Arnesto,You'll find someone to talk to…I met a bird around here not long ago! Spoke with a strange accent.,Arnesto_Normal,34,35,( . . . ),35,,,,,,,,,,,,,,,,,
 35,Arnesto,Oh! Take these for your trouble. It's the least I can do.,Arnesto_Normal,35,36,BREAK,BREAK,,,,,,,,,,,,,,,,,
 36,Fowlfred Finchcock,I SAY My good fellow!,Fred_Normal,36,37,( . . . ),37,,,,,,,,,,,,,,,,,
 37,Fowlfred Finchcock,You look young and sprightly tough enough to scare a CAT or two!,Fred_Normal,37,38,( . . . ),38,,,,,,,,,,,,,,,,,
 38,Fowlfred Finchcock,Mind helping an old chap like myself with a dilemma?,Fred_Normal,38,39,( . . . ),39,,,,,,,,,,,,,,,,,
-39,Peep,Uhhh. I'm a bit busy-,Peep_Happy,39,40,( . . . ),40,,,,,,,,,,,,,,,,,
+39,Peep,Uhhh. I'm a bit busy-,Peep_Normal,39,40,( . . . ),40,,,,,,,,,,,,,,,,,
 40,Fowlfred Finchcock,EXCELLENT my dear bird! Thank you so much!,Fred_Normal,40,41,( . . . ),41,,,,,,,,,,,,,,,,,
 41,Fowlfred Finchcock,A pack of mongrels have taken a liking to my favorite alleyway. They have the finest slection here you see…,Fred_Normal,41,42,( . . . ),42,,,,,,,,,,,,,,,,,
 42,Fowlfred Finchcock,Not too moldy... but just enough to add some flavor! No other will do!,Fred_Normal,42,43,( . . . ),43,,,,,,,,,,,,,,,,,

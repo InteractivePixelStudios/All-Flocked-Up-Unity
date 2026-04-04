@@ -168,6 +168,7 @@ public class UI_CanvasController : MonoBehaviour
             input.SwitchCurrentActionMap("Player");
             player.GetComponent<PlayerGroundMovement>().enabled = true;
             player.GetComponent<PlayerFlightMovement>().enabled = true;
+            cam.GetComponent<CinemachineOrbitalFollow>().enabled = true;
             isUIMap = false;
             // ResumeEnemy();
             Debug.Log("PLAYERMAP");
@@ -182,6 +183,7 @@ public class UI_CanvasController : MonoBehaviour
             input.SwitchCurrentActionMap("UI");
             player.GetComponent<PlayerGroundMovement>().enabled = false;
             player.GetComponent<PlayerFlightMovement>().enabled = false;
+            cam.GetComponent<CinemachineOrbitalFollow>().enabled = false;
             isUIMap = true;
             //FreezeEnemies();
             Debug.Log("UIMAP");
