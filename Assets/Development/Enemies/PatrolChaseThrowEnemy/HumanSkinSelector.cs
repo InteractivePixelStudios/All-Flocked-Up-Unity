@@ -9,6 +9,8 @@ public class HumanSkinSelector : MonoBehaviour
     [SerializeField] SkinnedMeshRenderer shirtMesh;
     [SerializeField] SkinnedMeshRenderer pantsMesh;
     [SerializeField] SkinnedMeshRenderer shoeMesh;
+    [SerializeField] SkinnedMeshRenderer noseMesh;
+    [SerializeField] SkinnedMeshRenderer earMesh;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -21,5 +23,7 @@ public class HumanSkinSelector : MonoBehaviour
         shirtMesh.sharedMesh = skinMesh[3];
         pantsMesh.sharedMesh = skinMesh[4];
         shoeMesh.sharedMesh = skinMesh[5];
+        noseMesh.sharedMesh = skinMesh[6];
+        earMesh.sharedMesh = skinMesh[7];
     }
 }
