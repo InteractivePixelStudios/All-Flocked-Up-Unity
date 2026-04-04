@@ -94,39 +94,19 @@ public class VehicleBase :MonoBehaviour
 
     public virtual void StopVehicle()
     {
-        if (!navAgent.isStopped)
-        {
-            stopTimer = 5f; // reset when entering stop
-        }
+        navAgent.isStopped = true;
+        isMoving = false;
 
-        stopTimer -= Time.deltaTime;
-
-        if (stopTimer <= 0)
-        {
-            navAgent.isStopped = false;
-            isStopped = false;
-            isMoving = true;
-        }
-        else
-        {
-            navAgent.isStopped = true;
-            isMoving = false;
-        }
     }
 
     public virtual void TriggerCollisions()
     {
-        if(isStopped)
-        {
-            StopVehicle();
-        }
         HonkHorn();
         navAgent.speed = 2;
-        if (navAgent.isStopped)
+        if (!isStopped)
         {
-            isStopped = false;
-            isMoving = true;
-            MoveVehicleToLocation();
+            isStopped = true;
+            StopVehicle();
         }
     }
 
@@ -140,7 +120,7 @@ public class VehicleBase :MonoBehaviour
         next = node.nextWaypoint;
         if (next == null)
         {
-            var num = Random.Range(0, 1);
+            var num = Random.Range(0, 2);
             if (node.branches.Count > 0 && num == 0)
             {
                 next = node.branches[0];

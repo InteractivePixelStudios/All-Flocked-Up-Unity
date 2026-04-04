@@ -558,9 +558,6 @@ MonoBehaviour:
   - Race Arnesto to test your skills
   - 'Anytime you think you''re ready, you can take the Coober to Pigeonton Market! '
   - You can use E or X BUTTON to INTERACT or SPEAK with other pigeons
-  - 'Pressing M or D-PAD UP will show your MAP '
-  - I or SELECT BUTTON will open your WINGVENTORY. Any ITEMS or ACCESSORIES you find
-    can go in here
   - If you need to see the controls again you can find them in the PAUSE menu with
     ESCAPE or START BUTTON!
   promptIndex: 0
@@ -1065,10 +1062,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2260144783632856666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.254, y: 0.40214816}
-  m_AnchorMax: {x: 0.7583125, y: 0.5092592}
-  m_AnchoredPosition: {x: -1, y: 0.25498962}
-  m_SizeDelta: {x: -3, y: -18.870014}
+  m_AnchorMin: {x: 0.25552085, y: 0.411}
+  m_AnchorMax: {x: 0.7583125, y: 0.50600004}
+  m_AnchoredPosition: {x: -2.5, y: -0.9149933}
+  m_SizeDelta: {x: 0, y: -1.9900169}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1693680313037868243
 CanvasRenderer:
@@ -1125,12 +1122,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 32
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 32
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -1164,7 +1161,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0.42163086, y: -1.2019043, z: -0.5982666, w: -1.4526978}
+  m_margin: {x: 1.738617, y: -1.2019043, z: -0.5982666, w: -1.4526978}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

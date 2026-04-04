@@ -21,6 +21,7 @@ public class VehicleCollisionChecker : MonoBehaviour
              other.gameObject.CompareTag("NPC"))
         {
             vehicleBase = other.GetComponent<VehicleBase>();
+            vehicleBase.isStopped = true;
             vehicleBase.TriggerCollisions();
         } 
     }
@@ -34,7 +35,7 @@ public class VehicleCollisionChecker : MonoBehaviour
              other.gameObject.CompareTag("NPC"))
         {
            
-
+            vehicleBase.MoveVehicleToLocation();
 
 
         }

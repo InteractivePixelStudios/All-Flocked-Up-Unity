@@ -1,8 +1,10 @@
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.Android;
 
 public class TrafficLightTrigger : MonoBehaviour
 {
-    private VehicleBase stoppedVehicle;
+    private List<VehicleBase> stoppedVehicle = new();
     public BoxCollider redLightBox;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -14,31 +16,50 @@ public class TrafficLightTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!redLightBox.enabled)
-        {
-            if (stoppedVehicle != null)
-            {
-                stoppedVehicle.isStopped = false;
-                StartMoveAfterLight();
-            }
-        }
-        else return;
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Vehicle")) { 
-            stoppedVehicle = other.gameObject.GetComponent<VehicleScript>();
-            stoppedVehicle.isStopped = true;
-            Debug.Log("HitLight");
+        if (other.CompareTag("Vehicle")) { 
+            var vehicle = other.GetComponent<VehicleBase>();
+            if (vehicle != null && !stoppedVehicle.Contains(vehicle))
+            {
+                if (!vehicle.isStopped)
+                {
+                    stoppedVehicle.Add(vehicle);
+                    vehicle.isStopped = true;
+                    vehicle.StopVehicle();
+                    Debug.Log("HitLight");
+                }
+            }
 
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Vehicle"))
+        {
+            var vehicle = other.GetComponent<VehicleBase>();
+            if (vehicle != null)
+            {
+                stoppedVehicle.Remove(vehicle);
+            }
         }
     }
 
     public void StartMoveAfterLight()
     {
-        stoppedVehicle.MoveVehicleToLocation();
-        stoppedVehicle = null;
+        foreach(var vehicle in stoppedVehicle)
+        {
+            if(vehicle != null)
+            {
+                vehicle.isStopped = false;
+                vehicle.MoveVehicleToLocation();
+            }
+        }
+       stoppedVehicle.Clear();
     }
 
 }

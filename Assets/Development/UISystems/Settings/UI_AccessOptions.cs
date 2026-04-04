@@ -13,7 +13,7 @@ public class UI_AccessOptions : UI_SettingsMenu
     [SerializeField] private TMP_Dropdown cbModeDropdown;
     private const int cbModeBase = 0;
     [SerializeField] private TMP_Dropdown languageDropdown;
-    private const int langBase = 6;
+    private const int langBase = 3;
     [SerializeField] private Toggle highContrastToggle;
     private const bool highConBase = false;
     [SerializeField] private Material cbMaterial;
@@ -162,10 +162,11 @@ public class UI_AccessOptions : UI_SettingsMenu
         await settings.GetInitializationOperation().Task;
         var locales = settings.GetAvailableLocales().Locales;
         List<string> options = new();
-        int langIndex = 6;
+        int langIndex = 3;
         int saveLang = PlayerPrefs.GetInt("Language", langBase);
         for (int i = 0; i < locales.Count; i++)
         {
+            if (i == 1 || i == 3 || i == 5 || i == 11 || i == 12 || i == 16 || i == 17 || i == 18) { i++; }
             var locale = locales[i];
             options.Add(locale.LocaleName);
             if (i == saveLang)

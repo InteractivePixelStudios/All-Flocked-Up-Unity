@@ -51,6 +51,8 @@ public class PlayerFlightMovement : MonoBehaviour
     InputAction diveAction;
     InputAction stallAction;
 
+    [SerializeField] LayerMask propLayer;
+
     public bool GetIsGliding()
     {
         return gliding;
@@ -97,6 +99,7 @@ public class PlayerFlightMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Physics.Raycast(transform.position, transform.forward, 0.3f)) { ReturnToWalkState(); }
         if (isFlying && !isStalling)
         {
             if (groundCheck.IsGrounded())
@@ -297,4 +300,5 @@ public class PlayerFlightMovement : MonoBehaviour
         meshTransform.localRotation = Quaternion.Euler(Vector3.zero);
         GetComponent<PlayerGroundMovement>().InitiateWalkState();
     }
+
 }

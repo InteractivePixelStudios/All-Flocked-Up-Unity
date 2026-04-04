@@ -191,7 +191,7 @@ public class TutorialManager : MonoBehaviour
                 if (hasOverview && clickAction.WasPressedThisFrame())
                 {
                     promptIndex++;
-                    if (promptIndex > 17)
+                    if (promptIndex > 15)
                     {
                         SetTutState(7);
                     }

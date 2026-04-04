@@ -1,20 +1,17 @@
 
 using System.Linq;
 using TMPro;
-
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
-using System;
-using Unity.Mathematics;
 
 public class UI_VideoOptions : UI_SettingsMenu
 {
     [Header("Video")]
     [SerializeField] private TMP_Dropdown resolDropdown;
-    [SerializeField] private const int resolBase = 6;
+    [SerializeField] private const int resolBase = 19;
     [SerializeField] private Resolution[] resolutions;
     [SerializeField] private TMP_Dropdown fsDropDown;
     [SerializeField] private const int fsModeBase=0; // exclusiveFS
@@ -37,7 +34,7 @@ public class UI_VideoOptions : UI_SettingsMenu
     [SerializeField] private const float maxRendDist = 1200f;
     [SerializeField] private Slider camSensSlider;
     [SerializeField] private TextMeshProUGUI camSensText;
-    [SerializeField] private const float baseCamSens = 1f;
+    [SerializeField] private const float baseCamSens = 0f;
     [SerializeField] private float currentCamSens;
     [SerializeField] private const float minCamSens = -3f;
     [SerializeField] private const float maxCamSens = 3f;
@@ -172,7 +169,7 @@ public class UI_VideoOptions : UI_SettingsMenu
         {
             string option = resolutions[i].width + " x " + resolutions[i].height;
             options.Add(option);
-            if (savedIndex == -1 &&
+            if (savedIndex == resolBase &&
                 resolutions[i].width == Screen.currentResolution.width &&
                 resolutions[i].height == Screen.currentResolution.height)
             {
@@ -275,13 +272,13 @@ public class UI_VideoOptions : UI_SettingsMenu
         var qualityNames = QualitySettings.names.ToList();
         qualityDropdown.AddOptions(qualityNames);
         int index;
-        if (saved != 3)
+        if (saved != qualityBase)
         {
             index = saved;
         }
         else
         {
-            index = QualitySettings.GetQualityLevel();
+            index = qualityBase;
         }
         qualityDropdown.SetValueWithoutNotify(index);
         qualityDropdown.RefreshShownValue();
@@ -507,6 +504,7 @@ public class UI_VideoOptions : UI_SettingsMenu
     protected void OnShadowQualityChanged(int index)
     {
         SetShadowQuality(index);
+        shadowQualDropdown.SetValueWithoutNotify(index);
         shadowQualDropdown.RefreshShownValue();
     }
 
@@ -548,6 +546,7 @@ public class UI_VideoOptions : UI_SettingsMenu
         renderDisSlider.onValueChanged.RemoveAllListeners();
         var saved = PlayerPrefs.GetFloat("RenderDistance", baseRendDist);
         renderDisSlider.SetValueWithoutNotify(saved);
+        SetRenderDistanceText(saved);
         renderDisSlider.onValueChanged.AddListener(OnRenderDistanceChanged);
     }
     protected void OnRenderDistanceChanged(float value)
@@ -576,6 +575,7 @@ public class UI_VideoOptions : UI_SettingsMenu
     void ResetRenderDistance()
     {
         OnRenderDistanceChanged(baseRendDist);
+        SetRenderDistanceText(baseRendDist);
         renderDisSlider.SetValueWithoutNotify(baseRendDist);
     }
 
@@ -584,6 +584,7 @@ public class UI_VideoOptions : UI_SettingsMenu
     {
         camSensSlider.onValueChanged.RemoveAllListeners();
         var saved = PlayerPrefs.GetFloat("CameraSensitivity", baseCamSens);
+        SetCamSensitivityText(saved);
         camSensSlider.SetValueWithoutNotify(saved);
         camSensSlider.onValueChanged.AddListener(OnCamSensitivityChanged);
     }
@@ -612,12 +613,14 @@ public class UI_VideoOptions : UI_SettingsMenu
     {
         fovSlider.onValueChanged.RemoveAllListeners();
         var saved = PlayerPrefs.GetFloat("FOV", baseFOV);
+        SetCameraFOVText(saved);
         fovSlider.onValueChanged.AddListener(OnFOVChanged);
     }
 
     void ResetCamSens()
     {
         OnCamSensitivityChanged(baseCamSens);
+        SetCamSensitivityText(baseCamSens);
         camSensSlider.SetValueWithoutNotify(baseCamSens);
     }
 
