@@ -266,8 +266,7 @@ public class UI_CanvasController : MonoBehaviour
     //quest giver canvas
     public void ShowQuestGiver(QuestGiver questGiver)
     {
-        if (!uiOpen)
-        {
+
 
             activeGiverInstance = Instantiate(questGiverCanvas);
             if (!isUIMap || activeDialogueInstance == null)
@@ -279,7 +278,7 @@ public class UI_CanvasController : MonoBehaviour
             activeGiverInstance.canvasController = this;
             activeGiverInstance.UpdateUIText(questGiver.quests[0].questName, questGiver.quests[0].questLogDescription, questGiver.quests[0].questName); // change last one to rewards
             uiOpen = true;
-        }
+        
     }
 
     //quest giver canvas
@@ -299,8 +298,7 @@ public class UI_CanvasController : MonoBehaviour
     //quest reward canvas
     public void ShowQuestReward(QuestDetails quest)
     {
-        if (!uiOpen)
-        {
+
             activeRewardInstance = Instantiate(questRewardsCanvas);
             ApplySavedContrast();
             activeRewardInstance.quest = quest;
@@ -310,7 +308,7 @@ public class UI_CanvasController : MonoBehaviour
                 ShowPlayerCursor(activeRewardInstance.gameObject);
             }
             uiOpen = true;
-        }
+        
     }
     //quest reward canvas
     public void DestroyQuestReward()
@@ -411,8 +409,7 @@ public class UI_CanvasController : MonoBehaviour
     //dialogue canvas
     public void OpenDialogue()
     {
-        if (!uiOpen)
-        {
+
             if (activeDialogueInstance == null)
             {
                 activeDialogueInstance = Instantiate(dialogueCanvas);
@@ -423,7 +420,7 @@ public class UI_CanvasController : MonoBehaviour
                 }
             }
             uiOpen = true;
-        }
+        
     }
     //dialogue response options transfer
     public void SendResponseOptions(LocalizedString[] responses)
@@ -487,16 +484,15 @@ public class UI_CanvasController : MonoBehaviour
     //race giver canvas
     public void OpenRaceGiver()
     {
-        if (!uiOpen)
-        {
+
             raceGiverInstance = Instantiate(raceGiverCanvas);
             ApplySavedContrast();
             if (!isUIMap)
             {
                 ShowPlayerCursor(raceGiverInstance.gameObject);
             }
-            uiOpen = true;
-        }
+
+
     }
     //race giver canvas
     public void CloseRaceGiver()
@@ -509,7 +505,7 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
-            uiOpen = false;
+
 
         }
     }
@@ -840,8 +836,7 @@ public class UI_CanvasController : MonoBehaviour
 
     public void OpenLanguageSelect()
     {
-        if (!uiOpen)
-        {
+
             activeLanguageCanvas = Instantiate(languageSelectPrefab);
             ApplySavedContrast();
             if (activeLanguageCanvas != null)
@@ -850,9 +845,9 @@ public class UI_CanvasController : MonoBehaviour
                 {
                     ShowPlayerCursor(activeLanguageCanvas.gameObject);
                 }
-                uiOpen = true;
+
             }
-        }
+        
     }
 
     public void CloseLanguageSelect()
@@ -866,7 +861,7 @@ public class UI_CanvasController : MonoBehaviour
             {
                 //menu.SetSelectedObject(menu.startButton.gameObject);
             }
-            uiOpen = false;
+
 
         }
 
@@ -939,8 +934,7 @@ public class UI_CanvasController : MonoBehaviour
 
     public void ShowTutorialPrompt()
     {
-        if (!uiOpen)
-        {
+
             if (activeTutPrompt == null)
             {
                 activeTutPrompt = Instantiate(promptPrefab);
@@ -948,10 +942,12 @@ public class UI_CanvasController : MonoBehaviour
                 activeTutPrompt.promptIndex = cachedTutPromptIndex;
                 activeTutPrompt.arrowIndex = cachedIntroIndex;
                 activeTutPrompt.canvasController = this;
-                //ShowPlayerCursor() ;
-                uiOpen = true;
+            //ShowPlayerCursor() ;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+                //uiOpen = true;
             }
-        }
+        
     }
 
         public void DestroyPrompt()
@@ -961,7 +957,7 @@ public class UI_CanvasController : MonoBehaviour
            // HidePlayerCursor();
             Destroy(activeTutPrompt.gameObject);
             cachedTutPromptIndex = -1;
-            uiOpen = false;
+           // uiOpen = false;
         }
     }
 

@@ -54,7 +54,6 @@ public class UI_MainMenu : MonoBehaviour
         //playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
         //playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
         //cameraRef.enabled = false;
-        canvasController.ShowPlayerCursor(mainCanvas);
 
         settingsCanvas.GetComponent<UI_SettingsMenu>().parent = this.gameObject;
 
@@ -67,12 +66,19 @@ public class UI_MainMenu : MonoBehaviour
 
     private void Update()
     {
-        if (Gamepad.current.buttonSouth.wasPressedThisFrame || Gamepad.current.leftStick.ReadValue() != Vector2.zero)
+
+        if (lang == null && !firstSelected)
         {
-            if (lang == null && !firstSelected)
+            if (Gamepad.current != null)
             {
-                SetSelectedObject(startButton.gameObject);
-                firstSelected = true;
+
+
+                if (Gamepad.current.buttonSouth.wasPressedThisFrame || Gamepad.current.leftStick.ReadValue() != Vector2.zero)
+                {
+                    SetSelectedObject(startButton.gameObject);
+                    firstSelected = true;
+                }
+                else return;
             }
             else return;
         }
