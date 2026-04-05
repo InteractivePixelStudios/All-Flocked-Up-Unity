@@ -38,7 +38,7 @@ public class LoadingScreen : MonoBehaviour
         if(menu != null)
         {
 
-            menu.SetSelectedObject(menu.startButton.gameObject);
+            //menu.SetSelectedObject(menu.startButton.gameObject);
             Debug.Log("MenuButtonSet");
         }
         await Task.Delay(3000);

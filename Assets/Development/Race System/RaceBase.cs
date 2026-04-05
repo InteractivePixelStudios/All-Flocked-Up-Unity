@@ -122,6 +122,7 @@ public class RaceBase : MonoBehaviour
     {
         GetRaceData(currentRaceGiver.raceData);
         StartRace();
+        currentRaceGiver.enabled = false;
         countdownStarted = true;
     }
 

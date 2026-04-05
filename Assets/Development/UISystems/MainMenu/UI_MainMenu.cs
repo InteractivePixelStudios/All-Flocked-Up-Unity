@@ -3,6 +3,7 @@ using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -53,7 +54,8 @@ public class UI_MainMenu : MonoBehaviour
         //playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
         //playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
         //cameraRef.enabled = false;
-        canvasController.ShowPlayerCursor();
+        canvasController.ShowPlayerCursor(mainCanvas);
+
         settingsCanvas.GetComponent<UI_SettingsMenu>().parent = this.gameObject;
 
     }
@@ -65,13 +67,17 @@ public class UI_MainMenu : MonoBehaviour
 
     private void Update()
     {
-
-        if (lang == null && !firstSelected)
+        if (Gamepad.current.buttonSouth.wasPressedThisFrame || Gamepad.current.leftStick.ReadValue() != Vector2.zero)
         {
-            SetSelectedObject(startButton.gameObject);
-            firstSelected = true;
+            if (lang == null && !firstSelected)
+            {
+                SetSelectedObject(startButton.gameObject);
+                firstSelected = true;
+            }
+            else return;
         }
         else return;
+
     }
 
     public void OnSettingsOpen()
@@ -88,7 +94,7 @@ public class UI_MainMenu : MonoBehaviour
             mainCanvas.SetActive(true);
             settingsCanvas.SetActive(false);
             settingsOpen = false;
-            EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+            //EventSystem.current.SetSelectedGameObject(startButton.gameObject);
         }
     }
 
@@ -105,7 +111,7 @@ public class UI_MainMenu : MonoBehaviour
             mainCanvas.SetActive(!controlsOpen);
             controlsCanvas.SetActive(false);
             controlsOpen= false;
-            EventSystem.current.SetSelectedGameObject(startButton.gameObject);
+            //EventSystem.current.SetSelectedGameObject(startButton.gameObject);
         }
     }
 

@@ -127,7 +127,12 @@ public class QuestRuntimeInstance
     public void UpdateObjective(string objectiveID, int amount)
     {
         if (!objectiveProgress.ContainsKey(objectiveID)) { return; }
-        GetObjectiveDestination(objectiveID); 
+        var objectives = GetCurrentObjectives();
+        foreach (var obj in objectives)
+        {
+            if (objectiveProgress[objectiveID] + amount > obj.quantityToComplete) { return; }
+        }
+            GetObjectiveDestination(objectiveID); 
 
 
         arrowPointer.SetDestination(destination);

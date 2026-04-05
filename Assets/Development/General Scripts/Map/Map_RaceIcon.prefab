@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8772439610374639240}
+  - component: {fileID: 3020170863196082761}
   - component: {fileID: 1935929825405956315}
   m_Layer: 20
   m_Name: Map_RaceIcon
-  m_TagString: Untagged
+  m_TagString: MapIcons
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,13 +26,32 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4442905565672832820}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 2.076477, y: 0, z: -106.664856}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &3020170863196082761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4442905565672832820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1b93899ba892ab42b48657b40052c94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MapIcon
+  icons:
+  - {fileID: 21300000, guid: 23590d4aba3a98c4ebb69efd651354a6, type: 3}
+  - {fileID: 21300000, guid: f3c49ef940042be43b44545dc2ec59ba, type: 3}
+  - {fileID: 21300000, guid: 5ac8195a6c3216945af739b77ba7e9f7, type: 3}
+  - {fileID: 21300000, guid: 78fa56ed26d6785479c20e571e5580bd, type: 3}
+  - {fileID: 21300000, guid: 0712f5f4ed3d4cb41b9d0e2b0b035b47, type: 3}
+  index: 0
 --- !u!212 &1935929825405956315
 SpriteRenderer:
   serializedVersion: 2
@@ -58,7 +78,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: f96821bbefeea864b9b418af4b8615ac, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
