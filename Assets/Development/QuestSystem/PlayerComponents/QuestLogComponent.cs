@@ -129,8 +129,12 @@ public class QuestLog : MonoBehaviour
     {
         var obj = quest.GetCurrentObjectives();
         canvasController.DestroyTracker();
-        canvasController.ShowTracker();
-        canvasController.activeTrackerInstance.SetTracker(quest.questID,currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription,IncrementIndex());
+        if(objIndex< currentObjectives.Length)
+        {
+            canvasController.ShowTracker();
+            objIndex++;
+            canvasController.activeTrackerInstance.SetTracker(quest.questID, currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription, GetIndex());
+        }
         canvasController.ShowQuestNotif("Objective Complete");
         //canvasController.activeTrackerInstance.IncrementTrackerIndex();
         arrowPointer.SetDestination (quest.destination);
@@ -138,9 +142,9 @@ public class QuestLog : MonoBehaviour
         Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
     }
 
-    int IncrementIndex()
+    int GetIndex()
     {
-        return objIndex++;
+        return objIndex;
     }
 
     //checks through activeQuests for completed quest and shows rewards.Removed from activeQuests and added to completedQuests list... also destroys the questgiver component form the NPC so it remains just a dialogue NPC
@@ -150,6 +154,7 @@ public class QuestLog : MonoBehaviour
         {
             if (activeQuests[i].IsComplete)
             {
+                canvasController.DestroyTracker();
                 await Task.Delay(1000);
                 completedQuests.Add(activeQuests[i].questData);
                 canvasController.ShowQuestReward(activeQuests[i].questData);
@@ -157,7 +162,6 @@ public class QuestLog : MonoBehaviour
                 canvasController.EndTimer();
                 activeQuests.RemoveAt(i);
                 currentQuestGiver.quests.RemoveAt(0);
-                canvasController.DestroyTracker();
                 currentQuestGiver.hasQuest = false;
                 currentQuestGiver.GetComponent<NPCBase>().dialogueFirst = true;
             }

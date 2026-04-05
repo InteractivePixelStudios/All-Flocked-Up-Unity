@@ -10,6 +10,7 @@ using UnityEngine.AI;
 using UnityEngine.UI;
 using System.Linq;
 using NUnit.Framework;
+using UnityEngine.EventSystems;
 
 public class UI_CanvasController : MonoBehaviour
 {
@@ -113,6 +114,7 @@ public class UI_CanvasController : MonoBehaviour
     [SerializeField] private UI_SkinSelector skinSelectorPrefab;
     public UI_SkinSelector activeSkinSelector;
     Dictionary<Graphic, Color> cachedUIColors = new();
+    bool uiOpen;
 
     private void Start()
     {
@@ -170,13 +172,13 @@ public class UI_CanvasController : MonoBehaviour
             player.GetComponent<PlayerFlightMovement>().enabled = true;
             cam.GetComponent<CinemachineOrbitalFollow>().enabled = true;
             isUIMap = false;
-            // ResumeEnemy();
-            Debug.Log("PLAYERMAP");
+
+
         }
         else return;
     }
 
-    public void SetUIMap()
+    public void SetUIMap(GameObject ui)
     {
         if (!isUIMap)
         {
@@ -187,18 +189,37 @@ public class UI_CanvasController : MonoBehaviour
             isUIMap = true;
             //FreezeEnemies();
             Debug.Log("UIMAP");
+            var obj = ui.GetComponent<Button>();
+            if(obj!= null)
+            {
+                bool firstSelected = false;
+                if (Gamepad.current.buttonSouth.wasPressedThisFrame || Gamepad.current.leftStick.ReadValue() != Vector2.zero)
+                {
+                    if (!firstSelected)
+                    {
+                        EventSystem.current.SetSelectedGameObject(obj.gameObject);
+                        firstSelected = true;
+                    }
+                    else return;
+                }
+                else return;
+            }
         }
         else return;
     }
     //cursor on
-    public void ShowPlayerCursor()
+    public void ShowPlayerCursor(GameObject ui)
     {
-        SetUIMap();
-        if (Mouse.current != null && Mouse.current.wasUpdatedThisFrame)
+        SetUIMap(ui);
+        if (Keyboard.current.anyKey.wasPressedThisFrame ||
+    Mouse.current.delta.ReadValue() != Vector2.zero)
         {
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
-        }else if (Gamepad.current != null && Gamepad.current.wasUpdatedThisFrame)
+        }
+        else if (Gamepad.current != null &&
+        (Gamepad.current.buttonSouth.wasPressedThisFrame ||
+         Gamepad.current.leftStick.ReadValue() != Vector2.zero))
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Confined;
@@ -209,12 +230,15 @@ public class UI_CanvasController : MonoBehaviour
     public void HidePlayerCursor()
     {
         SetPlayerMap();
-        if (Mouse.current != null && Mouse.current.wasUpdatedThisFrame)
+        if (Keyboard.current.anyKey.wasPressedThisFrame ||
+    Mouse.current.delta.ReadValue() != Vector2.zero)
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
-        else if (Gamepad.current != null && Gamepad.current.wasUpdatedThisFrame)
+        else if (Gamepad.current != null &&
+        (Gamepad.current.buttonSouth.wasPressedThisFrame ||
+         Gamepad.current.leftStick.ReadValue() != Vector2.zero))
         {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
@@ -242,16 +266,20 @@ public class UI_CanvasController : MonoBehaviour
     //quest giver canvas
     public void ShowQuestGiver(QuestGiver questGiver)
     {
-        if (!isUIMap || activeDialogueInstance == null)
+        if (!uiOpen)
         {
-            ShowPlayerCursor();
+
+            activeGiverInstance = Instantiate(questGiverCanvas);
+            if (!isUIMap || activeDialogueInstance == null)
+            {
+                ShowPlayerCursor(activeGiverInstance.gameObject);
+            }
+            ApplySavedContrast();
+            activeGiverInstance.currentquestGiver = questGiver;
+            activeGiverInstance.canvasController = this;
+            activeGiverInstance.UpdateUIText(questGiver.quests[0].questName, questGiver.quests[0].questLogDescription, questGiver.quests[0].questName); // change last one to rewards
+            uiOpen = true;
         }
-        activeGiverInstance = Instantiate(questGiverCanvas);
-        ApplySavedContrast();
-        activeGiverInstance.currentquestGiver = questGiver;
-        activeGiverInstance.canvasController = this;
-        activeGiverInstance.UpdateUIText(questGiver.quests[0].questName, questGiver.quests[0].questLogDescription, questGiver.quests[0].questName); // change last one to rewards
-        
     }
 
     //quest giver canvas
@@ -264,19 +292,24 @@ public class UI_CanvasController : MonoBehaviour
                 HidePlayerCursor();
             }
             Destroy(activeGiverInstance.gameObject);
+            uiOpen = false;
             activeGiverInstance = null;
         }
     }
     //quest reward canvas
     public void ShowQuestReward(QuestDetails quest)
     {
-        activeRewardInstance=Instantiate(questRewardsCanvas);
-        ApplySavedContrast();
-        activeRewardInstance.quest = quest;
-        activeRewardInstance.canvasController = this;
-        if (!isUIMap)
+        if (!uiOpen)
         {
-            ShowPlayerCursor();
+            activeRewardInstance = Instantiate(questRewardsCanvas);
+            ApplySavedContrast();
+            activeRewardInstance.quest = quest;
+            activeRewardInstance.canvasController = this;
+            if (!isUIMap)
+            {
+                ShowPlayerCursor(activeRewardInstance.gameObject);
+            }
+            uiOpen = true;
         }
     }
     //quest reward canvas
@@ -290,6 +323,7 @@ public class UI_CanvasController : MonoBehaviour
             }
             Destroy(activeRewardInstance.gameObject);
             activeRewardInstance = null;
+            uiOpen = false;
         }
     }
 
@@ -347,14 +381,16 @@ public class UI_CanvasController : MonoBehaviour
     //quest log canvas
     public void ShowQuestLog()
     {
-
-            activeLogInstance = Instantiate(questLogCanvas);
-        ApplySavedContrast();
-        if (!isUIMap)
+        if (!uiOpen)
         {
-            ShowPlayerCursor();
+            activeLogInstance = Instantiate(questLogCanvas);
+            ApplySavedContrast();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor(activeLogInstance.gameObject);
+            }
+            uiOpen = true;
         }
-
     }
 
     //quest log canvas
@@ -368,23 +404,26 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
+            uiOpen = false;
         }
     }
 
     //dialogue canvas
     public void OpenDialogue()
     {
-
-        if(activeDialogueInstance == null)
+        if (!uiOpen)
         {
-            activeDialogueInstance = Instantiate(dialogueCanvas);
-            ApplySavedContrast();
-            if (!isUIMap)
+            if (activeDialogueInstance == null)
             {
-                ShowPlayerCursor();
+                activeDialogueInstance = Instantiate(dialogueCanvas);
+                ApplySavedContrast();
+                if (!isUIMap)
+                {
+                    ShowPlayerCursor(activeDialogueInstance.gameObject);
+                }
             }
+            uiOpen = true;
         }
-
     }
     //dialogue response options transfer
     public void SendResponseOptions(LocalizedString[] responses)
@@ -409,20 +448,25 @@ public class UI_CanvasController : MonoBehaviour
             //activeDialogueInstance.DestroyDialogue();
             Destroy(activeDialogueInstance.gameObject);
             activeDialogueInstance = null;
+            uiOpen = false;
         }
     }
     //trash canvas
     public void ShowTrashPrompt(TrashCanInteraction trashCan)
     {
-        if (activeTrashInstance == null)
+        if (!uiOpen)
         {
-            activeTrashInstance = Instantiate(trashCanvas);
-            ApplySavedContrast();
-            activeTrashInstance.SetTrashInstance(trashCan);
-            activeTrashInstance.SetCanvasReference(this);
-            if (!isUIMap)
+            if (activeTrashInstance == null)
             {
-                ShowPlayerCursor();
+                activeTrashInstance = Instantiate(trashCanvas);
+                ApplySavedContrast();
+                activeTrashInstance.SetTrashInstance(trashCan);
+                activeTrashInstance.SetCanvasReference(this);
+                if (!isUIMap)
+                {
+                    ShowPlayerCursor(activeTrashInstance.gameObject);
+                }
+                uiOpen = true;
             }
         }
     }
@@ -437,18 +481,22 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
+            uiOpen = false;
         }
     }
     //race giver canvas
     public void OpenRaceGiver()
     {
-        raceGiverInstance = Instantiate(raceGiverCanvas);
-        ApplySavedContrast();
-        if (!isUIMap)
+        if (!uiOpen)
         {
-            ShowPlayerCursor();
+            raceGiverInstance = Instantiate(raceGiverCanvas);
+            ApplySavedContrast();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor(raceGiverInstance.gameObject);
+            }
+            uiOpen = true;
         }
-
     }
     //race giver canvas
     public void CloseRaceGiver()
@@ -461,19 +509,24 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
+            uiOpen = false;
 
         }
     }
     //race rewards canavas
     public void OpenRaceRewards()
     {
-        raceRewardInstance = Instantiate(raceRewardCanvas);
-        ApplySavedContrast();
-        raceRewardInstance.SetCanvasControllerRef(this);
-        SendStandings();
-        if (!isUIMap)
+        if (!uiOpen)
         {
-            ShowPlayerCursor();
+            raceRewardInstance = Instantiate(raceRewardCanvas);
+            ApplySavedContrast();
+            raceRewardInstance.SetCanvasControllerRef(this);
+            SendStandings();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor(raceRewardInstance.gameObject);
+            }
+            uiOpen = true;
         }
     }
     //race rewards canvas
@@ -487,17 +540,23 @@ public class UI_CanvasController : MonoBehaviour
                 HidePlayerCursor();
             }
             raceRewardInstance = null;
+            uiOpen = false;
         }
     }
     //race fail canvas
     public void OpenRaceFail()
     {
-        raceFailInstance = Instantiate(raceFailCanvas);
-        ApplySavedContrast();
-        SendStandings();
-        if (!isUIMap)
+        if (!uiOpen)
         {
-            ShowPlayerCursor();
+            raceFailInstance = Instantiate(raceFailCanvas);
+            ApplySavedContrast();
+            SendStandings();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor(raceFailInstance.gameObject);
+
+            }
+            uiOpen = true;
         }
     }
     //race fail canvas
@@ -511,6 +570,7 @@ public class UI_CanvasController : MonoBehaviour
                 HidePlayerCursor();
             }
             raceFailInstance = null;
+            uiOpen = false;
         }
         if (retry)
         {
@@ -552,11 +612,15 @@ public class UI_CanvasController : MonoBehaviour
 
     public void OpenWingventory()
     {
-        activeWingventory = Instantiate(wingventoryCanvas);
-        ApplySavedContrast();
-        if (!isUIMap)
+        if (!uiOpen)
         {
-            ShowPlayerCursor();
+            activeWingventory = Instantiate(wingventoryCanvas);
+            ApplySavedContrast();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor(activeWingventory.gameObject);
+            }
+            uiOpen = true;
         }
     }
 
@@ -570,18 +634,23 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
+            uiOpen = false;
         }
     }
 
     public void OpenNestMenu()
     {
-        activeNestInstance = Instantiate(nestMenuCanvas);
-        ApplySavedContrast();
-        activeNestInstance.canvasController = this; 
-        activeNestInstance.playerStats = player.GetComponent<PlayerCounter>();
-        if (!isUIMap)
+        if (!uiOpen)
         {
-            ShowPlayerCursor();
+            activeNestInstance = Instantiate(nestMenuCanvas);
+            ApplySavedContrast();
+            activeNestInstance.canvasController = this;
+            activeNestInstance.playerStats = player.GetComponent<PlayerCounter>();
+            if (!isUIMap)
+            {
+                ShowPlayerCursor(activeNestInstance.gameObject);
+            }
+            uiOpen = true;
         }
     }
 
@@ -595,23 +664,28 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
+            uiOpen = false;
         }
 
     }
 
     public void OpenShopUI(ShopItem item, ShopLocation location)
     {
-        activeShopCanvas = Instantiate(shopUICanvas);
-        ApplySavedContrast();
-        shopLocationRef = location;
-        activeShopCanvas.transform.SetParent(shopLocationRef.transform);
-        activeShopCanvas.transform.localPosition = Vector3.zero + new Vector3(0,1.5f,0);
-        activeShopCanvas.currentItem = item;
-        activeShopCanvas.canvasController = this;
-        shopLocationRef = location;
-        if (!isUIMap)
+        if (!uiOpen)
         {
-            ShowPlayerCursor();
+            activeShopCanvas = Instantiate(shopUICanvas);
+            ApplySavedContrast();
+            shopLocationRef = location;
+            activeShopCanvas.transform.SetParent(shopLocationRef.transform);
+            activeShopCanvas.transform.localPosition = Vector3.zero + new Vector3(0, 1.5f, 0);
+            activeShopCanvas.currentItem = item;
+            activeShopCanvas.canvasController = this;
+            shopLocationRef = location;
+            if (!isUIMap)
+            {
+                ShowPlayerCursor(activeShopCanvas.gameObject);
+            }
+            uiOpen = true;
         }
     }
 
@@ -625,21 +699,26 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
+            uiOpen = false;
         }
     }
 
     public void PauseGame()
     {
-        if(activePauseMenu== null)
+        if (!uiOpen)
         {
-            activePauseMenu =Instantiate(pauseMenuCanvas);
-            ApplySavedContrast();
-            if (!isUIMap)
+            if (activePauseMenu == null && SceneManager.GetActiveScene() !=SceneManager.GetSceneByName("MainMenu"))
             {
-                ShowPlayerCursor();
+                activePauseMenu = Instantiate(pauseMenuCanvas);
+                ApplySavedContrast();
+                if (!isUIMap)
+                {
+                    ShowPlayerCursor(activePauseMenu.gameObject);
+                }
+                Time.timeScale = 0;
+                uiOpen = true;
             }
-            Time.timeScale = 0;
-            
+
         }
     }
 
@@ -655,6 +734,7 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
+            uiOpen = false;
         }
 
     }
@@ -662,15 +742,19 @@ public class UI_CanvasController : MonoBehaviour
 
     public void OpenBugReporter()
     {
-        if (activeBugReporter == null)
+        if (!uiOpen)
         {
-            activeBugReporter = Instantiate(bugReporterCanvas);
-            ApplySavedContrast();
-            if (!isUIMap)
+            if (activeBugReporter == null)
             {
-                ShowPlayerCursor();
+                activeBugReporter = Instantiate(bugReporterCanvas);
+                ApplySavedContrast();
+                if (!isUIMap)
+                {
+                    ShowPlayerCursor(activeBugReporter.gameObject);
+                }
+                Time.timeScale = 0;
+                uiOpen = true;
             }
-            Time.timeScale = 0;
         }
     }
 
@@ -685,24 +769,30 @@ public class UI_CanvasController : MonoBehaviour
                 HidePlayerCursor();
             }
             Time.timeScale = 1;
+            uiOpen = false;
         }
     }
 
     public void OpenDebugMenu()
     {
-        if(activeDebugMenu == null)
+        if (!uiOpen)
         {
-            activeDebugMenu = Instantiate(debugMenuCanvas);
-            ApplySavedContrast();
-            if (!isUIMap)
+            if (activeDebugMenu == null)
             {
-                ShowPlayerCursor();
+                activeDebugMenu = Instantiate(debugMenuCanvas);
+                ApplySavedContrast();
+                if (!isUIMap)
+                {
+                    ShowPlayerCursor(activeDebugMenu.gameObject);
+                }
+                uiOpen = true;
             }
         }
     }
 
     public void CloseDebugMenu()
     {
+
         if(activeDebugMenu != null)
         {
             Destroy(activeDebugMenu.gameObject);
@@ -711,20 +801,25 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
+            uiOpen = false;
         }
     }
 
     public void OpenMainMap()
     {
-        if(activeMapCanvas == null)
+        if (!uiOpen)
         {
-            activeMapCanvas = Instantiate(mainMapCanvas);
-            ApplySavedContrast();
-            if (!isUIMap)
+            if (activeMapCanvas == null)
             {
-                ShowPlayerCursor();
+                activeMapCanvas = Instantiate(mainMapCanvas);
+                ApplySavedContrast();
+                if (!isUIMap)
+                {
+                    ShowPlayerCursor(activeMapCanvas.gameObject);
+                }
+                Time.timeScale = 0;
+                uiOpen = true;
             }
-            Time.timeScale = 0;
         }
     }
 
@@ -739,18 +834,23 @@ public class UI_CanvasController : MonoBehaviour
                 HidePlayerCursor();
             }
             Time.timeScale = 1;
+            uiOpen = false;
         }
     }
 
     public void OpenLanguageSelect()
     {
-        activeLanguageCanvas = Instantiate(languageSelectPrefab);
-        ApplySavedContrast();
-        if (activeLanguageCanvas != null)
+        if (!uiOpen)
         {
-            if (!isUIMap)
+            activeLanguageCanvas = Instantiate(languageSelectPrefab);
+            ApplySavedContrast();
+            if (activeLanguageCanvas != null)
             {
-                ShowPlayerCursor();
+                if (!isUIMap)
+                {
+                    ShowPlayerCursor(activeLanguageCanvas.gameObject);
+                }
+                uiOpen = true;
             }
         }
     }
@@ -764,23 +864,28 @@ public class UI_CanvasController : MonoBehaviour
             var menu = FindAnyObjectByType<UI_MainMenu>();
             if(menu != null)
             {
-                menu.SetSelectedObject(menu.startButton.gameObject);
+                //menu.SetSelectedObject(menu.startButton.gameObject);
             }
-            
+            uiOpen = false;
+
         }
 
     }
 
     public void OpenRespawn()
     {
-        activeRespawnCanvas = Instantiate(respawnCanvasPrefab);
-        ApplySavedContrast();
-        if (activeRespawnCanvas != null)
+        if (!uiOpen)
         {
-            activeRespawnCanvas.canvasController = this;
-            if (!isUIMap)
+            activeRespawnCanvas = Instantiate(respawnCanvasPrefab);
+            ApplySavedContrast();
+            if (activeRespawnCanvas != null)
             {
-                ShowPlayerCursor();
+                activeRespawnCanvas.canvasController = this;
+                if (!isUIMap)
+                {
+                    ShowPlayerCursor(activeRespawnCanvas.gameObject);
+                }
+                uiOpen = true;
             }
         }
     }
@@ -794,23 +899,28 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
+            uiOpen = false;
         }
     }
 
     public void OpenLevelTransition()
     {
-        if (activeLevelTransition == null)
+        if (!uiOpen)
         {
-            activeLevelTransition = Instantiate(levelTransitionPrefab);
-            ApplySavedContrast();
-            activeLevelTransition.sceneName = cachedLevelName;
-            activeLevelTransition.transitionObj = transitionObj;
-            if (!isUIMap)
+            if (activeLevelTransition == null)
             {
-                ShowPlayerCursor();
+                activeLevelTransition = Instantiate(levelTransitionPrefab);
+                ApplySavedContrast();
+                activeLevelTransition.sceneName = cachedLevelName;
+                activeLevelTransition.transitionObj = transitionObj;
+                if (!isUIMap)
+                {
+                    ShowPlayerCursor(activeLevelTransition.gameObject);
+                }
+                player.GetComponent<PlayerGroundMovement>().enabled = true;
+                player.GetComponent<PlayerFlightMovement>().enabled = true;
+                uiOpen = true;
             }
-            player.GetComponent<PlayerGroundMovement>().enabled = true;
-            player.GetComponent<PlayerFlightMovement>().enabled = true;
         }
     }
 
@@ -823,44 +933,54 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
+            uiOpen = false;
         }
     }
 
     public void ShowTutorialPrompt()
     {
-        if(activeTutPrompt == null)
+        if (!uiOpen)
         {
-            activeTutPrompt = Instantiate(promptPrefab);
-            ApplySavedContrast();
-            activeTutPrompt.promptIndex = cachedTutPromptIndex;
-            activeTutPrompt.arrowIndex = cachedIntroIndex;
-            activeTutPrompt.canvasController = this;
-            //ShowPlayerCursor() ;
+            if (activeTutPrompt == null)
+            {
+                activeTutPrompt = Instantiate(promptPrefab);
+                ApplySavedContrast();
+                activeTutPrompt.promptIndex = cachedTutPromptIndex;
+                activeTutPrompt.arrowIndex = cachedIntroIndex;
+                activeTutPrompt.canvasController = this;
+                //ShowPlayerCursor() ;
+                uiOpen = true;
+            }
         }
     }
 
-    public void DestroyPrompt()
+        public void DestroyPrompt()
     {
         if(activeTutPrompt != null)
         {
            // HidePlayerCursor();
             Destroy(activeTutPrompt.gameObject);
             cachedTutPromptIndex = -1;
+            uiOpen = false;
         }
     }
 
     public void ShowSkinSelector()
     {
-        if(activeSkinSelector == null)
+        if (!uiOpen)
         {
-            activeSkinSelector = Instantiate(skinSelectorPrefab);
-            ApplySavedContrast();
-            if (!isUIMap)
+            if (activeSkinSelector == null)
             {
-                ShowPlayerCursor();
+                activeSkinSelector = Instantiate(skinSelectorPrefab);
+                ApplySavedContrast();
+                if (!isUIMap)
+                {
+                    ShowPlayerCursor(activeSkinSelector.gameObject);
+                }
+                player.GetComponent<PlayerGroundMovement>().enabled = true;
+                player.GetComponent<PlayerFlightMovement>().enabled = true;
+                uiOpen = true;
             }
-            player.GetComponent<PlayerGroundMovement>().enabled = true;
-            player.GetComponent<PlayerFlightMovement>().enabled = true;
         }
     }
 
@@ -873,6 +993,7 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
+            uiOpen = false;
         }
     }
 

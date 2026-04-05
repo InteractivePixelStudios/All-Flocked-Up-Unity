@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerInteraction : MonoBehaviour
@@ -283,7 +284,7 @@ public class PlayerInteraction : MonoBehaviour
 
         void OpenPause(InputAction.CallbackContext ctx)
         {
-            if (!gamePaused && canvasController.activePauseMenu == null)
+            if (!gamePaused && canvasController.activePauseMenu == null && SceneManager.GetActiveScene() != SceneManager.GetSceneByName("MainMenu"))
             {
                 canvasController.PauseGame();
             }
