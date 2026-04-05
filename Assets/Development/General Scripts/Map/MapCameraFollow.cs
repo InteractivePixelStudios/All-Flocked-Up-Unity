@@ -31,5 +31,12 @@ public class MapCameraFollow : MonoBehaviour
         }
     }
 
+    public Camera GetMapCamera()
+    {
+        return mapCamera;
+    }
+
+
+
 
 }

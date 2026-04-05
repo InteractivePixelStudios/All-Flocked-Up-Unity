@@ -18,6 +18,7 @@ public class CompassController : MonoBehaviour
 
     [SerializeField] private GameObject iconPrefab;
     bool spawned;
+    Camera mapCamRef;
 
     //[SerializeField] private Transform questTarget;
 
@@ -34,6 +35,12 @@ public class CompassController : MonoBehaviour
         else
             Debug.LogError("No object tagged Player found!");
 
+       var comp = playerObj.GetComponentInChildren<MapCameraFollow>();
+        if(comp != null)
+        {
+            mapCamRef = comp.GetMapCamera();
+        }
+
     }
 
    
@@ -43,7 +50,7 @@ public class CompassController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         //player forward dial
         float playerYaw = player.transform.eulerAngles.y;   
         compassDial.localEulerAngles = new Vector3(0,0, playerYaw);
@@ -76,11 +83,17 @@ public class CompassController : MonoBehaviour
         {
             var sprite = obj.GetComponent<MapIcon>().GetCurrentSprite();
             Debug.Log(sprite);
-            var spawned = Instantiate(iconPrefab,hudController.transform);
-            var comp = spawned.GetComponent<RectTransform>();
+            var spawnedIcon = Instantiate(iconPrefab,hudController.transform);
+            var comp = spawnedIcon.GetComponent<RectTransform>();
             mapMarkers.Add(comp);
             await Task.Delay(300);
-            spawned.GetComponent<MiniMapIcon>().SetIcon(sprite);
+            spawnedIcon.GetComponent<MiniMapIcon>().SetIcon(sprite);
+            spawnedIcon.TryGetComponent<IconRemover>(out var remover);
+            if(remover != null)
+            {
+                remover.SetCompassRef(this);
+                remover.SetIconRef(obj);
+            }
 
         }
     }
@@ -91,6 +104,17 @@ public class CompassController : MonoBehaviour
         {
             Transform target = worldTargets[i].transform;
             RectTransform marker = mapMarkers[i];
+            if (IsVisible(target))
+            {
+                marker.gameObject.SetActive(false);
+                Debug.Log(IsVisible(target));
+                continue;
+            }
+            else
+            {
+                Debug.Log(IsVisible(target));
+                marker.gameObject.SetActive(true);
+            }
             Vector3 dir = target.position - player.position;
             dir.y = 0f;
             float angle = Mathf.DeltaAngle(player.eulerAngles.y, Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg);
@@ -106,10 +130,43 @@ public class CompassController : MonoBehaviour
         {
             Destroy(marker.gameObject);
         }
+        mapMarkers.Clear();
+    }
+
+    public void RemoveIcon(MapIcon icon)
+    {
+        for (int i = 0; i < worldTargets.Length; i++)
+        {
+            if (worldTargets[i] == icon)
+            {
+                if (i < mapMarkers.Count && mapMarkers[i] != null)
+                {
+                    Destroy(mapMarkers[i].gameObject);
+                    mapMarkers.RemoveAt(i);
+                }
+                var targetsList = new List<MapIcon>(worldTargets);
+                targetsList.RemoveAt(i);
+                worldTargets = targetsList.ToArray();
+
+                return;
+            }
+        }
     }
 
     public void SetQuestTarget(Transform newTarget)
     {
     //    questTarget = newTarget;
     }
+
+    bool IsVisible(Transform target)
+    {
+        if (mapCamRef == null) return false;
+
+        Vector3 viewPos = mapCamRef.WorldToViewportPoint(target.position);
+
+        return viewPos.z > 0 &&
+               viewPos.x > 0 && viewPos.x < 1 &&
+               viewPos.y > 0 && viewPos.y < 1;
+    }
+
 }

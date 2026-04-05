@@ -16,6 +16,7 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
     public List<QuestDetails> requiredCompletedQuests = new(); //List of REQUIRED COMPLETED QUESTS.
     public List<GameObject> questObjects = new();
     private List<string> objIDList = new();
+    [SerializeField] private MapIcon iconRef;
 
     void Start()
     {
@@ -50,12 +51,11 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
     private void HideQuestObjects()
     {
         if (questObjects.Count == 0) return;
-        foreach (var quest in questObjects)
+        foreach (var obj in questObjects)
         {
-            //foreach (var obj in quest)
-            //{
-            //    obj.SetActive(false);
-            //}
+
+                obj.SetActive(false);
+            
         }
     }
 
@@ -129,9 +129,17 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
         if ( log.IsQuestCompleted(quest) )//&& quest.autoCompleteQuest)
         {
             log.MarkQuestTurnedIn(quest);
+
             Debug.Log("Quest auto-completed and turned in.");
            
         }
 
     }
+
+    private void OnDestroy()
+    {
+        Destroy(iconRef.gameObject);
+    }
+
+
 }
