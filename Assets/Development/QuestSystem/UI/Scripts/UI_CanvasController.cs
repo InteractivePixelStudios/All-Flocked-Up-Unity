@@ -114,7 +114,7 @@ public class UI_CanvasController : MonoBehaviour
     [SerializeField] private UI_SkinSelector skinSelectorPrefab;
     public UI_SkinSelector activeSkinSelector;
     Dictionary<Graphic, Color> cachedUIColors = new();
-    bool uiOpen;
+    public bool uiOpen;
 
     private void Start()
     {
@@ -135,6 +135,14 @@ public class UI_CanvasController : MonoBehaviour
         //OpenLanguageSelect(); //remove after testing
         var ui = FindObjectsByType<UnityEngine.UI.Graphic>();
         CacheUIColors(ui);
+
+        if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("KensingtonMarket"))
+        {
+            HidePlayerCursor();
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
     }
 
 
@@ -289,6 +297,8 @@ public class UI_CanvasController : MonoBehaviour
             if (isUIMap)
             {
                 HidePlayerCursor();
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
             }
             Destroy(activeGiverInstance.gameObject);
             uiOpen = false;
@@ -318,6 +328,8 @@ public class UI_CanvasController : MonoBehaviour
             if (isUIMap)
             {
                 HidePlayerCursor();
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
             }
             Destroy(activeRewardInstance.gameObject);
             activeRewardInstance = null;
@@ -907,10 +919,13 @@ public class UI_CanvasController : MonoBehaviour
                 activeLevelTransition = Instantiate(levelTransitionPrefab);
                 ApplySavedContrast();
                 activeLevelTransition.sceneName = cachedLevelName;
+                activeLevelTransition.canvasController = this;
                 activeLevelTransition.transitionObj = transitionObj;
                 if (!isUIMap)
                 {
                     ShowPlayerCursor(activeLevelTransition.gameObject);
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.None;
                 }
                 player.GetComponent<PlayerGroundMovement>().enabled = true;
                 player.GetComponent<PlayerFlightMovement>().enabled = true;
@@ -942,10 +957,14 @@ public class UI_CanvasController : MonoBehaviour
                 activeTutPrompt.promptIndex = cachedTutPromptIndex;
                 activeTutPrompt.arrowIndex = cachedIntroIndex;
                 activeTutPrompt.canvasController = this;
-            //ShowPlayerCursor() ;
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-                //uiOpen = true;
+            if (!isUIMap)
+            {
+                //ShowPlayerCursor(activeTutPrompt.gameObject) ;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+
+                uiOpen = true;
             }
         
     }
@@ -954,10 +973,13 @@ public class UI_CanvasController : MonoBehaviour
     {
         if(activeTutPrompt != null)
         {
-           // HidePlayerCursor();
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
             Destroy(activeTutPrompt.gameObject);
             cachedTutPromptIndex = -1;
-           // uiOpen = false;
+            uiOpen = false;
         }
     }
 

@@ -39,7 +39,7 @@ public class DialogueBase : MonoBehaviour
    [SerializeField] private int currentTextSpeed;
 
     [SerializeField] private NPCBase npcRef;
-    public int textSpeed=>currentTextSpeed=100;// this speed is in ms
+    public int textSpeed=>currentTextSpeed=75;// this speed is in ms
 
     public bool GetIsTyping()
     {

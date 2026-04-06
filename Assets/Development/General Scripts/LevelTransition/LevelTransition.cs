@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -21,9 +22,10 @@ public class LevelTransition : MonoBehaviour
         canvasController.OpenLevelTransition();
     }
 
-    public void ChangeToNextScene()
+    public async void ChangeToNextScene()
     {
         canvasController.CloseLevelTransition();
+        await Task.Delay(100);
         SceneManager.LoadScene(nextScene);
     }
   

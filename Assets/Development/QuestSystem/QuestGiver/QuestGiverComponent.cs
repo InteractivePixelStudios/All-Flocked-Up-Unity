@@ -17,6 +17,7 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
     public List<GameObject> questObjects = new();
     private List<string> objIDList = new();
     [SerializeField] private MapIcon iconRef;
+    [SerializeField]private GameObject questIcon;
 
     void Start()
     {
@@ -82,7 +83,6 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
         {
           
             AcceptQuest(playerQuestLog, quest,this);
-            ShowQuestObjects();
         }
         else
         {
@@ -125,6 +125,7 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
     public void AcceptQuest(QuestLog log, QuestDetails quest,QuestGiver questGiver)
     {
         log.AcceptQuest(quest,questGiver);
+        ShowQuestObjects();
 
         if ( log.IsQuestCompleted(quest) )//&& quest.autoCompleteQuest)
         {
@@ -136,9 +137,20 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
 
     }
 
+    public void DestroySelf()
+    {
+        Destroy(this);
+    }
+
     private void OnDestroy()
     {
-        Destroy(iconRef.gameObject);
+        if (iconRef!=null)
+        {
+            Destroy(iconRef.gameObject);
+        }
+        if (questIcon != null){
+            Destroy(questIcon);
+        }
     }
 
 

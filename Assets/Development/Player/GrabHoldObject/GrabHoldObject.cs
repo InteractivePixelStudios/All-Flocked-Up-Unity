@@ -27,43 +27,37 @@ public class GrabHoldObject : MonoBehaviour
 
         if(grabAction != null )
         {
-            grabAction.performed += GrabObject;
-            grabAction.started += CallHold;
-            grabAction.canceled += CallRelease;
+
+                grabAction.started += OnGrabPressed;
+
+
+            
+            //grabAction.started += CallHold;
 
         }
     }
 
-    void GrabObject(InputAction.CallbackContext ctx)
+    private void Update()
     {
-        if (!isHoldingObject)
-        {
-            peckComp.Peck();
-            TryGrabObject();
-
-        }
-        else if (isHoldingObject)
-        {
-
-            ReleaseGrabbedObject();
-        }
-        else 
+        if( isHoldingObject )
         {
             HoldGrabbedObject(grabbedObject, grabOffset);
-
         }
-        
     }
 
-    private void CallGrab(InputAction.CallbackContext ctx)
+    void OnGrabPressed(InputAction.CallbackContext ctx)
     {
         if (!isHoldingObject)
         {
             peckComp.Peck();
             TryGrabObject();
-
+        }
+        else
+        {
+            ReleaseGrabbedObject();
         }
     }
+
 
 
 
@@ -78,28 +72,7 @@ public class GrabHoldObject : MonoBehaviour
 
         }
 
-        if (Physics.Raycast(grabPoint.transform.position, transform.forward + (Vector3.down * 2), out hit, grabDistance, consumeLayer))
-        {
-            grabbedObject = hit.collider.gameObject;
-            var comp = hit.collider.gameObject.GetComponentInParent<PlayerHealth>();
-            if (comp !=null && comp.currentHealth < comp.maxHealth)
-            {
-                grabbedObject.GetComponentInParent<ConsumableBase>().UseConsumable();
-            }
-            else
-            {
-                var inv = GetComponentInParent<PlayerWingventory>();
-                inv.AddItemToInv(hit.collider.gameObject.name,1);
-            }
 
-        }
-
-        if (Physics.Raycast(grabPoint.transform.position, transform.forward + (Vector3.down * 2), out hit, grabDistance, collectLayer))
-        {
-            var comp = hit.collider.gameObject.GetComponent<TrinketScript>();
-            comp.CollectTrinket(comp.value);
-
-        }
     }
 
     private void PickUpObject(GameObject Object)
@@ -129,10 +102,6 @@ public class GrabHoldObject : MonoBehaviour
 
     }
 
-    private void CallHold(InputAction.CallbackContext ctx)
-    {
-        HoldGrabbedObject(grabbedObject, grabOffset);
-    }
 
     private void HoldGrabbedObject(GameObject Object, Vector3 offset)
     {
@@ -148,14 +117,7 @@ public class GrabHoldObject : MonoBehaviour
         }
     }
 
-    private void CallRelease(InputAction.CallbackContext ctx)
-    {
-        if (isHoldingObject)
-        {
 
-            ReleaseGrabbedObject();
-        }
-    }
 
     private void ReleaseGrabbedObject()
     {

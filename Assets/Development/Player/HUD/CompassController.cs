@@ -107,7 +107,7 @@ public class CompassController : MonoBehaviour
             if (IsVisible(target))
             {
                 marker.gameObject.SetActive(false);
-                Debug.Log(IsVisible(target));
+
                 continue;
             }
             else

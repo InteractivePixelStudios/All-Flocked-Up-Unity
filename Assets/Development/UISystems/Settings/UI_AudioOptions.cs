@@ -14,10 +14,10 @@ public class UI_AudioOptions : UI_SettingsMenu
     private const float mainVolBase = 1f;
     [SerializeField] private TextMeshProUGUI mainVolText;
     [SerializeField]private Slider sfxVolSlider;
-    private const float sfxVolBase = 0.5f;
+    private const float sfxVolBase = 0.4f;
     [SerializeField] private TextMeshProUGUI sfxVolText;
     [SerializeField] private Slider musicVolSlider;
-    private const float musicVolBase = 0.5f;
+    private const float musicVolBase = 0.7f;
     [SerializeField] private TextMeshProUGUI musicVolText;
     [SerializeField] private Slider ambientVolSlider;
     private const float ambientBase =0.5f;

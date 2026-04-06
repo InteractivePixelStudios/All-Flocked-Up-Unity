@@ -15192,7 +15192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7624586422060604860, guid: e4290b8d24308b9459c6b32627fc659f, type: 3}
       propertyPath: Decollision.Damping
-      value: 0
+      value: 1.12
       objectReference: {fileID: 0}
     - target: {fileID: 7624586422060604860, guid: e4290b8d24308b9459c6b32627fc659f, type: 3}
       propertyPath: Decollision.Enabled
@@ -15200,11 +15200,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7624586422060604860, guid: e4290b8d24308b9459c6b32627fc659f, type: 3}
       propertyPath: Decollision.SmoothingTime
-      value: 0.017
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7624586422060604860, guid: e4290b8d24308b9459c6b32627fc659f, type: 3}
       propertyPath: Decollision.ObstacleLayers.m_Bits
       value: 32776
+      objectReference: {fileID: 0}
+    - target: {fileID: 7624586422060604860, guid: e4290b8d24308b9459c6b32627fc659f, type: 3}
+      propertyPath: Decollision.UseFollowTarget.YOffset
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7624586422060604860, guid: e4290b8d24308b9459c6b32627fc659f, type: 3}
       propertyPath: TerrainResolution.TerrainLayers.m_Bits
@@ -21071,6 +21075,10 @@ PrefabInstance:
       propertyPath: m_ExcludeLayers.m_Bits
       value: 536870655
       objectReference: {fileID: 0}
+    - target: {fileID: 4597154152719130687, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: propMask.m_Bits
+      value: 514298240
+      objectReference: {fileID: 0}
     - target: {fileID: 5074474002350864302, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: speechEventRef.Path
       value: event:/UI/Speech/Character 2
@@ -21091,9 +21099,33 @@ PrefabInstance:
       propertyPath: speechEventRef.Guid.Data4
       value: -1378707654
       objectReference: {fileID: 0}
+    - target: {fileID: 5360852943576176621, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5360852943576176621, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: jumpHeight
+      value: 175
+      objectReference: {fileID: 0}
+    - target: {fileID: 5691531790606118220, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5691531790606118220, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: propLayer.m_Bits
-      value: 32768
+      value: 480608641
+      objectReference: {fileID: 0}
+    - target: {fileID: 7197008592117442205, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7197008592117442205, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.585
+      objectReference: {fileID: 0}
+    - target: {fileID: 7197008592117442205, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.135
       objectReference: {fileID: 0}
     - target: {fileID: 7662461018856128867, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: cam
@@ -21146,6 +21178,10 @@ PrefabInstance:
     - target: {fileID: 8952464106424959765, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9166902959186705048, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: spinDuration
+      value: 0.25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -35702,9 +35738,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: MapCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 4996266459362091827, guid: 6971e7158d4ca5045bbd1aa54af6d7a0, type: 3}
+      propertyPath: offset.y
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 5993666648083253538, guid: 6971e7158d4ca5045bbd1aa54af6d7a0, type: 3}
       propertyPath: m_RenderPostProcessing
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7193977359930900985, guid: 6971e7158d4ca5045bbd1aa54af6d7a0, type: 3}
+      propertyPath: orthographic size
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7193977359930900985, guid: 6971e7158d4ca5045bbd1aa54af6d7a0, type: 3}
       propertyPath: m_OcclusionCulling

@@ -37,7 +37,7 @@ public class UI_PauseMenu : MonoBehaviour
     {
         var controller = FindAnyObjectByType<UI_CanvasController>();
         controller.ResumeGame();
-        controller.HidePlayerCursor();
+
     }
 
     public virtual void OnSettingsOpen()
@@ -99,6 +99,12 @@ public class UI_PauseMenu : MonoBehaviour
         comp.isQuitting = true;
         
 
+    }
+
+    public void CloseSaveWindow()
+    {
+        Destroy(currentSaveWindow);
+        mainCanvas.SetActive(true);
     }
 
 
