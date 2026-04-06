@@ -316,6 +316,8 @@ public class UI_CanvasController : MonoBehaviour
             if (!isUIMap)
             {
                 ShowPlayerCursor(activeRewardInstance.gameObject);
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             }
             uiOpen = true;
         
@@ -516,6 +518,8 @@ public class UI_CanvasController : MonoBehaviour
             if (isUIMap)
             {
                 HidePlayerCursor();
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
             }
 
 
@@ -533,6 +537,8 @@ public class UI_CanvasController : MonoBehaviour
             if (!isUIMap)
             {
                 ShowPlayerCursor(raceRewardInstance.gameObject);
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
             }
             uiOpen = true;
         }
@@ -546,6 +552,8 @@ public class UI_CanvasController : MonoBehaviour
             if (isUIMap)
             {
                 HidePlayerCursor();
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
             }
             raceRewardInstance = null;
             uiOpen = false;

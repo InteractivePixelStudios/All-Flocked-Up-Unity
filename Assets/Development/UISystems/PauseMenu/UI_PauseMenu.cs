@@ -96,7 +96,7 @@ public class UI_PauseMenu : MonoBehaviour
         currentSaveWindow = Instantiate(saveWindowPrefab,mainCanvas.gameObject.transform);
         var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
         comp.SetFirstSaveButton();
-        comp.isQuitting = true;
+        comp.isQuitting = false;
         
 
     }
