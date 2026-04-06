@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.Rendering.Universal;
 
 public class GraffitiZone : MonoBehaviour
 {
@@ -22,10 +23,14 @@ public class GraffitiZone : MonoBehaviour
 
     [Header ("Spray Knowledge")]
     [SerializeField] InputAction spray;
-    [SerializeField] public int textureSize = 1024;
-    [SerializeField] public int brushSize = 5;
+    [SerializeField] public float sprayDistance = 5f;
+    [SerializeField] public float decalSize = 0.3f;
     [SerializeField] public Color currentColor;
     [SerializeField] public bool isPainting = false;
+    [SerializeField] public GameObject decalPrefab;
+    [SerializeField] public LayerMask sprayableLayers;
+
+    //look in to graphics.blit to potentially replace decals
 
     private Dictionary<Renderer, Texture2D> paintTextures = new Dictionary<Renderer, Texture2D>();
 
@@ -81,8 +86,8 @@ public class GraffitiZone : MonoBehaviour
 
     void UpdateSize(float value)
     {
-        brushSize = (int)value;
-        SizeImage.rectTransform.sizeDelta = new Vector2(brushSize * 2, brushSize * 2);
+        decalSize = (int)value;
+        SizeImage.rectTransform.sizeDelta = new Vector2(decalSize * 2, decalSize * 2);
     }
 
     void PlayerInput()
@@ -111,66 +116,39 @@ public class GraffitiZone : MonoBehaviour
     {
         if (isPainting == true)
         {
-            Debug.Log("Painting at mouse position: " + Mouse.current.position.ReadValue());
             Ray ray = grafittiCam.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                Renderer rend = hit.collider.GetComponent<Renderer>();
-                if (rend == null) return;
-
-                Texture2D tex = GetOrCreateTexture(rend);
-
-                Vector2 uv = hit.textureCoord;
-
-                int x = (int)(uv.x * textureSize);
-                int y = (int)(uv.y * textureSize);
-
-                Paint(tex, x, y);
-
-                tex.Apply();
-            }
+            if (!Physics.Raycast(ray, out hit, sprayDistance, sprayableLayers))
+                return;
+            Debug.Log("Hit: " + hit.collider.name);
+            SpawnDecal(hit);
         }
     }
 
-    Texture2D GetOrCreateTexture(Renderer rend)
+    void SpawnDecal(RaycastHit hit)
     {
-        if (paintTextures.ContainsKey(rend))
-            return paintTextures[rend];
+        // Align projector to surface
+        Quaternion rotation = Quaternion.LookRotation(-hit.normal);
 
-        Texture2D tex = new Texture2D(textureSize, textureSize);
+        GameObject decalObj = Instantiate(
+            decalPrefab,
+            hit.point + hit.normal * 0.02f,
+            rotation
+        );
 
-        Color[] pixels = new Color[textureSize * textureSize];
-        for (int i = 0; i < pixels.Length; i++)
-            pixels[i] = Color.white;
+        var projector = decalObj.GetComponent<DecalProjector>();
 
-        tex.SetPixels(pixels);
-        tex.Apply();
-
-        rend.material.mainTexture = tex;
-
-        paintTextures.Add(rend, tex);
-
-        return tex;
-    }
-
-    void Paint(Texture2D tex, int x, int y)
-    {
-        for (int i = -brushSize; i <= brushSize; i++)
+        if (projector != null)
         {
-            for (int j = -brushSize; j <= brushSize; j++)
-            {
-                float dist = Mathf.Sqrt(i * i + j * j);
+            // Randomize size for spray feel
+            float size = Random.Range(decalSize * 0.8f, decalSize * 1.2f);
 
-                if (dist > brushSize) continue;
+            projector.size = new Vector3(size, size, size);
 
-                int px = x + i;
-                int py = y + j;
-
-                if (px >= 0 && px < tex.width && py >= 0 && py < tex.height)
-                    tex.SetPixel(px, py, currentColor);
-            }
+            // Create unique material instance
+            projector.material = new Material(projector.material);
+            projector.material.color = currentColor;
         }
     }
 
