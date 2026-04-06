@@ -49,7 +49,7 @@ public class UI_QuestLog : MonoBehaviour
         }
         GetCurrentQuests();
         trackQuestButton.onClick.AddListener(()=>TrackQuest(currentQuest));
-        HideRewardImages(currentQuest);
+        //HideRewardImages(currentQuest);
         EventSystem.current.SetSelectedGameObject(trackQuestButton.gameObject);
     }
 

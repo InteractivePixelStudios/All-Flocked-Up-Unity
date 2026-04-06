@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ public class QuestRuntimeInstance
     public GameObject destination;
     private int cachedExp;
     private int cachedTrinkets;
-    private string[] itemRewards;
+    private List<string> itemRewards = new();
 
     public void Start()
     {
@@ -45,13 +46,13 @@ public class QuestRuntimeInstance
         return cachedTrinkets;
     }
 
-    public string[] GetItemRewards()
+    public List<string> GetItemRewards()
     {
         return itemRewards;
     }
 
     //Gets objectives and for each sets an objectiveID
-    public void StartQuest()
+    public async void StartQuest()
     {
         questLog = GameObject.FindAnyObjectByType<QuestLog>();
         player = questLog.gameObject;
@@ -67,25 +68,30 @@ public class QuestRuntimeInstance
 
         // finds quest mechanics
         GetQuestObjects();
-        GetQuestID(questData.questID);
-        GetObjectiveDestination(objectives[0].objectiveID);
-        arrowPointer.destination = destination;
+        SetQuestID(questData.questID);
+        destination = GetObjectiveDestination(objectives[0].objectiveID);
+         await Task.Delay(1000);
         arrowPointer.EnablePointerArrow(destination);
+        SetupStage();
 
 
     }
 
     //gets and sets QuestID to variable
-    public string GetQuestID(string questid) => questID;
+    public void SetQuestID(string id)
+    {
+        questID = id;
+    }
 
     //gets the quest mechanic gameobjects associated to that questID
     public void GetQuestObjects()
     {
 
         questMechanicsObjects.Clear();
-        IQuestMechanic[] mechanics = Object.FindObjectsByType<MonoBehaviour>()
-    .OfType<IQuestMechanic>()
-    .ToArray();
+        IQuestMechanic[] mechanics = Object
+            .FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+            .OfType<IQuestMechanic>()
+            .ToArray();
         foreach (var mechanic in mechanics)
         {
             if (mechanic is MonoBehaviour monoBehaviour && objectiveProgress.Keys.Contains<string>(mechanic.GetObjectiveID()))
@@ -107,20 +113,21 @@ public class QuestRuntimeInstance
         return questData.stages[currentStageIndex].objectivesToComplete;
     }
 
-    private void GetObjectiveDestination(string objectiveID)
+    private GameObject GetObjectiveDestination(string objectiveID)
     {
-        var objective = objectiveProgress[objectiveID];
-        if (objective.Equals(currentStageIndex))
+        foreach (var mechanic in questMechanicsObjects)
         {
-            foreach (var mechanic in questMechanicsObjects)
+            var comp = mechanic.GetComponent<IQuestMechanic>();
+
+            if (comp != null && comp.GetObjectiveID() == objectiveID)
             {
-                var comp = mechanic.GetComponent<IQuestMechanic>();
-                if (objectiveProgress.Keys.Contains<string>(comp.GetObjectiveID()))
-                {
-                    destination = mechanic;
-                } 
+                destination = mechanic;
+                Debug.Log($"Destination set: {mechanic.name}");
+                return destination;
             }
         }
+
+        return null;
     }
 
     //Takes ObjectiveID and amount and increments. Checks if stage is complete and advances if true.
@@ -135,10 +142,11 @@ public class QuestRuntimeInstance
             GetObjectiveDestination(objectiveID); 
 
 
-        arrowPointer.SetDestination(destination);
 
         objectiveProgress[objectiveID] += amount;
         questLog.OnObjectiveUpdated(this, objectiveID, objectiveProgress[objectiveID]);
+
+        arrowPointer.SetDestination(destination);
 
 
         Debug.Log("Objective Increments?");
@@ -165,6 +173,22 @@ public class QuestRuntimeInstance
         return true;
     }
 
+    void SetupStage()
+    {
+        objectiveProgress.Clear();
+
+        var objectives = GetCurrentObjectives();
+        foreach (var obj in objectives)
+        {
+            objectiveProgress[obj.objectiveID] = 0;
+        }
+
+        GetQuestObjects();
+
+        destination = GetObjectiveDestination(objectives[0].objectiveID);
+        arrowPointer.SetDestination(destination);
+    }
+
     //Advances Stage index. If not complete, Start quest.
     public void AdvanceStage()
     {
@@ -176,7 +200,7 @@ public class QuestRuntimeInstance
         GetQuestObjects();
         if (!IsComplete)
         {
-            StartQuest();
+            SetupStage() ;
         }
         if (currentStageIndex >= questData.stages.Length)
         {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -282,6 +283,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
     protected void KickPlayer()
     {
+        navAgent.isStopped = true ;
         var spawnedCollider = kickColliderParent.AddComponent<SphereCollider>();
         var comp = spawnedCollider.AddComponent<KickComponent>();
         comp.damage = 1;
@@ -295,6 +297,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
     protected async void ThrowObject()
     {
+        navAgent.isStopped = true;
         Vector3 facingDir = (player.transform.position - transform.position).normalized;
         float diff = Vector3.Dot(transform.forward, facingDir);
         if(diff <0.5f)

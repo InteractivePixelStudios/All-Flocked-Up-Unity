@@ -12,6 +12,7 @@ public class PlayerNavArrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (spawnedArrow == null) return;
         if(spawnedArrow!= null)spawnedArrow.transform.position = arrowSpawnPoint.transform.position;
         if (isEnabled)
         {
@@ -37,8 +38,11 @@ public class PlayerNavArrow : MonoBehaviour
 
     public void EnablePointerArrow(GameObject destination)
     {
-        isEnabled = true;
-        SpawnArrow(destination);
+        if (!isEnabled)
+        {
+            isEnabled = true;
+            SpawnArrow(destination);
+        }else SetDestination(destination);
     }
 
     private void SpawnArrow(GameObject destination)
@@ -50,13 +54,14 @@ public class PlayerNavArrow : MonoBehaviour
 
     void RotateArrow()
     {
-        if (spawnedArrow == null) return;
+        if (spawnedArrow == null || destination == null) return;
         Vector3 direction = destination.transform.position - this.transform.position;
         spawnedArrow.transform.rotation = Quaternion.LookRotation(direction);
     }
 
     public void DestroyArrow()
     {
+        if(spawnedArrow != null)
         Destroy(spawnedArrow.gameObject);
     }
 }

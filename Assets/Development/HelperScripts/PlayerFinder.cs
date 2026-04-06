@@ -15,7 +15,7 @@ public class PlayerFinder : Singleton<PlayerFinder>
         {
             SetTrackingTarget();
         }
-        SetTrackingTarget();
+        
     }
 
     // Update is called once per frame
@@ -34,9 +34,9 @@ public class PlayerFinder : Singleton<PlayerFinder>
 
     }
 
-    private void OnLevelWasLoaded(int level)
-    {
-        this.enabled = true;
-        SetTrackingTarget();
-    }
+    //private void OnLevelWasLoaded(int level)
+    //{
+    //    this.enabled = true;
+    //    SetTrackingTarget();
+    //}
 }

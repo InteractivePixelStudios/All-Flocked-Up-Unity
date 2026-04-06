@@ -137,7 +137,6 @@ public class QuestLog : MonoBehaviour
         }
         canvasController.ShowQuestNotif("Objective Complete");
         //canvasController.activeTrackerInstance.IncrementTrackerIndex();
-        arrowPointer.SetDestination (quest.destination);
         CheckForCompletedQuests();
         Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
     }
@@ -158,9 +157,9 @@ public class QuestLog : MonoBehaviour
                 await Task.Delay(1000);
                 completedQuests.Add(activeQuests[i].questData);
                 canvasController.ShowQuestReward(activeQuests[i].questData);
-                canvasController.activeRewardInstance.SetRewardText(activeQuests[i].GetCachedTrinkets(), activeQuests[i].GetCachedExp(), activeQuests[i].GetItemRewards() ) ;
-                canvasController.EndTimer();
+                canvasController.activeRewardInstance.SetRewardText(activeQuests[i].GetCachedTrinkets(), activeQuests[i].GetCachedExp(), activeQuests[i].GetItemRewards().ToArray() ) ;
                 activeQuests.RemoveAt(i);
+                canvasController.EndTimer();
                 currentQuestGiver.quests.RemoveAt(0);
                 currentQuestGiver.hasQuest = false;
                 currentQuestGiver.GetComponent<NPCBase>().dialogueFirst = true;
@@ -168,8 +167,9 @@ public class QuestLog : MonoBehaviour
             if(currentQuestGiver.quests.Count <= 0)
             {
                 currentQuestGiver.gameObject.layer = LayerMask.NameToLayer("Dialogue");
+                var comp = currentQuestGiver.GetComponent<QuestGiver>();
                 Debug.Log(currentQuestGiver.gameObject.layer);
-                Destroy(currentQuestGiver);
+                Destroy(comp);
                
             }
 
