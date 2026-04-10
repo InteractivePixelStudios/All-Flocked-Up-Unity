@@ -20,7 +20,7 @@ public class Audio_UI_MenuBinder : MonoBehaviour
             if (listener == null)
                 listener = button.gameObject.AddComponent<Audio_UI_Listener>();
 
-            button.onClick.RemoveListener(listener.OnButtonClick);
+            button.onClick.RemoveListener(listener.OnButtonClick); // Prevent duplicate listeners
             button.onClick.AddListener(listener.OnButtonClick);
         }
     }
