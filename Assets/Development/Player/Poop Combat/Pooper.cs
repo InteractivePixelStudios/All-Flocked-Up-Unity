@@ -148,7 +148,7 @@ public class Pooper : MonoBehaviour
                 //Get player velocity from pigeon rigidbody
                 Vector3 playerVelocity = pigeon.linearVelocity;
                 poopFunction.currentPoopType = poopType;
-                poopFunction.FirePoop(target +new  Vector3(0,10,0), playerVelocity);
+                poopFunction.FirePoop(target , playerVelocity);
             }
         }else
         if (isAiming)
@@ -162,14 +162,15 @@ public class Pooper : MonoBehaviour
 
     private Vector3 GetTarget()
     {
-        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, maxRange, poopableLayer))
+        RaycastHit hit;
+        if (Physics.SphereCast(transform.position,10f,Vector3.down,out hit,10f,poopableLayer))
         {
+            Debug.Log(hit.collider.name);
             return hit.point;
-        }
+        }return Vector3.down;
 
-        return cam.transform.position + cam.transform.forward * maxRange;
+        
     }
 
 

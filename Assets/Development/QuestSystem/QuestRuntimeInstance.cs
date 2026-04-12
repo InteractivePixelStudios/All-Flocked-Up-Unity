@@ -89,7 +89,7 @@ public class QuestRuntimeInstance
 
         questMechanicsObjects.Clear();
         IQuestMechanic[] mechanics = Object
-            .FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None)
+            .FindObjectsByType<MonoBehaviour>()
             .OfType<IQuestMechanic>()
             .ToArray();
         foreach (var mechanic in mechanics)

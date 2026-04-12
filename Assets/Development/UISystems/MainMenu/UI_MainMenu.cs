@@ -129,8 +129,8 @@ public class UI_MainMenu : MonoBehaviour
     protected void StartNewGame()
     {
 
-        //playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
-        //playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
+        playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
+        playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
         if (SteamManager.Initialized)
         {
             AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_000_Support");
@@ -171,7 +171,7 @@ public class UI_MainMenu : MonoBehaviour
         canvasObj.AddComponent<CanvasScaler>();
         canvasObj.AddComponent<GraphicRaycaster>();
 
-        currentSaveWindow = Instantiate(saveWindowPrefab,canvasObj.transform);
+        currentSaveWindow = Instantiate(saveWindowPrefab, canvasObj.transform);
         var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
         comp.isSaving = false;
 

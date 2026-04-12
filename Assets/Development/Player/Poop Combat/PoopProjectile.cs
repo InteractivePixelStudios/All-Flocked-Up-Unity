@@ -36,6 +36,7 @@ public class PoopProjectile : MonoBehaviour
         source = functionSource;
 
         Vector3 direction = (target - transform.position).normalized;
+        Debug.Log(target);
 
         float launchSpeed = playerVelocity.magnitude * 0.5f; // Launch speed is half the player's speed
 
@@ -78,7 +79,6 @@ public class PoopProjectile : MonoBehaviour
     {
         var obj = collision.gameObject;
         var hit = collision.GetContact(0).normal;
-        Debug.Log(hit);
         SpawnPoopDecal(transform.position,hit);
         Instantiate(splashParticle,transform.position,Quaternion.identity* Quaternion.Euler(-90,0,0));
         //source?.HandleHitEffects(poopType, collision.contacts[0].point); // Trigger hit effects
