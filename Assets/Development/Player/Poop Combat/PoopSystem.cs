@@ -15,7 +15,7 @@ public class PoopSystem : MonoBehaviour
     [SerializeField] private float cooldownTimer = 1.5f;
     [SerializeField] private float updateItemsTimer = 2f;
 
-    public bool CanPoop => cooldownTimer <= 0f && currentPoop > 0;
+    public bool CanPoop => cooldownTimer <= 0f;
 
     public int GetCurrentPoop()
     {
@@ -68,7 +68,6 @@ public class PoopSystem : MonoBehaviour
     {
         if (!CanPoop) return false;
 
-        currentPoop--;
         cooldownTimer = poopCooldown;
         return true;
     }

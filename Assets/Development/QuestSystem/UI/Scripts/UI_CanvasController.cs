@@ -120,28 +120,9 @@ public class UI_CanvasController : MonoBehaviour
     {
         input = FindAnyObjectByType<PlayerInput>();
         player = input.gameObject;
-        //var agents = FindObjectsByType<NavMeshAgent>(FindObjectsSortMode.None);
-        //foreach (var agent in agents)
-        //{
-        //    enemies.Add(agent);  
-        //}
-        //if (SceneManager.GetActiveScene().name != "MainMenu")
-        //{
-        //    //ShowPlayerCursor();
-        //    //HidePlayerCursor();
-        //}
-
-        //SpawnMainMenu();
-        //OpenLanguageSelect(); //remove after testing
         var ui = FindObjectsByType<UnityEngine.UI.Graphic>();
         CacheUIColors(ui);
 
-        if(SceneManager.GetActiveScene() == SceneManager.GetSceneByName("KensingtonMarket"))
-        {
-            HidePlayerCursor();
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
 
     }
 
@@ -186,7 +167,7 @@ public class UI_CanvasController : MonoBehaviour
         else return;
     }
 
-    public void SetUIMap(GameObject ui)
+    public void SetUIMap()
     {
         if (!isUIMap)
         {
@@ -195,30 +176,14 @@ public class UI_CanvasController : MonoBehaviour
             player.GetComponent<PlayerFlightMovement>().enabled = false;
             cam.GetComponent<CinemachineOrbitalFollow>().enabled = false;
             isUIMap = true;
-            //FreezeEnemies();
             Debug.Log("UIMAP");
-            var obj = ui.GetComponent<Button>();
-            if(obj!= null)
-            {
-                bool firstSelected = false;
-                if (Gamepad.current.buttonSouth.wasPressedThisFrame || Gamepad.current.leftStick.ReadValue() != Vector2.zero)
-                {
-                    if (!firstSelected)
-                    {
-                        EventSystem.current.SetSelectedGameObject(obj.gameObject);
-                        firstSelected = true;
-                    }
-                    else return;
-                }
-                else return;
-            }
         }
         else return;
     }
     //cursor on
-    public void ShowPlayerCursor(GameObject ui)
+    public void ShowPlayerCursor()
     {
-        SetUIMap(ui);
+        SetUIMap();
         if (Keyboard.current.anyKey.wasPressedThisFrame ||
     Mouse.current.delta.ReadValue() != Vector2.zero)
         {
@@ -279,7 +244,7 @@ public class UI_CanvasController : MonoBehaviour
             activeGiverInstance = Instantiate(questGiverCanvas);
             if (!isUIMap || activeDialogueInstance == null)
             {
-                ShowPlayerCursor(activeGiverInstance.gameObject);
+                ShowPlayerCursor();
             }
             ApplySavedContrast();
             activeGiverInstance.currentquestGiver = questGiver;
@@ -297,8 +262,7 @@ public class UI_CanvasController : MonoBehaviour
             if (isUIMap)
             {
                 HidePlayerCursor();
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
+
             }
             Destroy(activeGiverInstance.gameObject);
             uiOpen = false;
@@ -315,9 +279,8 @@ public class UI_CanvasController : MonoBehaviour
             activeRewardInstance.canvasController = this;
             if (!isUIMap)
             {
-                ShowPlayerCursor(activeRewardInstance.gameObject);
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            ShowPlayerCursor();
+
             }
             uiOpen = true;
         
@@ -330,8 +293,7 @@ public class UI_CanvasController : MonoBehaviour
             if (isUIMap)
             {
                 HidePlayerCursor();
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
+
             }
             Destroy(activeRewardInstance.gameObject);
             activeRewardInstance = null;
@@ -399,7 +361,7 @@ public class UI_CanvasController : MonoBehaviour
             ApplySavedContrast();
             if (!isUIMap)
             {
-                ShowPlayerCursor(activeLogInstance.gameObject);
+                ShowPlayerCursor();
             }
             uiOpen = true;
         }
@@ -430,7 +392,7 @@ public class UI_CanvasController : MonoBehaviour
                 ApplySavedContrast();
                 if (!isUIMap)
                 {
-                    ShowPlayerCursor(activeDialogueInstance.gameObject);
+                    ShowPlayerCursor();
                 }
             }
             uiOpen = true;
@@ -475,7 +437,7 @@ public class UI_CanvasController : MonoBehaviour
                 activeTrashInstance.SetCanvasReference(this);
                 if (!isUIMap)
                 {
-                    ShowPlayerCursor(activeTrashInstance.gameObject);
+                    ShowPlayerCursor();
                 }
                 uiOpen = true;
             }
@@ -491,6 +453,7 @@ public class UI_CanvasController : MonoBehaviour
             if (isUIMap || activeRewardInstance!=null)
             {
                 HidePlayerCursor();
+
             }
             uiOpen = false;
         }
@@ -503,7 +466,7 @@ public class UI_CanvasController : MonoBehaviour
             ApplySavedContrast();
             if (!isUIMap)
             {
-                ShowPlayerCursor(raceGiverInstance.gameObject);
+            ShowPlayerCursor();
             }
 
 
@@ -518,8 +481,6 @@ public class UI_CanvasController : MonoBehaviour
             if (isUIMap)
             {
                 HidePlayerCursor();
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
             }
 
 
@@ -536,9 +497,8 @@ public class UI_CanvasController : MonoBehaviour
             SendStandings();
             if (!isUIMap)
             {
-                ShowPlayerCursor(raceRewardInstance.gameObject);
-                Cursor.visible = true;
-                Cursor.lockState = CursorLockMode.None;
+                ShowPlayerCursor();
+
             }
             uiOpen = true;
         }
@@ -552,8 +512,7 @@ public class UI_CanvasController : MonoBehaviour
             if (isUIMap)
             {
                 HidePlayerCursor();
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
+
             }
             raceRewardInstance = null;
             uiOpen = false;
@@ -569,7 +528,7 @@ public class UI_CanvasController : MonoBehaviour
             SendStandings();
             if (!isUIMap)
             {
-                ShowPlayerCursor(raceFailInstance.gameObject);
+                ShowPlayerCursor();
 
             }
             uiOpen = true;
@@ -634,7 +593,7 @@ public class UI_CanvasController : MonoBehaviour
             ApplySavedContrast();
             if (!isUIMap)
             {
-                ShowPlayerCursor(activeWingventory.gameObject);
+                ShowPlayerCursor();
             }
             uiOpen = true;
         }
@@ -664,7 +623,7 @@ public class UI_CanvasController : MonoBehaviour
             activeNestInstance.playerStats = player.GetComponent<PlayerCounter>();
             if (!isUIMap)
             {
-                ShowPlayerCursor(activeNestInstance.gameObject);
+                ShowPlayerCursor();
             }
             uiOpen = true;
         }
@@ -699,7 +658,7 @@ public class UI_CanvasController : MonoBehaviour
             shopLocationRef = location;
             if (!isUIMap)
             {
-                ShowPlayerCursor(activeShopCanvas.gameObject);
+                ShowPlayerCursor();
             }
             uiOpen = true;
         }
@@ -729,7 +688,7 @@ public class UI_CanvasController : MonoBehaviour
                 ApplySavedContrast();
                 if (!isUIMap)
                 {
-                    ShowPlayerCursor(activePauseMenu.gameObject);
+                    ShowPlayerCursor();
                 }
                 Time.timeScale = 0;
                 uiOpen = true;
@@ -749,6 +708,8 @@ public class UI_CanvasController : MonoBehaviour
             if (isUIMap)
             {
                 HidePlayerCursor();
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
             }
             uiOpen = false;
         }
@@ -766,7 +727,7 @@ public class UI_CanvasController : MonoBehaviour
                 ApplySavedContrast();
                 if (!isUIMap)
                 {
-                    ShowPlayerCursor(activeBugReporter.gameObject);
+                    ShowPlayerCursor();
                 }
                 Time.timeScale = 0;
                 uiOpen = true;
@@ -799,7 +760,7 @@ public class UI_CanvasController : MonoBehaviour
                 ApplySavedContrast();
                 if (!isUIMap)
                 {
-                    ShowPlayerCursor(activeDebugMenu.gameObject);
+                    ShowPlayerCursor();
                 }
                 uiOpen = true;
             }
@@ -831,7 +792,7 @@ public class UI_CanvasController : MonoBehaviour
                 ApplySavedContrast();
                 if (!isUIMap)
                 {
-                    ShowPlayerCursor(activeMapCanvas.gameObject);
+                    ShowPlayerCursor();
                 }
                 Time.timeScale = 0;
                 uiOpen = true;
@@ -863,7 +824,7 @@ public class UI_CanvasController : MonoBehaviour
             {
                 if (!isUIMap)
                 {
-                    ShowPlayerCursor(activeLanguageCanvas.gameObject);
+                    ShowPlayerCursor();
                 }
 
             }
@@ -898,7 +859,7 @@ public class UI_CanvasController : MonoBehaviour
                 activeRespawnCanvas.canvasController = this;
                 if (!isUIMap)
                 {
-                    ShowPlayerCursor(activeRespawnCanvas.gameObject);
+                    ShowPlayerCursor();
                 }
                 uiOpen = true;
             }
@@ -931,9 +892,7 @@ public class UI_CanvasController : MonoBehaviour
                 activeLevelTransition.transitionObj = transitionObj;
                 if (!isUIMap)
                 {
-                    ShowPlayerCursor(activeLevelTransition.gameObject);
-                    Cursor.visible = true;
-                    Cursor.lockState = CursorLockMode.None;
+                    ShowPlayerCursor();
                 }
                 player.GetComponent<PlayerGroundMovement>().enabled = true;
                 player.GetComponent<PlayerFlightMovement>().enabled = true;
@@ -965,14 +924,10 @@ public class UI_CanvasController : MonoBehaviour
                 activeTutPrompt.promptIndex = cachedTutPromptIndex;
                 activeTutPrompt.arrowIndex = cachedIntroIndex;
                 activeTutPrompt.canvasController = this;
-            if (!isUIMap)
-            {
-                //ShowPlayerCursor(activeTutPrompt.gameObject) ;
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
-            }
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
 
-                uiOpen = true;
+            uiOpen = true;
             }
         
     }
@@ -1001,7 +956,7 @@ public class UI_CanvasController : MonoBehaviour
                 ApplySavedContrast();
                 if (!isUIMap)
                 {
-                    ShowPlayerCursor(activeSkinSelector.gameObject);
+                    ShowPlayerCursor();
                 }
                 player.GetComponent<PlayerGroundMovement>().enabled = true;
                 player.GetComponent<PlayerFlightMovement>().enabled = true;

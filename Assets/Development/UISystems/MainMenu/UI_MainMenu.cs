@@ -129,8 +129,8 @@ public class UI_MainMenu : MonoBehaviour
     protected void StartNewGame()
     {
 
-        //playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
-        //playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
+        playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
+        playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
         if (SteamManager.Initialized)
         {
             AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_000_Support");
@@ -163,17 +163,17 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void LoadGame()
     {
-        //mainCanvas.SetActive(false);
-        //GameObject canvasObj = new GameObject("SaveWindowCanvas");
-        //canvasObj.transform.SetParent(transform, false);
-        //Canvas canvas = canvasObj.AddComponent<Canvas>();
-        //canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        //canvasObj.AddComponent<CanvasScaler>();
-        //canvasObj.AddComponent<GraphicRaycaster>();
+        mainCanvas.SetActive(false);
+        GameObject canvasObj = new GameObject("SaveWindowCanvas");
+        canvasObj.transform.SetParent(transform, false);
+        Canvas canvas = canvasObj.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvasObj.AddComponent<CanvasScaler>();
+        canvasObj.AddComponent<GraphicRaycaster>();
 
-        //currentSaveWindow = Instantiate(saveWindowPrefab,canvasObj.transform);
-        //var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
-        //comp.isSaving = false;
+        currentSaveWindow = Instantiate(saveWindowPrefab, canvasObj.transform);
+        var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
+        comp.isSaving = false;
 
     }
 
@@ -185,10 +185,10 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void QuitGame()
     {
-//#if UNITY_EDITOR
-//        UnityEditor.EditorApplication.isPlaying = false;
-//#else        
-//Application.Quit();
-//#endif
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else        
+Application.Quit();
+#endif
     }
 }
