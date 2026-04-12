@@ -99,6 +99,8 @@ public class AudioWizard : MonoBehaviour // This is being made in a way where th
         musicBus.setVolume(musicVolume);
         sfxBus.setVolume(sfxVolume);
         ambienceBus.setVolume(ambienceVolume);
+        return;
+
 
         if (playerInteractionScript != null) // This is, of course, not the final way this will be done, this was ONLY for testing.
         {

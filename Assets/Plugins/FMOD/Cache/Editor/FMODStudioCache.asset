@@ -610,6 +610,34 @@ MonoBehaviour:
   - Concrete
   - Wood
   Exists: 1
+--- !u!114 &-5350185003711474297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UI/Menus/Map
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/UI/Menus/Map
+  Guid:
+    Data1: 1153524318
+    Data2: 1081364314
+    Data3: -1115692369
+    Data4: 149873225
+  Banks:
+  - {fileID: -2134919958698608152}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 5204007667535897211}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-5339351816436053132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,6 +665,34 @@ MonoBehaviour:
   - {fileID: -9176325625542124152}
   MinDistance: 3
   MaxDistance: 50
+  Length: 0
+--- !u!114 &-5326435738105330024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Loot/Pickup
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Loot/Pickup
+  Guid:
+    Data1: -592575950
+    Data2: 1334059850
+    Data3: 1096025485
+    Data4: -787674166
+  Banks:
+  - {fileID: -2134919958698608152}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -4919563431712582056}
+  MinDistance: 1
+  MaxDistance: 20
   Length: 0
 --- !u!114 &-5184699676966940580
 MonoBehaviour:
@@ -696,6 +752,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-4919563431712582056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Pickup/PickupVariant
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: PickupVariant
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 2114115777
+    data2: 1630228824
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
+  - Value B
+  - Value C
+  Exists: 1
 --- !u!114 &-4918397441080935492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -994,6 +1077,33 @@ MonoBehaviour:
   - Value D
   - Value E
   Exists: 1
+--- !u!114 &-2589954290990661490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Loot/LootLoop
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Loot/LootLoop
+  Guid:
+    Data1: -1323543555
+    Data2: 1240891567
+    Data3: -395193945
+    Data4: 865412824
+  Banks:
+  - {fileID: -2134919958698608152}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 29000
 --- !u!114 &-2496316875038145345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1072,7 +1182,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639113758524299509
+  lastModified: 639116191014645884
   FileSizes: []
   Exists: 1
 --- !u!114 &-1916845547845421992
@@ -1361,13 +1471,17 @@ MonoBehaviour:
   - {fileID: 5137735642676981032}
   - {fileID: -1916845547845421992}
   - {fileID: -6811888174184930545}
+  - {fileID: -5350185003711474297}
+  - {fileID: 4329199501277184963}
+  - {fileID: -2589954290990661490}
+  - {fileID: -5326435738105330024}
   EditorParameters: []
   MasterBanks:
   - {fileID: 5399977135161620194}
   StringsBanks:
   - {fileID: 7192909602320462823}
   cacheVersion: 131858
-  cacheTime: 639113818898615292
+  cacheTime: 639116191014645884
   SerializableEventsDict:
   - key: event:/Ambience/WorldBirds
     index: 0
@@ -1409,6 +1523,14 @@ MonoBehaviour:
     index: 18
   - key: event:/Ambience/DONOTUSE
     index: 19
+  - key: event:/UI/Menus/Map
+    index: 20
+  - key: event:/UI/Menus/Inventory
+    index: 21
+  - key: event:/Loot/LootLoop
+    index: 22
+  - key: event:/Loot/Pickup
+    index: 23
 --- !u!114 &73506915100599220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1473,6 +1595,32 @@ MonoBehaviour:
   StudioPath: bank:/SFX
   lastModified: 639107431327289323
   FileSizes: []
+  Exists: 1
+--- !u!114 &853015725534985091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Inventory/MenuOpenClose
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: MenuOpenClose
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 2287073038
+    data2: 3791215313
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Open
+  - Close
   Exists: 1
 --- !u!114 &1049129095624132089
 MonoBehaviour:
@@ -1790,6 +1938,34 @@ MonoBehaviour:
   - Name: Desktop
     Value: 506
   Exists: 1
+--- !u!114 &4329199501277184963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UI/Menus/Inventory
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/UI/Menus/Inventory
+  Guid:
+    Data1: -477066603
+    Data2: 1313228770
+    Data3: -1392036191
+    Data4: 1430165194
+  Banks:
+  - {fileID: -2134919958698608152}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 853015725534985091}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &4410927325279084550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1871,6 +2047,32 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 231528
+--- !u!114 &5204007667535897211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Map/MenuOpenClose
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: MenuOpenClose
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 2287073038
+    data2: 3791215313
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Open
+  - Close
+  Exists: 1
 --- !u!114 &5247432836344161296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1962,7 +2164,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639113818897657294
+  lastModified: 639116191014044183
   FileSizes: []
   Exists: 1
 --- !u!114 &5600823441476282664
@@ -2170,10 +2372,10 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639113818897678592
+  lastModified: 639116191014059762
   FileSizes:
   - Name: 
-    Value: 2356
+    Value: 2630
   Exists: 1
 --- !u!114 &7419841717107519623
 MonoBehaviour:
