@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System.Collections;
+using Unity.VisualScripting;
 
 /*
 ---Notes---
@@ -39,6 +40,14 @@ public class AudioWizard : MonoBehaviour // This is being made in a way where th
     [SerializeField] private EventReference buttonHoverEvent; // Assign in Inspector
     [SerializeField] private EventReference buttonClickEvent; // Assign in Inspector
 
+    [Header("Snapshot References")]
+    [SerializeField] private EventReference pauseSnapshot; // Assign in Inspector
+
+    [Header("Script References")]
+    private PlayerGroundMovement playerInteractionScript;
+
+    private EventInstance snapshotInstance;
+    private bool pauseSnapshotPlaying = false; // Also temp.
 
     private void OnEnable()
     {
@@ -54,6 +63,8 @@ public class AudioWizard : MonoBehaviour // This is being made in a way where th
     {
         Debug.Log("Scene loaded: " + scene.name + ". Checking for buttons to add listeners to.");
         StartCoroutine(GetAllButtons()); // Start the coroutine to get all buttons in the scene and add listeners to them.
+        var player = GameObject.FindGameObjectWithTag("Player");
+        playerInteractionScript = player.GetComponent<PlayerGroundMovement>(); // Not adding a safety check right now - will later.
     }
 
 
@@ -88,6 +99,24 @@ public class AudioWizard : MonoBehaviour // This is being made in a way where th
         musicBus.setVolume(musicVolume);
         sfxBus.setVolume(sfxVolume);
         ambienceBus.setVolume(ambienceVolume);
+
+        if (playerInteractionScript != null) // This is, of course, not the final way this will be done, this was ONLY for testing.
+        {
+            if (!playerInteractionScript.isActiveAndEnabled && pauseSnapshotPlaying == false) // This is, of course, not the final way this will be done, this was ONLY for testing.
+            {
+                pauseSnapshotPlaying = true;
+                snapshotInstance = RuntimeManager.CreateInstance(pauseSnapshot);
+                snapshotInstance.start();
+                Debug.Log("Game is paused, starting pause snapshot.");
+            }
+            else if (playerInteractionScript.isActiveAndEnabled && pauseSnapshotPlaying == true) // This is, of course, not the final way this will be done, this was ONLY for testing... again.
+            {
+                snapshotInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                snapshotInstance.release();
+                Debug.Log("Game is unpaused, stopping pause snapshot.");
+                pauseSnapshotPlaying = false;
+            }
+        }
     }
 
     public void PlayOneshotSound(EventReference sound, Vector3 position)

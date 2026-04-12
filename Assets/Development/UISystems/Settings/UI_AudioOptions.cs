@@ -6,6 +6,16 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+/*
+---Notes---
+- There were some bugs with the audio settings.
+  The Music slider was adjusting the Master bus & music/master reset was wired wrong - this has been fixed - IPM.
+-
+-
+-
+-
+*/
+
 
 public class UI_AudioOptions : UI_SettingsMenu
 {
@@ -13,14 +23,14 @@ public class UI_AudioOptions : UI_SettingsMenu
     [SerializeField] private Slider mainVolSlider;
     private const float mainVolBase = 1f;
     [SerializeField] private TextMeshProUGUI mainVolText;
-    [SerializeField]private Slider sfxVolSlider;
+    [SerializeField] private Slider sfxVolSlider;
     private const float sfxVolBase = 0.4f;
     [SerializeField] private TextMeshProUGUI sfxVolText;
     [SerializeField] private Slider musicVolSlider;
     private const float musicVolBase = 0.7f;
     [SerializeField] private TextMeshProUGUI musicVolText;
     [SerializeField] private Slider ambientVolSlider;
-    private const float ambientBase =0.5f;
+    private const float ambientBase = 0.5f;
     [SerializeField] private TextMeshProUGUI ambientVolText;
     [SerializeField] private Toggle focusMuteToggle;
     private const bool focusBase = true;
@@ -109,8 +119,8 @@ public class UI_AudioOptions : UI_SettingsMenu
         OnMainVolChanged(mainVolBase);
         musicVolSlider.value = mainVolBase;
         musicVolSlider.SetValueWithoutNotify(mainVolBase);
-        SetMusicVol(mainVolBase);
-        SetMusicVolText(mainVolBase);
+        SetMainVol(mainVolBase);
+        SetMainVolText(mainVolBase);
     }
 
     protected void InitSFXSlider()
@@ -123,7 +133,7 @@ public class UI_AudioOptions : UI_SettingsMenu
         sfxVolSlider.onValueChanged.AddListener(OnSFXVolChanged);
     }
 
-    protected void OnSFXVolChanged(float value) 
+    protected void OnSFXVolChanged(float value)
     {
         SetSFXVol(value);
         SetSFXVolText(value);
@@ -161,7 +171,7 @@ public class UI_AudioOptions : UI_SettingsMenu
 
     protected void OnMusicVolChanged(float value)
     {
-        SetMainVol(value);
+        SetMusicVol(value);
         SetMusicVolText(value);
         PlayerPrefs.SetFloat("MusicVolume", value);
         PlayerPrefs.Save();
@@ -182,7 +192,7 @@ public class UI_AudioOptions : UI_SettingsMenu
         OnMusicVolChanged(musicVolBase);
         musicVolSlider.value = musicVolBase;
         musicVolSlider.SetValueWithoutNotify(musicVolBase);
-        SetMainVol(musicVolBase);
+        SetMusicVol(musicVolBase);
         SetMusicVolText(musicVolBase);
     }
 
@@ -223,7 +233,7 @@ public class UI_AudioOptions : UI_SettingsMenu
     protected void InitFocusMuteToggle()
     {
         focusMuteToggle.onValueChanged.AddListener(SetFocusMuteState);
-        bool value = PlayerPrefs.GetInt("FocusMute", focusBase?1:0) ==1;
+        bool value = PlayerPrefs.GetInt("FocusMute", focusBase ? 1 : 0) == 1;
         focusMuteToggle.isOn = value;
         focusMuteToggle.SetIsOnWithoutNotify(focusBase);
         SetFocusMuteState(value);
