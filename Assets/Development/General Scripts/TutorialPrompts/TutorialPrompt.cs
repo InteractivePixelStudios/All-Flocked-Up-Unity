@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine.SceneManagement;
+
 
 public class TutorialPrompt : MonoBehaviour
 {
@@ -107,28 +107,4 @@ public class TutorialPrompt : MonoBehaviour
     }
 
 
-    void CloseWindow()
-    {
-        canvasController.DestroyPrompt();
-    }
-
-    void SkipTutorial()
-    {
-        ShowConfirmWindow();
-    }
-
-    void ShowConfirmWindow()
-    {
-        confirmWindow.SetActive(true);
-    }
-
-    void ConfirmSkip()
-    {
-        SceneManager.LoadScene("KensingtonMarket");
-    }
-
-    void CloseConfirmWindow()
-    {
-        confirmWindow.SetActive(false);
-    }
 }

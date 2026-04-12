@@ -99,7 +99,7 @@ public class PlayerFlightMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Physics.Raycast(transform.position, transform.forward, 0.3f)) { ReturnToWalkState(); }
+        //if (Physics.Raycast(transform.position, transform.forward, 0.3f)) { ReturnToWalkState(); }
         if (isFlying && !isStalling)
         {
             if (groundCheck.IsGrounded())
@@ -241,13 +241,12 @@ public class PlayerFlightMovement : MonoBehaviour
     {
         if (isFlying && !isDiving && !isStalling)
         {
-            if (playerStamina.UseStamina(flapStaminaAmount))
-            {
+
                 playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
                 flapUp = true;
                 await Task.Delay(500);
                 flapUp = false;
-            }
+            
             
         }
     }

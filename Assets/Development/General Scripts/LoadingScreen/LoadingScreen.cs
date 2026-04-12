@@ -16,6 +16,11 @@ public class LoadingScreen : MonoBehaviour
     {
         GetRandomTip();
         DestroyCanvas();
+        var player = FindAnyObjectByType<PlayerHealth>();
+        var ground = player.GetComponent<PlayerGroundMovement>();
+        var flight = player.GetComponent<PlayerFlightMovement>();
+        ground.enabled = true;
+        flight.enabled = true;
     }
 
     void GetRandomTip()
