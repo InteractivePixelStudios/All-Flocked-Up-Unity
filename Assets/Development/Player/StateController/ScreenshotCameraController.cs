@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem; // only needed temporarily
-//using Cinemachine; 
+using Unity.Cinemachine;
 
 
 public class ScreenshotCameraController : MonoBehaviour
@@ -11,10 +11,12 @@ public class ScreenshotCameraController : MonoBehaviour
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private Collider cameraCollider;
-
+    private CinemachineBrain cinemachineBrain;
     void Start()
     {
         cameraCollider = cam.GetComponent<Collider>();
+        cinemachineBrain = cam.GetComponent<CinemachineBrain>();
+
     }
 
 
@@ -42,7 +44,10 @@ public class ScreenshotCameraController : MonoBehaviour
        Debug.Log("Photo Mode Entered");
 
        if (cameraCollider)
-       { Debug.Log("camera collider disabled"); cameraCollider.enabled = false;}
+       { Debug.Log("Main Camera Collider Component disabled by StartPhotoMode"); cameraCollider.enabled = false;}
+       if (cinemachineBrain)
+       { Debug.Log("Main Camera CinemachineBrain Component disabled by StartPhotoMode"); cinemachineBrain.enabled = false;}
+
        //move cam to anchor
        cam.transform.parent = camAnchor;
        cam.transform.localPosition = Vector3.zero;
@@ -54,7 +59,8 @@ public class ScreenshotCameraController : MonoBehaviour
         psc.ExitPhotoMode();
         Debug.Log("Photo Mode Exited");
         
-        { Debug.Log("camera collider enabled"); cameraCollider.enabled = true;}
+        { Debug.Log("Main Camera Collider Component enabled by StartPhotoMode"); cameraCollider.enabled = true;}
+        { Debug.Log("Main Camera CinemachineBrain Component enabled by StartPhotoMode"); cinemachineBrain.enabled = true;}
 
         //reset to normal camera control
         cam.transform.parent = null;

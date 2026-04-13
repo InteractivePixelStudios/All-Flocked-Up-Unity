@@ -7,7 +7,7 @@ public class CameraController : Singleton<CameraController>
     public Transform respawnTarget;    // Assign the object to watch after death
     public Vector3 respawnOffset = new Vector3(0, 20, 0); // Height above target
     public float transitionSpeed = 2f;
-
+    public PlayerStateController playerState;
     private bool watchPlayer = true;
 
     [SerializeField]
@@ -28,6 +28,13 @@ public class CameraController : Singleton<CameraController>
 
     void LateUpdate()
     {
+        
+        if (playerState.CurrentState == PlayerState.PhotoMode)
+        {
+            return; // Don't do camera movement in photo mode
+        }
+
+        
         if (watchPlayer && player != null)
         {
             // Follow player
