@@ -73,6 +73,8 @@ public class GraffitiZone : MonoBehaviour
     {
         
     }
+    
+    
 
     //change color based on slider value
     void UpdateColor(float value)
@@ -133,11 +135,21 @@ public class GraffitiZone : MonoBehaviour
         Debug.Log("Hit: " + hit.collider.name);
         // Check if hit decal
         GraffitiSpray decal = hit.collider.GetComponent<GraffitiSpray>();
-
         if (decal != null)
         {
-            Debug.Log("Hit existing decal, painting on it.");
-            decal.Paint(hit.textureCoord, currentColor, 5);
+           // Debug.Log("Hit existing decal, painting on it.");
+           // decal.Paint(new Vector2(0.5f, 0.5f), Color.red, 10);
+           DecalProjector proj = decal.GetComponent<DecalProjector>();
+           
+           Vector3 localPoint = decal.transform.InverseTransformPoint(hit.point);
+           Vector2 uv = new Vector2(
+               (localPoint.x / proj.size.x) + 0.5f,
+               (localPoint.y / proj.size.y) + 0.5f
+           );
+         //  Debug.Log($"Calculated UV: {uv}");
+           decal.Paint(uv, currentColor, 5);
+           
+           
         }
         else
         {
