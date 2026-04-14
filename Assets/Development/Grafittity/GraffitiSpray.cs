@@ -1,80 +1,58 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class GraffitiSpray : MonoBehaviour
 {
-    [SerializeField] public Camera cam;
-    [SerializeField] public int textureSize = 1024;
-    [SerializeField] public int brushSize = 8;
-    [SerializeField] public Color currentColor = Color.red;
-    [SerializeField] public bool isPainting = false;
+    [SerializeField] public int textureSize = 512;
 
-    private Dictionary<Renderer, Texture2D> paintTextures = new Dictionary<Renderer, Texture2D>();
+    [SerializeField] private Texture2D paintTexture;
+    [SerializeField] private DecalProjector projector;
 
-    void Update()
+    void Start()
     {
-        if (Input.GetMouseButton(0) && isPainting == true)
-        {
-            Debug.Log("Painting at mouse position: " + Input.mousePosition);
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        projector = GetComponent<DecalProjector>();
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                Renderer rend = hit.collider.GetComponent<Renderer>();
-                if (rend == null) return;
+        paintTexture = new Texture2D(textureSize, textureSize, TextureFormat.RGBA32, false);
 
-                Texture2D tex = GetOrCreateTexture(rend);
-
-                Vector2 uv = hit.textureCoord;
-
-                int x = (int)(uv.x * textureSize);
-                int y = (int)(uv.y * textureSize);
-
-                Paint(tex, x, y);
-
-                tex.Apply();
-            }
-        }
-    }
-
-    Texture2D GetOrCreateTexture(Renderer rend)
-    {
-        if (paintTextures.ContainsKey(rend))
-            return paintTextures[rend];
-
-        Texture2D tex = new Texture2D(textureSize, textureSize);
-
+        // Start transparent
         Color[] pixels = new Color[textureSize * textureSize];
         for (int i = 0; i < pixels.Length; i++)
-            pixels[i] = Color.white;
+            pixels[i] = Color.clear;
 
-        tex.SetPixels(pixels);
-        tex.Apply();
+        paintTexture.SetPixels(pixels);
+        paintTexture.Apply();
 
-        rend.material.mainTexture = tex;
-
-        paintTextures.Add(rend, tex);
-
-        return tex;
+        // Duplicate material so it's unique
+        projector.material = new Material(projector.material);
+        projector.material.SetTexture("_BaseMap", paintTexture);
     }
 
-    void Paint(Texture2D tex, int x, int y)
+    public void Paint(Vector2 uv, Color color, int brushSize)
     {
+        int x = (int)(uv.x * textureSize);
+        int y = (int)(uv.y * textureSize);
+
         for (int i = -brushSize; i <= brushSize; i++)
         {
             for (int j = -brushSize; j <= brushSize; j++)
             {
+                Debug.Log($"Checking pixel offset ({i}, {j})");
                 float dist = Mathf.Sqrt(i * i + j * j);
-
                 if (dist > brushSize) continue;
 
                 int px = x + i;
                 int py = y + j;
 
-                if (px >= 0 && px < tex.width && py >= 0 && py < tex.height)
-                    tex.SetPixel(px, py, currentColor);
+                if (px >= 0 && px < textureSize && py >= 0 && py < textureSize)
+                {
+                    Color existing = paintTexture.GetPixel(px, py);
+                    Color blended = Color.Lerp(existing, color, 0.6f);
+                    paintTexture.SetPixel(px, py, blended);
+                }
             }
         }
+
+        paintTexture.Apply();
     }
 }

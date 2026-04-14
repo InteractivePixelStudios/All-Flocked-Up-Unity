@@ -114,7 +114,7 @@ public class GraffitiZone : MonoBehaviour
 
     void GraffitiSpray()
     {
-        if (isPainting == true)
+        /*if (isPainting == true)
         {
             Ray ray = grafittiCam.ScreenPointToRay(Mouse.current.position.ReadValue());
             RaycastHit hit;
@@ -123,6 +123,25 @@ public class GraffitiZone : MonoBehaviour
                 return;
             Debug.Log("Hit: " + hit.collider.name);
             SpawnDecal(hit);
+        }*/
+
+        Ray ray = grafittiCam.ScreenPointToRay(Mouse.current.position.ReadValue());
+        RaycastHit hit;
+
+        if (!Physics.Raycast(ray, out hit, sprayDistance, sprayableLayers))
+            return;
+        Debug.Log("Hit: " + hit.collider.name);
+        // Check if hit decal
+        GraffitiSpray decal = hit.collider.GetComponent<GraffitiSpray>();
+
+        if (decal != null)
+        {
+            Debug.Log("Hit existing decal, painting on it.");
+            decal.Paint(hit.textureCoord, currentColor, 5);
+        }
+        else
+        {
+            //SpawnDecal(hit);
         }
     }
 
