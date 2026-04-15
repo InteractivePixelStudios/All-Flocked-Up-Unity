@@ -19,7 +19,7 @@ public class Audio_Player : MonoBehaviour // REMINDER - Clean this damn script u
     [SerializeField] EventReference poopEvent; // Assign in Inspector
     [SerializeField] EventReference splatEvent; // Assign in Inspector
 
-    [Header("FMOD Instances")] //Used to control audio playback and early cancellation
+    [Header("FMOD Instances")] // These may not be needed as class variables.
     private EventInstance footstepInstance;
     private EventInstance wingFlapInstance;
     private EventInstance poopInstance;
@@ -27,6 +27,8 @@ public class Audio_Player : MonoBehaviour // REMINDER - Clean this damn script u
 
     [SerializeField] LayerMask surfaceDetectionLayers; // Layers to detect surfaces on
     private bool canPlay;
+    private bool mapIsOpen = false;
+    private bool invIsOpen = false;
     private AudioWizard audioWizard;
 
     public void Start()
@@ -61,7 +63,7 @@ public class Audio_Player : MonoBehaviour // REMINDER - Clean this damn script u
     public void Poop()
     {
         EventInstance poopInstance = RuntimeManager.CreateInstance(poopEvent);
-        //poopInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+        poopInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
 
         poopInstance.start();
         poopInstance.release();
