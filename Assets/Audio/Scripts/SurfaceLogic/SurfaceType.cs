@@ -10,12 +10,12 @@ public class SurfaceMaterialGroups
 
 public enum SurfaceTypes
 {
-    Default,
-    Grass,
-    Wood,
-    Stone,
-    Metal,
-    Water
+    Default,   // 0
+    Grass,     // 1
+    Metal,     // 2
+    Concrete,  // 3
+    Wood,      // 4
+    Water      // 5
 }
 
 public class SurfaceType : MonoBehaviour

@@ -63,7 +63,7 @@ public class Audio_Player : MonoBehaviour // REMINDER - Clean this damn script u
     public void Poop()
     {
         EventInstance poopInstance = RuntimeManager.CreateInstance(poopEvent);
-        //poopInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
+        poopInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
 
         poopInstance.start();
         poopInstance.release();
