@@ -1,36 +1,42 @@
-using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
-using System.Runtime.InteropServices;
-using System;
-using Unity.VisualScripting;
-using UnityEngine.Assemblies;
 
 /**
----Notes---
+--- FootstepLogicV2 ---
+(Universal Footstep Logic)
 
- * FootstepLogicV2 is a new script that will eventually replace the existing footstep logic in ALL characters. 
- * It is designed to universal, will feature Character Type for pitch offsetting. 
- * This script is still in development and may not be fully functional yet - it will also be bloated with unnecessary code for right now.
- * Yes, it will be messy to manually maintain, but that is my job - IPM. If someone else joins audio I will update this accordingly.
- *
- *
- * After a lot of consideration, this system will not work with every single object - it will now become Hybrid.
- * I will keep this new system, but also implement my old SurfaceType system for objects that use the same material but are two different surfaces (ie, tree and it's leaves). 
- * This will require level editing (which I wanted to avoid), so, it will be saved for last - THIS IS NOT LONGER TRUE.
+FootstepLogicV2 is the main footstep detection and playback system, replacing the older logic across all characters.
 
- - Add logic to stop footstep sounds if the material changes mid-step - IPM
- -
- -
- -
+This system supports multiple surface resolution paths:
+- SurfaceIdentifier
+- Material group lookup
+- Terrain layer lookup
 
+It uses cached ground detection and resolves the active surface source before playback, avoiding unnecessary checks during footstep events.
+
+This is the current hybrid footstep system for the project. SurfaceIdentifier is still required for edge cases where multiple objects share the same material but should produce different sounds.
+- Example: Trees have the same material for leaves and trunk. SurfaceIdentifier allows them to be differentiated without needing unique materials.  
+
+--- Current Status ---
+- Core surface detection is implemented and working
+- Material, SurfaceIdentifier, and Terrain support are all in place
+- Stable for current project use
+
+--- Remaining Work ---
+- Add character-specific footstep handling
+- Support alternate behaviour by character type:
+  - Cats: lower volume, more muffled playback
+  - Humans: heavier thump, separate event set
+  - Other character types as needed
+- Expand surface mappings so more objects resolve correctly
+- Expand materual list on Audio Wizard for all used materials.
 */
 
 [ExecuteInEditMode]
 public class FootstepLogicV2 : MonoBehaviour
 {
-    private enum CharacterTypes // Used for pitch offsetting and other character-specific audio adjustments. Optional.
+    private enum CharacterTypes // Used for character-specific audio adjustments, such as pitch offsets
     {
         Player,
         Cat,
@@ -41,10 +47,10 @@ public class FootstepLogicV2 : MonoBehaviour
 
     private enum SurfaceSourceTypes
     {
-        Default, // Default for when no surface is detected.
-        SurfaceIdentifier,
-        MaterialGroups,
-        TerrainData
+        Default, // No valid surface source was found
+        SurfaceIdentifier, // Uses SurfaceIdentifier on the hit object
+        MaterialGroups, // Uses MeshRenderer material lookup
+        TerrainData // Uses terrain splatmap dominant layer lookup
     }
 
     [Header("Surface Detection Settings")]
@@ -53,42 +59,42 @@ public class FootstepLogicV2 : MonoBehaviour
 
     [Header("Character Settings")]
     [SerializeField] private CharacterTypes characterType;
-    [SerializeField] float raycastDistance = 1.5f; // Distance for raycast - Default is 1.5, but can be adjusted for different character heights or jump arcs.
+    [SerializeField] float raycastDistance = 1.5f; // Ground detection ray distance, adjustable per character height
     [SerializeField] Transform surfaceDetectionOrigin;
 
     [Header("FMOD Events & Instances")]
-    [SerializeField] EventReference footstepEvent; // Assign in Inspector
+    [SerializeField] EventReference footstepEvent; // FMOD event used for footstep playback
 
-    private MeshRenderer currentSurfaceMeshRenderer; // Store the current surface's MeshRenderer for material detection.
-    private Material currentSurfaceMaterial; // Store the current surface material for use.
-    private RaycastHit rayHit; // Reusable ray for detection.
+    private MeshRenderer currentSurfaceMeshRenderer; // Cached renderer used for material-based surface detection
+    private Material currentSurfaceMaterial; // Cached material used for material group lookup
+    private RaycastHit rayHit; // Cached ground hit reused during footstep playback
 
     [Header("Script References")]
     private AudioWizard audioWizard;
-    private SurfaceType surfaceTypeScript;
+    private SurfaceType surfaceTypeScript; // Reference to the script containing material group definitions
 
     [Header("Surface Source Settings")]
-    [SerializeField] private SurfaceSourceTypes surfaceSourceType; // One time set when we are on a surface.
-    [SerializeField] private SurfaceSourceTypes currentSurfaceSourceType; // The current source we're on - checked every update.
+    [SerializeField] private SurfaceSourceTypes surfaceSourceType; // Newly detected source from the latest ground check
+    [SerializeField] private SurfaceSourceTypes currentSurfaceSourceType; // Active source currently used for footstep resolution
 
     private void Start()
     {
-        audioWizard = AudioWizard.Instance; // Access the singleton instance
+        audioWizard = AudioWizard.Instance; // Get reference to the main audio system
         if (audioWizard != null)
-            surfaceTypeScript = audioWizard.gameObject.GetComponent<SurfaceType>(); // Get reference to SurfaceType script for material groups.
+            surfaceTypeScript = audioWizard.gameObject.GetComponent<SurfaceType>(); // Access material group data from AudioWizard
     }
 
     private void Update()
     {
-        Debug.DrawLine(surfaceDetectionOrigin.position, surfaceDetectionOrigin.position + Vector3.down * raycastDistance, Color.green);
+        Debug.DrawLine(surfaceDetectionOrigin.position, surfaceDetectionOrigin.position + Vector3.down * raycastDistance, Color.green); // Visualize the ground check ray
 
         if (!TryGetGround(out RaycastHit tempHit))
             return;
 
-        rayHit = tempHit; // Store the hit for use in footstep event.
+        rayHit = tempHit; // Cache the latest ground hit for use in FootstepEvent
         TryResolveSurfaceSource(tempHit);
 
-        if (surfaceSourceType != currentSurfaceSourceType) // this is to stop spamming the resolver every frame - it only needs to be called when we hit a new surface.
+        if (surfaceSourceType != currentSurfaceSourceType) // Only update the active source when it changes
             currentSurfaceSourceType = surfaceSourceType;
     }
 
@@ -100,17 +106,17 @@ public class FootstepLogicV2 : MonoBehaviour
             Vector3.down,
             out hit,
             raycastDistance,
-            ~0, // EVERYTHING
+            ~0, // Checks against all layers
             QueryTriggerInteraction.Ignore
         );
     }
 
-    public void FootstepEvent() // This will now be turned into the master method which only handles which detection method to use.
+    public void FootstepEvent() // Called by animation event to resolve the current surface and play the matching footstep sound
     {
         switch (currentSurfaceSourceType)
         {
             case SurfaceSourceTypes.SurfaceIdentifier:
-                GetSurfaceTypeUsingSurfaceIdentifier(rayHit); // all these checks could be moved to the detection layer.
+                GetSurfaceTypeUsingSurfaceIdentifier(rayHit); // This could be moved fully into the detection phase later
                 break;
             case SurfaceSourceTypes.MaterialGroups:
                 GetSurfaceTypeUsingMaterialGroups(rayHit);
@@ -123,32 +129,32 @@ public class FootstepLogicV2 : MonoBehaviour
                 break;
         }
 
-        //PlayFootstepSound((int)surfaceType); // Play the footstep sound with the correct surface type parameter.
+        //PlayFootstepSound((int)surfaceType); // Reserved if playback is ever centralized here
     }
 
     private void GetSurfaceTypeUsingMaterialGroups(RaycastHit hit)
     {
         currentSurfaceMeshRenderer = hit.collider.GetComponent<MeshRenderer>();
-        currentSurfaceMaterial = currentSurfaceMeshRenderer.sharedMaterial; // Safety is not needed, can't get to this point without a MeshRenderer.
+        currentSurfaceMaterial = currentSurfaceMeshRenderer.sharedMaterial; // Safe here, this path only runs when a MeshRenderer exists
 
         foreach (var group in surfaceTypeScript.surfaceMaterialGroups)
         {
             if (group.materials.Contains(currentSurfaceMaterial))
             {
                 surfaceType = group.surfaceType;
-                PlayFootstepSound((int)surfaceType); // Play the footstep sound with the correct surface type parameter. 
+                PlayFootstepSound((int)surfaceType); // Play the resolved footstep sound
                 return;
             }
-            // Before I played the default sound if nothing was found, but now we're not going to play anything.
+            // If no material match is found, no sound is played
         }
     }
 
-    private void GetSurfaceTypeUsingTerrainIndex(RaycastHit hit) // this entire method is dog shit 
+    private void GetSurfaceTypeUsingTerrainIndex(RaycastHit hit) // Resolves the surface type using the dominant terrain layer at the hit point
     {
         Vector3 worldPosition = hit.point;
         int terrainIndex = GetDominantTerrainLayerIndex(worldPosition);
 
-        switch (terrainIndex) // Self note - might be better to make this a dictionary 
+        switch (terrainIndex) // Maps terrain layer indices to logical surface types
         {
             case 0:
             case 1:
@@ -171,28 +177,28 @@ public class FootstepLogicV2 : MonoBehaviour
     private void GetSurfaceTypeUsingSurfaceIdentifier(RaycastHit hit)
     {
         currentSurfaceMeshRenderer = hit.collider.GetComponent<MeshRenderer>();
-        surfaceType = hit.collider.GetComponent<SurfaceIdentifier>().SurfaceType;
-        PlayFootstepSound((int)surfaceType); // Play the footstep sound with the correct surface type parameter.
+        surfaceType = hit.collider.GetComponent<SurfaceIdentifier>().SurfaceType; // Directly uses the SurfaceIdentifier value
+        PlayFootstepSound((int)surfaceType); // Play the resolved footstep sound
     }
 
-    private void PlayFootstepSound(int index) // The last step.
+    private void PlayFootstepSound(int index) // Creates and plays a one-shot FMOD footstep event using the surface parameter
     {
         EventInstance footstepInstance = RuntimeManager.CreateInstance(footstepEvent);
         footstepInstance.setParameterByName("Surface", index);
         footstepInstance.start();
-        footstepInstance.release(); // Release immediately - could make this a one shot really.
+        footstepInstance.release(); // Safe for one-shot usage
     }
 
-    // WORKING
-    private void TryResolveSurfaceSource(RaycastHit hit) // Meh, it works, but I may make a dedicated Resolver at some point.
+    // Determines which surface detection method should be used for the current hit
+    private void TryResolveSurfaceSource(RaycastHit hit)
     {
-        if (hit.collider.TryGetComponent(out SurfaceIdentifier surfaceIdentifier)) // Check for SurfaceIdentifier first before anything.
+        if (hit.collider.TryGetComponent(out SurfaceIdentifier surfaceIdentifier)) // Highest priority: explicit surface assignment
         {
             surfaceSourceType = SurfaceSourceTypes.SurfaceIdentifier;
             return;
         }
 
-        MeshRenderer meshRenderer = hit.collider.GetComponent<MeshRenderer>() ?? hit.collider.GetComponentInParent<MeshRenderer>() ?? hit.collider.GetComponentInChildren<MeshRenderer>();
+        MeshRenderer meshRenderer = hit.collider.GetComponent<MeshRenderer>() ?? hit.collider.GetComponentInParent<MeshRenderer>() ?? hit.collider.GetComponentInChildren<MeshRenderer>(); // Flexible renderer lookup across related objects
         if (meshRenderer != null)
         {
             surfaceSourceType = SurfaceSourceTypes.MaterialGroups;
@@ -205,10 +211,10 @@ public class FootstepLogicV2 : MonoBehaviour
             return;
         }
 
-        surfaceSourceType = SurfaceSourceTypes.Default; // Default if no source is found.
+        surfaceSourceType = SurfaceSourceTypes.Default; // Fallback when no supported source is found
     }
 
-    public int GetDominantTerrainLayerIndex(Vector3 worldPosition)
+    public int GetDominantTerrainLayerIndex(Vector3 worldPosition) // Returns the dominant terrain paint layer index at the given world position
     {
         Terrain terrain = Terrain.activeTerrain;
         if (terrain == null)
@@ -240,7 +246,7 @@ public class FootstepLogicV2 : MonoBehaviour
         return dominantIndex;
     }
 
-    private void KillAudioEarly(EventInstance instance) // May not be needed with this new system but keeping just in case - IPM.
+    private void KillAudioEarly(EventInstance instance) // Stops and releases an FMOD instance early if needed
     {
         instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         instance.release();
