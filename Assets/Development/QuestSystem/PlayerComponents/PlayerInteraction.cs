@@ -273,7 +273,8 @@ public class PlayerInteraction : MonoBehaviour
             {
                 canvasController.OpenWingventory();
                 isWingventoryOpen = true;
-            }
+                uiOn = true;
+        }
             else
             {
                 canvasController.CloseWingventory();

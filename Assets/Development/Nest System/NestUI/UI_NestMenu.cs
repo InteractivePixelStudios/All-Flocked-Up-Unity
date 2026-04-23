@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class UI_NestMenu : MonoBehaviour
 {
@@ -66,7 +67,12 @@ public class UI_NestMenu : MonoBehaviour
         //sbNextPage.onClick.AddListener(SBNextPage);
         //sbPrevPage.onClick.AddListener(SBPrevPage);
         GetStats();
-        EventSystem.current.SetSelectedGameObject(invButton.gameObject);
+        if (Gamepad.current.IsActuated())
+        {
+            EventSystem.current.SetSelectedGameObject(invButton.gameObject);
+        }
+        else return;
+
 
     }
 

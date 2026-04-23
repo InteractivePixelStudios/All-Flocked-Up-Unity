@@ -1,6 +1,6 @@
+using NUnit.Framework.Constraints;
 using System;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,9 +9,10 @@ public class Pooper : MonoBehaviour
     [SerializeField] private PoopSystem poopSystem;
     [SerializeField] private PoopFunction poopFunction;
     public PoopType poopType;
-    [SerializeField] private Camera cam;
+    [SerializeField] private CinemachineOrbitalFollow cam;
     [SerializeField] private LayerMask poopableLayer;
     [SerializeField] private float maxRange = 20f; //Adjust as needed for gameplay
+    UI_HudController hudController;
 
     //[SeralizeField] private PoopArcRenderer arcRenderer; option for visualizing the arc, not yet implemented
 
@@ -50,7 +51,16 @@ public class Pooper : MonoBehaviour
     {
         groundComp = GetComponent<PlayerGroundMovement>();
         playerInput = GetComponentInParent<PlayerInput>();
-        cam = FindAnyObjectByType<Camera>();
+        hudController = FindAnyObjectByType<UI_HudController>();
+        
+        var camArray = FindObjectsByType<CinemachineOrbitalFollow>();
+        foreach(var found in camArray)
+        {
+            if (found.CompareTag("Player"))
+            {
+                cam = found;
+            }
+        }
         player = this.gameObject;
         Debug.Log($"PlayerInput: {playerInput != null}");
 
@@ -74,6 +84,19 @@ public class Pooper : MonoBehaviour
 
     private void Update()
     {
+        if (GetIsFlying())
+        {
+            if (GetIsAiming())
+            {
+                cam.TargetOffset = new Vector3(0, 3.5f, 0);
+            }
+            else cam.TargetOffset = new Vector3(0, 0, 0); 
+        }
+        if (isAiming && !isTurning)
+        {
+            RotateMeshToCamera();
+        }
+
         if (!isTurning) return;
         if (spinTime<1)
         {
@@ -87,6 +110,22 @@ public class Pooper : MonoBehaviour
             }
         }
 
+
+    }
+
+    void RotateMeshToCamera()
+    {
+        var offset = Quaternion.Euler(0f, 180f, 0f);
+        Vector3 forward = -Camera.main.transform.forward;
+        forward.y = 0f;
+
+        Quaternion targetRot = Quaternion.LookRotation(forward);
+
+        mesh.transform.rotation = Quaternion.Slerp(
+            mesh.transform.rotation,
+            targetRot ,
+            12f * Time.deltaTime
+        );
     }
     private void OnDestroy()
     {
@@ -103,6 +142,8 @@ public class Pooper : MonoBehaviour
         isAiming = true;
         if (groundComp.GetIsFlying() == false)
         {
+            groundComp.enabled = false;
+            hudController.ShowReticle();
             Debug.Log("Aiming started");
             endRot = startRot * Quaternion.Euler(0f, 180f, 0f);
             spinTime = 0f;
@@ -114,8 +155,11 @@ public class Pooper : MonoBehaviour
 
     }
 
+
     private void OnAimCanceled(InputAction.CallbackContext ctx)
     {
+        groundComp.enabled = true;
+        hudController.HideReticle();
         isAiming = false;
         Debug.Log("Aiming canceled");
         endRot = startRot;
@@ -140,7 +184,6 @@ public class Pooper : MonoBehaviour
     {
         if (isFlying)
         {
-            Debug.Log("FlyingPoopCalled");
             if (poopSystem.TryPoop())
             {
                 Vector3 target = GetTarget();
@@ -151,7 +194,7 @@ public class Pooper : MonoBehaviour
                 poopFunction.FirePoop(target , playerVelocity);
             }
         }else
-        if (isAiming)
+        if (!isFlying && isAiming)
         {
             if (poopSystem.TryPoop())
             {
@@ -164,14 +207,27 @@ public class Pooper : MonoBehaviour
     {
 
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position,10f,Vector3.down,out hit,10f,poopableLayer))
+        if (Physics.SphereCast(transform.position,200f,Vector3.down,out hit,10f,poopableLayer))
         {
+            Debug.DrawLine(transform.position,hit.point);
             Debug.Log(hit.collider.name);
             return hit.point;
-        }return Vector3.down;
+        }else return Vector3.down;
 
         
     }
 
+    private void OnLevelWasLoaded(int level)
+    {
+        hudController = FindAnyObjectByType<UI_HudController>();
+        var camArray = FindObjectsByType<CinemachineOrbitalFollow>();
+        foreach (var found in camArray)
+        {
+            if (found.CompareTag("Player"))
+            {
+                cam = found;
+            }
+        }
+    }
 
 }

@@ -9,7 +9,7 @@ public class CameraController : Singleton<CameraController>
     public float transitionSpeed = 2f;
     public PlayerStateController playerState;
     private bool watchPlayer = true;
-
+    Pooper playerPoop;
     [SerializeField]
     float cameraDistanceFromPlayer = 10; // Distance we want the player from camera (later to be used for zooming in/out)
 
@@ -20,6 +20,8 @@ public class CameraController : Singleton<CameraController>
     void Start()
     {
         player = FindAnyObjectByType<PlayerFlightMovement>().transform;
+        playerState = player.gameObject.GetComponent<PlayerStateController>();
+        playerPoop = player.GetComponent<Pooper>();
         lookAction = InputSystem.actions.FindAction("Look");
         respawnTarget = FindAnyObjectByType<NestBase>().transform;
         transform.position = player.position + new Vector3(0, 5, -10);
@@ -33,6 +35,10 @@ public class CameraController : Singleton<CameraController>
         {
             return; // Don't do camera movement in photo mode
         }
+        //if (playerPoop.GetIsAiming())
+        //{
+        //    transform.rotation = Quaternion.Lerp(player.transform.rotation, Quaternion.Euler(90, 0, 0), Time.deltaTime * transitionSpeed);
+        //}
 
         
         if (watchPlayer && player != null)

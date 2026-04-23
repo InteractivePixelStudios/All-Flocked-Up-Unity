@@ -73,7 +73,7 @@ public class EnemyPatrol : EnemyBaseComponent
         if(kickCooldown>=0) kickCooldown -= Time.deltaTime;
         if(throwCooldown>=0)throwCooldown -= Time.deltaTime;
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        if(distanceToPlayer < detectionRange) { canSeePlayer = true; if (!canSeePlayer) { alertIcon.SetPlayerSeen(false); }else alertIcon.SetPlayerSeen(true);}
+        if(distanceToPlayer < detectionRange) { canSeePlayer = true; if (!canSeePlayer) { alertIcon.SetPlayerSeen(false);} else alertIcon.SetPlayerSeen(true); } else { canSeePlayer = false; alertIcon.SetPlayerSeen(false); }
         switch (currentState) 
         {
             case EnemyState.Patrolling:
@@ -138,6 +138,7 @@ public class EnemyPatrol : EnemyBaseComponent
         switch (currentState)
         {
             case EnemyState.Patrolling:
+                Debug.Log("Patrol");
                 MoveHumanToLocation();
                 if (navAgent.remainingDistance < 5f)
                     ChooseNextDirection(currentNode);
@@ -335,12 +336,33 @@ public class EnemyPatrol : EnemyBaseComponent
     //call this to run like wind
     public virtual void MoveHumanToLocation()
     {
-        if (currentNode == null || navAgent == null)
-            return;
-
-        navAgent.isStopped = false;
-        navAgent.SetDestination(currentNode.transform.position);
-        animController.SetFloat("Speed",navAgent.speed);
+        if (navAgent == null)return;
+        if (currentNode != null)
+        {
+            Debug.Log("Moving to: " + currentNode);
+            navAgent.isStopped = false;
+            navAgent.SetDestination(currentNode.transform.position);
+        }
+        else
+        {
+            var found = FindObjectsByType<Waypoint>();
+            foreach (var obj in found)
+            {
+                if (obj.gameObject.CompareTag("Human"))
+                {
+                    if (obj != null)
+                    {
+                        patrolPoint = obj.gameObject;
+                        FindWaypoints();
+                        Debug.Log("Moving to: " + currentNode);
+                        navAgent.isStopped = false;
+                        navAgent.SetDestination(currentNode.transform.position);
+                        break;
+                    }
+                }
+            }
+        }
+        animController.SetFloat("Speed", navAgent.speed);
 
     }
 

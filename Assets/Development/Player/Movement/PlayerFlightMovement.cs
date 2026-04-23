@@ -296,4 +296,9 @@ public class PlayerFlightMovement : MonoBehaviour
         GetComponent<PlayerGroundMovement>().InitiateWalkState();
     }
 
+    public void CallReturnToWalk()
+    {
+        ReturnToWalkState();
+    }
+
 }

@@ -162,24 +162,16 @@ public class UI_AccessOptions : UI_SettingsMenu
         await settings.GetInitializationOperation().Task;
         var locales = settings.GetAvailableLocales().Locales;
         List<string> options = new();
-        int langIndex = 3;
         int saveLang = PlayerPrefs.GetInt("Language", langBase);
+        languageDropdown.ClearOptions();
         for (int i = 0; i < locales.Count; i++)
         {
-            if (i == 1 || i == 3 || i == 5 || i == 11 || i == 12 || i == 16 || i == 17 || i == 18) { i++; }
             var locale = locales[i];
             options.Add(locale.LocaleName);
-            if (i == saveLang)
-            {
-                langIndex = i;
-
-            }
         }
-        languageDropdown.ClearOptions();
         languageDropdown.AddOptions(options);
-        languageDropdown.value = langIndex;
+        languageDropdown.value = saveLang;
         languageDropdown.RefreshShownValue();
-        ChangeLanguage(langIndex);
         languageDropdown.onValueChanged.AddListener(OnLanguageChanged);
 
     }
