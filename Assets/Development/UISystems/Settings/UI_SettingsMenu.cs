@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -34,8 +35,8 @@ public class UI_SettingsMenu : MonoBehaviour
         audioBackButton.onClick.AddListener(OpenAudioOptions);
         accessButton.onClick.AddListener(OpenAccessOptions);
         accessBackButton.onClick.AddListener(OpenAccessOptions);
-        SetFirstSettingsButton();
         CheckIfMainMenu();
+        SetFirstSettingsButton();
     }
 
     void CheckIfMainMenu()
@@ -52,7 +53,11 @@ public class UI_SettingsMenu : MonoBehaviour
 
     public void SetFirstSettingsButton()
     {
-        EventSystem.current.SetSelectedGameObject(videoButton.gameObject);
+        if (Gamepad.current.IsActuated())
+        {
+            EventSystem.current.SetSelectedGameObject(videoButton.gameObject);
+        }
+        else return;
     }
 
     protected void CloseSettings()

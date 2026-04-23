@@ -128,7 +128,7 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void StartNewGame()
     {
-
+        canvasController.HidePlayerCursor();
         playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
         playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
         if (SteamManager.Initialized)
@@ -136,7 +136,6 @@ public class UI_MainMenu : MonoBehaviour
             AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_000_Support");
         }
         Debug.Log("Loading Scene");
-        canvasController.HidePlayerCursor();
         SceneManager.LoadScene("TutorialIsland"); // change after build
         //cameraRef.enabled = true;
 

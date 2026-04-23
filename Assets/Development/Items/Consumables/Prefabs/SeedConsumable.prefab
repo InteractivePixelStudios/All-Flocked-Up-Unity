@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8556466679368093726}
   - component: {fileID: 4294431161435087709}
   - component: {fileID: 8278027582412339992}
+  - component: {fileID: 74119197198213027}
   m_Layer: 11
   m_Name: SeedConsumable
   m_TagString: Consumable
@@ -85,6 +86,7 @@ MonoBehaviour:
   canFly: 0
   canPoop: 0
   consumableParticles: {fileID: 0}
+  invSprite: {fileID: 0}
 --- !u!33 &9074522639577750593
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4966,3 +4968,30 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!54 &74119197198213027
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 300902396776574876}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 9
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 4096
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
