@@ -13,7 +13,7 @@ public class StartLocationSpawner : Singleton<StartLocationSpawner>
 
     void FindLocationAndMove()
     {
-        startLocation = FindFirstObjectByType<StartLocationComponent>();
+        startLocation = FindAnyObjectByType<StartLocationComponent>();
         this.gameObject.transform.position = startLocation.transform.position;
     }
 

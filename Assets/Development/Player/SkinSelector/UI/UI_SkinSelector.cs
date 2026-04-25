@@ -13,16 +13,16 @@ public class UI_SkinSelector : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        input = FindFirstObjectByType<PlayerInput>();
+        input = FindAnyObjectByType<PlayerInput>();
         input.SwitchCurrentActionMap("UI");
-        playerComp = FindFirstObjectByType<PlayerSkinSelector>();
+        playerComp = FindAnyObjectByType<PlayerSkinSelector>();
         playerComp.gameObject.GetComponent<PlayerGroundMovement>().enabled = false;
         previousButton.onClick.AddListener(PreviousSkin);
         nextButton.onClick.AddListener(NextSkin);
         confirmButton.onClick.AddListener(SetSkinToPlayer);
         //Cursor.visible = true;
         //Cursor.lockState = CursorLockMode.Confined;
-        //EventSystem.current.SetSelectedGameObject(confirmButton.gameObject);
+        EventSystem.current.SetSelectedGameObject(confirmButton.gameObject);
     }
     
     void PreviousSkin()

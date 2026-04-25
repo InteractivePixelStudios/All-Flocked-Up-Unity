@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +10,7 @@ public class LevelTransition : MonoBehaviour
 
     private void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -21,9 +22,10 @@ public class LevelTransition : MonoBehaviour
         canvasController.OpenLevelTransition();
     }
 
-    public void ChangeToNextScene()
+    public async void ChangeToNextScene()
     {
         canvasController.CloseLevelTransition();
+        await Task.Delay(100);
         SceneManager.LoadScene(nextScene);
     }
   
@@ -32,6 +34,14 @@ public class LevelTransition : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             ShowTransitionPrompt();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            canvasController.CloseLevelTransition();
         }
     }
 }

@@ -11,8 +11,8 @@ public class RedState : ITrafficInterface
 
     public void EnterTrafficState()
     {
-        this.lightChanger = lightChanger;
-
+        //lightChanger.SetState(this);
+        light = ETrafficLightState.Red;
     }
 
     public void UpdateTrafficState() 

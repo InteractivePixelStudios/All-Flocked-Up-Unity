@@ -1,4 +1,5 @@
 using System.Drawing;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,6 +9,8 @@ public class GrabHoldObject : MonoBehaviour
     [SerializeField] private float grabDistance;
     [SerializeField] private GameObject grabbedObject;
     [SerializeField] private LayerMask grabLayer;
+    [SerializeField] private LayerMask consumeLayer;
+    [SerializeField] private LayerMask collectLayer;
     [SerializeField] private Vector3 grabOffset;
     [SerializeField] private bool isHoldingObject = false;
     [SerializeField] private PlayerPeckComponent peckComp;
@@ -24,43 +27,37 @@ public class GrabHoldObject : MonoBehaviour
 
         if(grabAction != null )
         {
-            grabAction.performed += CallGrab;
-            grabAction.started += CallHold;
-            grabAction.canceled += CallRelease;
+
+                grabAction.started += OnGrabPressed;
+
+
+            
+            //grabAction.started += CallHold;
 
         }
     }
 
-    void GrabObject(InputAction.CallbackContext ctx)
+    private void Update()
     {
-        if (!isHoldingObject)
-        {
-            peckComp.Peck();
-            TryGrabObject();
-
-        }
-        else if (isHoldingObject)
-        {
-
-            ReleaseGrabbedObject();
-        }
-        else 
+        if( isHoldingObject )
         {
             HoldGrabbedObject(grabbedObject, grabOffset);
-
         }
-        
     }
 
-    private void CallGrab(InputAction.CallbackContext ctx)
+    void OnGrabPressed(InputAction.CallbackContext ctx)
     {
         if (!isHoldingObject)
         {
             peckComp.Peck();
             TryGrabObject();
-
+        }
+        else
+        {
+            ReleaseGrabbedObject();
         }
     }
+
 
 
 
@@ -68,12 +65,14 @@ public class GrabHoldObject : MonoBehaviour
     {
 
         RaycastHit hit;
-        if(Physics.Raycast(grabPoint.transform.position, transform.forward, out hit, grabDistance, grabLayer))
+        if(Physics.Raycast(grabPoint.transform.position, transform.forward + (Vector3.down*2), out hit, grabDistance, grabLayer))
         {
             grabbedObject = hit.collider.gameObject;
             PickUpObject(grabbedObject);
 
         }
+
+
     }
 
     private void PickUpObject(GameObject Object)
@@ -103,10 +102,6 @@ public class GrabHoldObject : MonoBehaviour
 
     }
 
-    private void CallHold(InputAction.CallbackContext ctx)
-    {
-        HoldGrabbedObject(grabbedObject, grabOffset);
-    }
 
     private void HoldGrabbedObject(GameObject Object, Vector3 offset)
     {
@@ -114,18 +109,15 @@ public class GrabHoldObject : MonoBehaviour
         {
             Object.transform.localPosition = Vector3.zero;
             Object.transform.rotation = grabPoint.transform.rotation;
-            Object.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            var obj = Object.GetComponent<Rigidbody>();
+            if(obj != null)
+            {
+                obj.constraints = RigidbodyConstraints.FreezeAll;
+            }
         }
     }
 
-    private void CallRelease(InputAction.CallbackContext ctx)
-    {
-        if (isHoldingObject)
-        {
 
-            ReleaseGrabbedObject();
-        }
-    }
 
     private void ReleaseGrabbedObject()
     {

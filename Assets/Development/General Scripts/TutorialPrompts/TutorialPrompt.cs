@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine.SceneManagement;
+
 
 public class TutorialPrompt : MonoBehaviour
 {
@@ -16,44 +16,95 @@ public class TutorialPrompt : MonoBehaviour
     [SerializeField] private List<string> prompts = new();
     public int promptIndex;
     public UI_CanvasController canvasController;
+
+    [SerializeField] protected GameObject[] arrowPointers;
+    public int arrowIndex;
+    [SerializeField] private Image controlBindImage;
+    [SerializeField] protected Sprite[] controlBindSprites;
+    protected int controlBindIndex = 1;
+    [SerializeField] private Image keyBindImage;
+    [SerializeField] protected Sprite[] keyboardSprites;
+    protected int keyboardBindIndex = 1;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        confirmButton.onClick.AddListener(CloseWindow);
-        skipButton.onClick.AddListener(SkipTutorial);
-        skipConfirmButton.onClick.AddListener(ConfirmSkip);
-        skipCancelButton.onClick.AddListener(CloseConfirmWindow);
-        UpdatePrompt();
+        UpdatePrompt(promptIndex);
+        SetArrowPointers(arrowIndex);
     }
 
-    public void UpdatePrompt()
+    public void UpdateBindSprites(int keyBindIndex, int controllerBindIndex)
     {
-        promptText.SetText(prompts[promptIndex]);
+        keyBindImage.sprite = keyboardSprites[keyBindIndex];
+        controlBindImage.sprite = controlBindSprites[controllerBindIndex];
     }
 
-
-    void CloseWindow()
+    public void IncrementBindIndex()
     {
-        canvasController.DestroyPrompt();
+        keyboardBindIndex++;
+        controlBindIndex++;
     }
 
-    void SkipTutorial()
+    public int GetNumberArrowPointer()
     {
-        ShowConfirmWindow();
+        return arrowPointers.Length;
     }
 
-    void ShowConfirmWindow()
+    public void SetArrowIndex(int index)
     {
-        confirmWindow.SetActive(true);
+        arrowIndex = index;
+        SetArrowPointers(arrowIndex);
     }
 
-    void ConfirmSkip()
+    public void HideArrowPointers()
     {
-        SceneManager.LoadScene("KensingtonMarket");
+        foreach(var arrow in arrowPointers)
+        {
+            arrow.gameObject.SetActive(false);
+        }
     }
 
-    void CloseConfirmWindow()
+    public void SetArrowPointers(int index)
     {
-        confirmWindow.SetActive(false);
+        if (index ==0)
+        {
+            arrowPointers[0].SetActive(true);
+        }
+        else if (index == 1)
+        {
+            arrowPointers[0].SetActive(false);
+            arrowPointers[1].SetActive(true);
+        }
+        else if(index == 2)
+        {
+            arrowPointers[1].SetActive(false);
+            arrowPointers[2].SetActive(true);
+        }
+        else if(index == 3)
+        {
+            arrowPointers[2].SetActive(false);
+            arrowPointers[3].SetActive(true);
+        }
+        else if (index == 4)
+        {
+            arrowPointers[3].SetActive(false);
+            arrowPointers[4].SetActive(true);
+        }
+        else if(index == 5)
+        {
+            arrowPointers[4].SetActive(false);
+            arrowPointers[5].SetActive(true);
+        }
+        else
+        {
+            HideArrowPointers();
+        }
+
     }
+
+    public void UpdatePrompt(int index)
+    {
+        promptText.SetText(prompts[index]);
+    }
+
+
 }

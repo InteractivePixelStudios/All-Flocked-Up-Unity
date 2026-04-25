@@ -1,10 +1,13 @@
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UI_SettingsMenu : UI_PauseMenu
+public class UI_SettingsMenu : MonoBehaviour
 {
+    public GameObject parent;
     [Header("Settings")]
     [SerializeField] private Button closeSettingsButton;
     [SerializeField] private Button videoButton;
@@ -20,24 +23,53 @@ public class UI_SettingsMenu : UI_PauseMenu
     private bool audioOpen;
     [SerializeField] private GameObject accessParent;
     private bool accessOpen;
+    UI_PauseMenu pauseRef;
+    UI_MainMenu mainRef;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        closeSettingsButton.onClick.AddListener(OnSettingsOpen);
+        closeSettingsButton.onClick.AddListener(CloseSettings);
         videoButton.onClick.AddListener(OpenVideoOptions);
         videoBackButton.onClick.AddListener(OpenVideoOptions);
         audioButton.onClick.AddListener(OpenAudioOptions);
         audioBackButton.onClick.AddListener(OpenAudioOptions);
         accessButton.onClick.AddListener(OpenAccessOptions);
         accessBackButton.onClick.AddListener(OpenAccessOptions);
+        CheckIfMainMenu();
+        SetFirstSettingsButton();
+    }
+
+    void CheckIfMainMenu()
+    {
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainMenu"))
+        {
+            mainRef = FindAnyObjectByType<UI_MainMenu>();
+        }
+        else
+        {
+            pauseRef = FindAnyObjectByType<UI_PauseMenu>();
+        }
     }
 
     public void SetFirstSettingsButton()
     {
-        //EventSystem.current.SetSelectedGameObject(videoButton.gameObject);
+        if (Gamepad.current.IsActuated())
+        {
+            EventSystem.current.SetSelectedGameObject(videoButton.gameObject);
+        }
+        else return;
     }
 
-
+    protected void CloseSettings()
+    {
+        if (mainRef != null)
+        {
+            mainRef.OnSettingsOpen();
+        }else if (pauseRef != null)
+        {
+            pauseRef.OnSettingsOpen();
+        }
+    }
     protected void OpenVideoOptions()
     {
         if (!videoOpen)

@@ -15,6 +15,11 @@ public class SkinShopLocation : MonoBehaviour
         {
             var comp = other.gameObject.GetComponent<PlayerSkinSelector>();
             comp.StartSkinSelector();
+
+            if (SteamManager.Initialized)
+            {
+                AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_006_Skin");
+            }
         }
     }
 }

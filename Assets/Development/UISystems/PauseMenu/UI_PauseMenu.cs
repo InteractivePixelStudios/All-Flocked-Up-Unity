@@ -30,16 +30,17 @@ public class UI_PauseMenu : MonoBehaviour
         controlsButton.onClick.AddListener(OnControlsOpen);
         saveQuitButton.onClick.AddListener(OnSaveAndQuit);
         EventSystem.current.SetSelectedGameObject(continueButton.gameObject);
+        settingsCanvas.GetComponent<UI_SettingsMenu>().parent = this.gameObject;
 
     }
     public void Unpause()
     {
-        var controller = FindFirstObjectByType<UI_CanvasController>();
+        var controller = FindAnyObjectByType<UI_CanvasController>();
         controller.ResumeGame();
-        controller.HidePlayerCursor();
+
     }
 
-    protected virtual void OnSettingsOpen()
+    public virtual void OnSettingsOpen()
     {
         if (!settingsOpen)
         {
@@ -95,9 +96,15 @@ public class UI_PauseMenu : MonoBehaviour
         currentSaveWindow = Instantiate(saveWindowPrefab,mainCanvas.gameObject.transform);
         var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
         comp.SetFirstSaveButton();
-        comp.isQuitting = true;
+        comp.isQuitting = false;
         
 
+    }
+
+    public void CloseSaveWindow()
+    {
+        Destroy(currentSaveWindow);
+        mainCanvas.SetActive(true);
     }
 
 

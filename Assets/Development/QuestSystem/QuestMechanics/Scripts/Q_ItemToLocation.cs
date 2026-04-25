@@ -13,7 +13,7 @@ public class Q_ItemToLocation : MonoBehaviour, IQuestMechanic
     }
     public void GetQuestLog()
     {
-        questLog = FindFirstObjectByType<QuestLog>();
+        questLog = FindAnyObjectByType<QuestLog>();
     }
 
     void ItemAtLocation()

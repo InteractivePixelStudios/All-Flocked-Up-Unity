@@ -7,29 +7,44 @@ public class CameraController : Singleton<CameraController>
     public Transform respawnTarget;    // Assign the object to watch after death
     public Vector3 respawnOffset = new Vector3(0, 20, 0); // Height above target
     public float transitionSpeed = 2f;
-
+    public PlayerStateController playerState;
     private bool watchPlayer = true;
-
+    Pooper playerPoop;
     [SerializeField]
     float cameraDistanceFromPlayer = 10; // Distance we want the player from camera (later to be used for zooming in/out)
 
     InputAction lookAction; // Action for mouse input
     float x, y; // Mouse input values
+    private float lookSens = 1f;
 
     void Start()
     {
-        player = FindFirstObjectByType<PlayerFlightMovement>().transform;
+        player = FindAnyObjectByType<PlayerFlightMovement>().transform;
+        playerState = player.gameObject.GetComponent<PlayerStateController>();
+        playerPoop = player.GetComponent<Pooper>();
         lookAction = InputSystem.actions.FindAction("Look");
+        respawnTarget = FindAnyObjectByType<NestBase>().transform;
         transform.position = player.position + new Vector3(0, 5, -10);
         transform.LookAt(player);
     }
 
     void LateUpdate()
     {
+        
+        if (playerState.CurrentState == PlayerState.PhotoMode)
+        {
+            return; // Don't do camera movement in photo mode
+        }
+        //if (playerPoop.GetIsAiming())
+        //{
+        //    transform.rotation = Quaternion.Lerp(player.transform.rotation, Quaternion.Euler(90, 0, 0), Time.deltaTime * transitionSpeed);
+        //}
+
+        
         if (watchPlayer && player != null)
         {
             // Follow player
-            CameraMovement();
+           CameraMovement();
         }
         else if (respawnTarget != null)
         {
@@ -42,13 +57,21 @@ public class CameraController : Singleton<CameraController>
 
     void Update()
     {
-        PlayerInput();
+        if (playerState.CurrentState != PlayerState.PhotoMode)
+        {
+            PlayerInput();
+        }
     }
 
     void PlayerInput()
     {
-        x = lookAction.ReadValue<Vector2>().x;
-        y = lookAction.ReadValue<Vector2>().y;
+        x = lookAction.ReadValue<Vector2>().x * lookSens;
+        y = lookAction.ReadValue<Vector2>().y * lookSens;
+    }
+
+    public void SetLookSens(float value)
+    {
+        lookSens = value;
     }
 
     void CameraMovement()

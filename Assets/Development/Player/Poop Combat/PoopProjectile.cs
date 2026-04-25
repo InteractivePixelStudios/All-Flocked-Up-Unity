@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,6 +22,7 @@ public class PoopProjectile : MonoBehaviour
 
     [SerializeField] private PoopSplatDecal decalPrefab;
     [SerializeField] private ParticleSystem splashParticle;
+    [SerializeField] EventReference splatSFX;
 
 
     private void Awake()
@@ -34,6 +36,7 @@ public class PoopProjectile : MonoBehaviour
         source = functionSource;
 
         Vector3 direction = (target - transform.position).normalized;
+        Debug.Log(target);
 
         float launchSpeed = playerVelocity.magnitude * 0.5f; // Launch speed is half the player's speed
 
@@ -76,15 +79,15 @@ public class PoopProjectile : MonoBehaviour
     {
         var obj = collision.gameObject;
         var hit = collision.GetContact(0).normal;
-        Debug.Log(hit);
         SpawnPoopDecal(transform.position,hit);
         Instantiate(splashParticle,transform.position,Quaternion.identity* Quaternion.Euler(-90,0,0));
         //source?.HandleHitEffects(poopType, collision.contacts[0].point); // Trigger hit effects
-
+        AudioWizard.Instance.PlayOneshotSound(splatSFX, transform.position);
         if (collision.gameObject.CompareTag("Cat"))
         {
             //poopable.OnPoopHit(poopType);
             obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            Destroy(gameObject);
             Debug.Log("EnemyHit");
         }
 
@@ -92,31 +95,35 @@ public class PoopProjectile : MonoBehaviour
         {
             //poopable.OnPoopHit(poopType);
             obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            Destroy(gameObject);
             Debug.Log("EnemyHit");
         }
 
         if (collision.gameObject.CompareTag("Human"))
         {
             //poopable.OnPoopHit(poopType);
-            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            obj.GetComponentInParent<EnemyPatrol>().TakeDamage(10);
+            Destroy(gameObject);
             Debug.Log("EnemyHit");
         }
 
-        if (collision.gameObject.CompareTag("Raccoon"))
-        {
-            //poopable.OnPoopHit(poopType);
-            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
-            Debug.Log("EnemyHit");
-        }
+        //if (collision.gameObject.CompareTag("Raccoon"))
+        //{
+        //    //poopable.OnPoopHit(poopType);
+        //    obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+        //    Debug.Log("EnemyHit");
+        //}
         if (collision.gameObject.CompareTag("NPC"))
         {
             obj.GetComponent<NPCBase>().HitReact();
+            Destroy(gameObject);
             Debug.Log("NPCHit");
         }
         if (collision.gameObject.CompareTag("Vehicle"))
         {
             var vehicle = collision.gameObject.GetComponent<VehicleScript>();
             vehicle.TriggerCollisions();
+            Destroy(gameObject);
             Debug.Log("CarHit");
         }
         if (!collision.gameObject.CompareTag("Player"))

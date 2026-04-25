@@ -15,17 +15,15 @@ public class TrafficLightChanger : MonoBehaviour
     public TrafficManager trafficManager;
 
     public ETrafficLightState state = new();
-    [SerializeField]private float detectionRange = 2f;
-    [SerializeField] private Vector3 detectRayOffset = new Vector3(0,4,0);
     [SerializeField] private LayerMask trafficLayer;
     [SerializeField]private bool redLightStop;
 
-    private TrafficLightTrigger trigger;
+    [SerializeField]private TrafficLightTrigger trigger;
     public float lightTimer;
 
     void Awake()
     {
-        trafficManager = FindFirstObjectByType<TrafficManager>();
+        trafficManager = FindAnyObjectByType<TrafficManager>();
         greenLight.SetActive(false);
         yellowLight.SetActive(false);
         redLight.SetActive(false);
@@ -50,8 +48,7 @@ public class TrafficLightChanger : MonoBehaviour
         currentState?.ExitTrafficState();
         currentLightState = lightState;
         currentState = state;
-        currentState.EnterTrafficState();
-        SetState();
+        SetState(lightState);
     }
 
     private void ChangeLightColor(string color)
@@ -78,12 +75,13 @@ public class TrafficLightChanger : MonoBehaviour
 
     }
 
-    public void SetState()
+    public void SetState(ETrafficLightState state)
     {
         switch (state)
         {
             case ETrafficLightState.Green:
                 currentState = new GreenState(this);
+                trigger.StartMoveAfterLight();
                 ChangeLightColor("Green");
                 redLightStop = false;
                 trigger.redLightBox.enabled = false;
@@ -91,7 +89,6 @@ public class TrafficLightChanger : MonoBehaviour
             case ETrafficLightState.Yellow:
                 currentState = new YellowState(this);
                 ChangeLightColor("Yellow");
-                trigger.redLightBox.enabled = false;
                 break;
             case ETrafficLightState.Red:
                 currentState = new RedState(this);

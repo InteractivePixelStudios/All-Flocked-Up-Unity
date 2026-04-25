@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyPatrol : MonoBehaviour, I_EnemyBase
+public class EnemyPatrol : EnemyBaseComponent
 {
     [Header("Patrol")]
     public GameObject patrolPoint;
@@ -28,28 +29,43 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
     [SerializeField] private Transform objectSpawnPoint;
     [Header("Waypoints")]
     [SerializeField] private List<Waypoint> waypoints;
-    [SerializeField] private List<WaypointConnection> connections = new();
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]
     [SerializeField] protected NavMeshAgent navAgent;
-    [SerializeField] protected Animator animator;
+    [SerializeField] protected Animator animController;
+    [SerializeField] protected Enemy_AlertIcon alertIcon;
     [SerializeField] protected bool isHit;
     [SerializeField] protected bool isStopped;
     [SerializeField] protected bool isRetreating;
+    [SerializeField] protected bool isIdleStart;
+    bool canSeePlayer;
 
     private int currentPointIndex = 0;
-    private enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
+    public enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
     public bool IsDead = false;
 
     void Start()
     {
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         playerStealth = player.GetComponent<PlayerStealthSystem>();
-        animator = GetComponent<Animator>();
+        animController = GetComponent<Animator>();
+        alertIcon = GetComponent<Enemy_AlertIcon>();
         FindWaypoints();
+        currentState = EnemyState.Patrolling;
+    }
+
+    public  void SetIsHit()
+    {
+        Debug.Log("setIsHit");
+        isHit = true;
+        isHit = false;
+    }
+    public void SetCurrentState(EnemyState state)
+    {
+        currentState = state;
     }
 
     void Update()
@@ -57,67 +73,72 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
         if(kickCooldown>=0) kickCooldown -= Time.deltaTime;
         if(throwCooldown>=0)throwCooldown -= Time.deltaTime;
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-
+        if(distanceToPlayer < detectionRange) { canSeePlayer = true; if (!canSeePlayer) { alertIcon.SetPlayerSeen(false);} else alertIcon.SetPlayerSeen(true); } else { canSeePlayer = false; alertIcon.SetPlayerSeen(false); }
         switch (currentState) 
         {
             case EnemyState.Patrolling:
-                if (playerStealth.GetStealth() < 10&& distanceToPlayer < detectionRange)
+                if (this.isHit)currentState = EnemyState.Hit;
+                if (this.isIdleStart &&!this.isHit) currentState = EnemyState.Stop;
+                else if (playerStealth.GetStealth() < 10 && distanceToPlayer < detectionRange && !this.isHit)
                     currentState = EnemyState.Chasing;
-                else if (isHit)
-                    currentState = EnemyState.Hit;
+
                 break;
 
             case EnemyState.Chasing:
-                if (distanceToPlayer > detectionRange)
-                    currentState = EnemyState.Patrolling;
-                else if (distanceToPlayer < kickRange)
-                    currentState = EnemyState.Kicking;
-                else if(distanceToPlayer < throwRange)
-                    currentState = EnemyState.Throwing;
-                else if(isHit)
+                if (this.isHit)
                     currentState = EnemyState.Hit;
+                else if (distanceToPlayer > detectionRange && !this.isHit)
+                    currentState = EnemyState.Patrolling;
+                else if (distanceToPlayer < kickRange && !this.isHit)
+                    currentState = EnemyState.Kicking;
+                else if(distanceToPlayer < throwRange && !this.isHit)
+                    currentState = EnemyState.Throwing;
                 break; 
 
             case EnemyState.Kicking:
-                if (distanceToPlayer > kickRange)
+                if (this.isHit)
+                    currentState = EnemyState.Hit;
+                if (distanceToPlayer > kickRange && !isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Throwing:
-                if(distanceToPlayer > throwRange)
+                if (this.isHit)
+                    currentState = EnemyState.Hit;
+                if (distanceToPlayer > throwRange && !this.isHit)
                     currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Stop:
-                if (isHit)
+                if (this.isHit)
                 {
-                    isHit = false;
-                    isStopped = true;
                     currentState = EnemyState.Retreat;
+                    isStopped = true;
+
                 }
                 break;
 
             case EnemyState.Retreat:
-                if (isStopped)
+                if (this.isHit)
+                    currentState = EnemyState.Hit;
+                else if (isStopped && !this.isHit)
                 {
                     isStopped = false;
                     currentState = EnemyState.Patrolling;
                 }
-                else if (isHit)
-                {
-                    currentState = EnemyState.Hit;
-                }
                 break;
 
             case EnemyState.Hit:
-                isHit = true;
-                currentState = EnemyState.Stop;
+                this.isHit = true;
+                currentState = EnemyState.Retreat;
                 break;
-        }
+
+    }
 
         switch (currentState)
         {
             case EnemyState.Patrolling:
+                Debug.Log("Patrol");
                 MoveHumanToLocation();
                 if (navAgent.remainingDistance < 5f)
                     ChooseNextDirection(currentNode);
@@ -125,35 +146,46 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
             case EnemyState.Chasing:
                 ChasePlayer();
                 break;
-            case EnemyState.Kicking:
-                if (kickCooldown <= 0)
+            case EnemyState.Kicking: // throws until kick anim done
+                if (throwCooldown <= 0)
                 {
-                    KickPlayer();
-                    Debug.Log("KickCalled");
-                    kickCooldown = 3f;
+                    ThrowObject();
+
+                    throwCooldown = 3f;
                     currentState = EnemyState.Chasing;
                 }
+                //if (kickCooldown <= 0)
+                //{
+                //    KickPlayer();
+
+                //    kickCooldown = 3f;
+                //    currentState = EnemyState.Chasing;
+                //}
                 break;
             case EnemyState.Throwing:
                 if (throwCooldown <= 0)
                 {
                     ThrowObject();
-                    Debug.Log("ThrowCalled");
+
                     throwCooldown = 3f;
                     currentState = EnemyState.Chasing;
                 }
                 break;
             case EnemyState.Stop:
                 StopMove();
-                Debug.Log("StopCalled");
+
                 break;
             case EnemyState.Hit:
                 HitReact();
-                Debug.Log("HitCalled");
+
                 break;
             case EnemyState.Retreat:
-                Retreat();
-                Debug.Log("RetreatCalled");
+                if (!isRetreating)
+                {
+                    isRetreating = true;
+                    Retreat();
+
+                }
                 break;
         }
 
@@ -162,6 +194,7 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
     private void FindWaypoints()
     {
         var waypointArray = patrolPoint.GetComponentsInChildren<Waypoint>();
+        Debug.Log(waypointArray);
         foreach (var waypoint in waypointArray)
         {
             if (waypoint.CompareTag("Human"))
@@ -171,7 +204,7 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 
         }
         FindRandomWaypoint();
-        Debug.Log("CheckforWaypoints");
+
     }
 
 
@@ -179,55 +212,65 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
     {
         if (waypoints.Count == 0) return;
        // var randomIndex = Random.Range(0, waypoints.Count);
-        this.currentNode = waypoints[1];     
-        Debug.Log("H");
+        this.currentNode = waypoints[0];     
+
     }
 
-
-
-
-    //void Patrol()
-    //{
-    //    if (patrolPoints.Length == 0) return;
-
-    //    Vector3 targetPos = patrolPoints[currentPointIndex].position;
-    //    targetPos.y = transform.position.y;
-
-    //    transform.position = Vector3.MoveTowards(transform.position, targetPos, patrolSpeed * Time.deltaTime);
-
-    //    Vector3 dir = (targetPos - transform.position).normalized;
-    //    dir.y = 0;
-    //    if (dir != Vector3.zero)
-    //        transform.forward = dir;
-
-    //    if (Vector3.Distance(transform.position, targetPos) < 0.2f)
-    //    {
-    //        currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
-    //    }
-    //}
     protected void StopMove()
     {
         navAgent.isStopped = true;
+        animController.SetFloat("Speed", 0f);
     }
 
-    protected async void HitReact()
+    protected  void HitReact()
     {
-        TakeDamage(1);
-        animator.SetTrigger("isHit");
-        await Task.Delay(3000);
+        animController.SetTrigger("isHit");
+        isHit = false;
+        currentState = EnemyState.Retreat;
     }
-
+    public override void OnHit()
+    {
+        isHit = true;
+        Debug.Log("HitHuman");
+        SetCurrentState(EnemyState.Hit);
+    }
     protected void Retreat()
     {
-        var centerPoint = transform.position;
-        var radius = 5f;
-        Vector3 randomDirection = Random.insideUnitSphere * radius;
-        Vector3 randomPosition = centerPoint + randomDirection;
-        navAgent.SetDestination(randomPosition);
+        navAgent.isStopped = false;
+        animController.SetFloat("Speed",navAgent.speed);
+        Debug.Log("retreating");
+        //var centerPoint = transform.position;
+        //var radius = 5f;
+        //Vector3 randomDirection = Random.insideUnitSphere * radius;
+        bool set = false;
+        if (currentNode != null)
+        {
+            navAgent.SetDestination(currentNode.transform.position);
+            set = true;
+        }
+        else
+        {
+            if (!set)
+            {
+                navAgent.SetDestination(transform.position + new Vector3(0, 0, 5));
+                set = true;
+            }
+            if(navAgent.remainingDistance <= 1f)
+            {
+                if(Physics.Raycast(transform.position,Vector3.forward, 2f, LayerMask.NameToLayer("PropBuilding")))
+                {
+                    isRetreating = false;
+                    isStopped = false;
+                }else 
+                isRetreating = false;
+                isStopped = false;
+            }
+        }
     }
 
    protected void ChasePlayer()
     {
+        animController.SetFloat("Speed", navAgent.speed);
         Vector3 targetPos = player.transform.position;
         targetPos.y = transform.position.y;
 
@@ -241,27 +284,37 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 
     protected void KickPlayer()
     {
-
+        navAgent.isStopped = true ;
         var spawnedCollider = kickColliderParent.AddComponent<SphereCollider>();
         var comp = spawnedCollider.AddComponent<KickComponent>();
         comp.damage = 1;
-        //animator.SetTrigger("isKicking");
+        animController.SetTrigger("isKicking");
         kickCooldown = 3f;
         Task.Delay(3000);
         Destroy(spawnedCollider);
         Destroy(comp);
+
     }
 
-    protected void ThrowObject()
+    protected async void ThrowObject()
     {
-       // animator.SetTrigger("isThrowing");
+        navAgent.isStopped = true;
+        Vector3 facingDir = (player.transform.position - transform.position).normalized;
+        float diff = Vector3.Dot(transform.forward, facingDir);
+        if(diff <0.5f)
+        {
+            return;
+        }
+        animController.SetTrigger("isThrowing");
+        await Task.Delay(1200);
         var spawnedObj = Instantiate(throwObjectPrefab,objectSpawnPoint.position,objectSpawnPoint.rotation);
         spawnedObj.transform.position = objectSpawnPoint.transform.position;
         spawnedObj.transform.rotation = objectSpawnPoint.transform.rotation;
         var objRB = spawnedObj.GetComponent<Rigidbody>();
         SetThrowPoint();
-        objRB.AddForce(objectSpawnPoint.forward*throwForce,ForceMode.Impulse);
+        objRB.AddForce((objectSpawnPoint.forward+(Vector3.down*0.5f))*throwForce,ForceMode.Impulse);
         throwCooldown = 3f;
+
     }
 
     protected void SetThrowPoint()
@@ -275,17 +328,6 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
 
     }
 
-    public void TakeDamage(int damage)
-    {
-
-
-    }
-
-    public void OnDeath(bool IsDead)
-    {
-
-    }
-
     protected virtual void SetMoveToLocation(Waypoint location)
     {
         currentNode = location;
@@ -294,11 +336,33 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
     //call this to run like wind
     public virtual void MoveHumanToLocation()
     {
-        if (currentNode == null || navAgent == null)
-            return;
-
-        navAgent.isStopped = false;
-        navAgent.SetDestination(currentNode.transform.position);
+        if (navAgent == null)return;
+        if (currentNode != null)
+        {
+            Debug.Log("Moving to: " + currentNode);
+            navAgent.isStopped = false;
+            navAgent.SetDestination(currentNode.transform.position);
+        }
+        else
+        {
+            var found = FindObjectsByType<Waypoint>();
+            foreach (var obj in found)
+            {
+                if (obj.gameObject.CompareTag("Human"))
+                {
+                    if (obj != null)
+                    {
+                        patrolPoint = obj.gameObject;
+                        FindWaypoints();
+                        Debug.Log("Moving to: " + currentNode);
+                        navAgent.isStopped = false;
+                        navAgent.SetDestination(currentNode.transform.position);
+                        break;
+                    }
+                }
+            }
+        }
+        animController.SetFloat("Speed", navAgent.speed);
 
     }
 
@@ -338,25 +402,20 @@ public class EnemyPatrol : MonoBehaviour, I_EnemyBase
     protected void ChooseNextDirection(Waypoint node)
     {
         if(node == null) return;
-        connections.Clear();
 
-        foreach (var connection in node.connections)
-            connections.Add(connection);
-
-        if (connections.Count == 0 && node.nextWaypoint != null)
+        if (node.nextWaypoint == null)
         {
-            connections.Add(new WaypointConnection { node = node.nextWaypoint });
-
-        }
-        else Destroy(this.gameObject);
-
-        int randomIndex = Random.Range(0, connections.Count);
-        Waypoint nextNode = connections[randomIndex].node;
-        if (nextNode == null)
+            FindRandomWaypoint();
             return;
-        previousNode = currentNode;
-        SetMoveToLocation(nextNode);
-        MoveHumanToLocation();
-
+        }
+        else
+        {
+            Waypoint nextNode = node.nextWaypoint;
+            if (nextNode == null)
+                return;
+            previousNode = currentNode;
+            SetMoveToLocation(nextNode);
+            MoveHumanToLocation();
+        }
     }
 }

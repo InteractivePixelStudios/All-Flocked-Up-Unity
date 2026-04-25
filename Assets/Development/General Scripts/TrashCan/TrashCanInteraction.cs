@@ -1,92 +1,44 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 enum CanState {Full, InUse, Empty}
 
 public class TrashCanInteraction : MonoBehaviour
 {
     [SerializeField] private GameObject trashCanObject;
-    [SerializeField] private bool inRange;
-    [SerializeField] private GameObject playerRef;
     [SerializeField] private bool looted;
     [SerializeField] private ParticleSystem trashParticles;
-    [SerializeField] private UI_CanvasController canvasController;
-
-    [SerializeField] private int regenAmt;
-    [SerializeField] private int poopRegen;
+    private Q_SearchTrash questComp;
+    private InteractionPrompt prompt;
+    [SerializeField] List<ConsumableBase> consumableList = new();
+    [SerializeField] private int itemsRemain;
+    [SerializeField] private float shootForce;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        canvasController = FindFirstObjectByType<UI_CanvasController>();
+        TryGetComponent<Q_SearchTrash>(out questComp);
+        TryGetComponent<InteractionPrompt>(out prompt);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void InteractWithTrashCan()
     {
-        if (inRange)
-        {
-            HidePlayer();
-            canvasController.ShowTrashPrompt();
-        }
+            SearchCan();
+            Debug.Log("interacted");   
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void SearchCan()
     {
-        if (other.gameObject.CompareTag("Player"))
+        looted = true;
+        ToggleParticles(looted);
+        GiveReward();
+        if (questComp != null)
         {
-            playerRef = other.gameObject;
-            inRange = true;
-        }
+            questComp.SearchTrash();
+        } 
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        playerRef = null;
-        inRange = false;
-    }
-
-    private void HidePlayer()
-    {
-        if (playerRef != null)
-        {
-            playerRef.SetActive(false);
-        }
-    }
-
-    private void ShowPlayer()
-    {
-        if (playerRef != null)
-        {
-            playerRef.SetActive(true);
-        }
-    }
-
-    public void GiveRewardOne()
-    {
-        if (playerRef != null)
-        {
-            looted = true;
-            ToggleParticles(looted);
-            FillPlayerPoop();
-            CloseUI();
-        }
-    }
-
-    public void GiveRewardTwo()
-    {
-        if (playerRef != null)
-        {
-            looted = true;
-            ToggleParticles(looted);
-            FillPlayerStats();
-            CloseUI();
-        }
-    }
 
     private void ResetCan()
     {
@@ -106,24 +58,14 @@ public class TrashCanInteraction : MonoBehaviour
         else trashParticles.Play();
     }
 
-    private void FillPlayerStats()
-    {
-        playerRef.GetComponent<PlayerHealth>().Heal(regenAmt);
-        playerRef.GetComponent<StaminaSystem>().RegenStamina() ;
-    }
 
-    private void FillPlayerPoop()
+    private void GiveReward()
     {
-        playerRef.GetComponent<PlayerHealth>().Heal(regenAmt);
-        playerRef.GetComponent<PoopSystem>().GainPoop(poopRegen);
-    }
-
-    private void CloseUI()
-    {
-        if (this != null)
+        for(int i = itemsRemain; i>0;i--)
         {
-            ShowPlayer();
-            Destroy(this.gameObject);
+            int rand = Random.Range(0, consumableList.Count-1);
+            var spawned = Instantiate(consumableList[rand],transform.position,transform.rotation);
+            spawned.GetComponent<Rigidbody>().AddForce(Vector3.up * shootForce + Vector3.forward, ForceMode.Impulse) ;
         }
     }
 

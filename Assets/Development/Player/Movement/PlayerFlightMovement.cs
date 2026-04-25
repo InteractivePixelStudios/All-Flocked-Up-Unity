@@ -17,6 +17,7 @@ public class PlayerFlightMovement : MonoBehaviour
     bool isDiving = false;
     bool isSlowFlap = false;
     bool isStalling = false;
+    bool isSpeedUp = false;
 
     [Header("Flight Speeds: ")]
     [SerializeField] float baseGlideSpeed = 400f;
@@ -49,6 +50,8 @@ public class PlayerFlightMovement : MonoBehaviour
     InputAction flapAction;
     InputAction diveAction;
     InputAction stallAction;
+
+    [SerializeField] LayerMask propLayer;
 
     public bool GetIsGliding()
     {
@@ -88,10 +91,13 @@ public class PlayerFlightMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if (Physics.Raycast(transform.position, transform.forward, 0.3f)) { ReturnToWalkState(); }
         if (isFlying && !isStalling)
         {
-            if (groundCheck.IsGrounded())
+            if (groundCheck.IsGrounded(false))
+            {
                 ReturnToWalkState();
+            }
 
             PlayerInput();
         }
@@ -131,19 +137,13 @@ public class PlayerFlightMovement : MonoBehaviour
         // check x and z axis movement
         horizontalMovement = moveAction.ReadValue<Vector2>().x;
         forwardMovement = moveAction.ReadValue<Vector2>().y;
-
-        // check if player hits spacebar
-        flapAction.started += ctx => FlapUp();
-
-        diveAction.started += ctx => Dive();
-
-        stallAction.started += ctx => AirStall();
     }
 
     void FlightMovement()
     {
         if (horizontalMovement < 0 || horizontalMovement > 0)
         {
+
             transform.Rotate(new Vector3(0, rotateSpeed * horizontalMovement * Time.deltaTime, 0));
 
             Vector3 currentAngle = meshTransform.eulerAngles + new Vector3(0, 0, -horizontalMovement) * tiltSpeed * Time.deltaTime;
@@ -167,10 +167,9 @@ public class PlayerFlightMovement : MonoBehaviour
 
         }
 
-        if (forwardMovement > 0)
+        if (forwardMovement > 0 && !flapUp)
         {
-            if (gliding)
-                gliding = false;
+            isSpeedUp = true;
 
             Vector3 glideDownAmount = transform.forward * glideDownSpeed * Time.deltaTime;
             glideDownAmount.y = playerBody.linearVelocity.y - (glideDownDropSpeed * Time.deltaTime);
@@ -200,6 +199,7 @@ public class PlayerFlightMovement : MonoBehaviour
         else
         {
             isSlowFlap = false;
+            isSpeedUp = false;
             if (!gliding)
                 gliding = true;
 
@@ -217,12 +217,11 @@ public class PlayerFlightMovement : MonoBehaviour
                     meshTransform.localRotation = Quaternion.Euler(new Vector3(0, 0, meshTransform.eulerAngles.z));
             }
         }
-        Debug.Log(isSlowFlap);
     }
 
     void ForwardGlide()
     {
-        if (gliding)
+        if (gliding && !isSpeedUp)
         {
             Vector3 forwardGlideAmount = transform.forward * baseGlideSpeed * Time.deltaTime;
             forwardGlideAmount.y = playerBody.linearVelocity.y;
@@ -230,33 +229,34 @@ public class PlayerFlightMovement : MonoBehaviour
         }
     }
 
-    async void FlapUp()
+    async void FlapUp(InputAction.CallbackContext context)
     {
-        if (isFlying)
+        if (isFlying && !isDiving && !isStalling)
         {
-            if (playerStamina.UseStamina(flapStaminaAmount))
-            {
+
                 playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
                 flapUp = true;
                 await Task.Delay(500);
                 flapUp = false;
-            }
+            
             
         }
     }
 
-    void Dive()
+    async void Dive(InputAction.CallbackContext context)
     {
-        if (isDiving) return;
-
+        if (isDiving || !isFlying) return;
+        
         isDiving = true;
         playerBody.AddForce(transform.forward * diveSpeed);
         playerBody.AddForce(Vector3.down * diveSpeed);
+        await Task.Delay(1500);
+        isDiving = false;
     }
 
-    void AirStall()
+    void AirStall(InputAction.CallbackContext context)
     {
-        if (isStalling) return;
+        if (isStalling || !isFlying) return;
 
         playerBody.linearVelocity = Vector3.zero;
         
@@ -268,8 +268,14 @@ public class PlayerFlightMovement : MonoBehaviour
     public void InitiateFlight()
     {
         isFlying = true;
+
+        // check if player hits spacebar
+        flapAction.started += FlapUp;
+        diveAction.performed += Dive;
+        stallAction.performed += AirStall;
+
         GetComponent<VFXController>().ToggleStreakOn();
-        FlapUp();
+        FlapUp(new InputAction.CallbackContext());
     }
 
     void ReturnToWalkState()
@@ -279,8 +285,20 @@ public class PlayerFlightMovement : MonoBehaviour
         isStalling = false;
         reverseStallLerp = false;
         currentStallTime = 0;
+
+        // check if player hits spacebar
+        flapAction.started -= FlapUp;
+        diveAction.performed -= Dive;
+        stallAction.performed -= AirStall;
+
         GetComponent<VFXController>().ToggleStreakOff();
         meshTransform.localRotation = Quaternion.Euler(Vector3.zero);
         GetComponent<PlayerGroundMovement>().InitiateWalkState();
     }
+
+    public void CallReturnToWalk()
+    {
+        ReturnToWalkState();
+    }
+
 }

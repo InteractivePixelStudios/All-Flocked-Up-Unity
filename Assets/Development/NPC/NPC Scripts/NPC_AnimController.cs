@@ -14,12 +14,12 @@ public class NPC_AnimController : MonoBehaviour
     [Header("Parameters")]
     private bool flapUp => groundMoveComp.GetFlapUp();
     private bool isDiving => groundMoveComp.GetIsDiving();
-    [SerializeField] private float forwardSpeed => groundMoveComp.GetSpeedForward();
-    [SerializeField] private bool isGliding => groundMoveComp.GetIsGliding();
-    [SerializeField] private bool isFlying => groundMoveComp.GetIsFlying();
-    [SerializeField] private bool isGrounded => groundMoveComp.GroundCheck();
-    [SerializeField] private bool isJumping => groundMoveComp.GetIsJumping();
-    [SerializeField] private bool isSlowFlap => groundMoveComp.GetIsSlowFlap();
+    private float forwardSpeed => groundMoveComp.GetSpeedForward();
+    private bool isGliding => groundMoveComp.GetIsGliding();
+    private bool isFlying => groundMoveComp.GetIsFlying();
+    private bool isGrounded => groundMoveComp.GroundCheck();
+    private bool isJumping => groundMoveComp.GetIsJumping();
+    private bool isSlowFlap => groundMoveComp.GetIsSlowFlap();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

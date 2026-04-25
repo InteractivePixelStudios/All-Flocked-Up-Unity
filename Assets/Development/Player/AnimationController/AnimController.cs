@@ -22,17 +22,17 @@ public class AnimController : MonoBehaviour
     private bool isDiving => flightMoveComp.GetIsDiving();
 
     private bool isPooping;
-    [SerializeField] private float forwardSpeed=> groundMoveComp.GetSpeedForward();
-    [SerializeField] private float sideSpeed => groundMoveComp.GetSpeedSide();
-    [SerializeField] private bool isGliding =>flightMoveComp.GetIsGliding();
-    [SerializeField] private bool isFlying => groundMoveComp.GetIsFlying();
-    [SerializeField] private bool isAiming=> poopComp.GetIsAiming();
-    [SerializeField] private bool isSneaking => stealthComp.GetIsStealthToggled();
-    [SerializeField] private bool isTalking => dialogueBaseComp.GetIsTyping();
-    [SerializeField] private bool isGrounded => groundCheckComp.IsGrounded();
-    [SerializeField] private bool isJumping => groundMoveComp.GetIsJumping();
-    [SerializeField] private bool isSlowFlap => flightMoveComp.GetIsSlowFlap();
-    [SerializeField] private bool isLeftWingCheck => interactionComp.GetIsWingventoryOpen();
+    private float forwardSpeed=> groundMoveComp.GetSpeedForward();
+    private float sideSpeed => groundMoveComp.GetSpeedSide();
+    private bool isGliding =>flightMoveComp.GetIsGliding();
+    private bool isFlying => groundMoveComp.GetIsFlying();
+    private bool isAiming=> poopComp.GetIsAiming();
+    private bool isSneaking => stealthComp.GetIsStealthToggled();
+    private bool isTalking => dialogueBaseComp.GetIsTyping();
+    private bool isGrounded => groundCheckComp.IsGrounded(true);
+    private bool isJumping => groundMoveComp.GetIsJumping();
+    private bool isSlowFlap => flightMoveComp.GetIsSlowFlap();
+    private bool isLeftWingCheck => interactionComp.GetIsWingventoryOpen();
     [SerializeField] private bool isRightWingCheck;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -43,11 +43,11 @@ public class AnimController : MonoBehaviour
         flightMoveComp = GetComponent<PlayerFlightMovement>();
         groundCheckComp = GetComponentInChildren<GroundCheck>();
         poopComp = GetComponent<Pooper>();
-        dialogueBaseComp = FindFirstObjectByType<DialogueBase>();
         stealthComp =  GetComponent<PlayerStealthSystem>();
         interactionComp = GetComponent<PlayerInteraction>();
         wingventoryComp = GetComponent<PlayerWingventory>();
         peckComp = GetComponent<PlayerPeckComponent>();
+        dialogueBaseComp = GetComponentInChildren<DialogueBase>();
     }
 
     // Update is called once per frame

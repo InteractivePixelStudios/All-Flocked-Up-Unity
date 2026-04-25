@@ -45,13 +45,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c368b779d5cf7304db76344cfc848c5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicTimelineEvent:
+  gameMusicTimelineEvent:
     Guid:
       Data1: -1898431776
       Data2: 1304136254
       Data3: 1917869759
       Data4: 1995862118
     Path: event:/Ambience/WorldMusic
+  mainMenuMusicTimelineEvent:
+    Guid:
+      Data1: -1440698094
+      Data2: 1276874990
+      Data3: 1645709240
+      Data4: 406936489
+    Path: event:/Ambience/MainMenuMusic
+  nonGameSceneNames:
+  - MainMenu
+  - CreditScene
 --- !u!114 &-8005767871091205153
 MonoBehaviour:
   m_ObjectHideFlags: 0

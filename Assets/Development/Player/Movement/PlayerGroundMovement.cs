@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices.WindowsRuntime;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -54,7 +55,7 @@ public class PlayerGroundMovement : MonoBehaviour
     //playerInput
     float x, z;
     bool crouching, sprinting;
-    bool isJumping = false;
+    [SerializeField]bool isJumping = false;
     //bool isFlying = false;
     float sprintTimer = 0f;
 
@@ -134,25 +135,22 @@ public class PlayerGroundMovement : MonoBehaviour
         Movement();
 
         if (sprinting)
-            Sprint();
+            Sprint(new InputAction.CallbackContext());
 
         if (isJumping)
-            if (groundCheck.IsGrounded())
+            if (groundCheck.IsGrounded(true))
                 isJumping = false;
     }
 
     void PlayerInput()
     {
-        //x = moveAction.ReadValue<Vector2>().x;
-        //z = moveAction.ReadValue<Vector2>().y;
-
         // check if player hits spacebar
-        jumpAction.performed += ctx => Jump();
+        jumpAction.performed += Jump;
         // check if player crouches with C or left Control
-        crouchAction.started += ctx => StartCrouch();
-        crouchAction.canceled += ctx => EndCrouch();
-        sprintAction.started += ctx => StartSprint();
-        sprintAction.canceled += ctx => EndSprint();
+        crouchAction.started += StartCrouch;
+        crouchAction.canceled += EndCrouch;
+        sprintAction.started += StartSprint;
+        sprintAction.canceled += EndSprint;
     }
 
     void Movement()
@@ -194,19 +192,12 @@ public class PlayerGroundMovement : MonoBehaviour
         else
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, Mathf.LerpAngle(transform.eulerAngles.y, cameraRef.eulerAngles.y + (90 * x), rotationLerpSpeed), transform.eulerAngles.z);
 
-        // check whether adding speed will bring player over max speed
-        if (x > 0 && xMag > currentMaxSpeed) x = 0;
-        if (x < 0 && xMag < -currentMaxSpeed) x = 0;
-        if (z > 0 && yMag > currentMaxSpeed) z = 0;
-        if (z < 0 && yMag < -currentMaxSpeed) z = 0;
-
-
         //Apply forces to playerBody
         playerBody.AddForce(transform.forward * Mathf.Abs(z) * currentSpeed * Time.deltaTime);
         playerBody.AddForce(transform.forward * Mathf.Abs(x) * currentSpeed * Time.deltaTime);
     }
 
-    void Jump()
+    void Jump(InputAction.CallbackContext context)
     {
         if (input.currentActionMap != input.actions.FindActionMap("Player")) return;
 
@@ -215,7 +206,7 @@ public class PlayerGroundMovement : MonoBehaviour
             return;
 
         // check if player is on the ground to jump
-        if (groundCheck.IsGrounded() && !isJumping)
+        if (groundCheck.IsGrounded(true) && !isJumping)
         {
             isJumping = true;
             // add verticle force to make the player jump
@@ -228,7 +219,7 @@ public class PlayerGroundMovement : MonoBehaviour
         
     }
 
-    void StartCrouch()
+    void StartCrouch(InputAction.CallbackContext context)
     {
         //if (isFlying || sprinting)
         if(playerStateController.CurrentState != PlayerState.GroundMove || sprinting)
@@ -243,7 +234,7 @@ public class PlayerGroundMovement : MonoBehaviour
         }
     }
 
-    void EndCrouch()
+    void EndCrouch(InputAction.CallbackContext context)
     {
         if (crouching)
         {
@@ -254,7 +245,7 @@ public class PlayerGroundMovement : MonoBehaviour
         }
     }
 
-    void StartSprint()
+    void StartSprint(InputAction.CallbackContext context)
     {
         //if (isFlying || crouching)
         if(playerStateController.CurrentState != PlayerState.GroundMove || sprinting)
@@ -268,7 +259,7 @@ public class PlayerGroundMovement : MonoBehaviour
         }
     }
 
-    void Sprint()
+    void Sprint(InputAction.CallbackContext context)
     {
         if (!sprinting)
             return;
@@ -279,12 +270,12 @@ public class PlayerGroundMovement : MonoBehaviour
         {
             sprintTimer -= sprintTriggerStaminaTime;
             if (!playerStamina.UseStamina(sprintStaminaAmount))
-                EndSprint();
+                EndSprint(new InputAction.CallbackContext());
         }
 
     }
 
-    void EndSprint()
+    void EndSprint(InputAction.CallbackContext context)
     {
         if (sprinting)
         {
@@ -401,6 +392,14 @@ public class PlayerGroundMovement : MonoBehaviour
     // === refactored for PSC - Jacob === 
     public void InitiateFlight()
     {
+        // check if player hits spacebar
+        jumpAction.performed -= Jump;
+        // check if player crouches with C or left Control
+        crouchAction.started -= StartCrouch;
+        crouchAction.canceled -= EndCrouch;
+        sprintAction.started -= StartSprint;
+        sprintAction.canceled -= EndSprint;
+
         //isFlying = true;
         playerStateController.EnterFlyMode();
         playerBody.useGravity = false;
@@ -410,10 +409,12 @@ public class PlayerGroundMovement : MonoBehaviour
 
     public void InitiateWalkState()
     {
+        PlayerInput();
+
         //isFlying = false;
         playerStateController.ExitFlyMode();
         playerBody.useGravity = true;
-        if (groundCheck.IsGrounded())
+        if (groundCheck.IsGrounded(true))
             playerStamina.RegenStamina();
     } 
 

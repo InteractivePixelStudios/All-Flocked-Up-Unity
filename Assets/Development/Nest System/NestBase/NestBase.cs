@@ -8,6 +8,7 @@ public class NestBase : MonoBehaviour
     [SerializeField] private float activeRadius;
     [SerializeField] private StickBuilder stickBuilder;
     public bool isActiveNest;
+    bool sticksSpawned;
     private UI_CanvasController canvasController;
     [SerializeField] Material baseMaterial;
     [SerializeField] Material distanceMaterial;
@@ -26,7 +27,7 @@ public class NestBase : MonoBehaviour
 
     public void InteractWithNest()
     {
-        if (!isActiveNest)
+        if (!isActiveNest && !sticksSpawned)
         {
             SpawnStickBuilder();
         }
@@ -53,6 +54,7 @@ public class NestBase : MonoBehaviour
 
     private void SpawnStickBuilder()
     {
+        sticksSpawned = true;
         stickBuilder = Instantiate(stickBuilder, transform);
         stickBuilder.nestBaseRef = this;
     }
@@ -61,7 +63,7 @@ public class NestBase : MonoBehaviour
     {
         if (isActiveNest)
         {
-            canvasController = FindFirstObjectByType<UI_CanvasController>();
+            canvasController = FindAnyObjectByType<UI_CanvasController>();
             canvasController.OpenNestMenu();
         }
     }

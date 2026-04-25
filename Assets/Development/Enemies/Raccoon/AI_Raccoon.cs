@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AI_Raccoon : MonoBehaviour, I_EnemyBase
+public class AI_Raccoon : EnemyBaseComponent
 {
     [Header("Patrol")]
     public Transform[] patrolPoints;
@@ -42,18 +42,21 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
     [SerializeField] protected bool isRetreating;
 
     private int currentPointIndex = 0;
-    private enum EnemyState { Patrolling, Chasing, Climb, Search, Stop, Hit, Retreat }
+    public enum EnemyState { Patrolling, Chasing, Climb, Search, Stop, Hit, Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
     public bool IsDead = false;
 
     void Start()
     {
-        player = FindFirstObjectByType<PlayerGroundMovement>().gameObject;
+        player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
         animator = GetComponent<Animator>();
         FindWaypoints();
     }
-
+    public void SetCurrentState(EnemyState state)
+    {
+        currentState = state;
+    }
     void Update()
     {
         if (climbCooldown >= 0) climbCooldown -= Time.deltaTime;
@@ -176,7 +179,7 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
 
     private void FindWaypoints()
     {
-        var waypointsArray = FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
+        var waypointsArray = FindObjectsByType<Waypoint>();
         foreach (var waypoint in waypointsArray)
         {
             if (waypoint.CompareTag("Racoon"))
@@ -246,7 +249,7 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
         if (Physics.Raycast(transform.position + Vector3.up * 1f, transform.forward*1.5f,out RaycastHit hit, 5f, climbLayer))
         {
             StartClimb(hit);
-            Debug.Log(hit.collider);
+
             
         }
     }
@@ -273,7 +276,7 @@ public class AI_Raccoon : MonoBehaviour, I_EnemyBase
 
     protected void Climb()
     {
-        Debug.Log("Climbing");
+
         navAgent.enabled = false;
 
     }

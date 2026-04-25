@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +19,13 @@ public class QuestLog : MonoBehaviour
     public float currentTime;
     [SerializeField] private UI_CanvasController canvasController;
     [SerializeField]private PlayerNavArrow arrowPointer ;
+    ObjectiveDetails[] currentObjectives;
+    int objIndex;
+
+    private void Start()
+    {
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+    }
 
     //checks if quest in timed and shows the timer when  quest started
     private void GetIsQuestTimed(QuestDetails quest, QuestRuntimeInstance instance)
@@ -96,56 +105,80 @@ public class QuestLog : MonoBehaviour
         hasQuest = true;
         currentQuestGiver = questGiver;
         GetIsQuestTimed(questData, instance);
+        canvasController.ShowTracker();
+        currentObjectives = instance.GetCurrentObjectives();
+        canvasController.activeTrackerInstance.SetTracker(instance.questID,currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription,0);
 
-        
+
     }
     //updates the quest Objective... call this on quest mechanics or anytime you want to complete an objective... send the objectiveID and number of times completed (usually 1 but can be other if needed)
     //otherwise checks if quest is completed
     public void UpdateQuestObjective(string objectiveID, int amount)
     {
-        foreach (var quest in activeQuests)
+        foreach (var quest in activeQuests.ToList())
         {
-            //throws an error when a quest is complete...stupid
+            
                 quest.UpdateObjective(objectiveID, amount);
         }
 
-        CheckForCompletedQuests();
+
     }
 
     //shows the quest notif when an objective is completed
     public void OnObjectiveUpdated(QuestRuntimeInstance quest, string objectiveID, int newValue)
     {
-        // purely update UI / notify player
+        var obj = quest.GetCurrentObjectives();
+        canvasController.DestroyTracker();
+        if(objIndex< currentObjectives.Length)
+        {
+            canvasController.ShowTracker();
+            objIndex++;
+            canvasController.activeTrackerInstance.SetTracker(quest.questID, currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription, GetIndex());
+        }
         canvasController.ShowQuestNotif("Objective Complete");
-        
+        //canvasController.activeTrackerInstance.IncrementTrackerIndex();
+        CheckForCompletedQuests();
         Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
     }
 
+    int GetIndex()
+    {
+        return objIndex;
+    }
+
     //checks through activeQuests for completed quest and shows rewards.Removed from activeQuests and added to completedQuests list... also destroys the questgiver component form the NPC so it remains just a dialogue NPC
-    public void CheckForCompletedQuests()
+    public async void CheckForCompletedQuests()
     {
         for (int i = activeQuests.Count - 1; i >= 0; i--)
         {
             if (activeQuests[i].IsComplete)
             {
+                canvasController.DestroyTracker();
+                await Task.Delay(1000);
                 completedQuests.Add(activeQuests[i].questData);
                 canvasController.ShowQuestReward(activeQuests[i].questData);
-                canvasController.EndTimer();
+                canvasController.activeRewardInstance.SetRewardText(activeQuests[i].GetCachedTrinkets(), activeQuests[i].GetCachedExp(), activeQuests[i].GetItemRewards().ToArray() ) ;
                 activeQuests.RemoveAt(i);
+                canvasController.EndTimer();
                 currentQuestGiver.quests.RemoveAt(0);
-                hasQuest = false;
-                arrowPointer.DestroyArrow();
+                currentQuestGiver.hasQuest = false;
                 currentQuestGiver.GetComponent<NPCBase>().dialogueFirst = true;
             }
             if(currentQuestGiver.quests.Count <= 0)
             {
                 currentQuestGiver.gameObject.layer = LayerMask.NameToLayer("Dialogue");
+                var comp = currentQuestGiver.GetComponent<QuestGiver>();
                 Debug.Log(currentQuestGiver.gameObject.layer);
-                Destroy(currentQuestGiver);
+                Destroy(comp);
                
             }
 
         }
+    }
+
+    private void FindRewards(int questIndex)
+    {
+
     }
 
     //checks if player has quest and returns bool
@@ -217,8 +250,13 @@ public class QuestLog : MonoBehaviour
         {
             if (reward != null) 
             {
-                inventory.AddItemToInv(reward, 1);
+                inventory.AddItemToInv(reward.name, 1);
             }
         }
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
     }
 }

@@ -1,17 +1,25 @@
 using UnityEngine;
+using System.Collections.Generic;
 
-public enum FootstepSurface // Set in editor per surface type - This is so we don't need to worry about materials, layers or physics materials.
+[System.Serializable]
+public class SurfaceMaterialGroups
 {
-    Default = 0,
-    Grass = 1,
-    Metal = 2,
-    Concrete = 3,
-    Wood = 4,
-    // add more as needed
+    public SurfaceTypes surfaceType;
+    public List<Material> materials;
 }
 
-[DisallowMultipleComponent]
+public enum SurfaceTypes
+{
+    Default,   // 0
+    Grass,     // 1
+    Metal,     // 2
+    Concrete,  // 3
+    Wood,      // 4
+    Water      // 5
+}
+
 public class SurfaceType : MonoBehaviour
 {
-    public FootstepSurface surface = FootstepSurface.Default;
+    [Header("Surface Material Settings")]
+    public List<SurfaceMaterialGroups> surfaceMaterialGroups;
 }
