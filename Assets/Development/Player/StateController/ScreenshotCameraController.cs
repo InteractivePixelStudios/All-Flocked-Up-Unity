@@ -14,6 +14,7 @@ public class ScreenshotCameraController : MonoBehaviour
     private CinemachineBrain cinemachineBrain;
     void Start()
     {
+        cam =  Camera.main;
         cameraCollider = cam.GetComponent<Collider>();
         cinemachineBrain = cam.GetComponent<CinemachineBrain>();
 
