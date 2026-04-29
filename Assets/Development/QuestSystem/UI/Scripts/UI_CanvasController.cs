@@ -184,7 +184,7 @@ public class UI_CanvasController : MonoBehaviour
     public void ShowPlayerCursor()
     {
         SetUIMap();
-        if (Keyboard.current.anyKey.wasPressedThisFrame ||
+        if (Keyboard.current.IsPressed() ||
     Mouse.current.delta.ReadValue() != Vector2.zero)
         {
             Cursor.visible = true;
@@ -203,20 +203,9 @@ public class UI_CanvasController : MonoBehaviour
     public void HidePlayerCursor()
     {
         SetPlayerMap();
-        if (Keyboard.current.anyKey.wasPressedThisFrame ||
-    Mouse.current.delta.ReadValue() != Vector2.zero)
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        else if (Gamepad.current != null &&
-        (Gamepad.current.buttonSouth.wasPressedThisFrame ||
-         Gamepad.current.leftStick.ReadValue() != Vector2.zero))
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
-        Debug.Log("Cursor Toggle OFF");
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
     }
 
     //quest timer canvas
@@ -424,40 +413,40 @@ public class UI_CanvasController : MonoBehaviour
             uiOpen = false;
         }
     }
-    //trash canvas
-    public void ShowTrashPrompt(TrashCanInteraction trashCan)
-    {
-        if (!uiOpen)
-        {
-            if (activeTrashInstance == null)
-            {
-                activeTrashInstance = Instantiate(trashCanvas);
-                ApplySavedContrast();
-                activeTrashInstance.SetTrashInstance(trashCan);
-                activeTrashInstance.SetCanvasReference(this);
-                if (!isUIMap)
-                {
-                    ShowPlayerCursor();
-                }
-                uiOpen = true;
-            }
-        }
-    }
+    ////trash canvas
+    //public void ShowTrashPrompt(TrashCanInteraction trashCan)
+    //{
+    //    if (!uiOpen)
+    //    {
+    //        if (activeTrashInstance == null)
+    //        {
+    //            activeTrashInstance = Instantiate(trashCanvas);
+    //            ApplySavedContrast();
+    //            activeTrashInstance.SetTrashInstance(trashCan);
+    //            activeTrashInstance.SetCanvasReference(this);
+    //            if (!isUIMap)
+    //            {
+    //                ShowPlayerCursor();
+    //            }
+    //            uiOpen = true;
+    //        }
+    //    }
+    //}
 
-    public void CloseTrashPrompt()
-    {
-        if (activeTrashInstance != null)
-        {
-            Destroy(activeTrashInstance.gameObject);
-            activeTrashInstance = null;
-            if (isUIMap || activeRewardInstance!=null)
-            {
-                HidePlayerCursor();
+    //public void CloseTrashPrompt()
+    //{
+    //    if (activeTrashInstance != null)
+    //    {
+    //        Destroy(activeTrashInstance.gameObject);
+    //        activeTrashInstance = null;
+    //        if (isUIMap || activeRewardInstance!=null)
+    //        {
+    //            HidePlayerCursor();
 
-            }
-            uiOpen = false;
-        }
-    }
+    //        }
+    //        uiOpen = false;
+    //    }
+    //}
     //race giver canvas
     public void OpenRaceGiver()
     {
@@ -708,8 +697,7 @@ public class UI_CanvasController : MonoBehaviour
             if (isUIMap)
             {
                 HidePlayerCursor();
-                Cursor.visible = false;
-                Cursor.lockState = CursorLockMode.Locked;
+
             }
             uiOpen = false;
         }
@@ -837,11 +825,6 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeLanguageCanvas.gameObject);
             //HidePlayerCursor();
-            var menu = FindAnyObjectByType<UI_MainMenu>();
-            if(menu != null)
-            {
-                //menu.SetSelectedObject(menu.startButton.gameObject);
-            }
 
 
         }
@@ -881,8 +864,7 @@ public class UI_CanvasController : MonoBehaviour
 
     public void OpenLevelTransition()
     {
-        if (!uiOpen)
-        {
+
             if (activeLevelTransition == null)
             {
                 activeLevelTransition = Instantiate(levelTransitionPrefab);
@@ -894,11 +876,9 @@ public class UI_CanvasController : MonoBehaviour
                 {
                     ShowPlayerCursor();
                 }
-                player.GetComponent<PlayerGroundMovement>().enabled = true;
-                player.GetComponent<PlayerFlightMovement>().enabled = true;
-                uiOpen = true;
+
             }
-        }
+
     }
 
     public void CloseLevelTransition()
@@ -910,7 +890,7 @@ public class UI_CanvasController : MonoBehaviour
             {
                 HidePlayerCursor();
             }
-            uiOpen = false;
+
         }
     }
 
@@ -924,10 +904,13 @@ public class UI_CanvasController : MonoBehaviour
                 activeTutPrompt.promptIndex = cachedTutPromptIndex;
                 activeTutPrompt.arrowIndex = cachedIntroIndex;
                 activeTutPrompt.canvasController = this;
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            //if (!isUIMap)
+            //{
+            //    ShowPlayerCursor();
+            //}
 
-            uiOpen = true;
+
+
             }
         
     }
@@ -936,13 +919,14 @@ public class UI_CanvasController : MonoBehaviour
     {
         if(activeTutPrompt != null)
         {
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
+
+            //if (isUIMap)
+            //{
+            //    HidePlayerCursor();
+            //}
             Destroy(activeTutPrompt.gameObject);
             cachedTutPromptIndex = -1;
-            uiOpen = false;
+
         }
     }
 

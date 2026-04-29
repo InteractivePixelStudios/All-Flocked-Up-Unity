@@ -5,7 +5,7 @@ using UnityEngine.Splines.Interpolators;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class UI_HudController : MonoBehaviour
+public class UI_HudController : Singleton<UI_HudController>
 {
     GameObject playerRef;
     [SerializeField] private StatInfo playerStats;
@@ -44,11 +44,21 @@ public class UI_HudController : MonoBehaviour
     float fadeTimer = 2f;
     float visibleTime = 2f;
 
+    [SerializeField] private GameObject mainPanel;
+    [SerializeField] private GameObject camPanel;
+    [SerializeField] private GameObject reticle;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        InitHUD();
+    }
+
+    void InitHUD()
+    { 
         currentTime = hawkTimer;
         playerRef = FindAnyObjectByType<PlayerHealth>().gameObject;
         healthComp = playerRef.GetComponent<PlayerHealth>();
@@ -59,12 +69,22 @@ public class UI_HudController : MonoBehaviour
         startHealth = healthComp.maxHealth;
         currentHealth = healthComp.currentHealth;
         currentStamina = staminaComp.GetCurrentStamina();
-        startStamina = staminaComp.GetMaxStamina() ;
+        startStamina = staminaComp.GetMaxStamina();
         startPoop = poopComp.GetMaxPoop();
         currentPoop = poopComp.GetCurrentPoop();
         UpdateHealth();
         HideIcon();
+        HideReticle();
+    }
 
+    public void ShowReticle()
+    {
+        reticle.SetActive(true);
+    }
+
+    public void HideReticle()
+    {
+        reticle.SetActive(false);
     }
 
     void HideIcon()
@@ -190,5 +210,27 @@ public class UI_HudController : MonoBehaviour
         color.a = 1f;
         levelUpIcon.color = color;
 
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        InitHUD();
+    }
+
+    public void ToggleCameraOverlay(bool isOn)
+    {
+        if (isOn)
+        {
+            camPanel.SetActive(true);
+        }else camPanel.SetActive(false);
+    }
+
+    public void ToggleMainHUD(bool isOn)
+    {
+        if (isOn)
+        {
+            mainPanel.SetActive(true);
+        }
+        else mainPanel.SetActive(false);
     }
 }

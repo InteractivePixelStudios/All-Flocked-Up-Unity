@@ -5632,7 +5632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fb29a695f9997f42b63663d7acc79fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkDistance: 0.25
+  checkDistance: 0.27
   groundMask:
     serializedVersion: 2
     m_Bits: 8
@@ -13135,6 +13135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPecking: 0
+  player: {fileID: 0}
 --- !u!114 &4892111894971344250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13741,6 +13742,8 @@ MonoBehaviour:
       Data3: 134290610
       Data4: -1955566084
     Path: event:/Footsteps/Player_Footsteps
+  surfaceSourceType: 0
+  currentSurfaceSourceType: 0
 --- !u!1 &8695714181657318048 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8999790570853714338, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}

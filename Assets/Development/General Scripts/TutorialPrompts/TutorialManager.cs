@@ -12,8 +12,9 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private UI_CanvasController canvasController;
     private PlayerInput playerInput;
     PlayerGroundMovement playerMove;
+    PlayerFlightMovement playerFlight;
     [SerializeField] protected int tutIndex;
-    [SerializeField]protected int promptIndex;
+    [SerializeField] protected int promptIndex;
     protected int numberOfTimedPrompts = 4;
     [SerializeField] protected List<GameObject> cinematicPrefabList = new();
     [SerializeField] protected int cinematicIndex = 0;
@@ -23,7 +24,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] protected bool hasJumped;
     protected int jumpCount;
     [SerializeField] protected bool introComplete;
-    [SerializeField]protected int introIndex = -1;
+    [SerializeField] protected int introIndex = 0;
     [SerializeField] protected bool hasTakeoff;
     [SerializeField] protected bool hasOverview;
     [SerializeField] protected bool speakWithQ1;
@@ -36,9 +37,9 @@ public class TutorialManager : MonoBehaviour
 
     protected int arrowIndex;
 
-    protected int controlBindIndex=1;
+    protected int controlBindIndex = 1;
 
-    protected int keyboardBindIndex=1;
+    protected int keyboardBindIndex = 1;
 
     private InputAction fireAction;
     private InputAction moveAction;
@@ -50,12 +51,16 @@ public class TutorialManager : MonoBehaviour
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         playerInput = FindAnyObjectByType<PlayerInput>();
         playerMove = playerInput.gameObject.GetComponent<PlayerGroundMovement>();
+        playerFlight = playerInput.gameObject.GetComponent<PlayerFlightMovement>();
         achievement = GetComponent<AchievementUnlocker>();
         fireAction = playerInput.actions.FindAction("Fire");
         moveAction = playerInput.actions.FindAction("Move");
         jumpAction = playerInput.actions.FindAction("Jump");
         clickAction = playerInput.actions.FindAction("Click");
         TogglePrompt(promptIndex);
+        playerMove.enabled = false;
+        playerFlight.enabled = false;
+
 
     }
 
@@ -74,35 +79,17 @@ public class TutorialManager : MonoBehaviour
         switch (tutIndex)
         {
             case 0:
-                if (!introComplete)
+                if (fireAction.WasPressedThisFrame())
                 {
-                    if (fireAction.WasPressedThisFrame())
-                    {
-                        if (introIndex >= 4)
-                        {
-                            introComplete = true;
-                        }
-                        else
-                        {
-                            promptIndex++;
-                            introIndex++;
-                            UpdatePrompt(promptIndex);
-                            canvasController.activeTutPrompt.SetArrowIndex(introIndex);
-                        }
-                    }
-                }
-                if (introComplete)
-                {
-                    if (fireAction.WasPressedThisFrame())
-                    {
-                        promptIndex++;
-                        SetTutState(1);
-                        canvasController.activeTutPrompt.SetArrowIndex(-1);
-                    }
+                    playerMove.enabled = true;
+                    playerFlight.enabled = true;
+                    promptIndex++;
+                    UpdatePrompt(promptIndex);
+                    SetTutState(1);
                 }
                 return;
             case 1:
-                if (moveAction.WasPressedThisFrame() && introComplete)
+                if (moveAction.WasPressedThisFrame())
                 {
                     hasMoved = true;
                 }
@@ -113,7 +100,7 @@ public class TutorialManager : MonoBehaviour
                 }
                 return;
             case 2:
-                if (jumpAction.WasPressedThisFrame()&& !hasJumped)
+                if (jumpAction.WasPressedThisFrame() && !hasJumped)
                 {
                     hasJumped = true;
                 }
@@ -133,31 +120,50 @@ public class TutorialManager : MonoBehaviour
                 {
                     if (playerMove.GetIsFlying() == false)
                     {
+                        playerMove.enabled = false;
+                        playerFlight.enabled = false;
                         jumpCount = 0;
                         promptIndex++;
+                        introIndex++;
+                        canvasController.activeTutPrompt.SetArrowIndex(introIndex);
                         SetTutState(4);
                     }
                 }
                 return;
             case 4:
-                if (!hasOverview )
+                if (clickAction.WasPressedThisFrame())
                 {
-                    hasOverview = true;
-                }
-                if (hasOverview)
-                {
-                    if (clickAction.WasPressedThisFrame())
+                    if (!introComplete)
                     {
+
+
+                        if (introIndex > 4)
+                        {
+                            introComplete = true;
+                        }
+                        else
+                        {
+                            promptIndex++;
+                            introIndex++;
+                            UpdatePrompt(promptIndex);
+                            canvasController.activeTutPrompt.SetArrowIndex(introIndex);
+                        }
+                    }
+                    else if (introComplete)
+                    {
+
+                        canvasController.activeTutPrompt.SetArrowIndex(-1);
                         promptIndex++;
-                        cinematicIndex++;
                         SetTutState(5);
+
                     }
                 }
                 return;
             case 5:
-                if (cinematicIndex >= cinematicPrefabList.Count)
+                if (cinematicIndex >= cinematicPrefabList.Count && !isPlayingCinematic)
                 {
                     SetTutState(6);
+                    return;
                 }
                 var cinematic = cinematicPrefabList[cinematicIndex].GetComponent<CinematicController>();
                 if (!isPlayingCinematic)
@@ -165,33 +171,37 @@ public class TutorialManager : MonoBehaviour
                     SwitchOnCinematic();
                     return;
                 }
-                if (clickAction.WasPressedThisFrame())
+                else if (clickAction.WasPressedThisFrame())
                 {
-                    cinematicIndex++;
+
+                    promptIndex++;
+                    UpdatePrompt(promptIndex);
                     if (cinematicIndex < cinematicPrefabList.Count)
                     {
-                        cinematicPrefabList[cinematicIndex].SetActive(false);
+                        cinematicIndex++;
                     }
                     isPlayingCinematic = false;
-                    promptIndex++;
-                    UpdatePrompt(promptIndex);
                     return;
                 }
-                if (!cinematic.isPlaying)
+                else if (isPlayingCinematic && !cinematic.isPlaying)
                 {
-                    cinematicIndex++;
-                    cinematicPrefabList[cinematicIndex].SetActive(false);
-                    isPlayingCinematic = false;
+
+
                     promptIndex++;
                     UpdatePrompt(promptIndex);
+                    if (cinematicIndex < cinematicPrefabList.Count)
+                    {
+                        cinematicIndex++;
+                    }
+                    isPlayingCinematic = false;
                     return;
                 }
                 return;
             case 6:
-                if (hasOverview && clickAction.WasPressedThisFrame())
+                if (clickAction.WasPressedThisFrame())
                 {
                     promptIndex++;
-                    if (promptIndex > 15)
+                    if (promptIndex >= 15)
                     {
                         SetTutState(7);
                     }
@@ -202,6 +212,8 @@ public class TutorialManager : MonoBehaviour
                 }
                 return;
             case 7:
+                playerMove.enabled = true;
+                playerFlight.enabled = true;
                 canvasController.DestroyPrompt();
                 tutComplete = true;
                 return;
@@ -251,4 +263,4 @@ public class TutorialManager : MonoBehaviour
         isPlayingCinematic = true;
     }
 
-    }
+}

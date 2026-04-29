@@ -86,14 +86,6 @@ public class PlayerFlightMovement : MonoBehaviour
         flapAction = InputSystem.actions.FindAction("Jump");
         diveAction = InputSystem.actions.FindAction("Dive");
         stallAction = InputSystem.actions.FindAction("AirStall");
-
-        // check if player hits spacebar
-        flapAction.started += ctx => FlapUp();
-        diveAction.performed += ctx => Dive();
-        stallAction.performed += ctx => AirStall();
-
-        diveAction.Disable();
-        stallAction.Disable();
     }
 
     // Update is called once per frame
@@ -102,7 +94,7 @@ public class PlayerFlightMovement : MonoBehaviour
         //if (Physics.Raycast(transform.position, transform.forward, 0.3f)) { ReturnToWalkState(); }
         if (isFlying && !isStalling)
         {
-            if (groundCheck.IsGrounded())
+            if (groundCheck.IsGrounded(false))
             {
                 ReturnToWalkState();
             }
@@ -237,7 +229,7 @@ public class PlayerFlightMovement : MonoBehaviour
         }
     }
 
-    async void FlapUp()
+    async void FlapUp(InputAction.CallbackContext context)
     {
         if (isFlying && !isDiving && !isStalling)
         {
@@ -251,10 +243,10 @@ public class PlayerFlightMovement : MonoBehaviour
         }
     }
 
-    async void Dive()
+    async void Dive(InputAction.CallbackContext context)
     {
         if (isDiving || !isFlying) return;
-
+        
         isDiving = true;
         playerBody.AddForce(transform.forward * diveSpeed);
         playerBody.AddForce(Vector3.down * diveSpeed);
@@ -262,7 +254,7 @@ public class PlayerFlightMovement : MonoBehaviour
         isDiving = false;
     }
 
-    void AirStall()
+    void AirStall(InputAction.CallbackContext context)
     {
         if (isStalling || !isFlying) return;
 
@@ -277,11 +269,13 @@ public class PlayerFlightMovement : MonoBehaviour
     {
         isFlying = true;
 
-        diveAction.Enable();
-        stallAction.Enable();
+        // check if player hits spacebar
+        flapAction.started += FlapUp;
+        diveAction.performed += Dive;
+        stallAction.performed += AirStall;
 
         GetComponent<VFXController>().ToggleStreakOn();
-        FlapUp();
+        FlapUp(new InputAction.CallbackContext());
     }
 
     void ReturnToWalkState()
@@ -292,12 +286,19 @@ public class PlayerFlightMovement : MonoBehaviour
         reverseStallLerp = false;
         currentStallTime = 0;
 
-        diveAction.Disable();
-        stallAction.Disable();
+        // check if player hits spacebar
+        flapAction.started -= FlapUp;
+        diveAction.performed -= Dive;
+        stallAction.performed -= AirStall;
 
         GetComponent<VFXController>().ToggleStreakOff();
         meshTransform.localRotation = Quaternion.Euler(Vector3.zero);
         GetComponent<PlayerGroundMovement>().InitiateWalkState();
+    }
+
+    public void CallReturnToWalk()
+    {
+        ReturnToWalkState();
     }
 
 }

@@ -26,6 +26,12 @@ public class CompassController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
+        InitCompass();
+    }
+
+    void InitCompass()
+    {
         hudController = GetComponent<UI_HudController>();
         worldTargets = FindObjectsByType<MapIcon>();
         northObj = GameObject.FindWithTag("North");
@@ -35,15 +41,12 @@ public class CompassController : MonoBehaviour
         else
             Debug.LogError("No object tagged Player found!");
 
-       var comp = playerObj.GetComponentInChildren<MapCameraFollow>();
-        if(comp != null)
+        var comp = playerObj.GetComponentInChildren<MapCameraFollow>();
+        if (comp != null)
         {
             mapCamRef = comp.GetMapCamera();
         }
-
-    }
-
-   
+    }   
     
     
 
@@ -167,6 +170,11 @@ public class CompassController : MonoBehaviour
         return viewPos.z > 0 &&
                viewPos.x > 0 && viewPos.x < 1 &&
                viewPos.y > 0 && viewPos.y < 1;
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        InitCompass();
     }
 
 }
