@@ -824,7 +824,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Player.bank
   Name: Player
   StudioPath: bank:/Player
-  lastModified: 639118734681584679
+  lastModified: 639119568950997762
   FileSizes: []
   Exists: 1
 --- !u!114 &-4682032281284765521
@@ -937,7 +937,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Ambience.bank
   Name: Ambience
   StudioPath: bank:/Ambience
-  lastModified: 639118734680824193
+  lastModified: 639119559027338679
   FileSizes: []
   Exists: 1
 --- !u!114 &-3920130086197076561
@@ -995,6 +995,35 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 474000
+--- !u!114 &-3207714561961521807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Human_Footsteps/Surface
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Surface
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 0
+  ID:
+    data1: 169103654
+    data2: 3038382060
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Default
+  - Grass
+  - Metal
+  - Concrete
+  - Wood
+  Exists: 1
 --- !u!114 &-3159810731145985685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1182,9 +1211,37 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639118734681628252
+  lastModified: 639119571045686811
   FileSizes: []
   Exists: 1
+--- !u!114 &-1938068207246326525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Footsteps/Human_Footsteps
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Footsteps/Human_Footsteps
+  Guid:
+    Data1: 578002996
+    Data2: 1227743199
+    Data3: -2061603400
+    Data4: -1355476905
+  Banks:
+  - {fileID: -4730711827226204098}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -3207714561961521807}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-1916845547845421992
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1475,13 +1532,14 @@ MonoBehaviour:
   - {fileID: 4329199501277184963}
   - {fileID: -2589954290990661490}
   - {fileID: -5326435738105330024}
+  - {fileID: -1938068207246326525}
   EditorParameters: []
   MasterBanks:
   - {fileID: 5399977135161620194}
   StringsBanks:
   - {fileID: 7192909602320462823}
   cacheVersion: 131858
-  cacheTime: 639118734681628252
+  cacheTime: 639119571045686811
   SerializableEventsDict:
   - key: event:/Ambience/WorldBirds
     index: 0
@@ -1531,6 +1589,8 @@ MonoBehaviour:
     index: 22
   - key: event:/Loot/Pickup
     index: 23
+  - key: event:/Footsteps/Human_Footsteps
+    index: 24
 --- !u!114 &73506915100599220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1733,7 +1793,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639118734681584679
+  lastModified: 639119448049983939
   FileSizes: []
   Exists: 1
 --- !u!114 &2091664739478511244
@@ -2164,7 +2224,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639118734680849248
+  lastModified: 639119568950524267
   FileSizes: []
   Exists: 1
 --- !u!114 &5600823441476282664
@@ -2372,10 +2432,10 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639118734680849248
+  lastModified: 639119568950544471
   FileSizes:
   - Name: 
-    Value: 2630
+    Value: 2688
   Exists: 1
 --- !u!114 &7419841717107519623
 MonoBehaviour:

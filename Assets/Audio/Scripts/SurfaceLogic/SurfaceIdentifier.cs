@@ -6,19 +6,18 @@ using UnityEngine;
 - This will be used on obejcts that can not utalize the Material system for footsteps. Just place it on an object, set the Surface Type, and done.
 -
 -
-
 */
 
 public class SurfaceIdentifier : MonoBehaviour
 {
     public enum SurfaceIdentifierTypes
     {
-        Default,
-        Grass,
-        Wood,
-        Stone,
-        Metal,
-        Water
+        Default,   // 0
+        Grass,     // 1
+        Metal,     // 2
+        Concrete,  // 3
+        Wood,      // 4
+        Water      // 5
     }
 
     [SerializeField] private SurfaceTypes surfaceType; // Set the surface type for this object in the inspector. This will be used for footstep sounds and other surface interactions.
