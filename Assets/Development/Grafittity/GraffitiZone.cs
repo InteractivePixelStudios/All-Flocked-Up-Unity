@@ -9,24 +9,27 @@ public class GraffitiZone : MonoBehaviour
     [Header("Graffiti Zone Settings")]
     [SerializeField] private BoxCollider graffitiZoneCollider;
     [SerializeField] private bool playerInMe = false;
-    [SerializeField] InputAction grafit;
+    [SerializeField] InputAction graffiti;
     [SerializeField] private UI_CanvasController canvasController;
 
     [SerializeField] private Camera mainCam;
-    [SerializeField] private Camera grafittiCam;
+    [SerializeField] private Camera graffitiCam;
 
     [Header("Graffiti UI Settings")]
     [SerializeField] public Slider colorSlider;
     [SerializeField] public Image targetImage;
     [SerializeField] public Slider sizeSlider;
-    [SerializeField] public Image SizeImage;
+    [SerializeField] public Image sizeImage;
+    [SerializeField] public Canvas graffitiCanvas;
 
     [Header ("Spray Knowledge")]
+    [SerializeField] public bool isSpraying = false;
+    [SerializeField] public bool isPainting = false;
+    [SerializeField] public bool isErasing = false;
     [SerializeField] InputAction spray;
     [SerializeField] public float sprayDistance = 5f;
-    [SerializeField] public float decalSize = 0.3f;
+    [SerializeField] public int decalSize = 1;
     [SerializeField] public Color currentColor;
-    [SerializeField] public bool isPainting = false;
     [SerializeField] public GameObject decalPrefab;
     [SerializeField] public LayerMask sprayableLayers;
 
@@ -36,7 +39,8 @@ public class GraffitiZone : MonoBehaviour
 
     void Start()
     {
-        grafittiCam.enabled = false;
+        graffitiCanvas.enabled = false;
+        graffitiCam.enabled = false;
         if (TryGetComponent<BoxCollider>(out BoxCollider collider))
         {
             graffitiZoneCollider = collider;
@@ -47,7 +51,7 @@ public class GraffitiZone : MonoBehaviour
             Debug.LogError("BoxCollider component not found on GraffitiZone.");
         }
 
-        grafit = InputSystem.actions.FindAction("Interact");
+        graffiti = InputSystem.actions.FindAction("Interact");
         spray = InputSystem.actions.FindAction("Click");
 
         PlayerInput();
@@ -71,10 +75,11 @@ public class GraffitiZone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (isPainting && isSpraying)
+        {
+            SprayGraffiti();
+        }
     }
-    
-    
 
     //change color based on slider value
     void UpdateColor(float value)
@@ -86,48 +91,74 @@ public class GraffitiZone : MonoBehaviour
         currentColor = rainbowColor;
     }
 
+    public void SetEraserMode()
+    {
+        if (!isErasing)
+        {
+            isErasing = true;
+            currentColor = new Color(0, 0, 0, 0); // Transparent color for erasing
+        }
+        else
+        {
+            isErasing = false;
+            UpdateColor(colorSlider.value); // Reset to current color if not erasing
+        }
+    }
+
     void UpdateSize(float value)
     {
         decalSize = (int)value;
-        SizeImage.rectTransform.sizeDelta = new Vector2(decalSize * 2, decalSize * 2);
+        sizeImage.rectTransform.localScale = Vector3.one * (0.5f + (value / 20f)); // Scale between 0.5 and 1.5 based on slider value
     }
 
     void PlayerInput()
     {
-        grafit.started += ctx => GrafittiTime();
-        spray.performed += ctx => GraffitiSpray();
+        graffiti.started += ctx => EnableGraffitiTime();
+        spray.performed += ctx => SwitchFlipReverseLoL();
     }
 
-    void GrafittiTime()
+    void SwitchFlipReverseLoL()
     {
-        if (playerInMe)
+        if (isSpraying)
         {
-            canvasController.SetUIMap();
-            Debug.Log("Player is interacting with the graffiti zone.");
-            // Implement graffiti interaction logic here
+            isSpraying = false;
+            Debug.Log("Stopped spraying.");
 
-            grafittiCam.enabled = true;
-            mainCam.enabled = false;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-            isPainting = true;
+        }
+        else
+        {
+            isSpraying = true;
+            Debug.Log("Started spraying.");
         }
     }
 
-    void GraffitiSpray()
+    public void EnableGraffitiTime()
     {
-        /*if (isPainting == true)
+        if (playerInMe && !isPainting)
         {
-            Ray ray = grafittiCam.ScreenPointToRay(Mouse.current.position.ReadValue());
-            RaycastHit hit;
+            canvasController.ShowPlayerCursor();
+            graffitiCanvas.enabled = true;
+            Debug.Log("Player is interacting with the graffiti zone.");
+            // Implement graffiti interaction logic here
 
-            if (!Physics.Raycast(ray, out hit, sprayDistance, sprayableLayers))
-                return;
-            Debug.Log("Hit: " + hit.collider.name);
-            SpawnDecal(hit);
-        }*/
+            graffitiCam.enabled = true;
+            mainCam.enabled = false;
+            isPainting = true;
+        }
+        else
+        {
+            canvasController.HidePlayerCursor();
+            graffitiCanvas.enabled = false;
+            Debug.Log("Player stopped interacting with the graffiti zone.");
+            graffitiCam.enabled = false;
+            mainCam.enabled = true;
+            isPainting = false;
+        }
+    }
 
-        Ray ray = grafittiCam.ScreenPointToRay(Mouse.current.position.ReadValue());
+    void SprayGraffiti()
+    {
+        Ray ray = graffitiCam.ScreenPointToRay(Mouse.current.position.ReadValue());
         RaycastHit hit;
 
         if (!Physics.Raycast(ray, out hit, sprayDistance, sprayableLayers))
@@ -147,39 +178,7 @@ public class GraffitiZone : MonoBehaviour
                (localPoint.y / proj.size.y) + 0.5f
            );
          //  Debug.Log($"Calculated UV: {uv}");
-           decal.Paint(uv, currentColor, 5);
-           
-           
-        }
-        else
-        {
-            //SpawnDecal(hit);
-        }
-    }
-
-    void SpawnDecal(RaycastHit hit)
-    {
-        // Align projector to surface
-        Quaternion rotation = Quaternion.LookRotation(-hit.normal);
-
-        GameObject decalObj = Instantiate(
-            decalPrefab,
-            hit.point + hit.normal * 0.02f,
-            rotation
-        );
-
-        var projector = decalObj.GetComponent<DecalProjector>();
-
-        if (projector != null)
-        {
-            // Randomize size for spray feel
-            float size = Random.Range(decalSize * 0.8f, decalSize * 1.2f);
-
-            projector.size = new Vector3(size, size, size);
-
-            // Create unique material instance
-            projector.material = new Material(projector.material);
-            projector.material.color = currentColor;
+           decal.Paint(uv, currentColor, decalSize);
         }
     }
 
