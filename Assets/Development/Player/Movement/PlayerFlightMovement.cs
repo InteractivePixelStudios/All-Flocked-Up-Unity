@@ -19,9 +19,17 @@ public class PlayerFlightMovement : MonoBehaviour
     bool isStalling = false;
     bool isSpeedUp = false;
 
+    [Header("Mouse Controls: ")]
+    [SerializeField] bool mouseControls = false;
+    [SerializeField] float mouseTurnSpeed = 1.0f;
+    Transform cameraRef;
+    [SerializeField] float rotationLerpSpeed = 2.0f;
+    [SerializeField] float mouseTiltSpeed = 1.0f;
+
     [Header("Flight Speeds: ")]
     [SerializeField] float baseGlideSpeed = 400f;
     [SerializeField] float maxDownwardVelocity = -3f;
+    [SerializeField] float glideGravityDivide = 4f;
 
     [Header("Flap Variables: ")]
     [SerializeField] float flapUpHeight = 5f;
@@ -50,8 +58,11 @@ public class PlayerFlightMovement : MonoBehaviour
     InputAction flapAction;
     InputAction diveAction;
     InputAction stallAction;
+    InputAction lookAction;
 
     [SerializeField] LayerMask propLayer;
+
+    float x, y;
 
     public bool GetIsGliding()
     {
@@ -79,6 +90,7 @@ public class PlayerFlightMovement : MonoBehaviour
         playerBody = GetComponent<Rigidbody>();
         playerStamina = GetComponent<StaminaSystem>();
         groundCheck = GetComponentInChildren<GroundCheck>();
+        cameraRef = Camera.main.transform;
 
         flapUpVelocity = Mathf.Sqrt(Mathf.Abs(Physics.gravity.y) * flapUpHeight);
 
@@ -86,12 +98,18 @@ public class PlayerFlightMovement : MonoBehaviour
         flapAction = InputSystem.actions.FindAction("Jump");
         diveAction = InputSystem.actions.FindAction("Dive");
         stallAction = InputSystem.actions.FindAction("AirStall");
+        lookAction = InputSystem.actions.FindAction("Look");
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (Physics.Raycast(transform.position, transform.forward, 0.3f)) { ReturnToWalkState(); }
+        if (isFlying && mouseControls)
+        {
+            x = lookAction.ReadValue<Vector2>().x;
+            y = lookAction.ReadValue<Vector2>().y;
+        }
+
         if (isFlying && !isStalling)
         {
             if (groundCheck.IsGrounded(false))
@@ -124,11 +142,42 @@ public class PlayerFlightMovement : MonoBehaviour
         if (isFlying && !isDiving && !isStalling)
         {
             // add "Gravity" to player
-            playerBody.AddForce((Vector3.down * Mathf.Abs(Physics.gravity.y / 4)) * Time.deltaTime, ForceMode.VelocityChange);
+            playerBody.AddForce((Vector3.down * Mathf.Abs(Physics.gravity.y / glideGravityDivide)) * Time.deltaTime, ForceMode.VelocityChange);
             // clamp the max downward velocity
             playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, Mathf.Clamp(playerBody.linearVelocity.y, maxDownwardVelocity, 10000) , playerBody.linearVelocity.z);
             FlightMovement();
             ForwardGlide();
+        }
+
+        if (isFlying && mouseControls)
+        {
+            transform.eulerAngles = new Vector3(transform.eulerAngles.x, cameraRef.eulerAngles.y, transform.eulerAngles.z);
+
+            if (x < 0 || x > 0)
+            {
+
+                transform.Rotate(new Vector3(0, rotateSpeed * horizontalMovement * Time.deltaTime, 0));
+
+                Vector3 currentAngle = meshTransform.eulerAngles + new Vector3(0, 0, -x) * mouseTiltSpeed * Time.deltaTime;
+
+                // Weird math to get relative angle
+                currentAngle.z = Mathf.Clamp(((currentAngle.z + 540) % 360) - 180, -25f, 25f);
+                meshTransform.rotation = Quaternion.Euler(currentAngle);
+            }
+            else if (meshTransform.localRotation.z != 0)
+            {
+                Vector3 currentAngle = meshTransform.localEulerAngles;
+                if (currentAngle.z < 30)
+                    currentAngle.z = Mathf.Lerp(meshTransform.localEulerAngles.z, 0, 2f * Time.deltaTime);
+                else
+                    currentAngle.z = Mathf.Lerp(meshTransform.localEulerAngles.z, 360, 2f * Time.deltaTime);
+
+                meshTransform.localRotation = Quaternion.Euler(currentAngle);
+
+                if (meshTransform.localEulerAngles.z < 1)
+                    meshTransform.localRotation = Quaternion.Euler(new Vector3(meshTransform.eulerAngles.x, 0, 0));
+
+            }
         }
     }
 
@@ -233,13 +282,10 @@ public class PlayerFlightMovement : MonoBehaviour
     {
         if (isFlying && !isDiving && !isStalling)
         {
-
                 playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
                 flapUp = true;
                 await Task.Delay(500);
                 flapUp = false;
-            
-            
         }
     }
 

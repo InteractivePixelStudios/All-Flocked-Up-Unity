@@ -119,13 +119,6 @@ public class PlayerGroundMovement : MonoBehaviour
         PlayerInput();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-       // if (!isFlying)
-           // PlayerInput();
-    }
-
     void FixedUpdate()
     {
         //if (isFlying) === refactored for PSC - Jacob ===
