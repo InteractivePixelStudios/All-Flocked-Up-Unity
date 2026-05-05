@@ -12,9 +12,9 @@ public class ScreenshotCameraController : MonoBehaviour
     [SerializeField] private Transform camAnchorBack;
     [FormerlySerializedAs("UI_Hud")] [SerializeField] private UI_HudController uiHud;
     
+    //internal variables
+    [SerializeField] bool isSelfie = false;
     
-    private bool isSelfie = false;
-
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private Collider cameraCollider;
@@ -43,15 +43,21 @@ public class ScreenshotCameraController : MonoBehaviour
     {
         if (Keyboard.current.pKey.wasPressedThisFrame) //temporary for test
         {
+            //if in photomode, leave photomode
             if (psc.CurrentState == PlayerState.PhotoMode)
             {
-            
+
 
                 EndPhotoMode();
                 Debug.Log("P pressed");
             }
-            else
+            //if in ground mode (not flying) enter photomode
+            else if (psc.CurrentState == PlayerState.GroundMove)
+            {
+            
+
                 StartPhotoMode();
+            }
         }
         if (psc.CurrentState == PlayerState.PhotoMode)
         {
