@@ -6,6 +6,8 @@ using UnityEngine.Serialization;
 
 public class ScreenshotCameraController : MonoBehaviour
 {
+    //reference variables
+    [SerializeField] private InputAction moveAction;
     [SerializeField] private Camera cam;
     [SerializeField] private PlayerStateController psc;
     [SerializeField] private Transform camAnchorFront;
@@ -14,7 +16,11 @@ public class ScreenshotCameraController : MonoBehaviour
     
     //internal variables
     [SerializeField] bool isSelfie = false;
-    
+    private float pitch = 0f;
+    private float yaw = 0f;
+    [SerializeField] private float orientSpeed = 50f;
+    [SerializeField] private float pitchLimit = 45f;
+    [SerializeField] private float yawLimit = 60f;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private Collider cameraCollider;
@@ -22,13 +28,14 @@ public class ScreenshotCameraController : MonoBehaviour
     void Start()
     {
         
+        //setting reference variables
         cam =  Camera.main;
         cameraCollider = cam.GetComponent<Collider>();
         cinemachineBrain = cam.GetComponent<CinemachineBrain>();
         camAnchorFront = transform.Find("FrontCamAnchor");
         camAnchorBack = transform.Find(("SelfieCamAnchor"));
         uiHud = FindAnyObjectByType<UI_HudController>();
-
+        moveAction = InputSystem.actions.FindAction("Move");
         if (!camAnchorFront)
             Debug.Log("camAnchorFront is null");
         if (!camAnchorBack)
