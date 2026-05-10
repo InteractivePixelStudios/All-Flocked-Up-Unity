@@ -113,23 +113,25 @@ public class UI_SaveWindow : MonoBehaviour
         if (pendingSlot == null) return;
 
         if (isSaving)
+        {
             pendingSlot.CallSave();
+        }
         else
+        {
             pendingSlot.CallLoad();
-
+        }
         confirmWindow.SetActive(false);
     }
 
     public async void DestroyWindow()
     {
         await Task.Delay(2000);
-        Destroy(this.gameObject);
         if (isQuitting)
         {
             QuitGame();
         }
-        else return;
-        
+        else Destroy(this.gameObject);
+
     }
 
     public void QuitGame()

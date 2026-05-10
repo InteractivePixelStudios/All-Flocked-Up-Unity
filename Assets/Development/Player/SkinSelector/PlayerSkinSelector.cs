@@ -27,7 +27,6 @@ public class PlayerSkinSelector : MonoBehaviour
     }
     private void Start()
     {
-        shopLocation = FindAnyObjectByType<SkinShopLocation>();
         playerSpawnPoint = shopLocation.playerSpawnPoint;
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         var cams = FindObjectsByType<CinemachineCamera>();
@@ -38,6 +37,7 @@ public class PlayerSkinSelector : MonoBehaviour
                 cam = camera;
             }
         }
+        shopLocation = FindAnyObjectByType<SkinShopLocation>();
     }
 
     private void OnLevelWasLoaded(int level)

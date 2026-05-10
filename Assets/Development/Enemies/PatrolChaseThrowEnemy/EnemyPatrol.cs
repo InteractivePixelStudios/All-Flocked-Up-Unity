@@ -138,7 +138,7 @@ public class EnemyPatrol : EnemyBaseComponent
         switch (currentState)
         {
             case EnemyState.Patrolling:
-                Debug.Log("Patrol");
+                //Debug.Log("Patrol");
                 MoveHumanToLocation();
                 if (navAgent.remainingDistance < 5f)
                     ChooseNextDirection(currentNode);
@@ -194,7 +194,6 @@ public class EnemyPatrol : EnemyBaseComponent
     private void FindWaypoints()
     {
         var waypointArray = patrolPoint.GetComponentsInChildren<Waypoint>();
-        Debug.Log(waypointArray);
         foreach (var waypoint in waypointArray)
         {
             if (waypoint.CompareTag("Human"))
@@ -339,7 +338,7 @@ public class EnemyPatrol : EnemyBaseComponent
         if (navAgent == null)return;
         if (currentNode != null)
         {
-            Debug.Log("Moving to: " + currentNode);
+            //Debug.Log("Moving to: " + currentNode);
             navAgent.isStopped = false;
             navAgent.SetDestination(currentNode.transform.position);
         }
@@ -354,7 +353,7 @@ public class EnemyPatrol : EnemyBaseComponent
                     {
                         patrolPoint = obj.gameObject;
                         FindWaypoints();
-                        Debug.Log("Moving to: " + currentNode);
+                        //Debug.Log("Moving to: " + currentNode);
                         navAgent.isStopped = false;
                         navAgent.SetDestination(currentNode.transform.position);
                         break;
