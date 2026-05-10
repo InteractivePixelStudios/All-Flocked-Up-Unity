@@ -1,3 +1,6 @@
+using System.Linq;
+using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +11,7 @@ public class PlayerSaveLoadHandler : MonoBehaviour
     [SerializeField] private float maxTime;
     [SerializeField] private float timer;
     private GameObject player;
+    SaveData pendingData;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,6 +32,21 @@ public class PlayerSaveLoadHandler : MonoBehaviour
             UpdateSaveFile();
             timer = maxTime;
         }
+    }
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+
+    public void CallUpdateSave()
+    {
+        UpdateSaveFile();
     }
 
     private void UpdateSaveFile()
@@ -50,42 +69,117 @@ public class PlayerSaveLoadHandler : MonoBehaviour
         saveData.completedRaces = FindAnyObjectByType<RaceBase>().completedRaces;
         saveData.timeOfDay = FindAnyObjectByType<S_DayNightCycle>().timeOfDay;
         saveData.playerSkin = player.GetComponent<PlayerSkinSelector>().GetCurrentMaterial();
+        saveData.npcData = FindObjectsByType<NPCBase>().ToList();
+        //var questobj = GameObject.FindObjectsByType(typeof(IQuestMechanic));
+        //foreach(var item in questobj) { var trans = GameObject.item.transform; saveData.questObjects.Add(item) }
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("TutorialIsland"))
+        {
+            if (saveData.tutData != null)
+            {
+                saveData.tutData.Clear();
+                var manager = GameObject.FindAnyObjectByType<TutorialManager>();
+                if (manager != null)
+                {
+                    saveData.tutData = manager.ReturnTutData();
+                }
+            }
+        }
         SaveSlotManager.SaveToSlot(saveSlot, saveData, true);
 
         Debug.Log($"Autosaved to slot {saveSlot} at {saveData.lastSaved}");
     }
 
-    public void LoadLevel(string levelName)
+    public void LoadLevel()
     {
-        SceneManager.LoadSceneAsync(levelName);
+        pendingData = SaveSlotManager.LoadFromSlot(saveSlot, true);
+        if (pendingData == null) return;
+        Debug.Log(pendingData.sceneName);
+
+        SceneManager.LoadSceneAsync(pendingData.sceneName);
     }
 
-    public void LoadPlayerData()
+    //add in list for saving NPC states....
+    public async void LoadPlayerData()
     {
-        SaveData loaded = SaveSlotManager.LoadFromSlot(saveSlot, true);
-        if (loaded == null) return;
-        LoadLevel(loaded.sceneName);
-        player.GetComponent<PlayerHealth>().currentHealth = loaded.health;
-        player.GetComponent<StaminaSystem>().SetMaxStamina(loaded.stamina);
-        player.GetComponent<PoopSystem>().SetMaxPoop(loaded.poop);
-        player.GetComponent<EXPSystem>().GiveLevels(loaded.level);
-        player.GetComponent<QuestLog>().activeQuests = loaded.activeQuests;
-        player.GetComponent<QuestLog>().completedQuests = loaded.completedQuests;
-        FindAnyObjectByType<RaceBase>().completedRaces = loaded.completedRaces;
-        FindAnyObjectByType<S_DayNightCycle>().timeOfDay = loaded.timeOfDay;
-        player.GetComponent<PlayerWingventory>().playerTrinketQuantity = loaded.trinkets;
-        player.GetComponent<PlayerSkinSelector>().SetLoadedMaterial(loaded.playerSkin);
-        player.transform.position = loaded.position;
-        player.transform.rotation = loaded.rotation;
-        saveData = loaded;
-        SaveLoadBase.currentVersion = loaded.version;
-        Debug.Log($"Loaded player from slot {saveSlot}");
+        await Task.Yield();
+        if (pendingData == null)
+        {
+            pendingData = SaveSlotManager.LoadFromSlot(saveSlot, true);
+            if (pendingData == null) return;
+        }
+        if(pendingData!=null)
+        {
+            player.GetComponent<PlayerHealth>().currentHealth = pendingData.health;
+            player.GetComponent<StaminaSystem>().SetMaxStamina(pendingData.stamina);
+            player.GetComponent<PoopSystem>().SetMaxPoop(pendingData.poop);
+            player.GetComponent<EXPSystem>().GiveLevels(pendingData.level);
+            player.GetComponent<QuestLog>().activeQuests = pendingData.activeQuests;
+            player.GetComponent<QuestLog>().completedQuests = pendingData.completedQuests;
+            FindAnyObjectByType<RaceBase>().completedRaces = pendingData.completedRaces;
+            FindAnyObjectByType<S_DayNightCycle>().timeOfDay = pendingData.timeOfDay;
+            player.GetComponent<PlayerWingventory>().playerTrinketQuantity = pendingData.trinkets;
+            player.GetComponent<PlayerSkinSelector>().SetLoadedMaterial(pendingData.playerSkin);
+            player.transform.position = pendingData.position;
+            player.transform.rotation = pendingData.rotation;
+            InitNPC();
+            if (pendingData.tutData != null)
+            {
+                    var manager = GameObject.FindAnyObjectByType<TutorialManager>();
+                    if (manager != null)
+                    {
+                        manager.LoadSavedTut(pendingData.tutData);
+                        Debug.Log("loaded tut info");
+                    }
+            }
+            saveData = pendingData;
+            SaveLoadBase.currentVersion = pendingData.version;
+            Debug.Log($"Loaded player from slot {saveSlot}");
+        }
+    }
+
+    private void InitNPC()
+    {
+        var found = FindObjectsByType<NPCBase>();
+        NPCBase tempData;
+        foreach(var saved in saveData.npcData)
+        {
+            foreach (var npc in found)
+            {
+                if (npc != null && saved == npc)
+                {
+                    tempData = saved;
+                    npc.LoadData(saved);
+                    Debug.Log(npc + "has loaded" + saved);
+                }
+            }
+        }
+
     }
 
     public void ApplyLoadedData()
     {
-        LoadPlayerData();
+        var canvas = FindAnyObjectByType<UI_CanvasController>();
+        canvas.HidePlayerCursor();
         player.GetComponent<PlayerGroundMovement>().enabled = true;
         player.GetComponent<PlayerFlightMovement>().enabled = true;
+        if (pendingData == null)
+        {
+            pendingData = SaveSlotManager.LoadFromSlot(saveSlot, true);
+        }
+        if (pendingData != null)
+        {
+            LoadLevel();
+        }
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (pendingData == null) return;
+
+        player = FindAnyObjectByType<PlayerGroundMovement>()?.gameObject;
+
+        if (player == null) return;
+
+        LoadPlayerData();
     }
 }

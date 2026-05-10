@@ -13,12 +13,15 @@ public class UI_MainMenu : MonoBehaviour
     [SerializeField] private GameObject mainCanvas;
     [SerializeField] private GameObject settingsCanvas;
     [SerializeField] private GameObject controlsCanvas;
+    [SerializeField] private GameObject skipPanel;
     public Button startButton;
     [SerializeField] private Button loadButton;
     [SerializeField] private Button settingsButton;
     [SerializeField] private Button controlsButton;
     [SerializeField] private Button creditsButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button playButton;
+    [SerializeField] private Button skipButton;
     private bool settingsOpen;
     private bool controlsOpen;
     private GameObject playerRef;
@@ -37,7 +40,7 @@ public class UI_MainMenu : MonoBehaviour
         mainCanvas.SetActive(true);
         settingsCanvas.SetActive(false);
         controlsCanvas.SetActive(false);
-        startButton.onClick.AddListener(StartNewGame);
+        startButton.onClick.AddListener(ShowSkipPanel);
         loadButton.onClick.AddListener(CheckForSavedGame);
         settingsButton.onClick.AddListener(OnSettingsOpen);
         controlsButton.onClick.AddListener(OnControlsOpen);
@@ -51,12 +54,7 @@ public class UI_MainMenu : MonoBehaviour
         playerRef.transform.rotation  = playerSpawnPoint.transform.rotation;
         cameraRef.transform.forward = playerSpawnPoint.transform.forward;
         cameraRef.transform.position = playerRef.transform.position+ cameraOffset;
-        //playerRef.GetComponent<PlayerGroundMovement>().enabled = false;
-        //playerRef.GetComponent<PlayerFlightMovement>().enabled = false;
-        //cameraRef.enabled = false;
-
         settingsCanvas.GetComponent<UI_SettingsMenu>().parent = this.gameObject;
-
     }
     public void SetSelectedObject(GameObject obj)
     {
@@ -71,8 +69,6 @@ public class UI_MainMenu : MonoBehaviour
         {
             if (Gamepad.current != null)
             {
-
-
                 if (Gamepad.current.buttonSouth.wasPressedThisFrame || Gamepad.current.leftStick.ReadValue() != Vector2.zero)
                 {
                     SetSelectedObject(startButton.gameObject);
@@ -83,7 +79,28 @@ public class UI_MainMenu : MonoBehaviour
             else return;
         }
         else return;
+    }
 
+    void ShowSkipPanel()
+    {
+        if (skipPanel != null)
+        {
+            playButton.onClick.AddListener(StartNewGame);
+            skipButton.onClick.AddListener(SkipTutorial);
+            skipPanel.SetActive(true);
+        }
+    }
+
+    private void SkipTutorial()
+    {
+        canvasController.HidePlayerCursor();
+        playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
+        playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
+        if (SteamManager.Initialized)
+        {
+            AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_000_Support");
+        }
+        SceneManager.LoadScene("KensingtonMarket");
     }
 
     public void OnSettingsOpen()
@@ -93,14 +110,12 @@ public class UI_MainMenu : MonoBehaviour
             mainCanvas.SetActive(false);
             settingsCanvas.SetActive(true);
             settingsOpen = true;
-  
         }
         else
         {
             mainCanvas.SetActive(true);
             settingsCanvas.SetActive(false);
             settingsOpen = false;
-            //EventSystem.current.SetSelectedGameObject(startButton.gameObject);
         }
     }
 
@@ -117,7 +132,6 @@ public class UI_MainMenu : MonoBehaviour
             mainCanvas.SetActive(!controlsOpen);
             controlsCanvas.SetActive(false);
             controlsOpen= false;
-            //EventSystem.current.SetSelectedGameObject(startButton.gameObject);
         }
     }
 
@@ -128,6 +142,7 @@ public class UI_MainMenu : MonoBehaviour
 
     protected void StartNewGame()
     {
+        
         canvasController.HidePlayerCursor();
         playerRef.GetComponent<PlayerGroundMovement>().enabled = true;
         playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
@@ -135,9 +150,8 @@ public class UI_MainMenu : MonoBehaviour
         {
             AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_000_Support");
         }
-        Debug.Log("Loading Scene");
-        SceneManager.LoadScene("TutorialIsland"); // change after build
-        //cameraRef.enabled = true;
+        SceneManager.LoadScene("TutorialIsland");
+        RemoveAllListeners();
 
 
     }
@@ -158,7 +172,7 @@ public class UI_MainMenu : MonoBehaviour
             loadButton.interactable = false;
         }
     
-}
+    }
 
     protected void LoadGame()
     {
@@ -169,11 +183,21 @@ public class UI_MainMenu : MonoBehaviour
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvasObj.AddComponent<CanvasScaler>();
         canvasObj.AddComponent<GraphicRaycaster>();
-
         currentSaveWindow = Instantiate(saveWindowPrefab, canvasObj.transform);
         var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
         comp.isSaving = false;
+    }
 
+    private void RemoveAllListeners()
+    {
+        startButton.onClick.RemoveAllListeners();
+        loadButton.onClick.RemoveAllListeners();
+        settingsButton.onClick.RemoveAllListeners();
+        controlsButton.onClick.RemoveAllListeners();
+        creditsButton.onClick.RemoveAllListeners();
+        quitButton.onClick.RemoveAllListeners();
+        skipButton.onClick.RemoveAllListeners();
+        playButton.onClick.RemoveAllListeners();
     }
 
     public void CloseSaveWindow()

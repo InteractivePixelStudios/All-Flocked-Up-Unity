@@ -82,7 +82,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.6448124, y: 0.30800003}
   m_AnchorMax: {x: 0.6774792, y: 0.36900002}
-  m_AnchoredPosition: {x: 0.6000366, y: 0.49998474}
+  m_AnchoredPosition: {x: 0.6000366, y: 0.5}
   m_SizeDelta: {x: -3, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &963448745293916684
@@ -344,6 +344,8 @@ GameObject:
   - component: {fileID: 7235987060573961356}
   - component: {fileID: 7665762969301283643}
   - component: {fileID: 198372983282265829}
+  - component: {fileID: 8943808358548891123}
+  - component: {fileID: 3273095467303066424}
   m_Layer: 5
   m_Name: Arrow1
   m_TagString: Untagged
@@ -361,7 +363,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2260144783632856666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -408,6 +410,47 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!320 &8943808358548891123
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226776156069157563}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 2bb4ff204a0b30b46891cbf9a3c176ab, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 1
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 1516984662875624296, guid: 2bb4ff204a0b30b46891cbf9a3c176ab, type: 2}
+    value: {fileID: 3273095467303066424}
+  m_ExposedReferences:
+    m_References: []
+--- !u!95 &3273095467303066424
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226776156069157563}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1297160780600237236
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,6 +462,8 @@ GameObject:
   - component: {fileID: 4870092043011527596}
   - component: {fileID: 1639236848757381157}
   - component: {fileID: 7771111322643514295}
+  - component: {fileID: 3489704720846137161}
+  - component: {fileID: 5872374068480801235}
   m_Layer: 5
   m_Name: Arrow4
   m_TagString: Untagged
@@ -436,7 +481,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: 0.9659259, w: -0.25881898}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2260144783632856666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 210}
@@ -483,6 +528,47 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!320 &3489704720846137161
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297160780600237236}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 9fc0d9da849b69643a4d27478106e6ad, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 1
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 1151814341877230633, guid: 9fc0d9da849b69643a4d27478106e6ad, type: 2}
+    value: {fileID: 5872374068480801235}
+  m_ExposedReferences:
+    m_References: []
+--- !u!95 &5872374068480801235
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297160780600237236}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1846093403938266632
 GameObject:
   m_ObjectHideFlags: 0
@@ -494,6 +580,8 @@ GameObject:
   - component: {fileID: 9165920301746278198}
   - component: {fileID: 7310360091371393469}
   - component: {fileID: 769565200737647717}
+  - component: {fileID: 4631175642230346842}
+  - component: {fileID: 6446333425795993838}
   m_Layer: 5
   m_Name: Arrow2
   m_TagString: Untagged
@@ -511,7 +599,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2260144783632856666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -558,6 +646,47 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!320 &4631175642230346842
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846093403938266632}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 0ad0803fed5cc244e83b0e70821d1c8a, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 1
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 6126709021948032179, guid: 0ad0803fed5cc244e83b0e70821d1c8a, type: 2}
+    value: {fileID: 6446333425795993838}
+  m_ExposedReferences:
+    m_References: []
+--- !u!95 &6446333425795993838
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1846093403938266632}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2622783118287655734
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,26 +746,134 @@ MonoBehaviour:
   skipCancelButton: {fileID: 0}
   promptText: {fileID: 1295281264515738810}
   prompts:
-  - Peep, my feathery friend... You have soo much to learn!
-  - Now for some basics. WASD or LEFT STICK lets you WALK around. MOUSE or RIGHT
-    STICK moves the camera!
-  - Great! Press SPACE or A BUTTON to JUMP!
-  - Now JUMP then press SPACE  or A BUTTON again to start flying!
-  - See your face right there? A healthy bird is important so make sure to always
-    look your best!
-  - That GREEN bar? Stamina help you RUN and FLAP your way out of danger. Or in...
-    It's your choice...
-  - The WHITE? What do we do best? POOP! Make sure to keep that belly full!
-  - 'Always keep an eye out at your MINI-MAP and COMPASS! '
-  - This POINTER shows you what direction youre looking!
-  - You've done so well Peep! There's a few other pigeons you should go see...
-  - Coobert will show you how to SNEAK around
-  - Ruffle can tell you where to find food
-  - Race Arnesto to test your skills
-  - 'Anytime you think you''re ready, you can take the Coober to Pigeonton Market! '
-  - You can use E or X BUTTON to INTERACT or SPEAK with other pigeons
-  - If you need to see the controls again you can find them in the PAUSE menu with
-    ESCAPE or START BUTTON!
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 13498174986440704
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 9050606470615040
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 10089984416468992
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 10090015567564800
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 13498211413970944
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 13498241084477440
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 13498264253812736
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 13498282230599680
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 13499516069007360
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 10090031031963648
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 10090048312496128
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 10090080671551488
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 10090101777289216
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 10090115752710144
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 10091154472095744
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  - m_TableReference:
+      m_TableCollectionName: GUID:9c9210c1e5c71a044b015e1b14f66847
+    m_TableEntryReference:
+      m_KeyId: 10091160440590336
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   promptIndex: 0
   canvasController: {fileID: 0}
   arrowPointers:
@@ -666,6 +903,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4474433dc04556a4bb939515fac77717, type: 3}
   - {fileID: 21300000, guid: 6c941fcc290c30e4a8696bb16ac32831, type: 3}
   - {fileID: 21300000, guid: a74956fd29de8d743ac83831c1aa1993, type: 3}
+  references:
+    version: 2
+    RefIds: []
 --- !u!223 &6220199275982158921
 Canvas:
   m_ObjectHideFlags: 0
@@ -891,6 +1131,8 @@ GameObject:
   - component: {fileID: 2613059133580914475}
   - component: {fileID: 2742297852826281971}
   - component: {fileID: 1540567347540853543}
+  - component: {fileID: 5939919828587871459}
+  - component: {fileID: 5268424025989441592}
   m_Layer: 5
   m_Name: Arrow5
   m_TagString: Untagged
@@ -908,7 +1150,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: 0.9659259, w: -0.25881898}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2260144783632856666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 210}
@@ -955,6 +1197,47 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!320 &5939919828587871459
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4869514782298930818}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: f287b5ca2c7222d4c901aa25cac4d3d1, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 1
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: -1655500303593506417, guid: f287b5ca2c7222d4c901aa25cac4d3d1, type: 2}
+    value: {fileID: 5268424025989441592}
+  m_ExposedReferences:
+    m_References: []
+--- !u!95 &5268424025989441592
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4869514782298930818}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5942662500626867669
 GameObject:
   m_ObjectHideFlags: 0
@@ -1598,6 +1881,8 @@ GameObject:
   - component: {fileID: 9116546883259202487}
   - component: {fileID: 2773814478784058069}
   - component: {fileID: 2721240771014462300}
+  - component: {fileID: 5353856956539716537}
+  - component: {fileID: 8769782761122837127}
   m_Layer: 5
   m_Name: Arrow3
   m_TagString: Untagged
@@ -1615,7 +1900,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2260144783632856666}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1662,3 +1947,44 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!320 &5353856956539716537
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8943045751371160893}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 75c6963be84a35843a290ea99be233a4, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 1
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 3085160281622953896, guid: 75c6963be84a35843a290ea99be233a4, type: 2}
+    value: {fileID: 8769782761122837127}
+  m_ExposedReferences:
+    m_References: []
+--- !u!95 &8769782761122837127
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8943045751371160893}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

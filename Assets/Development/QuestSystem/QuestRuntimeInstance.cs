@@ -19,10 +19,14 @@ public class QuestRuntimeInstance
     public QuestLog questLog;
     private EXPSystem expComp;
     private PlayerWingventory invComp;
+    private NPCBase dialogueComp;
+    UI_CanvasController canvasController;
     public float currentTime;
 
     public bool isQuestFailed = false;
     public bool isRetrySelected = false;
+    private bool isPausedForDialogue;
+    private bool dialogueComplete;
 
     public List<GameObject> questMechanicsObjects = new List<GameObject>();
     [SerializeField] private PlayerNavArrow arrowPointer;
@@ -59,6 +63,7 @@ public class QuestRuntimeInstance
         arrowPointer = player.GetComponent<PlayerNavArrow>();
         expComp = player.GetComponent<EXPSystem>();
         invComp = player.GetComponent<PlayerWingventory>();
+        canvasController = GameObject.FindAnyObjectByType<UI_CanvasController>();
 
         var objectives = GetCurrentObjectives();
         foreach (var obj in objectives)
@@ -71,6 +76,7 @@ public class QuestRuntimeInstance
         SetQuestID(questData.questID);
         destination = GetObjectiveDestination(objectives[0].objectiveID);
          await Task.Delay(1000);
+        dialogueComp = questLog.currentQuestGiver.GetComponent<NPCBase>();
         arrowPointer.EnablePointerArrow(destination);
         SetupStage();
 
@@ -139,20 +145,11 @@ public class QuestRuntimeInstance
         {
             if (objectiveProgress[objectiveID] + amount > obj.quantityToComplete) { return; }
         }
-            GetObjectiveDestination(objectiveID); 
-
-
-
+        GetObjectiveDestination(objectiveID); 
         objectiveProgress[objectiveID] += amount;
         questLog.OnObjectiveUpdated(this, objectiveID, objectiveProgress[objectiveID]);
-
         arrowPointer.SetDestination(destination);
-
-
-        Debug.Log("Objective Increments?");
-        if (CheckStageComplete())
-            AdvanceStage();
-        Debug.Log("Stage Completed");
+        if (CheckStageComplete()) AdvanceStage();
     }
 
     //checks if stages are completed and completed quest if true
@@ -169,14 +166,21 @@ public class QuestRuntimeInstance
             cachedExp += obj.bonusEXP;
             
         }
+        if (questData.stages[currentStageIndex].hasDialogueAfter && currentStageIndex < questData.stages.Length)
+        {
+            CallDialogue();
+            return false;
+        }
+        else
+        {
+            return true;
+        }
 
-        return true;
     }
 
     void SetupStage()
     {
         objectiveProgress.Clear();
-
         var objectives = GetCurrentObjectives();
         foreach (var obj in objectives)
         {
@@ -200,7 +204,7 @@ public class QuestRuntimeInstance
         GetQuestObjects();
         if (!IsComplete)
         {
-            SetupStage() ;
+             SetupStage();
         }
         if (currentStageIndex >= questData.stages.Length)
         {
@@ -235,6 +239,12 @@ public class QuestRuntimeInstance
         Debug.Log("Call Quest Failed");
     }
 
+    private void CallDialogue()
+    {
+        canvasController.OpenDialogue();
+        dialogueComp.InteractWithNPCDialogue();
+
+    }
     public void GiveItemReward()
     {
         questLog.AddItemsToInventory(questData.itemRewards);

@@ -17,6 +17,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     [SerializeField] private QuestGiver questGiverComp;
     public bool dialogueFirst;
     private IconToggle questIcon;
+    private Transform npcTransform;
     //on load
     public void Awake()
     {
@@ -38,16 +39,28 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     {
         if (targetLocation!=null && isMoving)
         {
+            npcTransform = transform;
             MoveToLocation();
         }
         if(questGiverComp.hasQuest == false || questGiverComp == null)
         {
+            npcTransform = transform;
             questIcon.enabled = false;
             targetLocation = homeLocation.transform;
             //isMoving = true;
         }
 
-    }    
+    }  
+    
+    public void LoadData(NPCBase npc)
+    {
+        dialogueStartLineID = npc.dialogueStartLineID;
+        dialogueFirst = npc.dialogueFirst;
+        retriggerDialogueLineID = npc.retriggerDialogueLineID;
+        index = npc.index;
+        isMoving = npc.isMoving;
+        npcTransform = npc.npcTransform;
+    }
 
     //use this to add "Look at" effects like a prompt or something
     public void LookAtNPC()
@@ -92,6 +105,12 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     public void HitReact()
     {
 
+    }
+
+    public void ContinueDialogue()
+    {
+        index++;
+        dialogue.PrintDialogue(dialogueStartLineID[index]);
     }
 
  

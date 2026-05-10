@@ -109,11 +109,7 @@ public class GrabHoldObject : MonoBehaviour
         {
             Object.transform.localPosition = Vector3.zero;
             Object.transform.rotation = grabPoint.transform.rotation;
-            var obj = Object.GetComponent<Rigidbody>();
-            if(obj != null)
-            {
-                obj.constraints = RigidbodyConstraints.FreezeAll;
-            }
+
         }
     }
 
@@ -124,7 +120,6 @@ public class GrabHoldObject : MonoBehaviour
         isHoldingObject = false;
         grabbedObject.transform.SetParent(null, true);
         grabbedObject.GetComponent<Rigidbody>().useGravity = true;
-        grabbedObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         grabbedObject.GetComponent<BoxCollider>().enabled = true;
         grabbedObject = null;
 
