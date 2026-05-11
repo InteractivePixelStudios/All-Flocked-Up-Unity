@@ -14,7 +14,7 @@ public class UI_TrashCanvas : MonoBehaviour
     void Start()
     {
         
-        InitCanvas();
+        //InitCanvas();
     }
 
     public void SetCanvasReference(UI_CanvasController canvas)
@@ -28,26 +28,26 @@ public class UI_TrashCanvas : MonoBehaviour
     }
 
     //sets text and button listeners
-    public void InitCanvas()
-    {
-        trashText = GetComponent<TextMeshProUGUI>();
-        reward1Button.onClick.AddListener(GiveRewardOne);
-        reward2Button.onClick.AddListener(GiveRewardTwo);
-    }
-    //call to destroy canvas
-    public void GiveRewardOne()
-    {
-        trashCanInstance.GiveRewardOne();
-        //trashCanInstance.ShowPlayer();
-        canvasController.CloseTrashPrompt();
-    }
+    //public void InitCanvas()
+    //{
+    //    trashText = GetComponent<TextMeshProUGUI>();
+    //    reward1Button.onClick.AddListener(GiveRewardOne);
+    //    reward2Button.onClick.AddListener(GiveRewardTwo);
+    //}
+    ////call to destroy canvas
+    //public void GiveRewardOne()
+    //{
 
-    public void GiveRewardTwo()
-    {
-        trashCanInstance.GiveRewardTwo();
-        //trashCanInstance.ShowPlayer();
-        canvasController.CloseTrashPrompt();
-    }
+    //    //trashCanInstance.ShowPlayer();
+    //    canvasController.CloseTrashPrompt();
+    //}
+
+    //public void GiveRewardTwo()
+    //{
+
+    //    //trashCanInstance.ShowPlayer();
+    //    canvasController.CloseTrashPrompt();
+    //}
 
     
 }

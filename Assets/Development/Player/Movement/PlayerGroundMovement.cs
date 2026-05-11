@@ -119,13 +119,6 @@ public class PlayerGroundMovement : MonoBehaviour
         PlayerInput();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-       // if (!isFlying)
-           // PlayerInput();
-    }
-
     void FixedUpdate()
     {
         //if (isFlying) === refactored for PSC - Jacob ===
@@ -135,25 +128,22 @@ public class PlayerGroundMovement : MonoBehaviour
         Movement();
 
         if (sprinting)
-            Sprint();
+            Sprint(new InputAction.CallbackContext());
 
         if (isJumping)
-            if (groundCheck.IsGrounded())
+            if (groundCheck.IsGrounded(true))
                 isJumping = false;
     }
 
     void PlayerInput()
     {
-        //x = moveAction.ReadValue<Vector2>().x;
-        //z = moveAction.ReadValue<Vector2>().y;
-
         // check if player hits spacebar
-        jumpAction.performed += ctx => Jump();
+        jumpAction.performed += Jump;
         // check if player crouches with C or left Control
-        crouchAction.started += ctx => StartCrouch();
-        crouchAction.canceled += ctx => EndCrouch();
-        sprintAction.started += ctx => StartSprint();
-        sprintAction.canceled += ctx => EndSprint();
+        crouchAction.started += StartCrouch;
+        crouchAction.canceled += EndCrouch;
+        sprintAction.started += StartSprint;
+        sprintAction.canceled += EndSprint;
     }
 
     void Movement()
@@ -200,7 +190,7 @@ public class PlayerGroundMovement : MonoBehaviour
         playerBody.AddForce(transform.forward * Mathf.Abs(x) * currentSpeed * Time.deltaTime);
     }
 
-    void Jump()
+    void Jump(InputAction.CallbackContext context)
     {
         if (input.currentActionMap != input.actions.FindActionMap("Player")) return;
 
@@ -209,7 +199,7 @@ public class PlayerGroundMovement : MonoBehaviour
             return;
 
         // check if player is on the ground to jump
-        if (groundCheck.IsGrounded() && !isJumping)
+        if (groundCheck.IsGrounded(true) && !isJumping)
         {
             isJumping = true;
             // add verticle force to make the player jump
@@ -222,7 +212,7 @@ public class PlayerGroundMovement : MonoBehaviour
         
     }
 
-    void StartCrouch()
+    void StartCrouch(InputAction.CallbackContext context)
     {
         //if (isFlying || sprinting)
         if(playerStateController.CurrentState != PlayerState.GroundMove || sprinting)
@@ -237,7 +227,7 @@ public class PlayerGroundMovement : MonoBehaviour
         }
     }
 
-    void EndCrouch()
+    void EndCrouch(InputAction.CallbackContext context)
     {
         if (crouching)
         {
@@ -248,7 +238,7 @@ public class PlayerGroundMovement : MonoBehaviour
         }
     }
 
-    void StartSprint()
+    void StartSprint(InputAction.CallbackContext context)
     {
         //if (isFlying || crouching)
         if(playerStateController.CurrentState != PlayerState.GroundMove || sprinting)
@@ -262,7 +252,7 @@ public class PlayerGroundMovement : MonoBehaviour
         }
     }
 
-    void Sprint()
+    void Sprint(InputAction.CallbackContext context)
     {
         if (!sprinting)
             return;
@@ -273,12 +263,12 @@ public class PlayerGroundMovement : MonoBehaviour
         {
             sprintTimer -= sprintTriggerStaminaTime;
             if (!playerStamina.UseStamina(sprintStaminaAmount))
-                EndSprint();
+                EndSprint(new InputAction.CallbackContext());
         }
 
     }
 
-    void EndSprint()
+    void EndSprint(InputAction.CallbackContext context)
     {
         if (sprinting)
         {
@@ -395,6 +385,14 @@ public class PlayerGroundMovement : MonoBehaviour
     // === refactored for PSC - Jacob === 
     public void InitiateFlight()
     {
+        // check if player hits spacebar
+        jumpAction.performed -= Jump;
+        // check if player crouches with C or left Control
+        crouchAction.started -= StartCrouch;
+        crouchAction.canceled -= EndCrouch;
+        sprintAction.started -= StartSprint;
+        sprintAction.canceled -= EndSprint;
+
         //isFlying = true;
         playerStateController.EnterFlyMode();
         playerBody.useGravity = false;
@@ -404,10 +402,12 @@ public class PlayerGroundMovement : MonoBehaviour
 
     public void InitiateWalkState()
     {
+        PlayerInput();
+
         //isFlying = false;
         playerStateController.ExitFlyMode();
         playerBody.useGravity = true;
-        if (groundCheck.IsGrounded())
+        if (groundCheck.IsGrounded(true))
             playerStamina.RegenStamina();
     } 
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class QuestGiver : MonoBehaviour, IQuestInteraction
 {
@@ -13,6 +14,52 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
 
     [Header("Prerequisites")]
     public List<QuestDetails> requiredCompletedQuests = new(); //List of REQUIRED COMPLETED QUESTS.
+    public List<GameObject> questObjects = new();
+    private List<string> objIDList = new();
+    [SerializeField] private MapIcon iconRef;
+    [SerializeField]private GameObject questIcon;
+
+    void Start()
+    {
+        HideQuestObjects();
+    }
+
+    void GetQuestObjectives()
+    {
+        foreach(var quest in quests)
+        {
+            foreach(var stage in quest.stages)
+            {
+                foreach(var obj in stage.objectivesToComplete)
+                {
+                    objIDList.Add(obj.objectiveID);
+                }
+            }
+        }
+    }
+
+    private void ShowQuestObjects()
+    {
+        if (questObjects.Count == 0) return;
+        foreach (var obj in questObjects)
+        {
+
+                obj.SetActive(true);
+
+        }
+    }
+
+    private void HideQuestObjects()
+    {
+        if (questObjects.Count == 0) return;
+        foreach (var obj in questObjects)
+        {
+
+                obj.SetActive(false);
+            
+        }
+    }
+
 
 
 
@@ -78,13 +125,33 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
     public void AcceptQuest(QuestLog log, QuestDetails quest,QuestGiver questGiver)
     {
         log.AcceptQuest(quest,questGiver);
+        ShowQuestObjects();
 
         if ( log.IsQuestCompleted(quest) )//&& quest.autoCompleteQuest)
         {
             log.MarkQuestTurnedIn(quest);
+
             Debug.Log("Quest auto-completed and turned in.");
            
         }
 
     }
+
+    public void DestroySelf()
+    {
+        Destroy(this);
+    }
+
+    private void OnDestroy()
+    {
+        if (iconRef!=null)
+        {
+            Destroy(iconRef.gameObject);
+        }
+        if (questIcon != null){
+            Destroy(questIcon);
+        }
+    }
+
+
 }

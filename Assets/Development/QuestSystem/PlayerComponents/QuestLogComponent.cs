@@ -129,18 +129,21 @@ public class QuestLog : MonoBehaviour
     {
         var obj = quest.GetCurrentObjectives();
         canvasController.DestroyTracker();
-        canvasController.ShowTracker();
-        canvasController.activeTrackerInstance.SetTracker(quest.questID,currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription,IncrementIndex());
+        if(objIndex< currentObjectives.Length)
+        {
+            canvasController.ShowTracker();
+            objIndex++;
+            canvasController.activeTrackerInstance.SetTracker(quest.questID, currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription, GetIndex());
+        }
         canvasController.ShowQuestNotif("Objective Complete");
         //canvasController.activeTrackerInstance.IncrementTrackerIndex();
-        arrowPointer.SetDestination (quest.destination);
         CheckForCompletedQuests();
         Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
     }
 
-    int IncrementIndex()
+    int GetIndex()
     {
-        return objIndex++;
+        return objIndex;
     }
 
     //checks through activeQuests for completed quest and shows rewards.Removed from activeQuests and added to completedQuests list... also destroys the questgiver component form the NPC so it remains just a dialogue NPC
@@ -150,22 +153,23 @@ public class QuestLog : MonoBehaviour
         {
             if (activeQuests[i].IsComplete)
             {
+                canvasController.DestroyTracker();
                 await Task.Delay(1000);
                 completedQuests.Add(activeQuests[i].questData);
                 canvasController.ShowQuestReward(activeQuests[i].questData);
-                canvasController.activeRewardInstance.SetRewardText(activeQuests[i].GetCachedTrinkets(), activeQuests[i].GetCachedExp(), activeQuests[i].GetItemRewards() ) ;
-                canvasController.EndTimer();
+                canvasController.activeRewardInstance.SetRewardText(activeQuests[i].GetCachedTrinkets(), activeQuests[i].GetCachedExp(), activeQuests[i].GetItemRewards().ToArray() ) ;
                 activeQuests.RemoveAt(i);
+                canvasController.EndTimer();
                 currentQuestGiver.quests.RemoveAt(0);
-                canvasController.DestroyTracker();
                 currentQuestGiver.hasQuest = false;
                 currentQuestGiver.GetComponent<NPCBase>().dialogueFirst = true;
             }
             if(currentQuestGiver.quests.Count <= 0)
             {
                 currentQuestGiver.gameObject.layer = LayerMask.NameToLayer("Dialogue");
+                var comp = currentQuestGiver.GetComponent<QuestGiver>();
                 Debug.Log(currentQuestGiver.gameObject.layer);
-                Destroy(currentQuestGiver);
+                Destroy(comp);
                
             }
 
@@ -249,5 +253,10 @@ public class QuestLog : MonoBehaviour
                 inventory.AddItemToInv(reward.name, 1);
             }
         }
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
     }
 }

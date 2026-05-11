@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class UI_SaveWindow : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class UI_SaveWindow : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        confirmButton.onClick.AddListener(CloseConfirmWindow);
+        confirmButton.onClick.AddListener(ConfirmAction);
         cancelButton.onClick.AddListener(CancelConfirmWindow);
         closeWindowButton.onClick.AddListener(CloseWindow);
         InitSaveBox();
@@ -50,11 +51,20 @@ public class UI_SaveWindow : MonoBehaviour
             slotUI.saveWindow = this;
             if (isSaving)
             {
-                slotUI.saveLoadButton.onClick.AddListener(slotUI.CallSave);
+                slotUI.saveLoadButton.onClick.AddListener(() =>
+                {
+                    OpenConfirmWindow(slotUI);
+                });
                 Debug.Log("SaveListenerAdded");
             }
-            else { slotUI.saveLoadButton.onClick.AddListener(slotUI.CallLoad); Debug.Log("LoadListenerAdded"); }
-            
+            else
+            {
+                slotUI.saveLoadButton.onClick.AddListener(() =>
+                {
+                    OpenConfirmWindow(slotUI);
+                });
+            }
+
 
         }
     }
@@ -70,7 +80,7 @@ public class UI_SaveWindow : MonoBehaviour
 
     public void CloseConfirmWindow()
     {
-
+        CloseWindow();
     }
 
     public void CancelConfirmWindow()
@@ -87,21 +97,41 @@ public class UI_SaveWindow : MonoBehaviour
 
     void CloseWindow()
     {
-        var menu = FindAnyObjectByType<UI_MainMenu>();
-        menu.CloseSaveWindow();
+        if (SceneManager.GetActiveScene() == SceneManager.GetSceneByName("MainMenu"))
+        {
+            var menu = FindAnyObjectByType<UI_MainMenu>();
+            menu.CloseSaveWindow();
+        }
+        else { 
+            var menu = FindAnyObjectByType<UI_PauseMenu>();
+            menu.CloseSaveWindow();
+        }
+
     }
-    
+    public void ConfirmAction()
+    {
+        if (pendingSlot == null) return;
+
+        if (isSaving)
+        {
+            pendingSlot.CallSave();
+        }
+        else
+        {
+            pendingSlot.CallLoad();
+        }
+        confirmWindow.SetActive(false);
+    }
 
     public async void DestroyWindow()
     {
         await Task.Delay(2000);
-        Destroy(this.gameObject);
         if (isQuitting)
         {
             QuitGame();
         }
-        else return;
-        
+        else Destroy(this.gameObject);
+
     }
 
     public void QuitGame()

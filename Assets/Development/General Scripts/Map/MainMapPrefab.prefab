@@ -1258,6 +1258,8 @@ GameObject:
   - component: {fileID: 2313655441667073105}
   - component: {fileID: 2445517696773751837}
   - component: {fileID: -4341762546410491242}
+  - component: {fileID: 4061749203457213166}
+  - component: {fileID: 34452742996004921}
   m_Layer: 5
   m_Name: MainMapPrefab
   m_TagString: Untagged
@@ -1372,6 +1374,45 @@ MonoBehaviour:
   - {fileID: 8560331205749068158}
   markerIconPrefab: {fileID: 3594834613229262093, guid: 2ed815a0328a2d644bdea2f227c65e98, type: 3}
   bgImage: {fileID: 6747636401754549218}
+--- !u!114 &4061749203457213166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3739131890236939047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 294268e3007bf9f448f0bbc75a0bef16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio_UI_MenuBinder
+--- !u!114 &34452742996004921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3739131890236939047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a141f515de095904e982c5db2de7f9e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio_UI_OpenClose
+  mapOpenCloseEvent:
+    Guid:
+      Data1: 1153524318
+      Data2: 1081364314
+      Data3: -1115692369
+      Data4: 149873225
+    Path: event:/UI/Menus/Map
+  invOpenCloseEvent:
+    Guid:
+      Data1: -477066603
+      Data2: 1313228770
+      Data3: -1392036191
+      Data4: 1430165194
+    Path: event:/UI/Menus/Inventory
+  uiElement: 0
 --- !u!1 &4902912377654466255
 GameObject:
   m_ObjectHideFlags: 0

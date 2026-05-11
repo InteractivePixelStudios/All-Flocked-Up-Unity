@@ -47,21 +47,29 @@ public class UI_QuestReward : MonoBehaviour
     {
         trinketText.SetText(trinket.ToString());
         expText.SetText(exp.ToString());
-        itemImage.sprite = FindItemSprite(reward);
+        if(reward != null)
+        {
+            itemImage.sprite = FindItemSprite(reward);
+        }
     }
 
     Sprite FindItemSprite(string[] rewards)
     {
-        foreach(var item in itemSprites)
+        foreach (var reward in rewards)
         {
-            if (item.name.CompareTo(rewards) == 0)
+            foreach (var item in itemSprites)
             {
-                Sprite found = item;
-                return found;
+                if (item.name.Equals(reward))
+                {
+                    Sprite found = item;
+                    return found;
+                }
+                else break;
+
             }
+            return null;
 
         }
-        return itemSprites[0];
-
+        return null;
     }
 }

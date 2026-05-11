@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PoopFunction : MonoBehaviour
@@ -17,6 +18,7 @@ public class PoopFunction : MonoBehaviour
     [SerializeField] private int poolSize = 10; //adjust as needed
     [SerializeField] float forwardVelocity = 10f;
     [SerializeField] private float verticalVelocity = 5f;
+
 
     [Header("Variables")]
     // Sound Index is temp and only for trailer use - IPM
@@ -37,15 +39,15 @@ public class PoopFunction : MonoBehaviour
     //Update to accept pigeon velocity - JK Oct23
     public void FirePoop(Vector3 target, Vector3 playerVelocity)
     {
-        var projectile = Instantiate(projectilePrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
+        var projectile = Instantiate(projectilePrefab, spawnPoint.position, spawnPoint.rotation);
         projectile.Launch(target, currentPoopType, this, playerVelocity);
         SoundCaller(currentPoopType, soundIndex = 0); // Added by Isaiah PM.
     }
 
     public void FireGroundPoop()
     {
-        var projectile = Instantiate(projectilePrefab, spawnPoint.transform.position, spawnPoint.transform.rotation);
-        projectile.GetComponent<Rigidbody>().AddForce(spawnPoint.forward * forwardVelocity + Vector3.up * verticalVelocity, ForceMode.Impulse);
+        var projectile = Instantiate(projectilePrefab, spawnPoint.position, spawnPoint.rotation);
+        projectile.GetComponent<Rigidbody>().AddForce(spawnPoint.forward* forwardVelocity + spawnPoint.up * verticalVelocity, ForceMode.Impulse);
         SoundCaller(currentPoopType, soundIndex = 0); // Added by Isaiah PM.
     }
 

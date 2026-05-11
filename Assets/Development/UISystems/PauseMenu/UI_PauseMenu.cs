@@ -37,7 +37,7 @@ public class UI_PauseMenu : MonoBehaviour
     {
         var controller = FindAnyObjectByType<UI_CanvasController>();
         controller.ResumeGame();
-        controller.HidePlayerCursor();
+
     }
 
     public virtual void OnSettingsOpen()
@@ -96,9 +96,15 @@ public class UI_PauseMenu : MonoBehaviour
         currentSaveWindow = Instantiate(saveWindowPrefab,mainCanvas.gameObject.transform);
         var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
         comp.SetFirstSaveButton();
-        comp.isQuitting = true;
+        comp.isQuitting = false;
         
 
+    }
+
+    public void CloseSaveWindow()
+    {
+        Destroy(currentSaveWindow);
+        mainCanvas.SetActive(true);
     }
 
 

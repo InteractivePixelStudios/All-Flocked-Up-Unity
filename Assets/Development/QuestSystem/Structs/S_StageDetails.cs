@@ -13,4 +13,5 @@ public struct StageDetails
 
     public int expReward;
     public int trinketReward;
+    public bool hasDialogueAfter;
 }

@@ -249,7 +249,7 @@ public class AI_Raccoon : EnemyBaseComponent
         if (Physics.Raycast(transform.position + Vector3.up * 1f, transform.forward*1.5f,out RaycastHit hit, 5f, climbLayer))
         {
             StartClimb(hit);
-            Debug.Log(hit.collider);
+
             
         }
     }
@@ -276,7 +276,7 @@ public class AI_Raccoon : EnemyBaseComponent
 
     protected void Climb()
     {
-        Debug.Log("Climbing");
+
         navAgent.enabled = false;
 
     }

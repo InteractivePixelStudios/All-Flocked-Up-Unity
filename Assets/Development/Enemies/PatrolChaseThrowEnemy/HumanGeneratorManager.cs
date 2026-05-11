@@ -23,7 +23,7 @@ public class HumanGeneratorManager : MonoBehaviour
 
         int index = 1;
 
-        Mesh[] mesh = new Mesh[6];
+        Mesh[] mesh = new Mesh[8];
 
         mesh[0] = BodyTypeMeshes[rand].sharedMesh;
 

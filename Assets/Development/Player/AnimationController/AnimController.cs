@@ -29,7 +29,7 @@ public class AnimController : MonoBehaviour
     private bool isAiming=> poopComp.GetIsAiming();
     private bool isSneaking => stealthComp.GetIsStealthToggled();
     private bool isTalking => dialogueBaseComp.GetIsTyping();
-    private bool isGrounded => groundCheckComp.IsGrounded();
+    private bool isGrounded => groundCheckComp.IsGrounded(true);
     private bool isJumping => groundMoveComp.GetIsJumping();
     private bool isSlowFlap => flightMoveComp.GetIsSlowFlap();
     private bool isLeftWingCheck => interactionComp.GetIsWingventoryOpen();

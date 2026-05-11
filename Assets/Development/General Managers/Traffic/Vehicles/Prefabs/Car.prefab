@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1393213858110620242}
   m_Layer: 16
   m_Name: CollisionChecker
-  m_TagString: Untagged
+  m_TagString: Vehicle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -276,6 +276,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
       propertyPath: m_Name
       value: SM_Vehicle_Car
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
+      propertyPath: m_TagString
+      value: Vehicle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

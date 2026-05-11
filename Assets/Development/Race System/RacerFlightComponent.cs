@@ -74,7 +74,7 @@ public class RacerFlightComponent : MonoBehaviour
     {
         if (isFlying)
         {
-            if (groundCheck.IsGrounded())
+            if (groundCheck.IsGrounded(false))
             {
                 ReturnToWalkState();
             }

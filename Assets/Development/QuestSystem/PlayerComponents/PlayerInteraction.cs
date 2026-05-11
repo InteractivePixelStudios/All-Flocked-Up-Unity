@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerInteraction : MonoBehaviour
@@ -63,12 +64,12 @@ public class PlayerInteraction : MonoBehaviour
         if (interactAction != null && questLogAction != null && mapAction != null && inventoryAction != null && pauseAction != null)
         {
             //use started / cancelled for grab/hold
-            interactAction.performed += Interact;
+            interactAction.started+= Interact;
             questLogAction.performed += OpenQuestLog;
             mapAction.performed += OpenMap;
             inventoryAction.performed += OpenInventory;
             pauseAction.performed += OpenPause;
-            debugAction.performed += OpenDebug;
+           // debugAction.performed += OpenDebug;
             reportAction.performed += OpenReport;
         }
         
@@ -272,7 +273,8 @@ public class PlayerInteraction : MonoBehaviour
             {
                 canvasController.OpenWingventory();
                 isWingventoryOpen = true;
-            }
+                uiOn = true;
+        }
             else
             {
                 canvasController.CloseWingventory();
@@ -283,7 +285,7 @@ public class PlayerInteraction : MonoBehaviour
 
         void OpenPause(InputAction.CallbackContext ctx)
         {
-            if (!gamePaused && canvasController.activePauseMenu == null)
+            if (!gamePaused && canvasController.activePauseMenu == null && SceneManager.GetActiveScene() != SceneManager.GetSceneByName("MainMenu"))
             {
                 canvasController.PauseGame();
             }

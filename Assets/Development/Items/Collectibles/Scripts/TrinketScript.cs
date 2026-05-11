@@ -44,7 +44,8 @@ public class TrinketScript : MonoBehaviour
         if (SteamManager.Initialized)
         {
             AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_009_Trinket");
-        }playerRef.GetComponent<PlayerPeckComponent>().Peck();
+        }
+        playerRef.GetComponent<PlayerPeckComponent>().Peck();
         //Q_Collect collect;
         //TryGetComponent<Q_Collect>(out collect);
         //if(collect != null)

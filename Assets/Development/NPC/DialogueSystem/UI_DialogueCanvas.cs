@@ -80,7 +80,6 @@ public class UI_DialogueCanvas : MonoBehaviour
 
     public void ClearDialogueCanvas()
     {
-        
         dialogueText.SetText("");
         nameText.SetText("");
         DestroyDialogue();

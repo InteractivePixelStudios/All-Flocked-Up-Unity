@@ -148,13 +148,13 @@ public class TrafficManager : MonoBehaviour
         if (groupAState == ETrafficLightState.Yellow)
         {
             ChangeGroupALightState(new RedState(groupALights[0]), ETrafficLightState.Red);
-            ChangeGroupBLightState(new GreenState(groupBLights[0]), ETrafficLightState.Green);
-            timer = 3f;
+            ChangeGroupBLightState(new YellowState(groupBLights[0]), ETrafficLightState.Yellow);
+            timer = 10f;
         }
         else if (groupAState == ETrafficLightState.Red)
         {
             ChangeGroupALightState(new GreenState(groupALights[0]), ETrafficLightState.Green);
-            ChangeGroupBLightState(new RedState(groupBLights[0]), ETrafficLightState.Yellow);
+            ChangeGroupBLightState(new RedState(groupBLights[0]), ETrafficLightState.Red);
             timer = 10f;
         }
     }

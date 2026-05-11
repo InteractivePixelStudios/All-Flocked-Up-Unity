@@ -9,9 +9,8 @@ public class YellowState : ITrafficInterface
     public YellowState(TrafficLightChanger lightChanger) { this.lightChanger = lightChanger; }
     public void EnterTrafficState()
     {
-
-        this.lightChanger = lightChanger;
-
+       // lightChanger.SetState();
+        light = ETrafficLightState.Yellow;
     }
 
     public void UpdateTrafficState()

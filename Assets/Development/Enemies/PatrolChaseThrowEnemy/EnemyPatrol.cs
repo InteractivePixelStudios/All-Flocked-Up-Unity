@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -72,7 +73,7 @@ public class EnemyPatrol : EnemyBaseComponent
         if(kickCooldown>=0) kickCooldown -= Time.deltaTime;
         if(throwCooldown>=0)throwCooldown -= Time.deltaTime;
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        if(distanceToPlayer < detectionRange) { canSeePlayer = true; if (!canSeePlayer) { alertIcon.SetPlayerSeen(false); }else alertIcon.SetPlayerSeen(true);}
+        if(distanceToPlayer < detectionRange) { canSeePlayer = true; if (!canSeePlayer) { alertIcon.SetPlayerSeen(false);} else alertIcon.SetPlayerSeen(true); } else { canSeePlayer = false; alertIcon.SetPlayerSeen(false); }
         switch (currentState) 
         {
             case EnemyState.Patrolling:
@@ -129,6 +130,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
             case EnemyState.Hit:
                 this.isHit = true;
+                currentState = EnemyState.Retreat;
                 break;
 
     }
@@ -136,6 +138,7 @@ public class EnemyPatrol : EnemyBaseComponent
         switch (currentState)
         {
             case EnemyState.Patrolling:
+                //Debug.Log("Patrol");
                 MoveHumanToLocation();
                 if (navAgent.remainingDistance < 5f)
                     ChooseNextDirection(currentNode);
@@ -191,7 +194,6 @@ public class EnemyPatrol : EnemyBaseComponent
     private void FindWaypoints()
     {
         var waypointArray = patrolPoint.GetComponentsInChildren<Waypoint>();
-        Debug.Log(waypointArray);
         foreach (var waypoint in waypointArray)
         {
             if (waypoint.CompareTag("Human"))
@@ -233,19 +235,36 @@ public class EnemyPatrol : EnemyBaseComponent
     }
     protected void Retreat()
     {
+        navAgent.isStopped = false;
         animController.SetFloat("Speed",navAgent.speed);
         Debug.Log("retreating");
         //var centerPoint = transform.position;
         //var radius = 5f;
         //Vector3 randomDirection = Random.insideUnitSphere * radius;
-        //Vector3 randomPosition = centerPoint + randomDirection;
+        bool set = false;
         if (currentNode != null)
         {
             navAgent.SetDestination(currentNode.transform.position);
+            set = true;
         }
-        Task.Delay(2000);
-        isRetreating = false;
-        isStopped = false;
+        else
+        {
+            if (!set)
+            {
+                navAgent.SetDestination(transform.position + new Vector3(0, 0, 5));
+                set = true;
+            }
+            if(navAgent.remainingDistance <= 1f)
+            {
+                if(Physics.Raycast(transform.position,Vector3.forward, 2f, LayerMask.NameToLayer("PropBuilding")))
+                {
+                    isRetreating = false;
+                    isStopped = false;
+                }else 
+                isRetreating = false;
+                isStopped = false;
+            }
+        }
     }
 
    protected void ChasePlayer()
@@ -264,6 +283,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
     protected void KickPlayer()
     {
+        navAgent.isStopped = true ;
         var spawnedCollider = kickColliderParent.AddComponent<SphereCollider>();
         var comp = spawnedCollider.AddComponent<KickComponent>();
         comp.damage = 1;
@@ -277,6 +297,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
     protected async void ThrowObject()
     {
+        navAgent.isStopped = true;
         Vector3 facingDir = (player.transform.position - transform.position).normalized;
         float diff = Vector3.Dot(transform.forward, facingDir);
         if(diff <0.5f)
@@ -314,12 +335,33 @@ public class EnemyPatrol : EnemyBaseComponent
     //call this to run like wind
     public virtual void MoveHumanToLocation()
     {
-        if (currentNode == null || navAgent == null)
-            return;
-
-        navAgent.isStopped = false;
-        navAgent.SetDestination(currentNode.transform.position);
-        animController.SetFloat("Speed",navAgent.speed);
+        if (navAgent == null)return;
+        if (currentNode != null)
+        {
+            //Debug.Log("Moving to: " + currentNode);
+            navAgent.isStopped = false;
+            navAgent.SetDestination(currentNode.transform.position);
+        }
+        else
+        {
+            var found = FindObjectsByType<Waypoint>();
+            foreach (var obj in found)
+            {
+                if (obj.gameObject.CompareTag("Human"))
+                {
+                    if (obj != null)
+                    {
+                        patrolPoint = obj.gameObject;
+                        FindWaypoints();
+                        //Debug.Log("Moving to: " + currentNode);
+                        navAgent.isStopped = false;
+                        navAgent.SetDestination(currentNode.transform.position);
+                        break;
+                    }
+                }
+            }
+        }
+        animController.SetFloat("Speed", navAgent.speed);
 
     }
 

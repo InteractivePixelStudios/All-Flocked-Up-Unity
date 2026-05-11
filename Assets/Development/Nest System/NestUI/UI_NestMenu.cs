@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class UI_NestMenu : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public class UI_NestMenu : MonoBehaviour
     [SerializeField] private Dictionary<string, int> counterDictionary = new();
     [SerializeField] private RectTransform statBox;
     [SerializeField] private CounterTextBox counterTextPrefab;
+    private List<CounterTextBox> statTextPrefabs = new();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -65,7 +67,12 @@ public class UI_NestMenu : MonoBehaviour
         //sbNextPage.onClick.AddListener(SBNextPage);
         //sbPrevPage.onClick.AddListener(SBPrevPage);
         GetStats();
-        EventSystem.current.SetSelectedGameObject(invButton.gameObject);
+        if (Gamepad.current.IsActuated())
+        {
+            EventSystem.current.SetSelectedGameObject(invButton.gameObject);
+        }
+        else return;
+
 
     }
 
@@ -156,12 +163,18 @@ public class UI_NestMenu : MonoBehaviour
 
     void UpdateStats()
     {
+        foreach(var stat in statTextPrefabs)
+        {
+            Destroy(stat.gameObject);
+        }
         foreach(var item in counterDictionary)
         {
+            
             var text =Instantiate(counterTextPrefab);
             text.transform.SetParent(statBox, false);
             text.statName = item.Key;
             text.statNumber = item.Value;
+            statTextPrefabs.Add(text);
             Debug.Log(item.Key + item.Value);
 
         }

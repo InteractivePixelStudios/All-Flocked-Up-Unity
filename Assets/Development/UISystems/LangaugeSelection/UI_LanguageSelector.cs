@@ -26,7 +26,7 @@ public class UI_LanguageSelector : MonoBehaviour
         await settings.GetInitializationOperation().Task;
         var locales = settings.GetAvailableLocales().Locales;
         List<string> options = new();
-        int index = 6;
+        int index = 3;
         selector.ClearOptions();
         for (int i = 0; i<locales.Count; i++)
         {

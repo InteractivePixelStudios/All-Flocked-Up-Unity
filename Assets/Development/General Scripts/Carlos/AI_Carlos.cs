@@ -24,16 +24,16 @@ public class AI_Carlos : EnemyBaseComponent
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
-        for(int i = 0; i < bulletCount; i++)
+
+        for (int i = 0; i < bulletCount; i++)
         {
-            bulletPrefab = Instantiate(bulletPrefab,bulletSpawnPoint.transform.position,bulletSpawnPoint.transform.rotation);
+            bulletPrefab = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
             bulletPool.Add(bulletPrefab);
             bulletPrefab.SetActive(false);
             bulletIndex++;
         }
     }
-   
+
     // Update is called once per frame
     void Update()
     {
@@ -54,7 +54,7 @@ public class AI_Carlos : EnemyBaseComponent
     {
         Quaternion rotation = Quaternion.LookRotation(targetPos);
         transform.LookAt(targetPos);
-        if(rotation.eulerAngles.x > 0)
+        if (rotation.eulerAngles.x > 0)
         {
             lockTimer -= Time.deltaTime;
             if (lockTimer > 0) { aimLocked = true; PullOutGun(); AimAtPlayer(); } else { aimLocked = false; lockTimer = 3f; }
@@ -66,7 +66,7 @@ public class AI_Carlos : EnemyBaseComponent
     {
         if (spawnedGun == null)
         {
-            spawnedGun = Instantiate(gunPrefab, gunSpawnPoint.transform.position, gunSpawnPoint.transform.rotation,gunSpawnPoint.transform);
+            spawnedGun = Instantiate(gunPrefab, gunSpawnPoint.transform.position, gunSpawnPoint.transform.rotation, gunSpawnPoint.transform);
         }
         else return;
     }
@@ -76,14 +76,14 @@ public class AI_Carlos : EnemyBaseComponent
         var direction = targetPos - spawnedGun.transform.position;
         //spawnedGun.transform.LookAt(direction);
         if (shootTimer >= 0) { shootTimer -= Time.deltaTime; }
-        if (player!=null && aimLocked && spawnedGun!=null)
+        if (player != null && aimLocked && spawnedGun != null)
         {
-            if (bulletPool.Count > 0 && shootTimer<=0)
+            if (bulletPool.Count > 0 && shootTimer <= 0)
             {
                 Shoot(direction);
                 shootTimer = 2;
             }
-            else if (bulletPool.Count<= 0)
+            else if (bulletPool.Count <= 0)
             {
                 ReloadPool();
                 shootTimer = 5; //longer for reload
@@ -100,9 +100,9 @@ public class AI_Carlos : EnemyBaseComponent
             bulletPool[bulletIndex - 1].gameObject.GetComponent<Rigidbody>().AddForce(dir * shootForce, ForceMode.Impulse);
             bulletPool.RemoveAt(bulletIndex - 1);
             bulletIndex--;
-            
+
         }
-        
+
     }
 
     private void HitReact()
@@ -114,7 +114,7 @@ public class AI_Carlos : EnemyBaseComponent
     {
         for (int i = 0; i < bulletCount; i++)
         {
-            bulletPrefab = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position,bulletSpawnPoint.transform.rotation);
+            bulletPrefab = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
             bulletPool.Add(bulletPrefab);
             bulletPrefab.SetActive(false);
             bulletIndex++;

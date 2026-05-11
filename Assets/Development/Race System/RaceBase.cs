@@ -78,7 +78,6 @@ public class RaceBase : MonoBehaviour
 
     private float StartRaceTimer(float raceTime)
     {
-        StartPlayerMove();
         currentTime = raceTime;
         timerStarted = true;
         return currentTime;
@@ -122,6 +121,7 @@ public class RaceBase : MonoBehaviour
     {
         GetRaceData(currentRaceGiver.raceData);
         StartRace();
+        currentRaceGiver.enabled = false;
         countdownStarted = true;
     }
 
@@ -146,6 +146,7 @@ public class RaceBase : MonoBehaviour
         {
             racer.StartMoving();
         }
+        StartPlayerMove();
     }
 
     private void SpawnCheckpoints()
