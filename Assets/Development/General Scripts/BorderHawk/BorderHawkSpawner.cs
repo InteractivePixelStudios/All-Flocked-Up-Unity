@@ -77,6 +77,7 @@ public class BorderHawkSpawner : MonoBehaviour
             if (hudRef.readyToSpawn)
             {
                 SpawnHawk();
+                hudRef.readyToSpawn = false;
             }
             else return;
         }
@@ -89,6 +90,7 @@ public class BorderHawkSpawner : MonoBehaviour
         {
             HideWarning();
             DestroyHawk();
+            hudRef.readyToSpawn = true;
         }
     }
 

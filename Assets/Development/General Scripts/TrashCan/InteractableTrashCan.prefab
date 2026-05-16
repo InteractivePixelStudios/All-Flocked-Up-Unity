@@ -207,13 +207,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trashCanObject: {fileID: 4311400982581332165}
-  inRange: 0
-  playerRef: {fileID: 0}
   looted: 0
   trashParticles: {fileID: 2475919307233097260}
-  canvasController: {fileID: 0}
-  regenAmt: 0
-  poopRegen: 0
+  consumableList:
+  - {fileID: 2792325253372394076, guid: 737ce4ee60bbf024c9def86bf3d2bd14, type: 3}
+  - {fileID: 7171830766042184230, guid: 0a54840cdde938f46a8e29407f7cf9f6, type: 3}
+  - {fileID: 8887666568327534251, guid: 495f98a21b611bc41855c08497b7dbc4, type: 3}
+  - {fileID: 8788947495747236555, guid: 2c418dc471a8d114b9eb12e5630da171, type: 3}
+  - {fileID: 7633429897163127652, guid: 1542a388e2847914b8d647f64c739e25, type: 3}
+  - {fileID: 2144497731569544692, guid: d53f961c997061642a5d9b60c7c3c8c6, type: 3}
+  itemsRemain: 3
+  shootForce: 7.5
 --- !u!198 &2475919307233097260
 ParticleSystem:
   m_ObjectHideFlags: 0
