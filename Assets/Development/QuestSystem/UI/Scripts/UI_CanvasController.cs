@@ -859,6 +859,7 @@ public class UI_CanvasController : MonoBehaviour
                 activeTutPrompt.promptIndex = cachedTutPromptIndex;
                 activeTutPrompt.arrowIndex = cachedIntroIndex;
                 activeTutPrompt.canvasController = this;
+            uiOpen = true;
             //if (!isUIMap)
             //{
             //    ShowPlayerCursor();
@@ -879,6 +880,7 @@ public class UI_CanvasController : MonoBehaviour
             //{
             //    HidePlayerCursor();
             //}
+            uiOpen = false;
             Destroy(activeTutPrompt.gameObject);
             cachedTutPromptIndex = -1;
 

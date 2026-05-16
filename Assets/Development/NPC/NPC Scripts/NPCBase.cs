@@ -12,7 +12,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     [SerializeField] private DialogueBase dialogue;
     [SerializeField] private List<string> dialogueStartLineID = new();
     [SerializeField] private string retriggerDialogueLineID;
-    int index;
+    [SerializeField]int index;
     [SerializeField] private GameObject homeLocation;
     [SerializeField] private QuestGiver questGiverComp;
     public bool dialogueFirst;
@@ -78,12 +78,15 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         }
         else
         {
+            Debug.Log(index);
+            dialogue.isRetrigger = false;
             dialogue.PrintDialogue(dialogueStartLineID[index]);
             index++;
-            if (index <= dialogueStartLineID.Count - 1)
+            Debug.Log(index);
+            if (index > dialogueStartLineID.Count)
             {
                 dialogue.isRetrigger = true;
-                index = 0;
+               // index = 0;
             }
         }
 

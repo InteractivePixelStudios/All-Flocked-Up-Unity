@@ -208,16 +208,18 @@ public class DialogueBase : MonoBehaviour
     }
 
     //calls the function from the dialogue canvas
-    public void ClearDialogue()
+    public async void ClearDialogue()
     {
         QuestGiver giver;
         npcRef.TryGetComponent<QuestGiver>(out giver);
         if (giver.hasQuest)
         {
             canvasController.activeDialogueInstance.ClearDialogueCanvas();
+            await Task.Delay(200);
             canvasController.ShowQuestGiver(giver);
             Debug.Log(giver + "Shows the quest");
         }
+        else { canvasController.activeDialogueInstance.ClearDialogueCanvas(); }
         isRetrigger = true;
 
     }

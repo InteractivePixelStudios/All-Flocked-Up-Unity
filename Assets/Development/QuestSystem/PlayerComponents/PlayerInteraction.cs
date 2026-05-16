@@ -163,14 +163,16 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, raceLayer))
+        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, raceLayer))
+        {
+            var raceGiver = hit.collider.GetComponent<RaceGiver>();
+            if (raceGiver != null)
             {
-                var raceGiver = hit.collider.GetComponent<RaceGiver>();
-                if (raceGiver != null)
-                {
+
                     raceGiver.InteractWithRaceGiver();
-                }
             }
+            
+        }
 
 
             if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, nestLayer))

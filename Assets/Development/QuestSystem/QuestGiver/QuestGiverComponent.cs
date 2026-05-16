@@ -126,6 +126,7 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
     {
         log.AcceptQuest(quest,questGiver);
         ShowQuestObjects();
+        hasQuest = false;
 
         if ( log.IsQuestCompleted(quest) )//&& quest.autoCompleteQuest)
         {
