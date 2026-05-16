@@ -235,9 +235,12 @@ public class PlayerFlightMovement : MonoBehaviour
             if (gliding)
                 gliding = false;
             isSlowFlap = true;
-            Vector3 tempVel = playerBody.linearVelocity;
+
+            Vector3 backwardVel = -transform.forward * stallDownSpeed;
             
-            playerBody.linearVelocity -= transform.forward * stallDownSpeed * Time.deltaTime;
+            if (playerBody.linearVelocity.x > backwardVel.x && playerBody.linearVelocity.z > backwardVel.z)
+                playerBody.linearVelocity += backwardVel * Time.deltaTime;
+
 
             Vector3 currentAngle = meshTransform.eulerAngles + new Vector3(forwardMovement, 0, 0) * tiltSpeed * Time.deltaTime;
 

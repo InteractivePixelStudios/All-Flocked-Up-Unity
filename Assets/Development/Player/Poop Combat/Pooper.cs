@@ -152,7 +152,6 @@ public class Pooper : MonoBehaviour
         else return;
 
         //Show aiming UI here if needed
-
     }
 
 
@@ -210,7 +209,7 @@ public class Pooper : MonoBehaviour
         if (Physics.SphereCast(transform.position,200f,Vector3.down,out hit,10f,poopableLayer))
         {
             Debug.DrawLine(transform.position,hit.point);
-            Debug.Log(hit.collider.name);
+            Debug.Log("Target Hit: " + hit.collider.name);
             return hit.point;
         }else return Vector3.down;
 
