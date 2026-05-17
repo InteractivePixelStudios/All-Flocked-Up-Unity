@@ -18,6 +18,7 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
     private List<string> objIDList = new();
     [SerializeField] private MapIcon iconRef;
     [SerializeField]private GameObject questIcon;
+    public bool questComplete;
 
     void Start()
     {
@@ -106,6 +107,7 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
         foreach (var q in quests)
         {
             if (!repeatable && playerQuestLog.HasQuestOrCompleted(q)) continue;
+            hasQuest = true;
             return q;
         }
         return null;
@@ -127,9 +129,11 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
         log.AcceptQuest(quest,questGiver);
         ShowQuestObjects();
         hasQuest = false;
+        questComplete = false;
 
         if ( log.IsQuestCompleted(quest) )//&& quest.autoCompleteQuest)
         {
+            questComplete = true;
             log.MarkQuestTurnedIn(quest);
 
             Debug.Log("Quest auto-completed and turned in.");

@@ -165,16 +165,18 @@ public class QuestRuntimeInstance
             //not sure if this triggers properly
             cachedExp += obj.bonusEXP;
             
+            
         }
         if (questData.stages[currentStageIndex].hasDialogueAfter && currentStageIndex < questData.stages.Length)
         {
             CallDialogue();
-            return false;
+            //return false;
         }
-        else
-        {
-            return true;
-        }
+        return true;
+        //else
+        //{
+        //    return true;
+        //}
 
     }
 

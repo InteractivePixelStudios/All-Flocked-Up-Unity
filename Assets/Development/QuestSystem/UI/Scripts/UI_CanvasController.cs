@@ -329,6 +329,27 @@ public class UI_CanvasController : MonoBehaviour
         return activeLocationNotifInstance!=null && activeLocationNotifInstance.isActiveAndEnabled;
     }
 
+    public void ShowToDoPanel(bool value)
+    {
+        if (UI_HudController.Instance.GetIsTDOpen())
+        {
+            ShowQuestLog();
+        }else
+        {
+            DestroyQuestLog();   
+        }
+        if (value)
+        {
+            UI_HudController.Instance.ShowToDoPanel(true);
+            ApplySavedContrast();
+        }else
+        {
+            UI_HudController.Instance.ShowToDoPanel(false);
+
+        }
+        
+    }
+
     //quest log canvas
     public void ShowQuestLog()
     {

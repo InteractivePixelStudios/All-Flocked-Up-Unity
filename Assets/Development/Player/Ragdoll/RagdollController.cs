@@ -12,6 +12,7 @@ public class RagdollController : MonoBehaviour
     [SerializeField] private List<Rigidbody> bones = new();
     PlayerFlightMovement flight;
     PlayerGroundMovement ground;
+    [SerializeField] float relVelMagnitudeThresh;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -66,7 +67,7 @@ public class RagdollController : MonoBehaviour
     public void OnCollisionEnter(Collision collision)
     {
 
-        if (collision.relativeVelocity.magnitude > 7)
+        if (collision.relativeVelocity.magnitude > relVelMagnitudeThresh)
         {
                 ToggleRagdollOn();
             

@@ -105,9 +105,10 @@ public class QuestLog : MonoBehaviour
         hasQuest = true;
         currentQuestGiver = questGiver;
         GetIsQuestTimed(questData, instance);
-        canvasController.ShowTracker();
+        //canvasController.ShowTracker();
         currentObjectives = instance.GetCurrentObjectives();
-        canvasController.activeTrackerInstance.SetTracker(instance.questID,currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription,0);
+        //canvasController.activeTrackerInstance.SetTracker(instance.questID,currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription,0);
+        UI_HudController.Instance.AddToDoEntry(instance.questID, currentObjectives[0].objectiveDescription,0);
 
 
     }
@@ -131,9 +132,11 @@ public class QuestLog : MonoBehaviour
         canvasController.DestroyTracker();
         if(objIndex< currentObjectives.Length)
         {
-            canvasController.ShowTracker();
+            //canvasController.ShowTracker();
+            //Call hud to check off or remove previous
+            UI_HudController.Instance.CompleteTDEntry(objIndex);
             objIndex++;
-            canvasController.activeTrackerInstance.SetTracker(quest.questID, currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription, GetIndex());
+            UI_HudController.Instance.AddToDoEntry(quest.questID, currentObjectives[0].objectiveDescription,objIndex);
         }
         canvasController.ShowQuestNotif("Objective Complete");
         //canvasController.activeTrackerInstance.IncrementTrackerIndex();
@@ -153,8 +156,10 @@ public class QuestLog : MonoBehaviour
         {
             if (activeQuests[i].IsComplete)
             {
-                canvasController.DestroyTracker();
+                //canvasController.DestroyTracker();
+                //Add remove from HUD
                 await Task.Delay(1000);
+                UI_HudController.Instance.ClearTDList(); // this will need to be adjusted... it'll clear whole list even if multi quests accepted
                 completedQuests.Add(activeQuests[i].questData);
                 canvasController.ShowQuestReward(activeQuests[i].questData);
                 canvasController.activeRewardInstance.SetRewardText(activeQuests[i].GetCachedTrinkets(), activeQuests[i].GetCachedExp(), activeQuests[i].GetItemRewards().ToArray() ) ;
@@ -167,9 +172,10 @@ public class QuestLog : MonoBehaviour
             if(currentQuestGiver.quests.Count <= 0)
             {
                 currentQuestGiver.gameObject.layer = LayerMask.NameToLayer("Dialogue");
-                var comp = currentQuestGiver.GetComponent<QuestGiver>();
-                Debug.Log(currentQuestGiver.gameObject.layer);
-                Destroy(comp);
+                //var comp = currentQuestGiver.GetComponent<QuestGiver>();
+                //Debug.Log(currentQuestGiver.gameObject.layer);
+                //comp.enabled = false;
+                //Destroy(comp);
                
             }
 
