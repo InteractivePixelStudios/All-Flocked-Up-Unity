@@ -144,16 +144,19 @@ public class EnemyPatrol : EnemyBaseComponent
         {
             case EnemyState.Patrolling:
                 //Debug.Log("Patrol");
-                if (!locationSet)
+                if (locationSet)
                 {
                     MoveHumanToLocation();
-                    locationSet = true;
+                    if(navAgent.remainingDistance <= navAgent.stoppingDistance && !navAgent.pathPending)
+                    {
+                        locationSet = false;
+                    }
                 }
 
-                if (navAgent.remainingDistance <= navAgent.stoppingDistance && navAgent.pathPending && locationSet)
+                if (!locationSet)
                 {
                     ChooseNextDirection(currentNode);
-                    locationSet = false;
+                    
                 }
                 break;
             case EnemyState.Chasing:
@@ -414,7 +417,6 @@ public class EnemyPatrol : EnemyBaseComponent
     protected void ChooseNextDirection(Waypoint node)
     {
         if(node == null) return;
-        locationSet = false;
 
         if (node.nextWaypoint == null)
         {
@@ -430,6 +432,7 @@ public class EnemyPatrol : EnemyBaseComponent
             SetMoveToLocation(nextNode);
             MoveHumanToLocation();
         }
+        locationSet = true;
 
     }
 }

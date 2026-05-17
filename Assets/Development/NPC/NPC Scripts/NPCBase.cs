@@ -31,7 +31,10 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         dialogue = FindAnyObjectByType<DialogueBase>();
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         Debug.Log("NPC LOADED");
-        homeLocation = FindAnyObjectByType<LargeNest>().gameObject;
+        if(homeLocation == null)
+        {
+            homeLocation = FindAnyObjectByType<LargeNest>().gameObject;
+        }
         questIcon = GetComponent<IconToggle>();
     }
 
@@ -42,12 +45,19 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
             npcTransform = transform;
             MoveToLocation();
         }
-        if(questGiverComp.hasQuest == false || questGiverComp == null)
+        if(dialogueFirst == false&& questGiverComp == null)
         {
             npcTransform = transform;
             questIcon.enabled = false;
             targetLocation = homeLocation.transform;
-            //isMoving = true;
+            isMoving = true;
+            return;
+        }else if (questGiverComp.hasQuest == false && questGiverComp != null && questGiverComp.questComplete)
+        {
+            npcTransform = transform;
+            questIcon.enabled = false;
+            targetLocation = homeLocation.transform;
+            isMoving = true;
         }
 
     }  

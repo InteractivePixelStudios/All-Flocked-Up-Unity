@@ -24,19 +24,19 @@ public class TrashCanInteraction : MonoBehaviour
 
     public void InteractWithTrashCan()
     {
-            SearchCan();
-            Debug.Log("interacted");   
+            SearchCan(); 
     }
 
     private void SearchCan()
     {
-        looted = true;
-        ToggleParticles(looted);
-        GiveReward();
         if (questComp != null)
         {
             questComp.SearchTrash();
-        } 
+            Debug.Log("CompActive");
+        }
+        looted = true;
+        ToggleParticles(looted);
+        GiveReward();
     }
 
 

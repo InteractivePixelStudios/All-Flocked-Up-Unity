@@ -250,16 +250,16 @@ public class PlayerInteraction : MonoBehaviour
 
         void OpenQuestLog(InputAction.CallbackContext ctx)
         {
-            if (canvasController.activeLogInstance == null)
-            {
-                canvasController.ShowQuestLog();
-            }
-            else canvasController.DestroyQuestLog(); uiOn = false;
+        if (canvasController.activeLogInstance == null && !canvasController.uiOpen)
+        {
+            canvasController.ShowToDoPanel(true);
+        }
+        else { canvasController.ShowToDoPanel(false); uiOn = false; }
     }
 
         void OpenMap(InputAction.CallbackContext ctx)
         {
-            if (canvasController.activeMapCanvas == null)
+            if (canvasController.activeMapCanvas == null && !canvasController.uiOpen)
             {
                 canvasController.OpenMainMap();
             }
@@ -271,7 +271,7 @@ public class PlayerInteraction : MonoBehaviour
 
         void OpenInventory(InputAction.CallbackContext ctx)
         {
-            if (canvasController.activeWingventory == null)
+            if (canvasController.activeWingventory == null && !canvasController.uiOpen)
             {
                 canvasController.OpenWingventory();
                 isWingventoryOpen = true;
