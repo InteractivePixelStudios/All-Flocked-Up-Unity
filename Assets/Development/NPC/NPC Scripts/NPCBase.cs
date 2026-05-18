@@ -8,7 +8,6 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     public Transform targetLocation;
     [SerializeField] private NavMeshAgent navAgentComponent;
     public bool isMoving=false;
-    private UI_CanvasController canvasController;
     [SerializeField] private DialogueBase dialogue;
     [SerializeField] private List<string> dialogueStartLineID = new();
     [SerializeField] private string retriggerDialogueLineID;
@@ -18,6 +17,12 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     public bool dialogueFirst;
     private IconToggle questIcon;
     private Transform npcTransform;
+    [SerializeField] bool isWaiting = true;
+
+    public void SetIsWaiting(bool value)
+    {
+        isWaiting = value;
+    }
     //on load
     public void Awake()
     {
@@ -26,16 +31,15 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     //on start
     public void Start()
     {
-        questGiverComp = GetComponent<QuestGiver>();
         navAgentComponent = GetComponent<NavMeshAgent>();
         dialogue = FindAnyObjectByType<DialogueBase>();
-        canvasController = FindAnyObjectByType<UI_CanvasController>();
         Debug.Log("NPC LOADED");
         if(homeLocation == null)
         {
             homeLocation = FindAnyObjectByType<LargeNest>().gameObject;
         }
         questIcon = GetComponent<IconToggle>();
+        TryGetComponent<QuestGiver>(out questGiverComp);
     }
 
     public void Update()
@@ -45,19 +49,24 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
             npcTransform = transform;
             MoveToLocation();
         }
-        if(dialogueFirst == false&& questGiverComp == null)
+        if(dialogueFirst == false&& questGiverComp == null && !isWaiting)
         {
             npcTransform = transform;
             questIcon.enabled = false;
             targetLocation = homeLocation.transform;
             isMoving = true;
             return;
-        }else if (questGiverComp.hasQuest == false && questGiverComp != null && questGiverComp.questComplete)
+        }
+        if (questGiverComp != null && !isWaiting)
         {
-            npcTransform = transform;
-            questIcon.enabled = false;
-            targetLocation = homeLocation.transform;
-            isMoving = true;
+            if(questGiverComp.hasQuest == false)
+            {
+                npcTransform = transform;
+                questIcon.enabled = false;
+                targetLocation = homeLocation.transform;
+                isMoving = true;
+            }
+
         }
 
     }  

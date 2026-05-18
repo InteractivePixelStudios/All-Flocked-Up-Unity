@@ -82,7 +82,7 @@ public class UI_HudController : Singleton<UI_HudController>
         UpdateHealth();
         HideIcon();
         HideReticle();
-        ShowToDoPanel(false);
+        HideToDoPanel();
     }
 
     public bool GetIsTDOpen()
@@ -99,19 +99,17 @@ public class UI_HudController : Singleton<UI_HudController>
     {
         reticle.SetActive(false);
     }
-    public void ShowToDoPanel(bool value)
+    public void ShowToDoPanel()
     {
-        ToggleToDo(value);
+        toDoPanel.SetActive(true);
+        isToDoOpen = true;
     }
 
-    private void ToggleToDo(bool isOn)
+    public void HideToDoPanel()
     {
-        if (isOn)
-        {
-            toDoPanel.SetActive(true);
-            isToDoOpen = true;
-        }
-        else toDoPanel.SetActive(false); isToDoOpen=false;
+
+       toDoPanel.SetActive(false); 
+        isToDoOpen=false;
     }
 
     public void AddToDoEntry(string questID,  LocalizedString objDesc, int index)

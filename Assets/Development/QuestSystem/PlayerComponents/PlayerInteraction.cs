@@ -70,7 +70,7 @@ public class PlayerInteraction : MonoBehaviour
             inventoryAction.performed += OpenInventory;
             pauseAction.performed += OpenPause;
            // debugAction.performed += OpenDebug;
-            reportAction.performed += OpenReport;
+           // reportAction.performed += OpenReport;
         }
         
     }
@@ -79,31 +79,31 @@ public class PlayerInteraction : MonoBehaviour
         return isWingventoryOpen;
     }
 
-    public void OpenReport(InputAction.CallbackContext ctx)
-    {
-        if (canvasController.activeBugReporter == null)
-        {
-            canvasController.OpenBugReporter();
-        }
-        else
-        {
-            canvasController.CloseBugReporter();
-            uiOn = false;
-        }
-    }
+    //public void OpenReport(InputAction.CallbackContext ctx)
+    //{
+    //    if (canvasController.activeBugReporter == null)
+    //    {
+    //        canvasController.OpenBugReporter();
+    //    }
+    //    else
+    //    {
+    //        canvasController.CloseBugReporter();
+    //        uiOn = false;
+    //    }
+    //}
 
-    public void OpenDebug(InputAction.CallbackContext ctx)
-    {
-        if (canvasController.activeBugReporter == null)
-        {
-            canvasController.OpenDebugMenu();
-        }
-        else
-        {
-            canvasController.CloseDebugMenu();
-            uiOn = false;
-        }
-    }
+    //public void OpenDebug(InputAction.CallbackContext ctx)
+    //{
+    //    if (canvasController.activeBugReporter == null)
+    //    {
+    //        canvasController.OpenDebugMenu();
+    //    }
+    //    else
+    //    {
+    //        canvasController.CloseDebugMenu();
+    //        uiOn = false;
+    //    }
+    //}
 
 
 
@@ -209,7 +209,7 @@ public class PlayerInteraction : MonoBehaviour
             }
 
             RaycastHit lookHit;
-            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out lookHit, interactionRange, npcLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out  lookHit, interactionRange, npcLayer))
             {
                 var questNPC = lookHit.collider.GetComponentInParent<IQuestInteraction>();
                 questNPC?.LookAtNPC();
@@ -250,11 +250,15 @@ public class PlayerInteraction : MonoBehaviour
 
         void OpenQuestLog(InputAction.CallbackContext ctx)
         {
-        if (canvasController.activeLogInstance == null && !canvasController.uiOpen)
+        if (UI_HudController.Instance!= null)
         {
-            canvasController.ShowToDoPanel(true);
+            if (UI_HudController.Instance.GetIsTDOpen() == false)
+            {
+                canvasController.ShowToDoPanel();
+            }
+            else { canvasController.HideToDoPanel(); uiOn = false; }
         }
-        else { canvasController.ShowToDoPanel(false); uiOn = false; }
+        
     }
 
         void OpenMap(InputAction.CallbackContext ctx)

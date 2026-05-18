@@ -128,7 +128,7 @@ public class UI_VideoOptions : UI_SettingsMenu
 
     protected void ShowDefaultConfirm()
     {
-        confirmDefaultWindow.SetActive(true);
+        //confirmDefaultWindow.SetActive(true);
     }
 
     protected void HideDefaultConfirm()
@@ -220,8 +220,8 @@ public class UI_VideoOptions : UI_SettingsMenu
         var saved = PlayerPrefs.GetInt("FullscreenMode",fsModeBase);
         var modes = new List<string>
     {
-        "Windowed",
         "Exclusive Fullscreen",
+        "Fullscreen",
         "Maximized Window",
         "Fullscreen Windowed"
     };

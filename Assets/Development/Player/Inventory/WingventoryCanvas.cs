@@ -80,12 +80,6 @@ public class WingventoryCanvas : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void GoLeftPage()
     {
         centerCanvas.SetActive(false);
@@ -207,21 +201,6 @@ public class WingventoryCanvas : MonoBehaviour
         }
         else return null;
 
-
-    }
-
-    private void OpenMap()
-    {
-
-    }
-
-    private void UpdateMapLocation()
-    {
-
-    }
-
-    private void CloseMap()
-    {
 
     }
 

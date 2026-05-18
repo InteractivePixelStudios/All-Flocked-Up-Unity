@@ -5,7 +5,6 @@ using UnityEngine;
 public class NPC_AnimController : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private GameObject playerRef;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private CPURacer groundMoveComp;
     [SerializeField] private GroundCheck groundCheckComp;
@@ -24,7 +23,6 @@ public class NPC_AnimController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerRef = this.gameObject;
         playerAnimator = GetComponentInChildren<Animator>();
         groundMoveComp = GetComponent<CPURacer>();
 

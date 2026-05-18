@@ -92,7 +92,7 @@ public class Pooper : MonoBehaviour
             }
             else cam.TargetOffset = new Vector3(0, 0, 0); 
         }
-        if (isAiming && !isTurning)
+        if (GetIsFlying()==false && isAiming && !isTurning)
         {
             RotateMeshToCamera();
         }

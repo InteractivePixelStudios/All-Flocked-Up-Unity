@@ -177,7 +177,7 @@ public class UI_MainMenu : MonoBehaviour
     protected void LoadGame()
     {
         mainCanvas.SetActive(false);
-        GameObject canvasObj = new GameObject("SaveWindowCanvas");
+        GameObject canvasObj = new("SaveWindowCanvas");
         canvasObj.transform.SetParent(transform, false);
         Canvas canvas = canvasObj.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
