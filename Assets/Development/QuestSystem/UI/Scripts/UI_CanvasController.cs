@@ -329,25 +329,25 @@ public class UI_CanvasController : MonoBehaviour
         return activeLocationNotifInstance!=null && activeLocationNotifInstance.isActiveAndEnabled;
     }
 
-    public void ShowToDoPanel(bool value)
+    public void ShowToDoPanel()
     {
-        if (UI_HudController.Instance.GetIsTDOpen())
-        {
-            ShowQuestLog();
-        }else
-        {
-            DestroyQuestLog();   
-        }
-        if (value)
-        {
-            UI_HudController.Instance.ShowToDoPanel(true);
-            ApplySavedContrast();
-        }else
-        {
-            UI_HudController.Instance.ShowToDoPanel(false);
+        //if (UI_HudController.Instance.GetIsTDOpen())
+        //{
+        //    ShowQuestLog();
+        //}else
+        //{
+        //    DestroyQuestLog();   
+        //}
 
-        }
+            UI_HudController.Instance.ShowToDoPanel();
+            ApplySavedContrast();
         
+        
+    }
+
+    public void HideToDoPanel()
+    {
+        UI_HudController.Instance.HideToDoPanel();
     }
 
     //quest log canvas

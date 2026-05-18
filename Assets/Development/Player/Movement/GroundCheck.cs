@@ -18,11 +18,11 @@ public class GroundCheck : MonoBehaviour
     private bool SphereCheck(float radius)
     {
         // create a sphere and check if the player is on the ground, if player is on ground return true
-        if (Physics.CheckSphere(transform.position, radius, groundMask))
+        if (Physics.CheckSphere(transform.position, radius, groundMask, QueryTriggerInteraction.Ignore))
         {
             return true;
         }
-        else if (Physics.CheckSphere(transform.position, radius, propMask))
+        else if (Physics.CheckSphere(transform.position, radius, propMask, QueryTriggerInteraction.Ignore))
         {
             return true;
         }

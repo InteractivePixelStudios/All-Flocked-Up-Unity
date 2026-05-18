@@ -120,7 +120,7 @@ public class PlayerFlightMovement : MonoBehaviour
             PlayerInput();
         }
 
-        if (isStalling)
+        if (isFlying && isStalling)
         {
             if (currentStallTime < stallTime && !reverseStallLerp)
             {

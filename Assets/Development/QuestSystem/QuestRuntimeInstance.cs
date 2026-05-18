@@ -28,7 +28,7 @@ public class QuestRuntimeInstance
     private bool isPausedForDialogue;
     private bool dialogueComplete;
 
-    public List<GameObject> questMechanicsObjects = new List<GameObject>();
+    public List<GameObject> questMechanicsObjects = new();
     [SerializeField] private PlayerNavArrow arrowPointer;
     public GameObject destination;
     private int cachedExp;
@@ -216,6 +216,7 @@ public class QuestRuntimeInstance
     //calls the quest log function to remove quest
     public void CompleteQuest()
     {
+        if(currentStageIndex >= questData.stages.Length) { dialogueComp.SetIsWaiting(false); }
         arrowPointer.DestroyArrow();
         expComp.IncrementXP(cachedExp);
         invComp.AddTrinketToInv(cachedTrinkets, 0);

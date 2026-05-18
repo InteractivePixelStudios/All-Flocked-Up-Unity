@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.InputSystem;
+using Unity.Cinemachine;
 
 
 public class RaceBase : MonoBehaviour
@@ -35,12 +36,9 @@ public class RaceBase : MonoBehaviour
     public float countdown = 5;
     public float recordTime;
 
-    private RaceWallSpawner wallSpawner;
-
     private void Awake()
     {
         canvasController = FindAnyObjectByType<UI_CanvasController>();
-        wallSpawner = GetComponent<RaceWallSpawner>();
     }
 
     private void Start()
@@ -222,13 +220,20 @@ public class RaceBase : MonoBehaviour
     {
         playerRef.transform.position = raceStartLine.transform.position;
         playerRef.transform.rotation = raceStartLine.transform.rotation;
+        CinemachineOrbitalFollow comp;
+        TryGetComponent<CinemachineOrbitalFollow>(out comp);
+        if (comp != null)
+        {
+            comp.HorizontalAxis.Reset();
+        }
+
     }
 
     private void SetStartingRacerLocation()
     {
         //this will need to be changed depending on where the start line is located
-        Vector3 offset = new Vector3(0, 0, 2);
-        Vector3 row2offset = new Vector3(2, 0, 0);
+        Vector3 offset = new (0, 0, 2);
+        Vector3 row2offset = new (2, 0, 0);
         var gap = new Vector3(0, 0, 2);
         for (int i = 0; i < currentRacerList.Count; i++)
         {
