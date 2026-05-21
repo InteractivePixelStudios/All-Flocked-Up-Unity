@@ -185,7 +185,7 @@ public class UI_VideoOptions : UI_SettingsMenu
         resolDropdown.AddOptions(options);
         resolDropdown.SetValueWithoutNotify(currentIndex);
         resolDropdown.RefreshShownValue();
-        SetResolution(currentIndex, isFullScreen);
+      //  SetResolution(currentIndex, isFullScreen);
         resolDropdown.onValueChanged.AddListener(OnResolutionChanged);
 
     }
