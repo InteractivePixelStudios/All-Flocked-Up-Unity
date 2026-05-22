@@ -148,7 +148,7 @@ public class UI_MainMenu : MonoBehaviour
         playerRef.GetComponent<PlayerFlightMovement>().enabled = true;
         if (SteamManager.Initialized)
         {
-            AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_000_Support");
+            //AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_000_Support");
         }
         SceneManager.LoadScene("TutorialIsland");
         RemoveAllListeners();
