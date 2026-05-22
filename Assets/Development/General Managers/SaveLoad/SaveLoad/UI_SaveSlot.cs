@@ -44,14 +44,11 @@ public class UI_SaveSlot : MonoBehaviour
         }
 
     }
-    private void GetSlot()
-    {
-
-    }
-
     public void CallSave()
     {
-        SaveData data = FindAnyObjectByType<PlayerSaveLoadHandler>().saveData;
+        PlayerSaveLoadHandler handler = FindAnyObjectByType<PlayerSaveLoadHandler>();
+        SaveData data = handler.saveData;
+        handler.CallUpdateSave();
         SaveSlotManager.SaveToSlot(slotInfo.slotIndex, data, true);
         UpdateSlotUI(data.playerName,data.lastSaved.ToString());
         Debug.Log("SaveButtonPressed");

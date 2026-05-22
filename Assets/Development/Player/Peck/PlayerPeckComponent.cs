@@ -15,7 +15,7 @@ public class PlayerPeckComponent : MonoBehaviour
     {
         if(player.GetIsFlying()) return; 
             isPecking = true;
-        await Task.Delay(200);
+        await Task.Delay(50);
              isPecking = false;
         
     }

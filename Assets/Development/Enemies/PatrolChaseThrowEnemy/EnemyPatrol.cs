@@ -40,6 +40,7 @@ public class EnemyPatrol : EnemyBaseComponent
     [SerializeField] protected bool isRetreating;
     [SerializeField] protected bool isIdleStart;
     bool canSeePlayer;
+    bool locationSet;
 
     private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
@@ -74,11 +75,11 @@ public class EnemyPatrol : EnemyBaseComponent
         if(throwCooldown>=0)throwCooldown -= Time.deltaTime;
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         if(distanceToPlayer < detectionRange) { canSeePlayer = true; if (!canSeePlayer) { alertIcon.SetPlayerSeen(false);} else alertIcon.SetPlayerSeen(true); } else { canSeePlayer = false; alertIcon.SetPlayerSeen(false); }
-        switch (currentState) 
+        switch (currentState)
         {
             case EnemyState.Patrolling:
-                if (this.isHit)currentState = EnemyState.Hit;
-                if (this.isIdleStart &&!this.isHit) currentState = EnemyState.Stop;
+                if (this.isHit) currentState = EnemyState.Hit;
+                if (this.isIdleStart && !this.isHit) currentState = EnemyState.Stop;
                 else if (playerStealth.GetStealth() < 10 && distanceToPlayer < detectionRange && !this.isHit)
                     currentState = EnemyState.Chasing;
 
@@ -91,9 +92,9 @@ public class EnemyPatrol : EnemyBaseComponent
                     currentState = EnemyState.Patrolling;
                 else if (distanceToPlayer < kickRange && !this.isHit)
                     currentState = EnemyState.Kicking;
-                else if(distanceToPlayer < throwRange && !this.isHit)
+                else if (distanceToPlayer < throwRange && !this.isHit)
                     currentState = EnemyState.Throwing;
-                break; 
+                break;
 
             case EnemyState.Kicking:
                 if (this.isHit)
@@ -112,10 +113,14 @@ public class EnemyPatrol : EnemyBaseComponent
             case EnemyState.Stop:
                 if (this.isHit)
                 {
+                    isStopped = false;
                     currentState = EnemyState.Retreat;
-                    isStopped = true;
 
                 }
+                else if (distanceToPlayer > throwRange && !this.isHit)
+                { currentState = EnemyState.Chasing; }
+                 else
+                isStopped = true;
                 break;
 
             case EnemyState.Retreat:
@@ -138,10 +143,21 @@ public class EnemyPatrol : EnemyBaseComponent
         switch (currentState)
         {
             case EnemyState.Patrolling:
-                Debug.Log("Patrol");
-                MoveHumanToLocation();
-                if (navAgent.remainingDistance < 5f)
+                //Debug.Log("Patrol");
+                if (locationSet)
+                {
+                    MoveHumanToLocation();
+                    if(navAgent.remainingDistance <= navAgent.stoppingDistance && !navAgent.pathPending)
+                    {
+                        locationSet = false;
+                    }
+                }
+
+                if (!locationSet)
+                {
                     ChooseNextDirection(currentNode);
+                    
+                }
                 break;
             case EnemyState.Chasing:
                 ChasePlayer();
@@ -194,7 +210,6 @@ public class EnemyPatrol : EnemyBaseComponent
     private void FindWaypoints()
     {
         var waypointArray = patrolPoint.GetComponentsInChildren<Waypoint>();
-        Debug.Log(waypointArray);
         foreach (var waypoint in waypointArray)
         {
             if (waypoint.CompareTag("Human"))
@@ -260,10 +275,10 @@ public class EnemyPatrol : EnemyBaseComponent
                 if(Physics.Raycast(transform.position,Vector3.forward, 2f, LayerMask.NameToLayer("PropBuilding")))
                 {
                     isRetreating = false;
-                    isStopped = false;
+                    isStopped = true;
                 }else 
                 isRetreating = false;
-                isStopped = false;
+                isStopped = true;
             }
         }
     }
@@ -339,7 +354,7 @@ public class EnemyPatrol : EnemyBaseComponent
         if (navAgent == null)return;
         if (currentNode != null)
         {
-            Debug.Log("Moving to: " + currentNode);
+            //Debug.Log("Moving to: " + currentNode);
             navAgent.isStopped = false;
             navAgent.SetDestination(currentNode.transform.position);
         }
@@ -354,7 +369,7 @@ public class EnemyPatrol : EnemyBaseComponent
                     {
                         patrolPoint = obj.gameObject;
                         FindWaypoints();
-                        Debug.Log("Moving to: " + currentNode);
+                        //Debug.Log("Moving to: " + currentNode);
                         navAgent.isStopped = false;
                         navAgent.SetDestination(currentNode.transform.position);
                         break;
@@ -417,5 +432,7 @@ public class EnemyPatrol : EnemyBaseComponent
             SetMoveToLocation(nextNode);
             MoveHumanToLocation();
         }
+        locationSet = true;
+
     }
 }

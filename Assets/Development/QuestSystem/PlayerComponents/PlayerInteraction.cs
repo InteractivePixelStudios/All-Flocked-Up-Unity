@@ -70,7 +70,7 @@ public class PlayerInteraction : MonoBehaviour
             inventoryAction.performed += OpenInventory;
             pauseAction.performed += OpenPause;
            // debugAction.performed += OpenDebug;
-            reportAction.performed += OpenReport;
+           // reportAction.performed += OpenReport;
         }
         
     }
@@ -79,31 +79,31 @@ public class PlayerInteraction : MonoBehaviour
         return isWingventoryOpen;
     }
 
-    public void OpenReport(InputAction.CallbackContext ctx)
-    {
-        if (canvasController.activeBugReporter == null)
-        {
-            canvasController.OpenBugReporter();
-        }
-        else
-        {
-            canvasController.CloseBugReporter();
-            uiOn = false;
-        }
-    }
+    //public void OpenReport(InputAction.CallbackContext ctx)
+    //{
+    //    if (canvasController.activeBugReporter == null)
+    //    {
+    //        canvasController.OpenBugReporter();
+    //    }
+    //    else
+    //    {
+    //        canvasController.CloseBugReporter();
+    //        uiOn = false;
+    //    }
+    //}
 
-    public void OpenDebug(InputAction.CallbackContext ctx)
-    {
-        if (canvasController.activeBugReporter == null)
-        {
-            canvasController.OpenDebugMenu();
-        }
-        else
-        {
-            canvasController.CloseDebugMenu();
-            uiOn = false;
-        }
-    }
+    //public void OpenDebug(InputAction.CallbackContext ctx)
+    //{
+    //    if (canvasController.activeBugReporter == null)
+    //    {
+    //        canvasController.OpenDebugMenu();
+    //    }
+    //    else
+    //    {
+    //        canvasController.CloseDebugMenu();
+    //        uiOn = false;
+    //    }
+    //}
 
 
 
@@ -163,14 +163,16 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, raceLayer))
+        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, raceLayer))
+        {
+            var raceGiver = hit.collider.GetComponent<RaceGiver>();
+            if (raceGiver != null)
             {
-                var raceGiver = hit.collider.GetComponent<RaceGiver>();
-                if (raceGiver != null)
-                {
+
                     raceGiver.InteractWithRaceGiver();
-                }
             }
+            
+        }
 
 
             if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, nestLayer))
@@ -207,7 +209,7 @@ public class PlayerInteraction : MonoBehaviour
             }
 
             RaycastHit lookHit;
-            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out lookHit, interactionRange, npcLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out  lookHit, interactionRange, npcLayer))
             {
                 var questNPC = lookHit.collider.GetComponentInParent<IQuestInteraction>();
                 questNPC?.LookAtNPC();
@@ -248,16 +250,20 @@ public class PlayerInteraction : MonoBehaviour
 
         void OpenQuestLog(InputAction.CallbackContext ctx)
         {
-            if (canvasController.activeLogInstance == null)
+        if (UI_HudController.Instance!= null)
+        {
+            if (UI_HudController.Instance.GetIsTDOpen() == false)
             {
-                canvasController.ShowQuestLog();
+                canvasController.ShowToDoPanel();
             }
-            else canvasController.DestroyQuestLog(); uiOn = false;
+            else { canvasController.HideToDoPanel(); uiOn = false; }
+        }
+        
     }
 
         void OpenMap(InputAction.CallbackContext ctx)
         {
-            if (canvasController.activeMapCanvas == null)
+            if (canvasController.activeMapCanvas == null && !canvasController.uiOpen)
             {
                 canvasController.OpenMainMap();
             }
@@ -269,7 +275,7 @@ public class PlayerInteraction : MonoBehaviour
 
         void OpenInventory(InputAction.CallbackContext ctx)
         {
-            if (canvasController.activeWingventory == null)
+            if (canvasController.activeWingventory == null && !canvasController.uiOpen)
             {
                 canvasController.OpenWingventory();
                 isWingventoryOpen = true;

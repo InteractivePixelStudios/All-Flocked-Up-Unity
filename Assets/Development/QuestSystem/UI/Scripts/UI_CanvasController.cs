@@ -161,7 +161,7 @@ public class UI_CanvasController : MonoBehaviour
             player.GetComponent<PlayerFlightMovement>().enabled = true;
             cam.GetComponent<CinemachineOrbitalFollow>().enabled = true;
             isUIMap = false;
-
+            Debug.Log("PlayerMAP");
 
         }
         else return;
@@ -184,20 +184,10 @@ public class UI_CanvasController : MonoBehaviour
     public void ShowPlayerCursor()
     {
         SetUIMap();
-        if (Keyboard.current.IsPressed() ||
-    Mouse.current.delta.ReadValue() != Vector2.zero)
-        {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.Confined;
-        }
-        else if (Gamepad.current != null &&
-        (Gamepad.current.buttonSouth.wasPressedThisFrame ||
-         Gamepad.current.leftStick.ReadValue() != Vector2.zero))
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Confined;
-        }
-        Debug.Log("Cursor Toggle ON");
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        Debug.Log("Showing cursor");
     }
     //cursor off
     public void HidePlayerCursor()
@@ -205,7 +195,7 @@ public class UI_CanvasController : MonoBehaviour
         SetPlayerMap();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
+        Debug.Log("Hiding cursor");
     }
 
     //quest timer canvas
@@ -231,15 +221,15 @@ public class UI_CanvasController : MonoBehaviour
 
 
             activeGiverInstance = Instantiate(questGiverCanvas);
-            if (!isUIMap || activeDialogueInstance == null)
-            {
-                ShowPlayerCursor();
-            }
-            ApplySavedContrast();
             activeGiverInstance.currentquestGiver = questGiver;
             activeGiverInstance.canvasController = this;
             activeGiverInstance.UpdateUIText(questGiver.quests[0].questName, questGiver.quests[0].questLogDescription, questGiver.quests[0].questName); // change last one to rewards
-            uiOpen = true;
+        if (!isUIMap)
+        {
+            ShowPlayerCursor();
+        }
+        ApplySavedContrast();
+        uiOpen = true;
         
     }
 
@@ -248,11 +238,9 @@ public class UI_CanvasController : MonoBehaviour
     {
         if (questGiverCanvas != null)
         {
-            if (isUIMap)
-            {
+
                 HidePlayerCursor();
 
-            }
             Destroy(activeGiverInstance.gameObject);
             uiOpen = false;
             activeGiverInstance = null;
@@ -341,6 +329,27 @@ public class UI_CanvasController : MonoBehaviour
         return activeLocationNotifInstance!=null && activeLocationNotifInstance.isActiveAndEnabled;
     }
 
+    public void ShowToDoPanel()
+    {
+        //if (UI_HudController.Instance.GetIsTDOpen())
+        //{
+        //    ShowQuestLog();
+        //}else
+        //{
+        //    DestroyQuestLog();   
+        //}
+
+            UI_HudController.Instance.ShowToDoPanel();
+            ApplySavedContrast();
+        
+        
+    }
+
+    public void HideToDoPanel()
+    {
+        UI_HudController.Instance.HideToDoPanel();
+    }
+
     //quest log canvas
     public void ShowQuestLog()
     {
@@ -378,13 +387,13 @@ public class UI_CanvasController : MonoBehaviour
             if (activeDialogueInstance == null)
             {
                 activeDialogueInstance = Instantiate(dialogueCanvas);
-                ApplySavedContrast();
                 if (!isUIMap)
                 {
                     ShowPlayerCursor();
                 }
-            }
+            ApplySavedContrast();
             uiOpen = true;
+        }
         
     }
     //dialogue response options transfer
@@ -413,40 +422,7 @@ public class UI_CanvasController : MonoBehaviour
             uiOpen = false;
         }
     }
-    ////trash canvas
-    //public void ShowTrashPrompt(TrashCanInteraction trashCan)
-    //{
-    //    if (!uiOpen)
-    //    {
-    //        if (activeTrashInstance == null)
-    //        {
-    //            activeTrashInstance = Instantiate(trashCanvas);
-    //            ApplySavedContrast();
-    //            activeTrashInstance.SetTrashInstance(trashCan);
-    //            activeTrashInstance.SetCanvasReference(this);
-    //            if (!isUIMap)
-    //            {
-    //                ShowPlayerCursor();
-    //            }
-    //            uiOpen = true;
-    //        }
-    //    }
-    //}
 
-    //public void CloseTrashPrompt()
-    //{
-    //    if (activeTrashInstance != null)
-    //    {
-    //        Destroy(activeTrashInstance.gameObject);
-    //        activeTrashInstance = null;
-    //        if (isUIMap || activeRewardInstance!=null)
-    //        {
-    //            HidePlayerCursor();
-
-    //        }
-    //        uiOpen = false;
-    //    }
-    //}
     //race giver canvas
     public void OpenRaceGiver()
     {
@@ -904,6 +880,7 @@ public class UI_CanvasController : MonoBehaviour
                 activeTutPrompt.promptIndex = cachedTutPromptIndex;
                 activeTutPrompt.arrowIndex = cachedIntroIndex;
                 activeTutPrompt.canvasController = this;
+            uiOpen = true;
             //if (!isUIMap)
             //{
             //    ShowPlayerCursor();
@@ -911,8 +888,8 @@ public class UI_CanvasController : MonoBehaviour
 
 
 
-            }
-        
+        }
+
     }
 
         public void DestroyPrompt()
@@ -924,6 +901,7 @@ public class UI_CanvasController : MonoBehaviour
             //{
             //    HidePlayerCursor();
             //}
+            uiOpen = false;
             Destroy(activeTutPrompt.gameObject);
             cachedTutPromptIndex = -1;
 

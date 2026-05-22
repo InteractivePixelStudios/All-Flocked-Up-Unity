@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.Localization;
 
 
 public class TutorialPrompt : MonoBehaviour
@@ -13,7 +14,7 @@ public class TutorialPrompt : MonoBehaviour
     [SerializeField] private Button skipConfirmButton;
     [SerializeField] private Button skipCancelButton;
     [SerializeField] private TextMeshProUGUI promptText;
-    [SerializeField] private List<string> prompts = new();
+    [SerializeField] private List<LocalizedString> prompts = new();
     public int promptIndex;
     public UI_CanvasController canvasController;
 
@@ -103,8 +104,13 @@ public class TutorialPrompt : MonoBehaviour
 
     public void UpdatePrompt(int index)
     {
-        promptText.SetText(prompts[index]);
+        prompts[index].StringChanged += OnStringChanged;
+        prompts[index].RefreshString();
     }
 
+    private void OnStringChanged(string value)
+    {
+        promptText.SetText(value);
+    }
 
 }

@@ -23,6 +23,7 @@ public class Q_SearchTrash : MonoBehaviour, IQuestMechanic
         if(questLog.activeQuests.Count > 0)
         {
             questLog.UpdateQuestObjective(objectiveID, 1);
+            Debug.Log("SearchCalled");
         }
     }
 

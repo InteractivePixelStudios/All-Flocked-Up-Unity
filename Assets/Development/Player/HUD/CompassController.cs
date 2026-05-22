@@ -115,7 +115,7 @@ public class CompassController : MonoBehaviour
             }
             else
             {
-                Debug.Log(IsVisible(target));
+               // Debug.Log(IsVisible(target));
                 marker.gameObject.SetActive(true);
             }
             Vector3 dir = target.position - player.position;

@@ -41,6 +41,11 @@ public class DialogueBase : MonoBehaviour
     [SerializeField] private NPCBase npcRef;
     public int textSpeed=>currentTextSpeed=75;// this speed is in ms
 
+    public string GetDialogueLineID()
+    {
+        return currentDialogueLineID;
+    }
+
     public bool GetIsTyping()
     {
         return typerComplete;
@@ -203,17 +208,18 @@ public class DialogueBase : MonoBehaviour
     }
 
     //calls the function from the dialogue canvas
-    public void ClearDialogue()
+    public async void ClearDialogue()
     {
-        canvasController.activeDialogueInstance.ClearDialogueCanvas();
         QuestGiver giver;
         npcRef.TryGetComponent<QuestGiver>(out giver);
         if (giver.hasQuest)
         {
-            
+            canvasController.activeDialogueInstance.ClearDialogueCanvas();
+            await Task.Delay(200);
             canvasController.ShowQuestGiver(giver);
             Debug.Log(giver + "Shows the quest");
         }
+        else { canvasController.activeDialogueInstance.ClearDialogueCanvas(); }
         isRetrigger = true;
 
     }
