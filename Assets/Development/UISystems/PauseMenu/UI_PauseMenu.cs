@@ -28,7 +28,7 @@ public class UI_PauseMenu : MonoBehaviour
         continueButton.onClick.AddListener(Unpause);
         settingsButton.onClick.AddListener(OnSettingsOpen);
         controlsButton.onClick.AddListener(OnControlsOpen);
-        saveQuitButton.onClick.AddListener(OnSaveAndQuit);
+        saveQuitButton.onClick.AddListener(OnQuit);
         EventSystem.current.SetSelectedGameObject(continueButton.gameObject);
         settingsCanvas.GetComponent<UI_SettingsMenu>().parent = this.gameObject;
 
@@ -105,6 +105,15 @@ public class UI_PauseMenu : MonoBehaviour
     {
         Destroy(currentSaveWindow);
         mainCanvas.SetActive(true);
+    }
+
+    protected void OnQuit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else        
+Application.Quit();
+#endif
     }
 
 

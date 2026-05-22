@@ -37,20 +37,13 @@ public class HumanGeneratorManager : MonoBehaviour
                 }
                 break;
             case 1:
-                foreach (Clothes clothes in heavysetMaleClothes)
-                {
-                    mesh[index] = clothes.clothes[UnityEngine.Random.Range(0, clothes.clothes.Length)].sharedMesh;
-                    index++;
-                }
-                break;
-            case 2:
                 foreach (Clothes clothes in skinnyFemaleClothes)
                 {
                     mesh[index] = clothes.clothes[UnityEngine.Random.Range(0, clothes.clothes.Length)].sharedMesh;
                     index++;
                 }
                 break;
-            case 3:
+            case 2:
                 foreach (Clothes clothes in heavysetFemaleClothes)
                 {
                     mesh[index] = clothes.clothes[UnityEngine.Random.Range(0, clothes.clothes.Length)].sharedMesh;

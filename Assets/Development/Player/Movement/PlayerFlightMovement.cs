@@ -40,6 +40,7 @@ public class PlayerFlightMovement : MonoBehaviour
     [SerializeField] float glideDownSpeed = 1000f;
     [SerializeField] float glideDownDropSpeed = 1f;
     [SerializeField] float stallDownSpeed = .00001f;
+    [SerializeField] float counterVelocityRate = .1f;
     [SerializeField] float tiltSpeed = 100f;
     [SerializeField] float diveSpeed = 100f;
 
@@ -192,7 +193,6 @@ public class PlayerFlightMovement : MonoBehaviour
     {
         if (horizontalMovement < 0 || horizontalMovement > 0)
         {
-
             transform.Rotate(new Vector3(0, rotateSpeed * horizontalMovement * Time.deltaTime, 0));
 
             Vector3 currentAngle = meshTransform.eulerAngles + new Vector3(0, 0, -horizontalMovement) * tiltSpeed * Time.deltaTime;
@@ -237,10 +237,18 @@ public class PlayerFlightMovement : MonoBehaviour
             isSlowFlap = true;
 
             Vector3 backwardVel = -transform.forward * stallDownSpeed;
-            
-            if (playerBody.linearVelocity.x > backwardVel.x && playerBody.linearVelocity.z > backwardVel.z)
-                playerBody.linearVelocity += backwardVel * Time.deltaTime;
 
+            if (playerBody.linearVelocity.x != backwardVel.x && playerBody.linearVelocity.z != backwardVel.z)
+            {
+                Vector3 temp = playerBody.linearVelocity;
+                temp.y = 0;
+                playerBody.linearVelocity -= temp * counterVelocityRate * Time.deltaTime;
+            }
+
+            if (backwardVel.x < 0 && playerBody.linearVelocity.x > backwardVel.x)
+                playerBody.linearVelocity += backwardVel * Time.deltaTime;
+            else if (backwardVel.x > 0 && playerBody.linearVelocity.x < backwardVel.x)
+                playerBody.linearVelocity += backwardVel * Time.deltaTime;
 
             Vector3 currentAngle = meshTransform.eulerAngles + new Vector3(forwardMovement, 0, 0) * tiltSpeed * Time.deltaTime;
 
