@@ -167,7 +167,7 @@ public class UI_VideoOptions : UI_SettingsMenu
 
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = resolutions[i].width + " x " + resolutions[i].height;
+            string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + resolutions[i].refreshRate + "hz" ; ;
             options.Add(option);
             if (savedIndex == resolBase &&
                 resolutions[i].width == Screen.currentResolution.width &&
@@ -185,7 +185,7 @@ public class UI_VideoOptions : UI_SettingsMenu
         resolDropdown.AddOptions(options);
         resolDropdown.SetValueWithoutNotify(currentIndex);
         resolDropdown.RefreshShownValue();
-        SetResolution(currentIndex, isFullScreen);
+      //  SetResolution(currentIndex, isFullScreen);
         resolDropdown.onValueChanged.AddListener(OnResolutionChanged);
 
     }
