@@ -23,6 +23,11 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     {
         isWaiting = value;
     }
+
+    public int GetDialogueLineCount()
+    {
+        return dialogueStartLineID.Count;
+    }
     //on load
     public void Awake()
     {
@@ -90,6 +95,8 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     //called from PlayerInteraction... opens and prints dialogue
     public void InteractWithNPCDialogue()
     {
+        if (dialogueStartLineID.Count == 0)
+            return;
         dialogue.SetNPCRef(this);
         if (dialogue.isRetrigger)
         {
@@ -102,11 +109,11 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
             dialogue.PrintDialogue(dialogueStartLineID[index]);
             index++;
             Debug.Log(index);
-            if (index > dialogueStartLineID.Count)
-            {
-                dialogue.isRetrigger = true;
-               // index = 0;
-            }
+            //if (index >= dialogueStartLineID.Count)
+            //{
+            //    dialogue.isRetrigger = true;
+            //   index = 0;
+            //}
         }
 
 
@@ -129,13 +136,6 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
 
     }
 
-    public void ContinueDialogue()
-    {
-        index++;
-        dialogue.PrintDialogue(dialogueStartLineID[index]);
-    }
-
- 
 
 
 }

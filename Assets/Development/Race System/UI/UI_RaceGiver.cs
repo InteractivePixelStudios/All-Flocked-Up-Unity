@@ -55,6 +55,7 @@ public class UI_RaceGiver : MonoBehaviour
     private void AcceptRace()
     {
         Debug.Log("RaceAccept");
+        canvasController.CloseRaceGiver();
         raceBase.InteractWithRaceGiver();
     }
 

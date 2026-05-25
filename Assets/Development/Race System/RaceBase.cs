@@ -181,7 +181,6 @@ public class RaceBase : MonoBehaviour
     {
         raceStarted = false;
         GetRaceResults();
-        raceStarted = false;
         DestroyRacers();
         canvasController.OpenRaceRewards();
         DestroyCheckpoints();
@@ -219,7 +218,7 @@ public class RaceBase : MonoBehaviour
     private void MovePlayerToStartLine()
     {
         playerRef.transform.position = raceStartLine.transform.position;
-        playerRef.transform.rotation = raceStartLine.transform.rotation;
+        playerRef.transform.eulerAngles = new Vector3(0, raceStartLine.transform.eulerAngles.y, 0);
         CinemachineOrbitalFollow comp;
         TryGetComponent<CinemachineOrbitalFollow>(out comp);
         if (comp != null)

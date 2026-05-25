@@ -182,7 +182,7 @@ public class UI_HudController : Singleton<UI_HudController>
             currentTime -= Time.deltaTime;
             if (timerText != null)
             {
-                timerText.SetText(currentTime.ToString());
+                timerText.SetText(currentTime.ToString("0"));
             }
             if (currentTime < 0)
             {
