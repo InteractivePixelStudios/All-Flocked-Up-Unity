@@ -13,6 +13,7 @@ public class BorderHawkSpawner : MonoBehaviour
     [SerializeField] private GameObject spawnedHawk;
     [SerializeField] private Vector3 spawnPoint;
     [SerializeField] private UI_HudController hudRef;
+    bool isSpawned;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,13 +30,13 @@ public class BorderHawkSpawner : MonoBehaviour
 
     }
 
-    async void SpawnHawk()
+     void SpawnHawk()
     {
         spawnPoint = playerRef.transform.position + offset;
         if (spawnedHawk == null)
         {
-            await Task.Delay(2000);
             spawnedHawk = Instantiate(hawkPrefab, spawnPoint, Quaternion.identity);
+            isSpawned = true;
         }
         else return;
 
@@ -51,12 +52,13 @@ public class BorderHawkSpawner : MonoBehaviour
         hudRef.HideHawkWarning();
     }
 
-    async void DestroyHawk()
+    void DestroyHawk()
     {
         if(spawnedHawk != null)
         {
-            await Task.Delay(2000);
+            
             Destroy(spawnedHawk.gameObject);
+            isSpawned = false;
         }
     }
 
@@ -74,7 +76,7 @@ public class BorderHawkSpawner : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (hudRef.readyToSpawn)
+            if (hudRef.readyToSpawn && !isSpawned)
             {
                 SpawnHawk();
                 hudRef.readyToSpawn = false;

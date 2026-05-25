@@ -44,7 +44,7 @@ public class InteractionPrompt : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             var direction = other.transform.position - transform.position;
-            Quaternion angle = Quaternion.LookRotation(direction, Vector3.up);
+            Quaternion angle = Quaternion.LookRotation(-direction, Vector3.up);
             rend.gameObject.transform.rotation = angle;
             
         }

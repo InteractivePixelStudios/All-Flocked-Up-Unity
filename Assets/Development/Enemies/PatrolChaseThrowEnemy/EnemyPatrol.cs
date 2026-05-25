@@ -13,6 +13,7 @@ public class EnemyPatrol : EnemyBaseComponent
     public PlayerStealthSystem playerStealth;
     public float patrolSpeed = 3f;
     public float chaseSpeed = 5f;
+    float MoveAfterCooldown = 1.5f;
     [Header("Detection")]
     public float detectionRange = 5f;
     public float loseSightRange = 8f;
@@ -21,10 +22,12 @@ public class EnemyPatrol : EnemyBaseComponent
     public float kickCooldown = 3f;
     [SerializeField] protected SphereCollider kickCollider;
     [SerializeField] private GameObject kickColliderParent;
+    bool isKicking;
     [Header("Throw")]
     public float throwRange=3f;
     public float throwForce = 10f;
     public float throwCooldown = 3f;
+    bool isThrowing;
     [SerializeField] private GameObject throwObjectPrefab;
     [SerializeField] private Transform objectSpawnPoint;
     [Header("Waypoints")]
@@ -73,6 +76,7 @@ public class EnemyPatrol : EnemyBaseComponent
     {
         if(kickCooldown>=0) kickCooldown -= Time.deltaTime;
         if(throwCooldown>=0)throwCooldown -= Time.deltaTime;
+        if(MoveAfterCooldown>=0) MoveAfterCooldown -= Time.deltaTime;
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
         if(distanceToPlayer < detectionRange) { canSeePlayer = true; if (!canSeePlayer) { alertIcon.SetPlayerSeen(false);} else alertIcon.SetPlayerSeen(true); } else { canSeePlayer = false; alertIcon.SetPlayerSeen(false); }
         switch (currentState)
@@ -155,7 +159,11 @@ public class EnemyPatrol : EnemyBaseComponent
 
                 if (!locationSet)
                 {
-                    ChooseNextDirection(currentNode);
+                    if (waypoints.Count > 1)
+                    {
+                        ChooseNextDirection(currentNode);
+                    }
+                    else { StopMove(); }
                     
                 }
                 break;
@@ -163,12 +171,16 @@ public class EnemyPatrol : EnemyBaseComponent
                 ChasePlayer();
                 break;
             case EnemyState.Kicking: // throws until kick anim done
-                if (throwCooldown <= 0)
+                if (throwCooldown <= 0 && !isKicking)
                 {
                     ThrowObject();
-
                     throwCooldown = 3f;
-                    currentState = EnemyState.Chasing;
+                    MoveAfterCooldown = 1.5f;
+                    if (MoveAfterCooldown <= 0)
+                    {
+                        currentState = EnemyState.Chasing;
+                    }
+                    isKicking = true;
                 }
                 //if (kickCooldown <= 0)
                 //{
@@ -179,12 +191,16 @@ public class EnemyPatrol : EnemyBaseComponent
                 //}
                 break;
             case EnemyState.Throwing:
-                if (throwCooldown <= 0)
+                if (throwCooldown <= 0 && !isThrowing)
                 {
                     ThrowObject();
-
                     throwCooldown = 3f;
-                    currentState = EnemyState.Chasing;
+                    MoveAfterCooldown = 1.5f;
+                    if (MoveAfterCooldown <= 0)
+                    {
+                        currentState = EnemyState.Chasing;
+                    }
+                    isThrowing = true;
                 }
                 break;
             case EnemyState.Stop:
@@ -226,14 +242,23 @@ public class EnemyPatrol : EnemyBaseComponent
     private void FindRandomWaypoint()
     {
         if (waypoints.Count == 0) return;
-       // var randomIndex = Random.Range(0, waypoints.Count);
-        this.currentNode = waypoints[0];     
+        if (waypoints.Count == 1) { StopMove(); }
+        if(waypoints.Count < 2)
+        {
+            var randomIndex = Random.Range(0, waypoints.Count - 1);
+            this.currentNode = waypoints[randomIndex];
+        }
+        else
+        {
+            this.currentNode = waypoints[0];
+        }
 
     }
 
     protected void StopMove()
     {
         navAgent.isStopped = true;
+        navAgent.velocity = Vector3.zero;
         animController.SetFloat("Speed", 0f);
     }
 
@@ -285,6 +310,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
    protected void ChasePlayer()
     {
+        if (isKicking || isThrowing) return;
         animController.SetFloat("Speed", navAgent.speed);
         Vector3 targetPos = player.transform.position;
         targetPos.y = transform.position.y;
@@ -297,27 +323,31 @@ public class EnemyPatrol : EnemyBaseComponent
             transform.forward = dir;
     }
 
-    protected void KickPlayer()
+    protected async void KickPlayer()
     {
-        navAgent.isStopped = true ;
+        isKicking = true;
+        StopMove();
         var spawnedCollider = kickColliderParent.AddComponent<SphereCollider>();
         var comp = spawnedCollider.AddComponent<KickComponent>();
         comp.damage = 1;
         animController.SetTrigger("isKicking");
         kickCooldown = 3f;
-        Task.Delay(3000);
+        await Task.Delay(3000);
         Destroy(spawnedCollider);
         Destroy(comp);
+        isKicking = false;
 
     }
 
     protected async void ThrowObject()
     {
-        navAgent.isStopped = true;
+        isThrowing = true;
+        StopMove();
         Vector3 facingDir = (player.transform.position - transform.position).normalized;
         float diff = Vector3.Dot(transform.forward, facingDir);
         if(diff <0.5f)
         {
+            isThrowing = false;
             return;
         }
         animController.SetTrigger("isThrowing");
@@ -329,6 +359,7 @@ public class EnemyPatrol : EnemyBaseComponent
         SetThrowPoint();
         objRB.AddForce((objectSpawnPoint.forward+(Vector3.down*0.5f))*throwForce,ForceMode.Impulse);
         throwCooldown = 3f;
+        isThrowing = false;
 
     }
 
@@ -356,6 +387,7 @@ public class EnemyPatrol : EnemyBaseComponent
         {
             //Debug.Log("Moving to: " + currentNode);
             navAgent.isStopped = false;
+            FindWaypoints();
             navAgent.SetDestination(currentNode.transform.position);
         }
         else
