@@ -52,6 +52,11 @@ public class UI_QuestGiver : MonoBehaviour
     private void AddQuestToLog()
     {
         currentquestGiver.AcceptQuest(questLog, currentquestGiver.quests[0],currentquestGiver);
+        if (currentquestGiver.quests.Count <= 0) 
+        {
+            var comp = currentquestGiver.GetComponent<QuestGiver>();
+            Destroy(comp);
+        }
         CloseQuestGiverUI();
     }
 

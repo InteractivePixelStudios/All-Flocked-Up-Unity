@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Splines.Interpolators;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.Localization;
+using System;
 
 public class UI_HudController : Singleton<UI_HudController>
 {
@@ -47,6 +49,11 @@ public class UI_HudController : Singleton<UI_HudController>
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject camPanel;
     [SerializeField] private GameObject reticle;
+    [SerializeField] private GameObject toDoPanel;
+    [SerializeField] private ScrollRect toDoBox;
+    bool isToDoOpen;
+    [SerializeField] private GameObject toDoEntry;
+    [SerializeField] private List<GameObject> entryList = new();
 
 
 
@@ -75,6 +82,12 @@ public class UI_HudController : Singleton<UI_HudController>
         UpdateHealth();
         HideIcon();
         HideReticle();
+        HideToDoPanel();
+    }
+
+    public bool GetIsTDOpen()
+    {
+        return isToDoOpen;
     }
 
     public void ShowReticle()
@@ -85,6 +98,45 @@ public class UI_HudController : Singleton<UI_HudController>
     public void HideReticle()
     {
         reticle.SetActive(false);
+    }
+    public void ShowToDoPanel()
+    {
+        toDoPanel.SetActive(true);
+        isToDoOpen = true;
+    }
+
+    public void HideToDoPanel()
+    {
+
+       toDoPanel.SetActive(false); 
+        isToDoOpen=false;
+    }
+
+    public void AddToDoEntry(string questID,  LocalizedString objDesc, int index)
+    {
+        var entry = Instantiate(toDoEntry);
+        entryList.Add(entry);
+        entry.transform.parent = toDoBox.content.transform;
+        objDesc = new LocalizedString
+        {
+            TableReference = "AFU_Quest",
+            TableEntryReference = questID + "_ObjDesc_" + index
+        };
+        objDesc.StringChanged += desc => entry.GetComponentInChildren<TextMeshProUGUI>().SetText(desc);
+
+    }
+
+    public void CompleteTDEntry(int taskIndex)
+    {
+        entryList[taskIndex].GetComponentInChildren<TextMeshProUGUI>().fontStyle = FontStyles.Strikethrough;
+    }
+
+    public void ClearTDList()
+    {
+        foreach(var entry in entryList)
+        {
+            Destroy(entry.gameObject);
+        }
     }
 
     void HideIcon()
@@ -130,7 +182,7 @@ public class UI_HudController : Singleton<UI_HudController>
             currentTime -= Time.deltaTime;
             if (timerText != null)
             {
-                timerText.SetText(currentTime.ToString());
+                timerText.SetText(currentTime.ToString("0"));
             }
             if (currentTime < 0)
             {

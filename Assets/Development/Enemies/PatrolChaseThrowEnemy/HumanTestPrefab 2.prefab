@@ -260,7 +260,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 6155c5f3c9d92104fae4f558226646e1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -282,8 +282,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   questKillComponent: {fileID: 0}
-  isDeadLocal: 0
-  currentHealth: 0
   enemyRef: {fileID: 0}
   patrolPoint: {fileID: 0}
   player: {fileID: 0}
@@ -306,7 +304,7 @@ MonoBehaviour:
   previousNode: {fileID: 0}
   navAgent: {fileID: 1185985605403439127}
   animController: {fileID: 7929413808103644999}
-  alertIcon: {fileID: 0}
+  alertIcon: {fileID: 588872742438270558}
   isHit: 0
   isStopped: 0
   isRetreating: 0
@@ -418,6 +416,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5607442402082922624, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1178242768378728529, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
       propertyPath: m_Name
       value: SM_Male_SlimNPC
@@ -429,6 +435,38 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
       propertyPath: m_TagString
       value: Human
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866636343151598899, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2372129282398029845, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4686587653079254794, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5077323888077884356, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5441216353333529525, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525959038804311920, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7397418734998950440, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918139737045754297, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
@@ -627,8 +665,27 @@ PrefabInstance:
       propertyPath: outline
       value: 
       objectReference: {fileID: 1536453407135266560}
-    m_RemovedComponents:
-    - {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+    - target: {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: alertEvent.Path
+      value: event:/UI/Speech/Character 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: alertEvent.Guid.Data1
+      value: 807232983
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: alertEvent.Guid.Data2
+      value: 1115209444
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: alertEvent.Guid.Data3
+      value: -860875611
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: alertEvent.Guid.Data4
+      value: -1791261376
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

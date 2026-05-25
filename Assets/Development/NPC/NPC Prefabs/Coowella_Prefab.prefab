@@ -72,9 +72,11 @@ MonoBehaviour:
   dialogue: {fileID: 0}
   dialogueStartLineID: []
   retriggerDialogueLineID: 
+  index: 0
   homeLocation: {fileID: 0}
   questGiverComp: {fileID: 0}
   dialogueFirst: 0
+  isWaiting: 1
 --- !u!23 &7936533893866051487
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -143,6 +145,10 @@ MonoBehaviour:
   questName: Coo-Torial
   hasQuest: 1
   requiredCompletedQuests: []
+  questObjects: []
+  iconRef: {fileID: 0}
+  questIcon: {fileID: 0}
+  questComplete: 0
 --- !u!65 &2623083403089361993
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -299,7 +305,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalRotation.x
@@ -307,7 +313,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalRotation.z
@@ -319,7 +325,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z

@@ -181,7 +181,6 @@ public class DialogueBase : MonoBehaviour
 
        // if (typerComplete) canvasController.dialogueCanvas.GetResponseOptions();
         
-        currentDialogueIndex++;
     }
 
     //checks if the currentBranchID string contains the returned response ID or if the currentDialogueLine != returned response ID.
@@ -208,17 +207,26 @@ public class DialogueBase : MonoBehaviour
     }
 
     //calls the function from the dialogue canvas
-    public void ClearDialogue()
+    public async void ClearDialogue()
     {
         QuestGiver giver;
         npcRef.TryGetComponent<QuestGiver>(out giver);
         if (giver.hasQuest)
         {
             canvasController.activeDialogueInstance.ClearDialogueCanvas();
+            await Task.Delay(200);
             canvasController.ShowQuestGiver(giver);
             Debug.Log(giver + "Shows the quest");
         }
-        isRetrigger = true;
+        else { canvasController.activeDialogueInstance.ClearDialogueCanvas(); }
+        if(currentDialogueIndex <= npcRef.GetDialogueLineCount())
+        {
+            currentDialogueIndex++;
+        }
+        else
+        {
+            isRetrigger = true;
+        }
 
     }
 

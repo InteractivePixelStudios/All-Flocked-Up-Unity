@@ -4,7 +4,6 @@ using UnityEngine;
 public class AnimController : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private GameObject playerRef;
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private PlayerGroundMovement groundMoveComp;
     [SerializeField] private PlayerFlightMovement flightMoveComp;
@@ -12,7 +11,6 @@ public class AnimController : MonoBehaviour
     [SerializeField] private Pooper poopComp;
     [SerializeField] private DialogueBase dialogueBaseComp;
     [SerializeField] private PlayerStealthSystem stealthComp;
-    [SerializeField] private PlayerWingventory wingventoryComp;
     [SerializeField] private PlayerPeckComponent peckComp;
     [SerializeField] private PlayerInteraction interactionComp;
 
@@ -37,7 +35,6 @@ public class AnimController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        playerRef = this.gameObject;
         playerAnimator = GetComponent<Animator>();
         groundMoveComp = GetComponent<PlayerGroundMovement>();
         flightMoveComp = GetComponent<PlayerFlightMovement>();
@@ -45,7 +42,6 @@ public class AnimController : MonoBehaviour
         poopComp = GetComponent<Pooper>();
         stealthComp =  GetComponent<PlayerStealthSystem>();
         interactionComp = GetComponent<PlayerInteraction>();
-        wingventoryComp = GetComponent<PlayerWingventory>();
         peckComp = GetComponent<PlayerPeckComponent>();
         dialogueBaseComp = GetComponentInChildren<DialogueBase>();
     }

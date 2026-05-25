@@ -8,16 +8,26 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     public Transform targetLocation;
     [SerializeField] private NavMeshAgent navAgentComponent;
     public bool isMoving=false;
-    private UI_CanvasController canvasController;
     [SerializeField] private DialogueBase dialogue;
     [SerializeField] private List<string> dialogueStartLineID = new();
     [SerializeField] private string retriggerDialogueLineID;
-    int index;
+    [SerializeField]int index;
     [SerializeField] private GameObject homeLocation;
     [SerializeField] private QuestGiver questGiverComp;
     public bool dialogueFirst;
     private IconToggle questIcon;
     private Transform npcTransform;
+    [SerializeField] bool isWaiting = true;
+
+    public void SetIsWaiting(bool value)
+    {
+        isWaiting = value;
+    }
+
+    public int GetDialogueLineCount()
+    {
+        return dialogueStartLineID.Count;
+    }
     //on load
     public void Awake()
     {
@@ -26,13 +36,15 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     //on start
     public void Start()
     {
-        questGiverComp = GetComponent<QuestGiver>();
         navAgentComponent = GetComponent<NavMeshAgent>();
         dialogue = FindAnyObjectByType<DialogueBase>();
-        canvasController = FindAnyObjectByType<UI_CanvasController>();
         Debug.Log("NPC LOADED");
-        homeLocation = FindAnyObjectByType<LargeNest>().gameObject;
+        if(homeLocation == null)
+        {
+            homeLocation = FindAnyObjectByType<LargeNest>().gameObject;
+        }
         questIcon = GetComponent<IconToggle>();
+        TryGetComponent<QuestGiver>(out questGiverComp);
     }
 
     public void Update()
@@ -42,12 +54,24 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
             npcTransform = transform;
             MoveToLocation();
         }
-        if(questGiverComp.hasQuest == false || questGiverComp == null)
+        if(dialogueFirst == false&& questGiverComp == null && !isWaiting)
         {
             npcTransform = transform;
             questIcon.enabled = false;
             targetLocation = homeLocation.transform;
-            //isMoving = true;
+            isMoving = true;
+            return;
+        }
+        if (questGiverComp != null && !isWaiting)
+        {
+            if(questGiverComp.hasQuest == false)
+            {
+                npcTransform = transform;
+                questIcon.enabled = false;
+                targetLocation = homeLocation.transform;
+                isMoving = true;
+            }
+
         }
 
     }  
@@ -71,6 +95,8 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     //called from PlayerInteraction... opens and prints dialogue
     public void InteractWithNPCDialogue()
     {
+        if (dialogueStartLineID.Count == 0)
+            return;
         dialogue.SetNPCRef(this);
         if (dialogue.isRetrigger)
         {
@@ -78,13 +104,16 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         }
         else
         {
+            Debug.Log(index);
+            dialogue.isRetrigger = false;
             dialogue.PrintDialogue(dialogueStartLineID[index]);
             index++;
-            if (index <= dialogueStartLineID.Count - 1)
-            {
-                dialogue.isRetrigger = true;
-                index = 0;
-            }
+            Debug.Log(index);
+            //if (index >= dialogueStartLineID.Count)
+            //{
+            //    dialogue.isRetrigger = true;
+            //   index = 0;
+            //}
         }
 
 
@@ -107,13 +136,6 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
 
     }
 
-    public void ContinueDialogue()
-    {
-        index++;
-        dialogue.PrintDialogue(dialogueStartLineID[index]);
-    }
-
- 
 
 
 }
