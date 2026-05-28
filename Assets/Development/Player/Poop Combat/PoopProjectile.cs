@@ -45,7 +45,7 @@ public class PoopProjectile : MonoBehaviour
             launchSpeed = speed; // Fallback to default speed if player is stationary
         }
 
-        rb.linearVelocity = direction * launchSpeed;
+        //rb.linearVelocity = direction * launchSpeed;
 
     }
 
