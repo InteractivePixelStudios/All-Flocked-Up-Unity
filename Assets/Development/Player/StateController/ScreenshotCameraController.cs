@@ -6,14 +6,18 @@ using UnityEngine.Serialization;
 
 public class ScreenshotCameraController : MonoBehaviour
 {
-    //reference variables
-    [SerializeField] private InputAction moveAction;
-    [SerializeField] private Camera cam;
+    //prefab references - assign in inspector
     [SerializeField] private PlayerStateController psc;
     [SerializeField] private Transform camAnchorFront;
     [SerializeField] private Transform camAnchorBack;
-    [FormerlySerializedAs("UI_Hud")] [SerializeField] private UI_HudController uiHud;
     
+    //cross-scene references, need to be resolved at runtime
+    [SerializeField] private Camera cam;
+    [SerializeField] private UI_HudController uiHud;
+    private Collider cameraCollider;
+    private CinemachineBrain cinemachineBrain;
+    private Transform originalCamParent;   // remember where the camera came from
+
     //internal variables
     [SerializeField] bool isSelfie = false;
     private float pitch = 0f;
@@ -21,26 +25,29 @@ public class ScreenshotCameraController : MonoBehaviour
     [SerializeField] private float orientSpeed = 50f;
     [SerializeField] private float pitchLimit = 45f;
     [SerializeField] private float yawLimit = 60f;
+    [SerializeField] private InputAction moveAction;
+
+    
+   
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private Collider cameraCollider;
-    private CinemachineBrain cinemachineBrain;
     void Start()
     {
         
         //setting reference variables
         cam =  Camera.main;
-        cameraCollider = cam.GetComponent<Collider>();
-        cinemachineBrain = cam.GetComponent<CinemachineBrain>();
-        camAnchorFront = transform.Find("FrontCamAnchor");
-        camAnchorBack = transform.Find(("SelfieCamAnchor"));
+        if (cam != null)
+        {
+            cameraCollider = cam.GetComponent<Collider>();
+            cinemachineBrain = cam.GetComponent<CinemachineBrain>();
+        }
+       
         uiHud = FindAnyObjectByType<UI_HudController>();
         moveAction = InputSystem.actions.FindAction("Move");
-        if (!camAnchorFront)
-            Debug.Log("camAnchorFront is null");
-        if (!camAnchorBack)
-            Debug.Log("camAnchorBack is null");
-        
+        if (psc == null) Debug.LogError("PlayerStateController not wired", this);
+        if (camAnchorFront == null) Debug.LogError("FrontCamAnchor not wired", this);
+        if (camAnchorBack == null) Debug.LogError("SelfieCamAnchor not wired", this);
+
 
     }
 
