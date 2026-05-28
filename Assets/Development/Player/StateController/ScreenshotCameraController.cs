@@ -6,12 +6,12 @@ using UnityEngine.Serialization;
 
 public class ScreenshotCameraController : MonoBehaviour
 {
-    //prefab references - assign in inspector
+    [Header("Prefab components (assign via inspector)")]
     [SerializeField] private PlayerStateController psc;
     [SerializeField] private Transform camAnchorFront;
     [SerializeField] private Transform camAnchorBack;
     
-    //cross-scene references, need to be resolved at runtime
+    [Header("Run time components (assign via script")]
     [SerializeField] private Camera cam;
     [SerializeField] private UI_HudController uiHud;
     private Collider cameraCollider;
@@ -19,6 +19,7 @@ public class ScreenshotCameraController : MonoBehaviour
     private Transform originalCamParent;   // remember where the camera came from
 
     //internal variables
+    [Header("internal variables")]
     [SerializeField] bool isSelfie = false;
     private float pitch = 0f;
     private float yaw = 0f;
