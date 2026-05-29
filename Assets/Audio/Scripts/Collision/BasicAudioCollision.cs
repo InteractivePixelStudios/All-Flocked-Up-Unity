@@ -2,6 +2,7 @@
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using System.Collections;
 
 /* 
 ---Notes---
@@ -34,7 +35,13 @@ public class BasicAudioCollision : MonoBehaviour
     private Rigidbody rb;
     private float lastMagnitude; // The magnitude of the last velocity, this is used to determine the intensity of the collision sound, not used in current testing.
     private float impact;
+    [SerializeField] private float cooldown = 0.1f;
 
+    // Gating the sounds with a timer for now - Ideally, I would like to track if a sound is playing, but FMOD is not easy.
+    private bool canPlaySound = true;
+
+    // Minimum velocity required to trigger a collision sound, this is used to prevent sounds from playing for very minor collisions, not used in current testing.
+    private float minVel = 1f;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -51,12 +58,16 @@ public class BasicAudioCollision : MonoBehaviour
         lastHitPoint = collision.contacts[0].point;
         hasHit = true;
 
-        impact = collision.relativeVelocity.magnitude; // Get the magnitude of the collision impact, this is used to determine the intensity of the collision sound, not used in current testing.
-        PlayCollisionSound(); // Play the collision sound at the point of impact, with intensity based on the impact magnitude, this is used for more advanced sound control, not used in current testing
+        // Get the magnitude of the collision impact, this is used to determine the intensity of the collision sound, not used in current testing.
+        impact = collision.relativeVelocity.magnitude / 2;
+        //Debug.LogWarning("Collision detected with impact magnitude: " + impact);
+
+        // Play the collision sound at the point of impact, with intensity based on the impact magnitude, this is used for more advanced sound control, not used in current testing
+        PlayCollisionSound();
 
         // Below is testing ONLY, remove for production.
-        Vector3 forceDirection = collision.contacts[0].normal;
-        rb.AddForce(forceDirection * 10, ForceMode.Impulse); // DONT USE IMPACT - Endless growth of force.
+        //Vector3 forceDirection = collision.contacts[0].normal;
+        //rb.AddForce(forceDirection * 10, ForceMode.Impulse); // DONT USE IMPACT - Endless growth of force.
     }
 
     private void FixedUpdate()
@@ -82,10 +93,20 @@ public class BasicAudioCollision : MonoBehaviour
 
     private void PlayCollisionSound() // This is for more advanced sound control, not used in current testing.
     {
+        if (!canPlaySound || impact < minVel) return; // Check if we can play a sound and if the impact is above the minimum threshold
+
+        canPlaySound = false; // Set canPlaySound to false to prevent spamming
         collisionSoundInstance = RuntimeManager.CreateInstance(collisionSound);
         collisionSoundInstance.set3DAttributes(RuntimeUtils.To3DAttributes(lastHitPoint));
         collisionSoundInstance.setParameterByName("Impact", impact); // Set the impact parameter to control the intensity of the sound - could double it honestly, further testing needed.
         collisionSoundInstance.start();
+        StartCoroutine(CollisionSoundCooldown()); // Start the cooldown coroutine to reset canPlaySound after a short delay
+    }
+
+    private IEnumerator CollisionSoundCooldown() // This is for gating the sounds with a timer, not used in current testing.
+    {
+        yield return new WaitForSeconds(cooldown);
+        canPlaySound = true; // Reset canPlaySound to true after the cooldown period
     }
 }
 

@@ -79,6 +79,7 @@ public class FootstepLogicV2 : MonoBehaviour
     private Material currentSurfaceMaterial; // Cached material used for material group lookup
     private SurfaceIdentifier currentSurfaceIdentifier; // Cached SurfaceIdentifier when available
     private Terrain currentTerrain; // Cached Terrain when available
+    public bool Use3DSound = false; // Option to toggle 3D sound settings on footstep events, can be set per character
 
     private bool canGetNewSurfaceInfo = true; // Prevents stale surface data from being refreshed at the wrong time
 
@@ -96,7 +97,7 @@ public class FootstepLogicV2 : MonoBehaviour
 
     private void Update()
     {
-        Debug.DrawLine(surfaceDetectionOrigin.position, surfaceDetectionOrigin.position + Vector3.down * raycastDistance, Color.green); // Visualize the ground check ray
+        //Debug.DrawLine(surfaceDetectionOrigin.position, surfaceDetectionOrigin.position + Vector3.down * raycastDistance, Color.green); // Visualize the ground check ray
 
         if (!TryGetGround(out RaycastHit tempHit))
             return;
@@ -149,7 +150,14 @@ public class FootstepLogicV2 : MonoBehaviour
     private void PlayFootstepSound(int index) // Creates and plays a one-shot FMOD footstep event using the surface parameter
     {
         EventInstance footstepInstance = RuntimeManager.CreateInstance(footstepEvent);
+
+        if (Use3DSound)
+        {
+            footstepInstance.set3DAttributes(RuntimeUtils.To3DAttributes(rayHit.point)); // Set 3D position to the footstep location
+        }
+
         footstepInstance.setParameterByName("Surface", index);
+
         footstepInstance.start();
         footstepInstance.release(); // Safe for one-shot usage
     }
@@ -186,11 +194,11 @@ public class FootstepLogicV2 : MonoBehaviour
     // Material Group Resolver
     private void GetSurfaceTypeUsingMaterialGroups(RaycastHit hit, MeshRenderer meshRenderer) // Resolves the surface type by checking the hit object's material against defined groups
     {
-        Debug.Log("Resolving surface type using material groups for object: " + hit.collider.gameObject.name);
+        //Debug.Log("Resolving surface type using material groups for object: " + hit.collider.gameObject.name);
         currentSurfaceMaterial = meshRenderer.sharedMaterial; // Safe here, this path only runs when a MeshRenderer exists
         if (currentSurfaceMaterial == null)
         {
-            Debug.LogWarning("FootstepLogicV2: No material found on hit object for material group resolution.");
+            //Debug.LogWarning("FootstepLogicV2: No material found on hit object for material group resolution.");
             return;
         }
 
@@ -200,7 +208,7 @@ public class FootstepLogicV2 : MonoBehaviour
             {
                 surfaceType = group.surfaceType;
                 PlayFootstepSound((int)surfaceType); // Play the resolved footstep sound
-                Debug.Log("Material match found in group: " + group.surfaceType + " for material: " + currentSurfaceMaterial.name);
+                //Debug.Log("Material match found in group: " + group.surfaceType + " for material: " + currentSurfaceMaterial.name);
                 return;
             }
             // If no material match is found, no sound is played
@@ -217,7 +225,7 @@ public class FootstepLogicV2 : MonoBehaviour
     // Terrain Resolver
     private void GetSurfaceTypeUsingTerrainIndex(RaycastHit hit, Terrain terrain) // Resolves the surface type using the dominant terrain layer at the hit point
     {
-        Debug.Log("Resolving surface type using terrain data for object: " + hit.collider.gameObject.name);
+        //Debug.Log("Resolving surface type using terrain data for object: " + hit.collider.gameObject.name);
         Vector3 worldPosition = hit.point;
         int terrainIndex = GetDominantTerrainLayerIndex(worldPosition);
 

@@ -58,7 +58,7 @@ PrefabInstance:
       objectReference: {fileID: 952658372932632003, guid: 7bb59570f204a9d409b21f104e33eb96, type: 3}
     - target: {fileID: 919132149155446097, guid: 5e6c02eb32d2270488ca9d17ac665b3c, type: 3}
       propertyPath: m_Name
-      value: SM_Coffee
+      value: HumanThrownObject
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5e6c02eb32d2270488ca9d17ac665b3c, type: 3}
       propertyPath: m_Layer
@@ -88,6 +88,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e6c02eb32d2270488ca9d17ac665b3c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7522106880929435391}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5e6c02eb32d2270488ca9d17ac665b3c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6519974464652021368}
   m_SourcePrefab: {fileID: 100100000, guid: 5e6c02eb32d2270488ca9d17ac665b3c, type: 3}
 --- !u!1 &4780092493764111337 stripped
 GameObject:
@@ -168,3 +171,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ThrownObject
   damage: 1
+--- !u!114 &6519974464652021368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4780092493764111337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6348feef1ec15c547831cbae563c2aab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BasicAudioCollision
+  collisionSound:
+    Guid:
+      Data1: -48611661
+      Data2: 1108779638
+      Data3: 634583980
+      Data4: -1924076825
+    Path: event:/World/Props/Collisions/Paper Cup
+  objectType: 0

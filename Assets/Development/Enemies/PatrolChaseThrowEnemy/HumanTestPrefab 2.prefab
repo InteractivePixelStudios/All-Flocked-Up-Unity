@@ -193,6 +193,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 588872742438270558}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6261726470522054577}
   m_SourcePrefab: {fileID: 100100000, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
 --- !u!4 &1283460146543547471 stripped
 Transform:
@@ -368,6 +371,34 @@ MonoBehaviour:
       Data3: 134290610
       Data4: -1955566084
     Path: event:/Footsteps/Player_Footsteps
+--- !u!114 &-6261726470522054577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910674787607842549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84802b88fdc5f314b9d0a93f9800ad8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FootstepLogicV2
+  surfaceType: 0
+  surfaceDetectionLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  raycastDistance: 10
+  surfaceDetectionOrigin: {fileID: 3012089712872398011}
+  characterType: 4
+  footstepEvent:
+    Guid:
+      Data1: 578002996
+      Data2: 1227743199
+      Data3: -2061603400
+      Data4: -1355476905
+    Path: event:/Footsteps/Human_Footsteps
+  Use3DSound: 1
+  surfaceSourceType: 0
 --- !u!1001 &3334826325816081232
 PrefabInstance:
   m_ObjectHideFlags: 0

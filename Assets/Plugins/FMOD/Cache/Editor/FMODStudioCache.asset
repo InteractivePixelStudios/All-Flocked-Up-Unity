@@ -824,7 +824,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Player.bank
   Name: Player
   StudioPath: bank:/Player
-  lastModified: 639119568950997762
+  lastModified: 639156013471333299
   FileSizes: []
   Exists: 1
 --- !u!114 &-4682032281284765521
@@ -1211,9 +1211,38 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639119571045686811
+  lastModified: 639156049187665561
   FileSizes: []
   Exists: 1
+--- !u!114 &-1985290777964564208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/World/Props/Collisions/Paper Cup
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/World/Props/Collisions/Paper Cup
+  Guid:
+    Data1: -48611661
+    Data2: 1108779638
+    Data3: 634583980
+    Data4: -1924076825
+  Banks:
+  - {fileID: -2134919958698608152}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 7261055807096848735}
+  - {fileID: 7170726042208692290}
+  MinDistance: 0.1
+  MaxDistance: 15
+  Length: 0
 --- !u!114 &-1938068207246326525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1235,12 +1264,12 @@ MonoBehaviour:
   Banks:
   - {fileID: -4730711827226204098}
   IsStream: 0
-  Is3D: 0
+  Is3D: 1
   IsOneShot: 1
   Parameters:
   - {fileID: -3207714561961521807}
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 15
   Length: 0
 --- !u!114 &-1916845547845421992
 MonoBehaviour:
@@ -1533,13 +1562,14 @@ MonoBehaviour:
   - {fileID: -2589954290990661490}
   - {fileID: -5326435738105330024}
   - {fileID: -1938068207246326525}
+  - {fileID: -1985290777964564208}
   EditorParameters: []
   MasterBanks:
   - {fileID: 5399977135161620194}
   StringsBanks:
   - {fileID: 7192909602320462823}
   cacheVersion: 131858
-  cacheTime: 639119571045686811
+  cacheTime: 639156049187665561
   SerializableEventsDict:
   - key: event:/Ambience/WorldBirds
     index: 0
@@ -1591,6 +1621,8 @@ MonoBehaviour:
     index: 23
   - key: event:/Footsteps/Human_Footsteps
     index: 24
+  - key: event:/World/Props/Collisions/Paper Cup
+    index: 25
 --- !u!114 &73506915100599220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1793,7 +1825,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 639119448049983939
+  lastModified: 639155927108244361
   FileSizes: []
   Exists: 1
 --- !u!114 &2091664739478511244
@@ -2224,7 +2256,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639119568950524267
+  lastModified: 639156025075251674
   FileSizes: []
   Exists: 1
 --- !u!114 &5600823441476282664
@@ -2417,6 +2449,30 @@ MonoBehaviour:
   lastModified: 639107431323413018
   FileSizes: []
   Exists: 1
+--- !u!114 &7170726042208692290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Paper Cup/Impact
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Impact
+  StudioPath: 
+  Min: 0
+  Max: 10
+  Default: 0
+  ID:
+    data1: 3220302367
+    data2: 2456279588
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &7192909602320462823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2432,10 +2488,37 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639119568950544471
+  lastModified: 639156025075256856
   FileSizes:
   - Name: 
-    Value: 2688
+    Value: 2752
+  Exists: 1
+--- !u!114 &7261055807096848735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Paper Cup/Thunk
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Thunk
+  StudioPath: 
+  Min: 0
+  Max: 2
+  Default: 0
+  ID:
+    data1: 1788311022
+    data2: 832937910
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
+  - Value B
+  - Value C
   Exists: 1
 --- !u!114 &7419841717107519623
 MonoBehaviour:

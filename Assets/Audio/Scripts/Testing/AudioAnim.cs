@@ -9,6 +9,7 @@ public class AudioAnim : MonoBehaviour // Dirty temp script - will be updated wh
     public bool run;
     public bool jump;
     public bool sneak;
+    public bool humanWalk;
 
     public float moveSpeed;
 
@@ -36,5 +37,6 @@ public class AudioAnim : MonoBehaviour // Dirty temp script - will be updated wh
         if (jump) animator.SetTrigger("Jump");
         if (sneak) animator.SetTrigger("Sneak");
         if (defeated) animator.SetTrigger("Defeat");
+        if (humanWalk) animator.SetTrigger("HumanWalk");
     }
 }
