@@ -225,6 +225,7 @@ public class DialogueBase : MonoBehaviour
         }
         else
         {
+            npcRef.dialogueFirst= false;
             isRetrigger = true;
         }
 

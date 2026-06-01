@@ -13,6 +13,8 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     [SerializeField] private string retriggerDialogueLineID;
     [SerializeField]int index;
     [SerializeField] private GameObject homeLocation;
+    [SerializeField] private GameObject warpLocation;
+    bool atWarpLoc = false;
     [SerializeField] private QuestGiver questGiverComp;
     public bool dialogueFirst;
     private IconToggle questIcon;
@@ -38,6 +40,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     {
         navAgentComponent = GetComponent<NavMeshAgent>();
         dialogue = FindAnyObjectByType<DialogueBase>();
+                        npcTransform = transform;
         Debug.Log("NPC LOADED");
         if(homeLocation == null)
         {
@@ -54,7 +57,14 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
             npcTransform = transform;
             MoveToLocation();
         }
-        if(dialogueFirst == false&& questGiverComp == null && !isWaiting)
+        if (warpLocation != null && !atWarpLoc && questGiverComp.readyToWarp) 
+        { 
+            transform.position = warpLocation.transform.position; 
+            transform.rotation = warpLocation.transform.rotation; 
+            isMoving = false;
+            atWarpLoc = true; 
+        }
+        if (dialogueFirst == false&& questGiverComp == null && !isWaiting)
         {
             npcTransform = transform;
             questIcon.enabled = false;
@@ -129,6 +139,12 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     public void MoveToLocation()
     {
         navAgentComponent.SetDestination(targetLocation.position);
+        navAgentComponent.updateRotation = true;
+        if(transform.position == targetLocation.position)
+        {
+            isMoving = false;
+            return;
+        }
     }
 
     public void HitReact()

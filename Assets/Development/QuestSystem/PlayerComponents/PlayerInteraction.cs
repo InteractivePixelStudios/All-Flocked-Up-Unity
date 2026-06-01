@@ -17,6 +17,7 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask shopLayer;
     public LayerMask wearableLayer;
     public LayerMask perchLayer;
+    public LayerMask rideLayer;
     public QuestLog questLog; // assign in Inspector
     public UI_CanvasController canvasController;
     public bool gamePaused;
@@ -116,6 +117,7 @@ public class PlayerInteraction : MonoBehaviour
             {
             Debug.Log("Pressed");
             var questNPC = hit.collider.GetComponentInParent<IQuestInteraction>();
+            var questGiver =  hit.collider.GetComponentInParent<QuestGiver>();
                 if (questNPC != null)
                 {
                 Debug.Log("FoundNPC");
@@ -126,9 +128,11 @@ public class PlayerInteraction : MonoBehaviour
                     NPC.InteractWithNPCDialogue();
                     Debug.Log("DialogueFirst");
                     NPC.dialogueFirst = false;
-                }else if(NPC.dialogueFirst == false && hit.collider.GetComponentInParent<QuestGiver>().hasQuest)
+                }else if(NPC.dialogueFirst == false && questGiver.quests.Count>0 && !questLog.HasQuest(questGiver.quests[0]))
                 {
-                    canvasController.ShowQuestGiver(hit.collider.GetComponentInParent<QuestGiver>());
+                    //questGiver.hasQuest = true;
+                    NPC.dialogueFirst = true;
+                    canvasController.ShowQuestGiver(questGiver);
                 }
                   
                 }
@@ -144,15 +148,15 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, dialogueLayer))
-            {
-                var dialogueInteractable = hit.collider.GetComponentInParent<NPCBase>();
-                if (dialogueInteractable != null)
-                {
-                    canvasController.OpenDialogue();
-                    dialogueInteractable.InteractWithNPCDialogue();
-                }
-            }
+            //if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, dialogueLayer))
+            //{
+            //    var dialogueInteractable = hit.collider.GetComponentInParent<NPCBase>();
+            //    if (dialogueInteractable != null)
+            //    {
+            //        canvasController.OpenDialogue();
+            //        dialogueInteractable.InteractWithNPCDialogue();
+            //    }
+            //}
 
             if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, trashLayer))
             {
@@ -195,7 +199,14 @@ public class PlayerInteraction : MonoBehaviour
                 shopObj?.InteractWithShop(box);
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, wearableLayer))
+        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward , out hit, interactionRange, rideLayer))
+        {
+            var rideObj = hit.collider.GetComponent<Rider_Base>();
+            Debug.Log(rideObj);
+            rideObj?.StartRiding();
+        }
+
+        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, wearableLayer))
             {
                 var wearableObj = hit.collider.gameObject;
                 var comp = wearableObj.GetComponent<Wearable_Base>();
@@ -301,6 +312,7 @@ public class PlayerInteraction : MonoBehaviour
     private void OnLevelWasLoaded(int level)
     {
         canvasController = FindAnyObjectByType<UI_CanvasController>();
+        questLog = FindAnyObjectByType<QuestLog>();
     }
 }
 

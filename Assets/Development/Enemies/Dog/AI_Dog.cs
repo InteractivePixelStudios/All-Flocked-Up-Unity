@@ -22,7 +22,6 @@ public class AI_Dog : EnemyBaseComponent
     [SerializeField] private GameObject biteColliderParent;
     [Header("Waypoints")]
     [SerializeField] private List<Waypoint> waypoints;
-    [SerializeField] private List<WaypointConnection> connections = new();
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]
@@ -249,29 +248,20 @@ public class AI_Dog : EnemyBaseComponent
 
     protected void ChooseNextDirection(Waypoint node)
     {
-        connections.Clear();
-
-        foreach (var connection in node.connections)
-            connections.Add(connection);
-
-        if (connections.Count == 0 && node.nextWaypoint != null)
-        {
-            connections.Add(new WaypointConnection { node = node.nextWaypoint });
-
-        }
-        else
+        if (node.nextWaypoint == null)
         {
             FindRandomWaypoint();
             return;
         }
-
-        int randomIndex = Random.Range(0, connections.Count);
-        Waypoint nextNode = connections[randomIndex].node;
-        if (nextNode == null)
-            return;
-        previousNode = currentNode;
-        SetMoveToLocation(nextNode);
-        MoveDogToLocation();
+        else
+        {
+            Waypoint nextNode = node.nextWaypoint;
+            if (nextNode == null)
+                return;
+            previousNode = currentNode;
+            SetMoveToLocation(nextNode);
+            MoveDogToLocation();
+        }
 
     }
 }

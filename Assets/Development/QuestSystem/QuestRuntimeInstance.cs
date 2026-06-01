@@ -180,7 +180,7 @@ public class QuestRuntimeInstance
         }
 
         GetQuestObjects();
-
+        dialogueComp.dialogueFirst = true;
         destination = GetObjectiveDestination(objectives[0].objectiveID);
         arrowPointer.SetDestination(destination);
     }
@@ -199,6 +199,11 @@ public class QuestRuntimeInstance
             if (currentStageIndex >= 0 && currentStageIndex < questData.stages.Length && questData.stages[currentStageIndex].hasDialogueAfter)
             {
                 CallDialogue();
+
+            }
+            else if (currentStageIndex >= 0 && currentStageIndex < questData.stages.Length && questData.stages[currentStageIndex].hasWarpAfter)
+            {
+                questLog.currentQuestGiver.readyToWarp = true;
 
             }
             SetupStage();
