@@ -31,7 +31,7 @@ public class AI_Dog : EnemyBaseComponent
     [SerializeField] protected bool isStopped;
     [SerializeField] protected bool isRetreating;
 
-    private int currentPointIndex = 0;
+    //private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Bite, Stop, Hit, Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
@@ -153,7 +153,6 @@ public class AI_Dog : EnemyBaseComponent
 
         }
         FindRandomWaypoint();
-        Debug.Log("CheckforWaypoints");
     }
 
 
@@ -161,7 +160,6 @@ public class AI_Dog : EnemyBaseComponent
     {
         var randomIndex = Random.Range(0, waypoints.Count);
         this.currentNode = waypoints[randomIndex];
-        Debug.Log("H");
     }
 
 

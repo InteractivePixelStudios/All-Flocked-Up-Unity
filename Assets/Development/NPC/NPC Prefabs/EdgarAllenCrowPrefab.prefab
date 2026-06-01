@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d5cec5f4c9ee7345888ed8132eacdbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iconRenderer: {fileID: 0}
+  iconRenderer: {fileID: 4145042042595739199}
   icon: {fileID: 21300000, guid: a07c2d927fc39364288304fe8e663a2f, type: 3}
   isActive: 0
 --- !u!114 &2033388328541733701
@@ -273,9 +273,14 @@ MonoBehaviour:
   dialogue: {fileID: 0}
   dialogueStartLineID: []
   retriggerDialogueLineID: 
+  index: 0
   homeLocation: {fileID: 0}
+  warpLocation: {fileID: 0}
+  readyToWarp: 0
+  atWarpLoc: 0
   questGiverComp: {fileID: 0}
   dialogueFirst: 0
+  isWaiting: 1
 --- !u!136 &2082838215003312999
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -317,6 +322,10 @@ MonoBehaviour:
   questName: 
   hasQuest: 0
   requiredCompletedQuests: []
+  questObjects: []
+  iconRef: {fileID: 0}
+  questIcon: {fileID: 0}
+  questComplete: 0
 --- !u!195 &7479047401098350472
 NavMeshAgent:
   m_ObjectHideFlags: 0

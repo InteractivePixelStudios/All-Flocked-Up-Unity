@@ -19,7 +19,7 @@ public class QuestRuntimeInstance
     public QuestLog questLog;
     private EXPSystem expComp;
     private PlayerWingventory invComp;
-    private NPCBase dialogueComp;
+    public NPCBase dialogueComp; // currentQuestGiver
     UI_CanvasController canvasController;
     public float currentTime;
 
@@ -76,7 +76,6 @@ public class QuestRuntimeInstance
         SetQuestID(questData.questID);
         destination = GetObjectiveDestination(objectives[0].objectiveID);
          await Task.Delay(1000);
-        dialogueComp = questLog.currentQuestGiver.GetComponent<NPCBase>();
         arrowPointer.EnablePointerArrow(destination);
         SetupStage();
 
@@ -199,17 +198,18 @@ public class QuestRuntimeInstance
             if (currentStageIndex >= 0 && currentStageIndex < questData.stages.Length && questData.stages[currentStageIndex].hasDialogueAfter)
             {
                 CallDialogue();
-
+               
             }
-            else if (currentStageIndex >= 0 && currentStageIndex < questData.stages.Length && questData.stages[currentStageIndex].hasWarpAfter)
+            if (currentStageIndex >= 0 && currentStageIndex < questData.stages.Length && questData.stages[currentStageIndex-1].hasWarpAfter)
             {
-                questLog.currentQuestGiver.readyToWarp = true;
+                dialogueComp.SetReadyToWarp(true);
 
             }
-            SetupStage();
+                SetupStage();
         }
         if (currentStageIndex >= questData.stages.Length)
         {
+
             CompleteQuest();
         }
     }

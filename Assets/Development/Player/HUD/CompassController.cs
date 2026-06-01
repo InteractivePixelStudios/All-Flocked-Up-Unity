@@ -85,7 +85,6 @@ public class CompassController : MonoBehaviour
         foreach (var obj in worldTargets)
         {
             var sprite = obj.GetComponent<MapIcon>().GetCurrentSprite();
-            Debug.Log(sprite);
             var spawnedIcon = Instantiate(iconPrefab,hudController.transform);
             var comp = spawnedIcon.GetComponent<RectTransform>();
             mapMarkers.Add(comp);

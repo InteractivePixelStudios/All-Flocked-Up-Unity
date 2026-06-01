@@ -39,7 +39,7 @@ public class AI_Cat : EnemyBaseComponent
     [SerializeField] protected bool isRetreating;
     [SerializeField] protected bool canSeePlayer;
 
-    private int currentPointIndex = 0;
+   // private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Swat, Pounce, Stop, Hit, Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 

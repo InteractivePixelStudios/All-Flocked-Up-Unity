@@ -101,6 +101,7 @@ public class QuestLog : MonoBehaviour
             
         };
         instance.StartQuest();
+        instance.dialogueComp = questGiver.GetComponent<NPCBase>();
         activeQuests.Add(instance);
         hasQuest = true;
         currentQuestGiver = questGiver;

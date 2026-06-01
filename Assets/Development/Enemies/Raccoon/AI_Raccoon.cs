@@ -291,7 +291,7 @@ public class AI_Raccoon : EnemyBaseComponent
 
 
 
-    public void TakeDamage(int damage)
+    public new void TakeDamage(int damage)
     {
 
 

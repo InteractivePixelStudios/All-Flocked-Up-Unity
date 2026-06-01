@@ -167,7 +167,7 @@ public class UI_VideoOptions : UI_SettingsMenu
 
         for (int i = 0; i < resolutions.Length; i++)
         {
-            string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + resolutions[i].refreshRate + "hz" ; ;
+            string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + resolutions[i].refreshRateRatio + "hz" ; ;
             options.Add(option);
             if (savedIndex == resolBase &&
                 resolutions[i].width == Screen.currentResolution.width &&
