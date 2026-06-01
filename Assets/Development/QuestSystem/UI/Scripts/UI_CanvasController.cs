@@ -326,6 +326,7 @@ public class UI_CanvasController : MonoBehaviour
             activeNotifInstance.SetNotifText(text);
             return;
         }
+        if (activeDialogueInstance != null) return;
         activeNotifInstance = Instantiate(questNotifCanvas);
         ApplySavedContrast();
         activeNotifInstance.SetNotifText(text);

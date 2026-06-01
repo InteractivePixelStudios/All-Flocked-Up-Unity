@@ -42,7 +42,7 @@ public class EnemyPatrol : EnemyBaseComponent
     [SerializeField] protected bool isStopped;
     [SerializeField] protected bool isRetreating;
     [SerializeField] protected bool isIdleStart;
-    bool canSeePlayer;
+    [SerializeField]bool canSeePlayer;
     bool locationSet;
 
     private int currentPointIndex = 0;
@@ -84,7 +84,7 @@ public class EnemyPatrol : EnemyBaseComponent
             case EnemyState.Patrolling:
                 if (this.isHit) currentState = EnemyState.Hit;
                 if (this.isIdleStart && !this.isHit) currentState = EnemyState.Stop;
-                else if (playerStealth.GetStealth() < 10 && distanceToPlayer < detectionRange && !this.isHit)
+                else if (playerStealth.GetStealth() < 10 && canSeePlayer && !this.isHit)
                     currentState = EnemyState.Chasing;
 
                 break;
@@ -92,7 +92,7 @@ public class EnemyPatrol : EnemyBaseComponent
             case EnemyState.Chasing:
                 if (this.isHit)
                     currentState = EnemyState.Hit;
-                else if (distanceToPlayer > detectionRange && !this.isHit)
+                else if (canSeePlayer && !this.isHit)
                     currentState = EnemyState.Patrolling;
                 else if (distanceToPlayer < kickRange && !this.isHit)
                     currentState = EnemyState.Kicking;
@@ -310,7 +310,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
    protected void ChasePlayer()
     {
-        if (isKicking || isThrowing) return;
+        if (isKicking || isThrowing || !canSeePlayer) return;
         animController.SetFloat("Speed", navAgent.speed);
         Vector3 targetPos = player.transform.position;
         targetPos.y = transform.position.y;
@@ -325,6 +325,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
     protected async void KickPlayer()
     {
+        if (!isKicking || isThrowing || !canSeePlayer) return;
         isKicking = true;
         StopMove();
         var spawnedCollider = kickColliderParent.AddComponent<SphereCollider>();
@@ -341,6 +342,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
     protected async void ThrowObject()
     {
+        if (isKicking || !isThrowing || !canSeePlayer) return;
         isThrowing = true;
         StopMove();
         Vector3 facingDir = (player.transform.position - transform.position).normalized;
