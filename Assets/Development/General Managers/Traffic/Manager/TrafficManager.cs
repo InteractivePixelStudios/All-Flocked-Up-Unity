@@ -90,7 +90,6 @@ public class TrafficManager : MonoBehaviour
             }
 
         }
-        Debug.Log("CheckforWaypoints");
     }
 
     private void GroupTrafficLights()

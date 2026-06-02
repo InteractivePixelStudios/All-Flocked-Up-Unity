@@ -11,7 +11,6 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
     public bool repeatable = false; //Is Quest repeatable?
     public string questName;
     public bool hasQuest;
-    public bool readyToWarp;
 
     [Header("Prerequisites")]
     public List<QuestDetails> requiredCompletedQuests = new(); //List of REQUIRED COMPLETED QUESTS.

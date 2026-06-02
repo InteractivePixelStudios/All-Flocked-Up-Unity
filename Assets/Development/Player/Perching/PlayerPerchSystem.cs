@@ -8,7 +8,7 @@ public class PlayerPerchSystem : MonoBehaviour
     [SerializeField] private IconToggle icon;
     public bool isReady;
     bool isPerching;
-    [SerializeField] private float checkDistance = 5f;
+    //[SerializeField] private float checkDistance = 5f;
     public bool moveLeft;
     public bool moveRight;
     float x;

@@ -19,7 +19,7 @@ public class HumanGeneratorManager : MonoBehaviour
 
     public Mesh[] GenerateHuman()
     {
-        int rand = UnityEngine.Random.Range(0, 4);
+        int rand = UnityEngine.Random.Range(0, BodyTypeMeshes.Length);
 
         int index = 1;
 

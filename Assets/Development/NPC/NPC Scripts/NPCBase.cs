@@ -8,18 +8,25 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     public Transform targetLocation;
     [SerializeField] private NavMeshAgent navAgentComponent;
     public bool isMoving=false;
+    bool destinationSet;
     [SerializeField] private DialogueBase dialogue;
     [SerializeField] private List<string> dialogueStartLineID = new();
     [SerializeField] private string retriggerDialogueLineID;
     [SerializeField]int index;
     [SerializeField] private GameObject homeLocation;
     [SerializeField] private GameObject warpLocation;
-    bool atWarpLoc = false;
+    [SerializeField]bool readyToWarp;
+   [SerializeField] bool atWarpLoc = false;
     [SerializeField] private QuestGiver questGiverComp;
     public bool dialogueFirst;
     private IconToggle questIcon;
-    private Transform npcTransform;
     [SerializeField] bool isWaiting = true;
+
+    public void SetReadyToWarp(bool value)
+    {
+        Debug.Log("readytowarp Set");
+        readyToWarp = value;
+    }
 
     public void SetIsWaiting(bool value)
     {
@@ -33,15 +40,13 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     //on load
     public void Awake()
     {
-        Debug.Log("Loading");
+
     }
     //on start
     public void Start()
     {
         navAgentComponent = GetComponent<NavMeshAgent>();
         dialogue = FindAnyObjectByType<DialogueBase>();
-                        npcTransform = transform;
-        Debug.Log("NPC LOADED");
         if(homeLocation == null)
         {
             homeLocation = FindAnyObjectByType<LargeNest>().gameObject;
@@ -54,32 +59,29 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     {
         if (targetLocation!=null && isMoving)
         {
-            npcTransform = transform;
             MoveToLocation();
         }
-        if (warpLocation != null && !atWarpLoc && questGiverComp.readyToWarp) 
-        { 
-            transform.position = warpLocation.transform.position; 
-            transform.rotation = warpLocation.transform.rotation; 
+        if (warpLocation != null && !atWarpLoc && readyToWarp) 
+        {
             isMoving = false;
+            navAgentComponent.Warp(warpLocation.transform.position);
             atWarpLoc = true; 
         }
-        if (dialogueFirst == false&& questGiverComp == null && !isWaiting)
+        if (dialogueFirst == false&& questGiverComp == null && !isWaiting &&!isMoving) //no quest giver... no dialogue...not waiting...for Racegiver
         {
-            npcTransform = transform;
             questIcon.enabled = false;
             targetLocation = homeLocation.transform;
             isMoving = true;
             return;
         }
-        if (questGiverComp != null && !isWaiting)
+        if (questGiverComp != null && !isWaiting &&!isMoving)//  questgiver... not waiting ....for questGiver
         {
-            if(questGiverComp.hasQuest == false)
+            if(!questGiverComp.hasQuest)
             {
-                npcTransform = transform;
                 questIcon.enabled = false;
                 targetLocation = homeLocation.transform;
                 isMoving = true;
+                return;
             }
 
         }
@@ -93,7 +95,8 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         retriggerDialogueLineID = npc.retriggerDialogueLineID;
         index = npc.index;
         isMoving = npc.isMoving;
-        npcTransform = npc.npcTransform;
+        transform.position = npc.transform.position;
+        transform.rotation = npc.transform.rotation;
     }
 
     //use this to add "Look at" effects like a prompt or something
@@ -138,10 +141,17 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     //call this to run like wind
     public void MoveToLocation()
     {
-        navAgentComponent.SetDestination(targetLocation.position);
-        navAgentComponent.updateRotation = true;
-        if(transform.position == targetLocation.position)
+        if (!destinationSet)
         {
+            navAgentComponent.SetDestination(targetLocation.position);
+            navAgentComponent.updateRotation = true;
+            destinationSet = true;
+            return;
+        }
+        if(!navAgentComponent.pathPending && navAgentComponent.remainingDistance <= navAgentComponent.stoppingDistance)
+        {
+            navAgentComponent.isStopped = true;
+            destinationSet = false;
             isMoving = false;
             return;
         }
