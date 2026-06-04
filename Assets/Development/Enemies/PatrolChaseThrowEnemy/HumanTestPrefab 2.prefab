@@ -107,15 +107,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.515
+      value: -138.67
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.207
+      value: 0.020000584
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2
+      value: 205.42
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -309,6 +309,7 @@ MonoBehaviour:
   isStopped: 0
   isRetreating: 0
   isIdleStart: 0
+  canSeePlayer: 0
   IsDead: 0
 --- !u!114 &2037677813416457259
 MonoBehaviour:
@@ -420,9 +421,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5607442402082922624, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_TagString
+      value: Human
+      objectReference: {fileID: 0}
     - target: {fileID: -1178242768378728529, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1178242768378728529, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_TagString
+      value: Human
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
       propertyPath: m_Name
@@ -436,37 +445,73 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Human
       objectReference: {fileID: 0}
+    - target: {fileID: 1427564092133216371, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_TagString
+      value: Human
+      objectReference: {fileID: 0}
     - target: {fileID: 1866636343151598899, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866636343151598899, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_TagString
+      value: Human
       objectReference: {fileID: 0}
     - target: {fileID: 2372129282398029845, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2372129282398029845, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_TagString
+      value: Human
+      objectReference: {fileID: 0}
     - target: {fileID: 4686587653079254794, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4686587653079254794, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_TagString
+      value: Human
       objectReference: {fileID: 0}
     - target: {fileID: 5077323888077884356, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5077323888077884356, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_TagString
+      value: Human
+      objectReference: {fileID: 0}
     - target: {fileID: 5441216353333529525, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5441216353333529525, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_TagString
+      value: Human
       objectReference: {fileID: 0}
     - target: {fileID: 6525959038804311920, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6525959038804311920, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_TagString
+      value: Human
+      objectReference: {fileID: 0}
     - target: {fileID: 7397418734998950440, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7397418734998950440, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_TagString
+      value: Human
+      objectReference: {fileID: 0}
     - target: {fileID: 8918139737045754297, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918139737045754297, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
+      propertyPath: m_TagString
+      value: Human
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: c4dacaa924320e5438c6fc283cbeebf9, type: 3}
@@ -573,9 +618,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1283460146543547471}
     m_Modifications:
+    - target: {fileID: 2441985750099005044, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: m_TagString
+      value: Human
+      objectReference: {fileID: 0}
     - target: {fileID: 4973094229493078606, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
       propertyPath: m_Name
       value: AlertPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 4973094229493078606, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: m_TagString
+      value: Human
       objectReference: {fileID: 0}
     - target: {fileID: 6113523591080228929, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
       propertyPath: m_Pivot.x
@@ -684,6 +737,10 @@ PrefabInstance:
     - target: {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
       propertyPath: alertEvent.Guid.Data4
       value: -1791261376
+      objectReference: {fileID: 0}
+    - target: {fileID: 8967198676991701113, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: m_TagString
+      value: Human
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

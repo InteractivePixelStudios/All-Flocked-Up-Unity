@@ -2,13 +2,15 @@ using NUnit.Framework.Constraints;
 using Steamworks;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
 {
     [SerializeField] private Q_KillComponent questKillComponent;
     public GameObject enemyRef;
+    [SerializeField] protected NavMeshAgent navAgent;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    
+
     void Awake()
     {
         questKillComponent = GetComponent<Q_KillComponent>();
@@ -17,6 +19,11 @@ public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
 
 
     void Update()
+    {
+
+    }
+
+    private void VisionConeSearch()
     {
 
     }

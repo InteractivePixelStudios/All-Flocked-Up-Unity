@@ -35,7 +35,6 @@ public class EnemyPatrol : EnemyBaseComponent
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]
-    [SerializeField] protected NavMeshAgent navAgent;
     [SerializeField] protected Animator animController;
     [SerializeField] protected Enemy_AlertIcon alertIcon;
     [SerializeField] protected bool isHit;
@@ -43,6 +42,7 @@ public class EnemyPatrol : EnemyBaseComponent
     [SerializeField] protected bool isRetreating;
     [SerializeField] protected bool isIdleStart;
     [SerializeField]bool canSeePlayer;
+    bool iconActive;
     bool locationSet;
 
     private int currentPointIndex = 0;
@@ -74,11 +74,25 @@ public class EnemyPatrol : EnemyBaseComponent
 
     void Update()
     {
+        navAgent.updatePosition = true;
         if(kickCooldown>=0) kickCooldown -= Time.deltaTime;
         if(throwCooldown>=0)throwCooldown -= Time.deltaTime;
         if(MoveAfterCooldown>=0) MoveAfterCooldown -= Time.deltaTime;
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        if(distanceToPlayer < detectionRange) { canSeePlayer = true; if (!canSeePlayer) { alertIcon.SetPlayerSeen(false);} else alertIcon.SetPlayerSeen(true); } else { canSeePlayer = false; alertIcon.SetPlayerSeen(false); }
+        if(distanceToPlayer < detectionRange) 
+        { 
+            canSeePlayer = true; 
+            if (!canSeePlayer && iconActive) 
+            { 
+                alertIcon.SetPlayerSeen(false);
+                iconActive = false;
+            } 
+            else if (canSeePlayer && !iconActive) alertIcon.SetPlayerSeen(true); iconActive = true;
+        } 
+        else 
+        { 
+            canSeePlayer = false; alertIcon.SetPlayerSeen(false); iconActive = false;
+        }
         switch (currentState)
         {
             case EnemyState.Patrolling:
