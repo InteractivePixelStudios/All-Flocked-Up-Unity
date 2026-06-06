@@ -299,6 +299,13 @@ MonoBehaviour:
   throwCooldown: 3
   throwObjectPrefab: {fileID: 4780092493764111337, guid: 34f8a8c788990e740806f0fe69516199, type: 3}
   objectSpawnPoint: {fileID: 7337802932682717551}
+  currentHeldObject: {fileID: 0}
+  holdList:
+  - {fileID: 190577054808988160, guid: 2c418dc471a8d114b9eb12e5630da171, type: 3}
+  - {fileID: 3157577530314214254, guid: 1542a388e2847914b8d647f64c739e25, type: 3}
+  - {fileID: 2769433764520600213, guid: d53f961c997061642a5d9b60c7c3c8c6, type: 3}
+  - {fileID: 4567726112435861742, guid: 495f98a21b611bc41855c08497b7dbc4, type: 3}
+  isHoldingItem: 0
   waypoints: []
   currentNode: {fileID: 0}
   previousNode: {fileID: 0}
@@ -625,6 +632,10 @@ PrefabInstance:
     - target: {fileID: 4973094229493078606, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
       propertyPath: m_Name
       value: AlertPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 4973094229493078606, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4973094229493078606, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
       propertyPath: m_TagString

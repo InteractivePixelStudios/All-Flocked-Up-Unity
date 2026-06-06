@@ -8,7 +8,6 @@ public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
 {
     [SerializeField] private Q_KillComponent questKillComponent;
     public GameObject enemyRef;
-    [SerializeField] protected NavMeshAgent navAgent;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     void Awake()

@@ -9,6 +9,7 @@ public class Enemy_AlertIcon : MonoBehaviour
     private bool playerSeen;
     bool soundPlayed;
     [SerializeField] EventReference alertEvent;
+    bool isShowing;
 
     public void SetPlayerSeen(bool value)
     {
@@ -18,19 +19,24 @@ public class Enemy_AlertIcon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerSeen)
+        if (playerSeen && !isShowing)
         {
             ShowIcon();
             MoveImage();
-
+            isShowing = true;
         }
-        else HideIcon();
+        else if (!playerSeen && isShowing)
+        {
+            HideIcon();
+            isShowing = false;
+        }
     }
 
     void MoveImage()
     {
-        var pos = fillImage.transform.localPosition.y;
-           pos = Mathf.Lerp(-12, -3, 2f);
+        Vector3 pos = fillImage.transform.localPosition;
+        pos.y = Mathf.Lerp(pos.y, -3f, Time.deltaTime * 5f);
+        fillImage.transform.localPosition = pos;
     }
 
     void ShowIcon()
@@ -40,6 +46,7 @@ public class Enemy_AlertIcon : MonoBehaviour
             AudioWizard.Instance.PlayOneshotSound(alertEvent, transform.position);
             soundPlayed = true;
         }
+
         icon.SetActive(true);
     }
 
