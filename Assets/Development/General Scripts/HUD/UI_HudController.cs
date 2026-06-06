@@ -39,7 +39,14 @@ public class UI_HudController : Singleton<UI_HudController>
     [SerializeField] private float currentPoop;
     [SerializeField] private float startPoop;
 
-    [SerializeField] private Image levelUpIcon;
+
+    [SerializeField] private Pooper pooperComp;
+    private PoopType currentPoopType;
+    [SerializeField] private List<Sprite> poopTypeSprites = new();
+    [SerializeField] private Image currentPoopSprite;
+
+
+[SerializeField] private Image levelUpIcon;
     [SerializeField] private EXPSystem expComp;
     [SerializeField] private int cachedLevel;
     float iconTimer = 5f;
@@ -79,15 +86,42 @@ public class UI_HudController : Singleton<UI_HudController>
         startStamina = staminaComp.GetMaxStamina();
         startPoop = poopComp.GetMaxPoop();
         currentPoop = poopComp.GetCurrentPoop();
+        pooperComp = playerRef.GetComponent<Pooper>();
         UpdateHealth();
         HideIcon();
         HideReticle();
         HideToDoPanel();
+        GetPoopType();
+        UpdatePoopTypeSprite(currentPoopType);
     }
 
     public bool GetIsTDOpen()
     {
         return isToDoOpen;
+    }
+
+    public void GetPoopType()
+    {
+        currentPoopType = pooperComp.poopType;
+    }
+
+    void UpdatePoopTypeSprite(PoopType type)
+    {
+        foreach(var t in poopTypeSprites)
+        {
+            if (t == type.hudSprite)
+            {
+                SetPoopSprite(t);
+                break;
+            }
+            else continue;
+        }
+    }
+
+    void SetPoopSprite(Sprite sprite)
+    {
+        if (sprite == null) return;
+        currentPoopSprite.sprite = sprite;
     }
 
     public void ShowReticle()
@@ -152,6 +186,7 @@ public class UI_HudController : Singleton<UI_HudController>
         if (currentHealth !=  healthComp.currentHealth) { currentHealth = healthComp.currentHealth; UpdateHealth(); } 
         if(currentStamina != staminaComp.GetCurrentStamina()) { currentStamina = staminaComp.GetCurrentStamina(); UpdateStamina(); }
         if (currentPoop != poopComp.GetCurrentPoop()) { currentPoop = poopComp.GetCurrentPoop(); UpdatePoop(); }
+        if(currentPoopSprite!= currentPoopType.hudSprite) { GetPoopType(); UpdatePoopTypeSprite(currentPoopType); }
         if (expComp.PLAYERLEVEL != cachedLevel)
         {
             cachedLevel = expComp.PLAYERLEVEL;

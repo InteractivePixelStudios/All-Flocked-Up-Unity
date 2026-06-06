@@ -5,6 +5,7 @@ public class PoopType : ScriptableObject
 {
     public string poopName;
     public float stunDuration = 2f; //adjust as needed
+    public Sprite hudSprite;
     
     //Visual & Audio - feel free to change names as needed
     public GameObject poopVisual;

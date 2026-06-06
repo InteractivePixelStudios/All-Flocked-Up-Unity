@@ -30,11 +30,16 @@ public class EnemyPatrol : EnemyBaseComponent
     bool isThrowing;
     [SerializeField] private GameObject throwObjectPrefab;
     [SerializeField] private Transform objectSpawnPoint;
+    [Header("HeldObject")]
+    [SerializeField] private GameObject currentHeldObject;
+    [SerializeField] private List<GameObject> holdList = new();
+    [SerializeField] private bool isHoldingItem;
     [Header("Waypoints")]
     [SerializeField] private List<Waypoint> waypoints;
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]
+    [SerializeField] protected NavMeshAgent navAgent;
     [SerializeField] protected Animator animController;
     [SerializeField] protected Enemy_AlertIcon alertIcon;
     [SerializeField] protected bool isHit;
@@ -59,6 +64,8 @@ public class EnemyPatrol : EnemyBaseComponent
         alertIcon = GetComponent<Enemy_AlertIcon>();
         FindWaypoints();
         currentState = EnemyState.Patrolling;
+        var rand = Random.Range(0, 1);
+        if (rand == 0) {  SpawnHeldItem(); } else return;
     }
 
     public  void SetIsHit()
@@ -79,19 +86,23 @@ public class EnemyPatrol : EnemyBaseComponent
         if(throwCooldown>=0)throwCooldown -= Time.deltaTime;
         if(MoveAfterCooldown>=0) MoveAfterCooldown -= Time.deltaTime;
         float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        if(distanceToPlayer < detectionRange) 
-        { 
-            canSeePlayer = true; 
-            if (!canSeePlayer && iconActive) 
-            { 
+        if (distanceToPlayer < detectionRange)
+        {
+            canSeePlayer = true;
+            if (!iconActive)
+            {
+                alertIcon.SetPlayerSeen(true);
+                iconActive = true;
+            }
+        }
+        else
+        {
+            canSeePlayer = false;
+            if (iconActive)
+            {
                 alertIcon.SetPlayerSeen(false);
                 iconActive = false;
-            } 
-            else if (canSeePlayer && !iconActive) alertIcon.SetPlayerSeen(true); iconActive = true;
-        } 
-        else 
-        { 
-            canSeePlayer = false; alertIcon.SetPlayerSeen(false); iconActive = false;
+            }
         }
         switch (currentState)
         {
@@ -106,11 +117,11 @@ public class EnemyPatrol : EnemyBaseComponent
             case EnemyState.Chasing:
                 if (this.isHit)
                     currentState = EnemyState.Hit;
-                else if (canSeePlayer && !this.isHit)
+                else if (!canSeePlayer)
                     currentState = EnemyState.Patrolling;
-                else if (distanceToPlayer < kickRange && !this.isHit)
+                else if (!isKicking && !isThrowing && distanceToPlayer < kickRange)
                     currentState = EnemyState.Kicking;
-                else if (distanceToPlayer < throwRange && !this.isHit)
+                else if (!isHoldingItem &&!isKicking && !isThrowing && distanceToPlayer < throwRange)
                     currentState = EnemyState.Throwing;
                 break;
 
@@ -280,6 +291,7 @@ public class EnemyPatrol : EnemyBaseComponent
     {
         animController.SetTrigger("isHit");
         isHit = false;
+        if(isHoldingItem && currentHeldObject!=null) { DropHeldItem(); }
         currentState = EnemyState.Retreat;
     }
     public override void OnHit()
@@ -356,7 +368,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
     protected async void ThrowObject()
     {
-        if (isKicking || !isThrowing || !canSeePlayer) return;
+        if (!isHoldingItem && isKicking || isThrowing || !canSeePlayer) return;
         isThrowing = true;
         StopMove();
         Vector3 facingDir = (player.transform.position - transform.position).normalized;
@@ -482,5 +494,24 @@ public class EnemyPatrol : EnemyBaseComponent
         }
         locationSet = true;
 
+    }
+
+    void SpawnHeldItem()
+    {
+        var rand = Random.Range(0, holdList.Count);
+        var spawned = Instantiate(holdList[rand]);
+        currentHeldObject = spawned;
+        spawned.GetComponent<Rigidbody>().isKinematic = true;
+        spawned.transform.SetParent(objectSpawnPoint, false);
+        spawned.transform.position = objectSpawnPoint.transform.position;
+        isHoldingItem = true;
+
+    }
+
+    void DropHeldItem()
+    {
+        currentHeldObject.GetComponent<Rigidbody>().isKinematic = false;
+        objectSpawnPoint.transform.DetachChildren();
+        isHoldingItem = false;
     }
 }
