@@ -71,7 +71,6 @@ public class DialogueBase : MonoBehaviour
 
         string[] importedLines = File.ReadAllLines(filePath);
 
-        Debug.Log(importedLines.Length);
         for (int i = currentDialogueIndex; i < importedLines.Length; i++)
         {
             string line = importedLines[i].Trim();
@@ -181,7 +180,6 @@ public class DialogueBase : MonoBehaviour
 
        // if (typerComplete) canvasController.dialogueCanvas.GetResponseOptions();
         
-        currentDialogueIndex++;
     }
 
     //checks if the currentBranchID string contains the returned response ID or if the currentDialogueLine != returned response ID.
@@ -195,7 +193,6 @@ public class DialogueBase : MonoBehaviour
             if (currentBranchID.Contains(responseReturnID) || currentDialogueLineID!=responseReturnID) { SetCurrentDialogue(responseReturnID); PrintDialogue(responseReturnID);Debug.Log("ResponseTriggered"); }
             else if (currentContinueStatus != "BREAK")
             {
-                Debug.Log("Next ID Triggered");
                 PrintDialogue(currentDialogueLineData.nextID);
             }
             if(currentContinueStatus == "BREAK")ClearDialogue(); 
@@ -217,10 +214,17 @@ public class DialogueBase : MonoBehaviour
             canvasController.activeDialogueInstance.ClearDialogueCanvas();
             await Task.Delay(200);
             canvasController.ShowQuestGiver(giver);
-            Debug.Log(giver + "Shows the quest");
         }
         else { canvasController.activeDialogueInstance.ClearDialogueCanvas(); }
-        isRetrigger = true;
+        if(currentDialogueIndex <= npcRef.GetDialogueLineCount())
+        {
+            currentDialogueIndex++;
+        }
+        else
+        {
+            npcRef.dialogueFirst= false;
+            isRetrigger = true;
+        }
 
     }
 

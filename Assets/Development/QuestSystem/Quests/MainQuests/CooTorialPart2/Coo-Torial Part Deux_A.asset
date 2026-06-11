@@ -41,7 +41,7 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   isMainQuest: 1
-  stagesToComplete: 1
+  stagesToComplete: 2
   isQuestTimed: 0
   questTime: 0
   autoAcceptQuest: 0
@@ -84,13 +84,59 @@ MonoBehaviour:
         m_FallbackState: 0
         m_WaitForCompletion: 0
         m_LocalVariables: []
-      objectiveType: Q_Interact
-      objectiveID: Q1-2_Obj1
+      objectiveType: Q_Location
+      objectiveID: Q1-2_Obj1A
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0
     expReward: 0
     trinketReward: 0
+    hasDialogueAfter: 1
+  - stageName:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 23054527680512
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    stageDescription:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 23089239740416
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    objectivesToComplete:
+    - objectiveName:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 23134395617280
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      objectiveDescription:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 23171313881088
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      objectiveType: Q_Interact
+      objectiveID: Q1-2_Obj1B
+      quantityToComplete: 1
+      isOptional: 0
+      bonusEXP: 0
+    expReward: 0
+    trinketReward: 0
+    hasDialogueAfter: 1
   itemRewards: []
   references:
     version: 2

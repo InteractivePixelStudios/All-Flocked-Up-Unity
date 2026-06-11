@@ -19,7 +19,7 @@ public class QuestRuntimeInstance
     public QuestLog questLog;
     private EXPSystem expComp;
     private PlayerWingventory invComp;
-    private NPCBase dialogueComp;
+    public NPCBase dialogueComp; // currentQuestGiver
     UI_CanvasController canvasController;
     public float currentTime;
 
@@ -76,7 +76,6 @@ public class QuestRuntimeInstance
         SetQuestID(questData.questID);
         destination = GetObjectiveDestination(objectives[0].objectiveID);
          await Task.Delay(1000);
-        dialogueComp = questLog.currentQuestGiver.GetComponent<NPCBase>();
         arrowPointer.EnablePointerArrow(destination);
         SetupStage();
 
@@ -144,8 +143,10 @@ public class QuestRuntimeInstance
         foreach (var obj in objectives)
         {
             if (objectiveProgress[objectiveID] + amount > obj.quantityToComplete) { return; }
+            cachedExp += obj.bonusEXP;
         }
         GetObjectiveDestination(objectiveID); 
+
         objectiveProgress[objectiveID] += amount;
         questLog.OnObjectiveUpdated(this, objectiveID, objectiveProgress[objectiveID]);
         arrowPointer.SetDestination(destination);
@@ -162,21 +163,9 @@ public class QuestRuntimeInstance
             if (!objectiveProgress.ContainsKey(obj.objectiveID)) return false;
             if (objectiveProgress[obj.objectiveID] < obj.quantityToComplete)
                 return false;
-            //not sure if this triggers properly
-            cachedExp += obj.bonusEXP;
-            
-            
-        }
-        if (questData.stages[currentStageIndex].hasDialogueAfter && currentStageIndex < questData.stages.Length)
-        {
-            CallDialogue();
-            //return false;
         }
         return true;
-        //else
-        //{
-        //    return true;
-        //}
+
 
     }
 
@@ -190,7 +179,7 @@ public class QuestRuntimeInstance
         }
 
         GetQuestObjects();
-
+        dialogueComp.dialogueFirst = true;
         destination = GetObjectiveDestination(objectives[0].objectiveID);
         arrowPointer.SetDestination(destination);
     }
@@ -206,10 +195,21 @@ public class QuestRuntimeInstance
         GetQuestObjects();
         if (!IsComplete)
         {
-             SetupStage();
+            if (currentStageIndex >= 0 && currentStageIndex < questData.stages.Length && questData.stages[currentStageIndex].hasDialogueAfter)
+            {
+                CallDialogue();
+               
+            }
+            if (currentStageIndex >= 0 && currentStageIndex < questData.stages.Length && questData.stages[currentStageIndex-1].hasWarpAfter)
+            {
+                dialogueComp.SetReadyToWarp(true);
+
+            }
+                SetupStage();
         }
         if (currentStageIndex >= questData.stages.Length)
         {
+
             CompleteQuest();
         }
     }

@@ -25,7 +25,7 @@ public class UI_RaceReward: MonoBehaviour
     [SerializeField] private ScrollRect nameTextBox;
     [SerializeField] private ScrollRect timeTextBox;
 
-    [SerializeField] private float currentY = 0f;
+    //[SerializeField] private float currentY = 0f;
 
     [SerializeField] private GameObject textPrefab;
     [SerializeField] private List<string> racerNames = new();

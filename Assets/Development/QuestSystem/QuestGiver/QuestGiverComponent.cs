@@ -80,7 +80,7 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
             return;
         }
 
-        if (quest.autoAcceptQuest)
+        if (MeetsPrerequisites(playerQuestLog) && !playerQuestLog.IsQuestCompleted(quest) && quest.autoAcceptQuest)
         {
           
             AcceptQuest(playerQuestLog, quest,this);
@@ -107,7 +107,6 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
         foreach (var q in quests)
         {
             if (!repeatable && playerQuestLog.HasQuestOrCompleted(q)) continue;
-            hasQuest = true;
             return q;
         }
         return null;
@@ -128,14 +127,13 @@ public class QuestGiver : MonoBehaviour, IQuestInteraction
     {
         log.AcceptQuest(quest,questGiver);
         ShowQuestObjects();
-        hasQuest = false;
         questComplete = false;
+        hasQuest = false;
 
         if ( log.IsQuestCompleted(quest) )//&& quest.autoCompleteQuest)
         {
             questComplete = true;
             log.MarkQuestTurnedIn(quest);
-
             Debug.Log("Quest auto-completed and turned in.");
            
         }

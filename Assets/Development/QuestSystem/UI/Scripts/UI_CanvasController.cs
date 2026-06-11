@@ -15,7 +15,7 @@ using UnityEngine.EventSystems;
 public class UI_CanvasController : MonoBehaviour
 {
     [SerializeField] private GameObject player;
-    [SerializeField] private CinemachineCamera cam;
+    [SerializeField] private CinemachineCamera camRef;
     [SerializeField] private List<NavMeshAgent> enemies;
 
     [Header("TimerCanvas")]
@@ -120,10 +120,32 @@ public class UI_CanvasController : MonoBehaviour
     {
         input = FindAnyObjectByType<PlayerInput>();
         player = input.gameObject;
+        var found = FindObjectsByType<CinemachineCamera>();
+        foreach(var cam in found)
+        {
+            if(cam.GetComponent<CinemachineOrbitalFollow>() != null && cam.CompareTag("Player"))
+            {
+                camRef = cam;
+            }
+        }
         var ui = FindObjectsByType<UnityEngine.UI.Graphic>();
         CacheUIColors(ui);
 
 
+    }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        var found = FindObjectsByType<CinemachineCamera>();
+        foreach (var cam in found)
+        {
+            if (cam.GetComponent<CinemachineOrbitalFollow>() != null && cam.CompareTag("Player"))
+            {
+                camRef = cam;
+            }
+        }
+        var ui = FindObjectsByType<UnityEngine.UI.Graphic>();
+        CacheUIColors(ui);
     }
 
 
@@ -159,9 +181,9 @@ public class UI_CanvasController : MonoBehaviour
             input.SwitchCurrentActionMap("Player");
             player.GetComponent<PlayerGroundMovement>().enabled = true;
             player.GetComponent<PlayerFlightMovement>().enabled = true;
-            cam.GetComponent<CinemachineOrbitalFollow>().enabled = true;
+            camRef.GetComponent<CinemachineOrbitalFollow>().enabled = true;
             isUIMap = false;
-            Debug.Log("PlayerMAP");
+           // Debug.Log("PlayerMAP");
 
         }
         else return;
@@ -174,9 +196,9 @@ public class UI_CanvasController : MonoBehaviour
             input.SwitchCurrentActionMap("UI");
             player.GetComponent<PlayerGroundMovement>().enabled = false;
             player.GetComponent<PlayerFlightMovement>().enabled = false;
-            cam.GetComponent<CinemachineOrbitalFollow>().enabled = false;
+            camRef.GetComponent<CinemachineOrbitalFollow>().enabled = false;
             isUIMap = true;
-            Debug.Log("UIMAP");
+            //Debug.Log("UIMAP");
         }
         else return;
     }
@@ -187,7 +209,7 @@ public class UI_CanvasController : MonoBehaviour
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        Debug.Log("Showing cursor");
+       // Debug.Log("Showing cursor");
     }
     //cursor off
     public void HidePlayerCursor()
@@ -195,7 +217,7 @@ public class UI_CanvasController : MonoBehaviour
         SetPlayerMap();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        Debug.Log("Hiding cursor");
+      //  Debug.Log("Hiding cursor");
     }
 
     //quest timer canvas
@@ -304,6 +326,7 @@ public class UI_CanvasController : MonoBehaviour
             activeNotifInstance.SetNotifText(text);
             return;
         }
+        if (activeDialogueInstance != null) return;
         activeNotifInstance = Instantiate(questNotifCanvas);
         ApplySavedContrast();
         activeNotifInstance.SetNotifText(text);
@@ -465,6 +488,7 @@ public class UI_CanvasController : MonoBehaviour
                 ShowPlayerCursor();
 
             }
+            Time.timeScale = 0;
             uiOpen = true;
         }
     }
@@ -480,6 +504,7 @@ public class UI_CanvasController : MonoBehaviour
 
             }
             raceRewardInstance = null;
+            Time.timeScale = 1;
             uiOpen = false;
         }
     }
@@ -489,13 +514,13 @@ public class UI_CanvasController : MonoBehaviour
         if (!uiOpen)
         {
             raceFailInstance = Instantiate(raceFailCanvas);
-            ApplySavedContrast();
-            SendStandings();
             if (!isUIMap)
             {
                 ShowPlayerCursor();
 
             }
+            ApplySavedContrast();
+            SendStandings();
             uiOpen = true;
         }
     }
@@ -946,6 +971,9 @@ public class UI_CanvasController : MonoBehaviour
 
         foreach (var element in ui)
         {
+            if (element == null)
+                continue;
+
             if (!cachedUIColors.ContainsKey(element))
             {
                 cachedUIColors[element] = element.color;
@@ -954,14 +982,21 @@ public class UI_CanvasController : MonoBehaviour
             if (!value)
             {
                 if (cachedUIColors.TryGetValue(element, out var originalColor))
+                {
                     element.color = originalColor;
+                }
             }
             else
             {
-                if (element is UnityEngine.UI.Text || element is TMPro.TextMeshProUGUI)
+                if (element is UnityEngine.UI.Text ||
+                    element is TMPro.TextMeshProUGUI)
+                {
                     element.color = Color.white;
+                }
                 else
+                {
                     element.color = Color.gray;
+                }
             }
         }
     }
