@@ -19,7 +19,6 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] protected List<GameObject> cinematicPrefabList = new();
     [SerializeField] protected int cinematicIndex = 0;
     [SerializeField] protected bool isPlayingCinematic;
-
     [SerializeField] protected bool hasMoved;
     [SerializeField] protected bool hasJumped;
     protected int jumpCount;
@@ -33,6 +32,8 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] protected bool tutComplete;
     [SerializeField] protected AchievementUnlocker achievement;
     bool achGiven;
+    CinematicController cinematic;
+    [SerializeField] private List<bool> savedTut = new();
 
 
     protected int arrowIndex;
@@ -76,10 +77,14 @@ public class TutorialManager : MonoBehaviour
             }
 
         }
+        if (tutComplete)
+        {
+            tutIndex = 7;
+        }
         switch (tutIndex)
         {
             case 0:
-                if (fireAction.WasPressedThisFrame())
+                if (clickAction.WasPressedThisFrame())
                 {
                     playerMove.enabled = true;
                     playerFlight.enabled = true;
@@ -133,13 +138,12 @@ public class TutorialManager : MonoBehaviour
             case 4:
                 if (clickAction.WasPressedThisFrame())
                 {
-                    if (!introComplete)
-                    {
-
 
                         if (introIndex > 4)
                         {
-                            introComplete = true;
+                            canvasController.activeTutPrompt.SetArrowIndex(-1);
+                            promptIndex++;
+                            SetTutState(5);
                         }
                         else
                         {
@@ -148,67 +152,44 @@ public class TutorialManager : MonoBehaviour
                             UpdatePrompt(promptIndex);
                             canvasController.activeTutPrompt.SetArrowIndex(introIndex);
                         }
-                    }
-                    else if (introComplete)
-                    {
-
-                        canvasController.activeTutPrompt.SetArrowIndex(-1);
-                        promptIndex++;
-                        SetTutState(5);
-
-                    }
                 }
                 return;
             case 5:
-                if (cinematicIndex >= cinematicPrefabList.Count && !isPlayingCinematic)
+                if (cinematicIndex >= cinematicPrefabList.Count)
                 {
                     SetTutState(6);
                     return;
                 }
-                var cinematic = cinematicPrefabList[cinematicIndex].GetComponent<CinematicController>();
                 if (!isPlayingCinematic)
                 {
+
                     SwitchOnCinematic();
                     return;
                 }
-                else if (clickAction.WasPressedThisFrame())
+                if (isPlayingCinematic && clickAction.WasPressedThisFrame())
                 {
-
-                    promptIndex++;
-                    UpdatePrompt(promptIndex);
-                    if (cinematicIndex < cinematicPrefabList.Count)
+                    if (cinematicIndex <= cinematicPrefabList.Count)
                     {
                         cinematicIndex++;
                     }
-                    isPlayingCinematic = false;
-                    return;
-                }
-                else if (isPlayingCinematic && !cinematic.isPlaying)
-                {
-
-
+                    cinematic.isPlaying = false;
+                    cinematic.gameObject.SetActive(false);
                     promptIndex++;
                     UpdatePrompt(promptIndex);
-                    if (cinematicIndex < cinematicPrefabList.Count)
-                    {
-                        cinematicIndex++;
-                    }
                     isPlayingCinematic = false;
                     return;
-                }
-                return;
+                }return;
             case 6:
                 if (clickAction.WasPressedThisFrame())
                 {
-                    promptIndex++;
                     if (promptIndex >= 15)
                     {
                         SetTutState(7);
                     }
+                    promptIndex++;
                     UpdatePrompt(promptIndex);
                     IncrementBindIndex();
                     UpdateBindSprites(keyboardBindIndex, controlBindIndex);
-
                 }
                 return;
             case 7:
@@ -255,12 +236,82 @@ public class TutorialManager : MonoBehaviour
     {
         if (cinematicIndex >= cinematicPrefabList.Count) return;
 
-        if (!cinematicPrefabList[cinematicIndex].activeSelf)
+        if (!cinematicPrefabList[cinematicIndex].activeSelf == true)
         {
             cinematicPrefabList[cinematicIndex].SetActive(true);
+            cinematic = cinematicPrefabList[cinematicIndex].GetComponent<CinematicController>();
         }
 
         isPlayingCinematic = true;
+    }
+
+    public void LoadSavedTut(List<bool> data)
+    {
+        for(int i=0; i<data.Count; i++)
+        {
+            if (i == 0)
+            {
+                if (data[0] == true)
+                {
+                    introComplete = true;
+                    return;
+                }
+                else continue;
+            }
+            else if (i == 1)
+            {
+                if (data[1] == true)
+                {
+                    speakWithQ1 = true;
+                    return;
+                }
+                else continue;
+            }
+            else if (i == 2)
+            {
+                if (data[2] == true)
+                {
+                    speakWithQ2 = true;
+                    return;
+                }
+                else continue;
+            }
+            else if (i == 3)
+            {
+                if (data[3] == true)
+                {
+                    speakWithQ3 = true;
+                    return;
+                }
+                else continue;
+            }
+            else if (i == 4)
+            {
+                if (data[4] == true)
+                {
+                    tutComplete = true;
+                    return;
+                }
+                else continue;
+            }
+            else return;
+        }
+
+    }
+
+    private void MakeSaveList()
+    {
+        savedTut.Add(introComplete);
+        savedTut.Add(speakWithQ1);
+        savedTut.Add(speakWithQ2);
+        savedTut.Add(speakWithQ3);
+        savedTut.Add(tutComplete);
+    }
+
+    public List<bool> ReturnTutData()
+    {
+        MakeSaveList();
+        return savedTut;
     }
 
 }

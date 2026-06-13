@@ -17,6 +17,7 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask shopLayer;
     public LayerMask wearableLayer;
     public LayerMask perchLayer;
+    public LayerMask rideLayer;
     public QuestLog questLog; // assign in Inspector
     public UI_CanvasController canvasController;
     public bool gamePaused;
@@ -70,7 +71,7 @@ public class PlayerInteraction : MonoBehaviour
             inventoryAction.performed += OpenInventory;
             pauseAction.performed += OpenPause;
            // debugAction.performed += OpenDebug;
-            reportAction.performed += OpenReport;
+           // reportAction.performed += OpenReport;
         }
         
     }
@@ -79,31 +80,31 @@ public class PlayerInteraction : MonoBehaviour
         return isWingventoryOpen;
     }
 
-    public void OpenReport(InputAction.CallbackContext ctx)
-    {
-        if (canvasController.activeBugReporter == null)
-        {
-            canvasController.OpenBugReporter();
-        }
-        else
-        {
-            canvasController.CloseBugReporter();
-            uiOn = false;
-        }
-    }
+    //public void OpenReport(InputAction.CallbackContext ctx)
+    //{
+    //    if (canvasController.activeBugReporter == null)
+    //    {
+    //        canvasController.OpenBugReporter();
+    //    }
+    //    else
+    //    {
+    //        canvasController.CloseBugReporter();
+    //        uiOn = false;
+    //    }
+    //}
 
-    public void OpenDebug(InputAction.CallbackContext ctx)
-    {
-        if (canvasController.activeBugReporter == null)
-        {
-            canvasController.OpenDebugMenu();
-        }
-        else
-        {
-            canvasController.CloseDebugMenu();
-            uiOn = false;
-        }
-    }
+    //public void OpenDebug(InputAction.CallbackContext ctx)
+    //{
+    //    if (canvasController.activeBugReporter == null)
+    //    {
+    //        canvasController.OpenDebugMenu();
+    //    }
+    //    else
+    //    {
+    //        canvasController.CloseDebugMenu();
+    //        uiOn = false;
+    //    }
+    //}
 
 
 
@@ -116,6 +117,7 @@ public class PlayerInteraction : MonoBehaviour
             {
             Debug.Log("Pressed");
             var questNPC = hit.collider.GetComponentInParent<IQuestInteraction>();
+            var questGiver =  hit.collider.GetComponentInParent<QuestGiver>();
                 if (questNPC != null)
                 {
                 Debug.Log("FoundNPC");
@@ -126,9 +128,11 @@ public class PlayerInteraction : MonoBehaviour
                     NPC.InteractWithNPCDialogue();
                     Debug.Log("DialogueFirst");
                     NPC.dialogueFirst = false;
-                }else if(NPC.dialogueFirst == false)
+                }else if(NPC.dialogueFirst == false && questGiver.quests.Count>0 && !questLog.HasQuest(questGiver.quests[0]))
                 {
-                    canvasController.ShowQuestGiver(hit.collider.GetComponentInParent<QuestGiver>());
+                    //questGiver.hasQuest = true;
+                    NPC.dialogueFirst = true;
+                    canvasController.ShowQuestGiver(questGiver);
                 }
                   
                 }
@@ -144,15 +148,15 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, dialogueLayer))
-            {
-                var dialogueInteractable = hit.collider.GetComponentInParent<NPCBase>();
-                if (dialogueInteractable != null)
-                {
-                    canvasController.OpenDialogue();
-                    dialogueInteractable.InteractWithNPCDialogue();
-                }
-            }
+            //if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, dialogueLayer))
+            //{
+            //    var dialogueInteractable = hit.collider.GetComponentInParent<NPCBase>();
+            //    if (dialogueInteractable != null)
+            //    {
+            //        canvasController.OpenDialogue();
+            //        dialogueInteractable.InteractWithNPCDialogue();
+            //    }
+            //}
 
             if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, trashLayer))
             {
@@ -163,14 +167,16 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, raceLayer))
+        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, raceLayer))
+        {
+            var raceGiver = hit.collider.GetComponent<RaceGiver>();
+            if (raceGiver != null)
             {
-                var raceGiver = hit.collider.GetComponent<RaceGiver>();
-                if (raceGiver != null)
-                {
+
                     raceGiver.InteractWithRaceGiver();
-                }
             }
+            
+        }
 
 
             if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, nestLayer))
@@ -193,7 +199,14 @@ public class PlayerInteraction : MonoBehaviour
                 shopObj?.InteractWithShop(box);
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, wearableLayer))
+        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward , out hit, interactionRange, rideLayer))
+        {
+            var rideObj = hit.collider.GetComponent<Rider_Base>();
+            Debug.Log(rideObj);
+            rideObj?.StartRiding();
+        }
+
+        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, wearableLayer))
             {
                 var wearableObj = hit.collider.gameObject;
                 var comp = wearableObj.GetComponent<Wearable_Base>();
@@ -207,7 +220,7 @@ public class PlayerInteraction : MonoBehaviour
             }
 
             RaycastHit lookHit;
-            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out lookHit, interactionRange, npcLayer))
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out  lookHit, interactionRange, npcLayer))
             {
                 var questNPC = lookHit.collider.GetComponentInParent<IQuestInteraction>();
                 questNPC?.LookAtNPC();
@@ -248,16 +261,20 @@ public class PlayerInteraction : MonoBehaviour
 
         void OpenQuestLog(InputAction.CallbackContext ctx)
         {
-            if (canvasController.activeLogInstance == null)
+        if (UI_HudController.Instance!= null)
+        {
+            if (UI_HudController.Instance.GetIsTDOpen() == false)
             {
-                canvasController.ShowQuestLog();
+                canvasController.ShowToDoPanel();
             }
-            else canvasController.DestroyQuestLog(); uiOn = false;
+            else { canvasController.HideToDoPanel(); uiOn = false; }
+        }
+        
     }
 
         void OpenMap(InputAction.CallbackContext ctx)
         {
-            if (canvasController.activeMapCanvas == null)
+            if (canvasController.activeMapCanvas == null && !canvasController.uiOpen)
             {
                 canvasController.OpenMainMap();
             }
@@ -269,7 +286,7 @@ public class PlayerInteraction : MonoBehaviour
 
         void OpenInventory(InputAction.CallbackContext ctx)
         {
-            if (canvasController.activeWingventory == null)
+            if (canvasController.activeWingventory == null && !canvasController.uiOpen)
             {
                 canvasController.OpenWingventory();
                 isWingventoryOpen = true;
@@ -295,6 +312,7 @@ public class PlayerInteraction : MonoBehaviour
     private void OnLevelWasLoaded(int level)
     {
         canvasController = FindAnyObjectByType<UI_CanvasController>();
+        questLog = FindAnyObjectByType<QuestLog>();
     }
 }
 

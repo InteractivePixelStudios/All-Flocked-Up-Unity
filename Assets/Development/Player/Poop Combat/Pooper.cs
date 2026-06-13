@@ -47,6 +47,11 @@ public class Pooper : MonoBehaviour
         isFlying = groundComp.GetIsFlying();
         return isFlying;
     }
+
+    public void SetPoopType(PoopType type)
+    {
+        poopType = type;
+    }
     private void Start()
     {
         groundComp = GetComponent<PlayerGroundMovement>();
@@ -92,7 +97,7 @@ public class Pooper : MonoBehaviour
             }
             else cam.TargetOffset = new Vector3(0, 0, 0); 
         }
-        if (isAiming && !isTurning)
+        if (GetIsFlying()==false && isAiming && !isTurning)
         {
             RotateMeshToCamera();
         }
@@ -152,7 +157,6 @@ public class Pooper : MonoBehaviour
         else return;
 
         //Show aiming UI here if needed
-
     }
 
 
@@ -182,6 +186,7 @@ public class Pooper : MonoBehaviour
 
     private void TryPooping(bool isFlying)
     {
+        poopFunction.SetPoopType(poopType);
         if (isFlying)
         {
             if (poopSystem.TryPoop())
@@ -190,7 +195,6 @@ public class Pooper : MonoBehaviour
 
                 //Get player velocity from pigeon rigidbody
                 Vector3 playerVelocity = pigeon.linearVelocity;
-                poopFunction.currentPoopType = poopType;
                 poopFunction.FirePoop(target , playerVelocity);
             }
         }else
@@ -210,7 +214,7 @@ public class Pooper : MonoBehaviour
         if (Physics.SphereCast(transform.position,200f,Vector3.down,out hit,10f,poopableLayer))
         {
             Debug.DrawLine(transform.position,hit.point);
-            Debug.Log(hit.collider.name);
+            Debug.Log("Target Hit: " + hit.collider.name);
             return hit.point;
         }else return Vector3.down;
 

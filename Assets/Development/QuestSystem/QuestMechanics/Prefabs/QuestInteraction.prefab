@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3409407876503585506}
   - component: {fileID: 1440890600166893026}
-  - component: {fileID: 8497250118932523771}
   - component: {fileID: 1232000645999910779}
   - component: {fileID: 8377850940824514251}
   m_Layer: 9
@@ -49,14 +48,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectiveID: 102
   questLog: {fileID: 0}
---- !u!33 &8497250118932523771
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3917868422801505123}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &1232000645999910779
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -77,6 +68,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -98,9 +91,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &8377850940824514251
 BoxCollider:

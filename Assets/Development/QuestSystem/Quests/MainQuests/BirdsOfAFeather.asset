@@ -12,10 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25da5333b879d2d45a8d16915869372e, type: 3}
   m_Name: BirdsOfAFeather
   m_EditorClassIdentifier: 
-  questName: Birds Of A Feather
-  questID: Q001
-  questLogDescription: Wingston saw some bread at a nearby cafe!
-  trackerDescription: Find bread at the cafe
+  questName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+    m_TableEntryReference:
+      m_KeyId: 25052371144704
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  questID: Q002
+  questLogDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+    m_TableEntryReference:
+      m_KeyId: 25123099693056
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  trackerDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+    m_TableEntryReference:
+      m_KeyId: 25139021271040
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   isMainQuest: 1
   stagesToComplete: 3
   isQuestTimed: 0
@@ -23,41 +47,143 @@ MonoBehaviour:
   autoAcceptQuest: 0
   autoCompleteQuest: 0
   stages:
-  - stageName: Find the Cafe
-    stageDescription: Find the Cafe
+  - stageName:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 25280465784832
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    stageDescription:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 25365912145920
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     objectivesToComplete:
-    - objectiveName: Find the Cafe
-      objectiveDescription: Find the Cafe
+    - objectiveName:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 25423470579712
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      objectiveDescription:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 25452381917184
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
       objectiveType: Location
-      objectiveID: Q1_Obj1
+      objectiveID: Q2_Obj1
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0
     expReward: 0
     trinketReward: 0
-  - stageName: Grab bread!
-    stageDescription: '*Remeber to grab and hold onto the bread!*'
+    hasDialogueAfter: 0
+  - stageName:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 25482840952832
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    stageDescription:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 25514038185984
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     objectivesToComplete:
-    - objectiveName: Grab the bread
-      objectiveDescription: Grab the bread
+    - objectiveName:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 25528705667072
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      objectiveDescription:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 25553447866368
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
       objectiveType: Location
-      objectiveID: Q1_Obj2
+      objectiveID: Q2_Obj2
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0
     expReward: 0
     trinketReward: 0
-  - stageName: Bring me bread
-    stageDescription: Bring me bread
+    hasDialogueAfter: 0
+  - stageName:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 25661216313344
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    stageDescription:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 25708247044096
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     objectivesToComplete:
-    - objectiveName: Bring me bread
-      objectiveDescription: Bring me bread
+    - objectiveName:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 25723292012544
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      objectiveDescription:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 25740341858304
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
       objectiveType: ItemToLocation
-      objectiveID: Q1_Obj3
+      objectiveID: Q2_Obj3
       quantityToComplete: 1
       isOptional: 0
       bonusEXP: 0
     expReward: 5
     trinketReward: 5
+    hasDialogueAfter: 0
   itemRewards:
   - {fileID: 7004370475826129043, guid: ba34f1e0fb329a040b2248c25013f786, type: 3}
+  references:
+    version: 2
+    RefIds: []

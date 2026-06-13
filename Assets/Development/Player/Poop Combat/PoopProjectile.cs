@@ -1,4 +1,5 @@
 using FMODUnity;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,10 +31,19 @@ public class PoopProjectile : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    public void Launch(Vector3 target, PoopType type, PoopFunction functionSource, Vector3 playerVelocity)
+    public void SetPoopType(PoopType type)
     {
         poopType = type;
-        source = functionSource;
+    }
+
+    public void SetPoopFuction(PoopFunction fuction)
+    {
+        source = fuction;
+    }
+
+    public void Launch(Vector3 target, PoopType type, PoopFunction functionSource, Vector3 playerVelocity)
+    {
+
 
         Vector3 direction = (target - transform.position).normalized;
         Debug.Log(target);
@@ -45,7 +55,7 @@ public class PoopProjectile : MonoBehaviour
             launchSpeed = speed; // Fallback to default speed if player is stationary
         }
 
-        rb.linearVelocity = direction * launchSpeed;
+        //rb.linearVelocity = direction * launchSpeed;
 
     }
 
@@ -80,12 +90,16 @@ public class PoopProjectile : MonoBehaviour
         var obj = collision.gameObject;
         var hit = collision.GetContact(0).normal;
         SpawnPoopDecal(transform.position,hit);
-        Instantiate(splashParticle,transform.position,Quaternion.identity* Quaternion.Euler(-90,0,0));
-        //source?.HandleHitEffects(poopType, collision.contacts[0].point); // Trigger hit effects
+        source?.HandleHitEffects(poopType, collision.contacts[0].point); // Trigger hit effects
         AudioWizard.Instance.PlayOneshotSound(splatSFX, transform.position);
+        var poopable = obj.GetComponentInParent<PoopableObject>();
+        if (poopable != null)
+        {
+            poopable.OnPoopHit(poopType);
+            Debug.Log(poopable);
+        }
         if (collision.gameObject.CompareTag("Cat"))
         {
-            //poopable.OnPoopHit(poopType);
             obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
             Destroy(gameObject);
             Debug.Log("EnemyHit");
@@ -93,7 +107,6 @@ public class PoopProjectile : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Dog"))
         {
-            //poopable.OnPoopHit(poopType);
             obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
             Destroy(gameObject);
             Debug.Log("EnemyHit");
@@ -101,18 +114,11 @@ public class PoopProjectile : MonoBehaviour
 
         if (collision.gameObject.CompareTag("Human"))
         {
-            //poopable.OnPoopHit(poopType);
             obj.GetComponentInParent<EnemyPatrol>().TakeDamage(10);
             Destroy(gameObject);
             Debug.Log("EnemyHit");
         }
 
-        //if (collision.gameObject.CompareTag("Raccoon"))
-        //{
-        //    //poopable.OnPoopHit(poopType);
-        //    obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
-        //    Debug.Log("EnemyHit");
-        //}
         if (collision.gameObject.CompareTag("NPC"))
         {
             obj.GetComponent<NPCBase>().HitReact();

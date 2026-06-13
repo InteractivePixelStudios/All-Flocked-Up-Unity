@@ -9,7 +9,7 @@ public class IconToggle : MonoBehaviour
     void Start()
     {
        
-        iconRenderer = GetComponent<SpriteRenderer>();
+        //iconRenderer = GetComponent<SpriteRenderer>();
         iconRenderer.sprite = icon;
         HideIcon();
 

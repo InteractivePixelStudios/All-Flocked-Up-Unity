@@ -67,7 +67,6 @@ public class ConsumableBase : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            //playerRef = other.gameObject;
             ConsumableEffect(consumableType);
         }
     }
@@ -79,6 +78,7 @@ public class ConsumableBase : MonoBehaviour
             case E_ConsumableType.Health:
                 if (playerHealth.currentHealth <= playerHealth.maxHealth) { playerRef.GetComponent<PlayerWingventory>().AddItemToInv(this.name, 1); }
                 HealEffect(positiveEffectValue, positiveModifier);
+                PoopEffect(positiveEffectValue, positiveModifier, canPoop);
                 CheckForReaction();
                 Destroy(gameObject);
                 break;
@@ -86,6 +86,7 @@ public class ConsumableBase : MonoBehaviour
                 //Change me to add to INV
                 //if (playerHealth.currentHealth <= playerHealth.maxHealth) { playerRef.GetComponent<PlayerWingventory>().AddItemToInv(this.gameObject, 1); }
                 StaminaEffect(positiveEffectValue,positiveModifier);
+                PoopEffect(positiveEffectValue, positiveModifier, canPoop);
                 CheckForReaction();
                 break;
             case E_ConsumableType.Poop:
@@ -175,23 +176,14 @@ public class ConsumableBase : MonoBehaviour
     private void PoopEffect(int poop,int poopMod, bool canPoop)
     {
         playerPoop = playerRef.GetComponent<Pooper>();
-        if (playerPoop != null)
+        if (playerPoop != null && poopTypeToGive!=null)
         {
-            foreach( var type in poopTypeList )
-            {
-                if(type == poopTypeToGive)
-                {
-                    playerPoop.poopType = poopTypeToGive;
-                    Debug.Log("Poop Type = " + type);
-                }
-            }
-        }
-        //if (poopMod > 0)
-        //{
 
-        //}
-        //else
-        //    Debug.Log("");
+                    playerPoop.SetPoopType(poopTypeToGive);
+                    Debug.Log("Poop Type = " + poopTypeToGive);
+
+        }
+
     }
     //custom effect
     private void CustomEffect(int health, int healthMod,  bool canFly, bool canPoop)
@@ -200,22 +192,6 @@ public class ConsumableBase : MonoBehaviour
         {
 
         }
-        //if (stamMod > 0)
-        //{
-
-        //}
-        //if (poopMod > 0)
-        //{
-
-        //}
-        //if (groundSpeedMod > 0)
-        //{
-
-        //}
-        //if (flySpeedMod > 0)
-        //{
-
-        //}
         if (!canFly)
         {
 

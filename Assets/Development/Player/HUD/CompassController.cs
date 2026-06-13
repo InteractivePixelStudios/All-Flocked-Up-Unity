@@ -85,7 +85,6 @@ public class CompassController : MonoBehaviour
         foreach (var obj in worldTargets)
         {
             var sprite = obj.GetComponent<MapIcon>().GetCurrentSprite();
-            Debug.Log(sprite);
             var spawnedIcon = Instantiate(iconPrefab,hudController.transform);
             var comp = spawnedIcon.GetComponent<RectTransform>();
             mapMarkers.Add(comp);
@@ -115,7 +114,7 @@ public class CompassController : MonoBehaviour
             }
             else
             {
-                Debug.Log(IsVisible(target));
+               // Debug.Log(IsVisible(target));
                 marker.gameObject.SetActive(true);
             }
             Vector3 dir = target.position - player.position;

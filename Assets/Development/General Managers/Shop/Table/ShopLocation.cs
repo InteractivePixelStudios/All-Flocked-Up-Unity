@@ -36,7 +36,6 @@ public class ShopLocation : ShopManager
             currentItemList.TryAdd(item.Key,item.Value);
             items.Add(spawnedItem);
             spawnedItem.transform.position = slot.transform.position;
-            Debug.Log("ItemSpawned:" + item.Key);
         }
     }
 

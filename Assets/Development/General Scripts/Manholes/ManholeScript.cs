@@ -34,6 +34,7 @@ public class ManholeScript : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            playerRef.GetComponent<PlayerGroundMovement>().InitiateFlight();
             playerRef = null;
         }
     }
