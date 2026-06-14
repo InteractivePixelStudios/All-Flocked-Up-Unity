@@ -126,7 +126,7 @@ public class PlayerInteraction : MonoBehaviour
                     NPC.InteractWithNPCDialogue();
                     Debug.Log("DialogueFirst");
                     NPC.dialogueFirst = false;
-                }else if(NPC.dialogueFirst == false)
+                }else if(NPC.dialogueFirst == false && hit.collider.GetComponentInParent<QuestGiver>().hasQuest)
                 {
                     canvasController.ShowQuestGiver(hit.collider.GetComponentInParent<QuestGiver>());
                 }
