@@ -12891,7 +12891,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   psc: {fileID: 4018456047112751113}
-  camAnchor: {fileID: 1293844886419686030}
+  camAnchorFront: {fileID: 0}
+  camAnchorBack: {fileID: 0}
+  uiHud: {fileID: 0}
+  isSelfie: 0
 --- !u!114 &4018456047112751113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12934,7 +12937,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
   isReady: 0
-  checkDistance: 5
   moveLeft: 0
   moveRight: 0
 --- !u!114 &5909065975109154646
@@ -13027,6 +13029,12 @@ MonoBehaviour:
   perchLayer:
     serializedVersion: 2
     m_Bits: 134217728
+  rideLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  hideSeekLayer:
+    serializedVersion: 2
+    m_Bits: 1073741824
   questLog: {fileID: 5256277540902806047}
   canvasController: {fileID: 0}
   gamePaused: 0
@@ -13076,6 +13084,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshTransform: {fileID: 3875354736271577363}
+  mouseControls: 0
+  mouseTurnSpeed: 1
+  rotationLerpSpeed: 2
+  mouseTiltSpeed: 1
   baseGlideSpeed: 300
   maxDownwardVelocity: -1
   glideGravityDivide: 6
@@ -13085,6 +13097,7 @@ MonoBehaviour:
   glideDownSpeed: 350
   glideDownDropSpeed: 1
   stallDownSpeed: 3
+  counterVelocityRate: 0.1
   tiltSpeed: 50
   diveSpeed: 100
   stallTime: 0.5
@@ -13258,9 +13271,12 @@ MonoBehaviour:
     stamina: 0
     activeQuests: []
     completedQuests: []
+    questObjects: []
     completedRaces: []
     timeOfDay: 0
     playerSkin: {fileID: 0}
+    tutData: 
+    npcData: []
   saveSlot: 0
   maxTime: 60
   timer: 60
@@ -13602,7 +13618,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab703299d3b4e0f4b9abe41812bfdf13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerRef: {fileID: 0}
   playerAnimator: {fileID: 0}
   groundMoveComp: {fileID: 0}
   flightMoveComp: {fileID: 0}
@@ -13610,7 +13625,6 @@ MonoBehaviour:
   poopComp: {fileID: 0}
   dialogueBaseComp: {fileID: 1781996746508539891}
   stealthComp: {fileID: 0}
-  wingventoryComp: {fileID: 0}
   peckComp: {fileID: 0}
   interactionComp: {fileID: 0}
   isRightWingCheck: 0
@@ -13699,6 +13713,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1999436537559399414}
   bones: []
+  relVelMagnitudeThresh: 0
+  collisionLayers:
+  - Ground
+  - Prop&Building
+  - Perchable
 --- !u!114 &6140654810100602953
 MonoBehaviour:
   m_ObjectHideFlags: 0

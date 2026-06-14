@@ -138,6 +138,11 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         targetLocation = location;
     }
 
+    public void SetNewHome(GameObject home)
+    {
+        homeLocation = home;
+    }
+
     //call this to run like wind
     public void MoveToLocation()
     {

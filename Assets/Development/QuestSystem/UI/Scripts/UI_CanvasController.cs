@@ -115,6 +115,12 @@ public class UI_CanvasController : MonoBehaviour
     public UI_SkinSelector activeSkinSelector;
     Dictionary<Graphic, Color> cachedUIColors = new();
     public bool uiOpen;
+    [Header("HideAndSeek")]
+    [SerializeField] private UI_HideSeekCountdown hasCountdownPrefab;
+    public UI_HideSeekCountdown currentHASCountdown;
+
+    [SerializeField] private UI_HASComplete hasCompletePrefab;
+    public UI_HASComplete currentHASComplete;
 
     private void Start()
     {
@@ -1028,5 +1034,38 @@ public class UI_CanvasController : MonoBehaviour
         SetContrastMode(value);
     }
 
+    public void SpawnHASCountdown()
+    {
+        if(currentHASCountdown== null)
+        {
+            currentHASCountdown = Instantiate(hasCountdownPrefab);
+
+        }
+    }
+
+    public void SpawnHASComplete()
+    {
+        if(currentHASComplete==null)
+        {
+            currentHASComplete = Instantiate(hasCompletePrefab);
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
+
+        }
+    }
+
+    public void CloseHASComplete()
+    {
+        if(currentHASComplete!= null)
+        {
+            Destroy(currentHASComplete.gameObject);
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
+        }
+    }
 
 }

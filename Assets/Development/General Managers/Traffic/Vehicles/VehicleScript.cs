@@ -33,10 +33,6 @@ public class VehicleScript : VehicleBase
         base.StopVehicle();
     }
 
-    public override void TriggerCollisions()
-    {
-        base.TriggerCollisions();
-    }
 
     protected override void HonkHorn()
     {

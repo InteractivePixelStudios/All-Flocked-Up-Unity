@@ -161,20 +161,20 @@ public class TrafficManager : MonoBehaviour
     private  void SpawnCarsAtWaypoints()
     {
         if (waypoints.Count == 0) return;
+        List<Waypoint> used = new();
+        List<Waypoint> tempList = waypoints;
         for(int i = 0; i < numberOfCars; i++)
         {
             var randomIndex = Random.Range(0, waypoints.Count);
-            //if (randomIndex != lastIndex)
-            //{
-            Waypoint waypoint = waypoints[randomIndex];
+            Waypoint waypoint = tempList[randomIndex];
             var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)],waypoint.transform.position,waypoint.transform.rotation);
             vehicles.Add(car);
-            car.transform.position = waypoint.transform.position;
+            car.transform.position = waypoint.transform.position + new Vector3(0.1f,0.1f,0.1f);
             car.currentNode = waypoint;
+            used.Add( waypoint);
+            tempList.Remove(waypoint);
             car.manager = this;
-
-
-           //}
+            if(tempList.Count <= 0) { Debug.Log("tempList empty... no more waypoints?"); }
         }
 
         //await Task.Yield();
@@ -184,12 +184,12 @@ public class TrafficManager : MonoBehaviour
     {
         vehicles.Remove(vehicle);
         vehicleCache++;
-        SpawnNewCar();
+        CallSpawnNew();
     }
 
     private  void CallSpawnNew()
     {
-
+        Debug.Log("CallSpawnNew");
                 SpawnNewCar();
                 vehicleCache--;
             
@@ -198,7 +198,7 @@ public class TrafficManager : MonoBehaviour
 
     private void SpawnNewCar()
     {
-        var randomIndex = Random.Range(0, respawnWaypoints.Count - 1);
+        var randomIndex = Random.Range(0, respawnWaypoints.Count);
             Waypoint waypoint = respawnWaypoints[randomIndex];
             var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)], waypoint.transform.position, waypoint.transform.rotation);
             vehicles.Add(car);

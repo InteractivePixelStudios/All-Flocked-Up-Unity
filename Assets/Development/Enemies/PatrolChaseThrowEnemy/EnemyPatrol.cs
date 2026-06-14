@@ -243,6 +243,7 @@ public class EnemyPatrol : EnemyBaseComponent
                     Retreat();
 
                 }
+
                 break;
         }
 
@@ -313,6 +314,12 @@ public class EnemyPatrol : EnemyBaseComponent
         {
             navAgent.SetDestination(currentNode.transform.position);
             set = true;
+            if (navAgent.remainingDistance <= 1f)
+            {
+
+                isRetreating = false;
+                isStopped = true;
+            }
         }
         else
         {
