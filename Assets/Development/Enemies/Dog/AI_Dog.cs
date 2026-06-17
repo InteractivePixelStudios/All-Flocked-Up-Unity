@@ -30,6 +30,7 @@ public class AI_Dog : EnemyBaseComponent
     [SerializeField] protected bool isHit;
     [SerializeField] protected bool isStopped;
     [SerializeField] protected bool isRetreating;
+    PoopType currentPoopType;
 
     //private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Bite, Stop, Hit, Retreat }
@@ -170,7 +171,7 @@ public class AI_Dog : EnemyBaseComponent
 
     protected async void HitReact()
     {
-        TakeDamage(1);
+        TakeDamage(1, currentPoopType);
         animator.SetTrigger("isHit");
         await Task.Delay(3000);
     }
@@ -240,7 +241,7 @@ public class AI_Dog : EnemyBaseComponent
         if (collision.gameObject.CompareTag("Poop"))
         {
 
-            TakeDamage(1);
+            TakeDamage(1, currentPoopType);
         }
     }
 

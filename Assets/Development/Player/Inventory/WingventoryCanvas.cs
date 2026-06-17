@@ -23,6 +23,7 @@ public class WingventoryCanvas : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private Button questPanelButton;
     [SerializeField] private Button mapPanelButton;
+    [SerializeField] private Button cameraButton;
 
     [Header("Inv/Accessory")]
     [SerializeField] private PlayerWingventory playerWingventory;
@@ -49,6 +50,9 @@ public class WingventoryCanvas : MonoBehaviour
     [SerializeField] private QuestLog questLog;
     [SerializeField] private TextMeshProUGUI questObjText;
 
+    [SerializeField] ScreenshotCameraController screenshotController;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,6 +60,7 @@ public class WingventoryCanvas : MonoBehaviour
         questLog = FindAnyObjectByType<QuestLog>();
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         playerWingventory = FindAnyObjectByType<PlayerWingventory>();
+        screenshotController = FindAnyObjectByType<ScreenshotCameraController>();
         GetTrinketCount();
         GetItemBoxes();
         leftBackPageButton.onClick.AddListener(GoCenterPage);
@@ -64,6 +69,7 @@ public class WingventoryCanvas : MonoBehaviour
         closeButton.onClick.AddListener(CloseWingventory);
         questPanelButton.onClick.AddListener(OpenQuestPanel);
         mapPanelButton.onClick.AddListener(OpenMapPanel);
+        cameraButton.onClick.AddListener(OpenCamera);
         leftCanvas.SetActive(false);
         rightCanvas.SetActive(false);
         SetTrinketText();
@@ -254,6 +260,16 @@ public class WingventoryCanvas : MonoBehaviour
 
             }
 
+    }
+
+    void OpenCamera()
+    {
+        screenshotController.CallEnterPhotoMode();
+    }
+
+    void CloseCamera()
+    {
+        screenshotController.CallExitPhotoMode();
     }
 
 
