@@ -39,6 +39,8 @@ public class AI_Cat : EnemyBaseComponent
     [SerializeField] protected bool isRetreating;
     [SerializeField] protected bool canSeePlayer;
 
+    PoopType currentPoopType;
+
    // private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Swat, Pounce, Stop, Hit, Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
@@ -214,7 +216,7 @@ public class AI_Cat : EnemyBaseComponent
         currentState = EnemyState.Retreat;
     }
 
-    public override void OnHit()
+    public override void OnHit(PoopType type)
     {
         isHit = true;
         Debug.Log("HitCat");
@@ -324,7 +326,7 @@ public class AI_Cat : EnemyBaseComponent
         if (collision.gameObject.CompareTag("Poop"))
         {
 
-            TakeDamage(1);
+            TakeDamage(1, currentPoopType);
         }
     }
 

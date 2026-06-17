@@ -54,7 +54,7 @@ public class UI_SettingsMenu : MonoBehaviour
     public void SetFirstSettingsButton()
     {
 
-            if (!videoButton.gameObject)
+            if (videoButton.gameObject == null)
             {
                 EventSystem.current.SetSelectedGameObject(videoButton.gameObject);
             }

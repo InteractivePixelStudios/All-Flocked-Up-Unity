@@ -3,6 +3,7 @@ using Steamworks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+public enum ReactionState { Normal,Fire,Bomb,Confetti,Glow}
 
 public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
 {
@@ -28,17 +29,17 @@ public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
     }
 
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, PoopType type)
     {
-        TriggerStateChangeOnHit();
+        TriggerStateChangeOnHit(type);
     }
 
-    public void TriggerStateChangeOnHit()
+    public void TriggerStateChangeOnHit(PoopType type)
     {
-        OnHit();
+        OnHit(type);
     }
 
-    public virtual void OnHit()
+    public virtual void OnHit(PoopType type)
     {
         Debug.Log("CallBaseOnHit");
     }

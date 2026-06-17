@@ -49,7 +49,8 @@ public class EnemyPatrol : EnemyBaseComponent
     [SerializeField]bool canSeePlayer;
     bool iconActive;
     bool locationSet;
-
+    [SerializeField]ReactionState currentReactionState;
+    PoopType currentPoopHitType;
     private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
@@ -77,6 +78,12 @@ public class EnemyPatrol : EnemyBaseComponent
     public void SetCurrentState(EnemyState state)
     {
         currentState = state;
+    }
+
+    void SetNavAgentDestination(Vector3 pos, ReactionState state)
+    {
+        navAgent.SetDestination(pos);
+        currentReactionState = state;
     }
 
     void Update()
@@ -295,8 +302,9 @@ public class EnemyPatrol : EnemyBaseComponent
         if(isHoldingItem && currentHeldObject!=null) { DropHeldItem(); }
         currentState = EnemyState.Retreat;
     }
-    public override void OnHit()
+    public override void OnHit(PoopType type)
     {
+        currentPoopHitType = type;
         isHit = true;
         Debug.Log("HitHuman");
         SetCurrentState(EnemyState.Hit);
@@ -306,9 +314,6 @@ public class EnemyPatrol : EnemyBaseComponent
         navAgent.isStopped = false;
         animController.SetFloat("Speed",navAgent.speed);
         Debug.Log("retreating");
-        //var centerPoint = transform.position;
-        //var radius = 5f;
-        //Vector3 randomDirection = Random.insideUnitSphere * radius;
         bool set = false;
         if (currentNode != null)
         {
@@ -448,7 +453,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
     }
 
-    public virtual void StopVehicle()
+    public virtual void StopHuman()
     {
         navAgent.isStopped = true;
         //Debug.Log("Stopping");
@@ -458,8 +463,8 @@ public class EnemyPatrol : EnemyBaseComponent
     {
         if (collision.gameObject.CompareTag("Poop"))
         {
-
-            TakeDamage(1);
+            var type = collision.gameObject.GetComponent<PoopProjectile>().GetPoopType();
+            TakeDamage(1,type);
         }
     }
     //protected virtual void CheckForCollisions()

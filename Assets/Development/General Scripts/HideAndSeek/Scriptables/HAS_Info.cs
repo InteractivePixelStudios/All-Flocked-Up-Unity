@@ -20,6 +20,8 @@ public class HAS_Info : ScriptableObject
 
     void FindRequiredObjects()
     {
+        hideSpots.Clear();
+        spawnLocation = null;
         var found = FindObjectsByType<HAS_HideSpot>();
         foreach (var obj in found)
         {

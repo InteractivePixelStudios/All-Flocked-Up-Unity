@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class HAS_Controller : MonoBehaviour
 {
     [SerializeField] private UI_CanvasController canvasController;
-    float countdownTimer;
-    bool countdownComplete = false;
+    [SerializeField] float countdownTimer;
+    [SerializeField] bool countdownComplete = false;
     [SerializeField] private HAS_Info currentInfo;
 
     [SerializeField] private float hideSpotCount;
@@ -17,10 +17,11 @@ public class HAS_Controller : MonoBehaviour
     private List<HAS_NPC> hideNPCs = new();
     [SerializeField] private GameObject spawnLocation;
 
-    private float gameTimer;
-    bool isStarted;
-    bool timerComplete;
+    [SerializeField] private float gameTimer;
+    [SerializeField] bool isStarted;
+    [SerializeField] bool timerComplete;
     [SerializeField] private int foundCount;
+    bool gameComplete;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,14 +32,16 @@ public class HAS_Controller : MonoBehaviour
 
     private void Update()
     {
-        if (!countdownComplete)
+        if ( isStarted && !countdownComplete)
         {
             countdownTimer -= Time.deltaTime;
+            if(countdownTimer <= 0) { countdownComplete = true; }
         }
-        if (countdownComplete && isStarted)
+        if (countdownComplete && !timerComplete)
         {
             gameTimer -=Time.deltaTime;
-            if(gameTimer <= 0 || foundCount == npcCount) { timerComplete = true; CheckOutcome(timerComplete, foundCount); }
+            if(foundCount == npcCount && !gameComplete) { timerComplete = false; CheckOutcome(timerComplete, foundCount); }
+            else if(gameTimer <= 0 &&!gameComplete ) { timerComplete = true; CheckOutcome(timerComplete, foundCount); }
         }
     }
 
@@ -64,12 +67,15 @@ public class HAS_Controller : MonoBehaviour
     void StartCountdown()
     {
         canvasController.SpawnHASCountdown();
+        countdownTimer = 5f;
+        isStarted = true;
     }
 
     public void StartHideAndSeek()
     {
         StartCountdown();
         SpawnHideNPC();
+        UI_HudController.Instance.ShowHASIcon();
     }
 
     void SpawnHideNPC()
@@ -86,13 +92,19 @@ public class HAS_Controller : MonoBehaviour
 
     void CheckOutcome(bool timeComplete, int found)
     {
-        if (found == npcCount && !timeComplete)
+        if (!gameComplete)
         {
-            HASCompleted();
-        }
-        else if (timeComplete && found != npcCount)
-        {
-            HASFailed();
+            if (found == npcCount && !timeComplete)
+            {
+                HASCompleted();
+                gameComplete = true;
+            }
+            else if (timeComplete && found != npcCount)
+            {
+                HASFailed();
+                gameComplete = true;
+            }
+            else return;
         }
         else return;
     }
@@ -102,6 +114,7 @@ public class HAS_Controller : MonoBehaviour
         if (canvasController != null)
         {
             canvasController.SpawnHASComplete();
+            ResetGame();
         }
         
     }
@@ -111,6 +124,7 @@ public class HAS_Controller : MonoBehaviour
         if(canvasController!=null)
         {
             canvasController.SpawnHASComplete();
+            ResetGame();
         }
     }
 
@@ -128,11 +142,29 @@ public class HAS_Controller : MonoBehaviour
     {
         hideNPCs.Remove(npc);
         foundCount++;
+        UI_HudController.Instance.UpdateHASText(foundCount);
     }
 
     public GameObject GetSpawnLocation()
     {
         return spawnLocation;
+    }
+
+    private void ResetGame()
+    {
+        DestroyNPCs();
+        gameComplete = false;
+        timerComplete = false;
+        countdownComplete = false;
+        UI_HudController.Instance.HideHASIcon();
+    }
+
+    void DestroyNPCs()
+    {
+        foreach(var npc in hideNPCs)
+        {
+            Destroy(npc.gameObject);
+        }
     }
 
 
