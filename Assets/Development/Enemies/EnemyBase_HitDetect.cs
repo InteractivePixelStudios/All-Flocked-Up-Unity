@@ -10,12 +10,6 @@ public class EnemyBase_HitDetect : MonoBehaviour
         enemyBase = GetComponentInParent<EnemyBaseComponent>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Poop"))

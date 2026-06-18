@@ -23,7 +23,7 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
     void Update()
     {
 
-        if (isPerching)
+        if (playerRef != null && isPerching)
         {
             if (jumpCheck)
             {
@@ -36,8 +36,16 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
         else return;
     }
 
+    public void SetPlayerRef(GameObject player)
+    {
+        playerRef = player;
+        perchComp = playerRef.GetComponent<PlayerPerchSystem>();
+                    playerRef.GetComponentInChildren<IconToggle>().ShowIcon();
+    }
+
     public void StartPerch()
     {
+        isPerching = true;
         currentIndex = 0;
         playerRef.GetComponentInChildren<IconToggle>().HideIcon();
         if (isHiding || branchPerchSpots.Length ==0)
@@ -99,27 +107,18 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
         {
             if (playerRef == null)
             {
-
-                playerRef = perchSphere.gameObject;
-                perchComp =  playerRef.GetComponent<PlayerPerchSystem>();
+                if (icon != null) { icon.ShowIcon(); return; } 
+                else
+                { 
+                    icon = playerRef.GetComponentInChildren<IconToggle>();
+                    icon.ShowIcon();
+                }
 
             }
-            playerRef.GetComponentInChildren<IconToggle>().ShowIcon();
+
         }
     }
 
-    void OnTriggerStay(Collider perchSphere)
-    {
-        if (perchSphere.gameObject.CompareTag("Player"))
-        {
-            if (playerRef == null)
-            {
-
-                playerRef = perchSphere.gameObject;
-            }
-           
-        }
-    }
 
 
     void OnTriggerExit(Collider perchSphere)

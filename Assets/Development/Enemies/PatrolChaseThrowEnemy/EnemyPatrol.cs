@@ -50,7 +50,6 @@ public class EnemyPatrol : EnemyBaseComponent
     bool iconActive;
     bool locationSet;
     [SerializeField]ReactionState currentReactionState;
-    PoopType currentPoopHitType;
     private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
@@ -297,14 +296,41 @@ public class EnemyPatrol : EnemyBaseComponent
 
     protected  void HitReact()
     {
-        animController.SetTrigger("isHit");
+        
         isHit = false;
         if(isHoldingItem && currentHeldObject!=null) { DropHeldItem(); }
         currentState = EnemyState.Retreat;
     }
+
+    //ReactionState GetReactionState(PoopType type)
+    //{
+    //    switch (type)
+    //    {
+    //        case Poop
+    //    }
+    //}
     public override void OnHit(PoopType type)
     {
-        currentPoopHitType = type;
+        currentReactionState = type.poopReaction;
+        switch (currentReactionState)
+        {
+            case ReactionState.Normal:
+                animController.SetTrigger("isHit");
+                Debug.Log("Hit by Normal ");
+                break;
+            case ReactionState.Fire:
+                animController.SetTrigger("isHit");
+                Debug.Log("Hit by Fire");
+                break;
+            case ReactionState.Confetti:
+                animController.SetTrigger("isHit");
+                Debug.Log("Hit by Confetti");
+                break;
+            case ReactionState.Glow:
+                animController.SetTrigger("isHit");
+                Debug.Log("Hit by Glow");
+                break;
+        }
         isHit = true;
         Debug.Log("HitHuman");
         SetCurrentState(EnemyState.Hit);

@@ -17,12 +17,6 @@ public class EnemyBaseComponent : MonoBehaviour, I_EnemyBase
         enemyRef = this.gameObject;
     }
 
-
-    void Update()
-    {
-
-    }
-
     private void VisionConeSearch()
     {
 

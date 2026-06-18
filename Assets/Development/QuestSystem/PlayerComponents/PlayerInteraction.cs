@@ -249,6 +249,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.Log("PerchSeen");
             currentPerchPoint = hit.collider.GetComponentInParent<I_Perchable>();
+            currentPerchPoint.SetPlayerRef(this.gameObject);
             Debug.Log(currentPerchPoint);
             perchComp.isReady = true;
             perchInteracted = true;

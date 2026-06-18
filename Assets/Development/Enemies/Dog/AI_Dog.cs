@@ -30,7 +30,8 @@ public class AI_Dog : EnemyBaseComponent
     [SerializeField] protected bool isHit;
     [SerializeField] protected bool isStopped;
     [SerializeField] protected bool isRetreating;
-    PoopType currentPoopType;
+    ReactionState currentReactionState;
+
 
     //private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Bite, Stop, Hit, Retreat }
@@ -142,6 +143,29 @@ public class AI_Dog : EnemyBaseComponent
 
     }
 
+    public override void OnHit(PoopType type)
+    { 
+        currentReactionState = type.poopReaction;
+        switch (currentReactionState)
+        {
+            case ReactionState.Normal:
+                //animator.SetTrigger("isHit");
+                break;
+            case ReactionState.Fire:
+                //animator.SetTrigger("isHit");
+                break;
+            case ReactionState.Confetti:
+                //animator.SetTrigger("isHit");
+                break;
+            case ReactionState.Glow:
+                //animator.SetTrigger("isHit");
+                break;
+        }
+        isHit = true;
+        Debug.Log("HitHuman");
+        SetCurrentState(EnemyState.Hit);
+    }
+
     private void FindWaypoints()
     {
         var waypointsArray = patrolPoints.GetComponentsInChildren<Waypoint>();
@@ -171,7 +195,7 @@ public class AI_Dog : EnemyBaseComponent
 
     protected async void HitReact()
     {
-        TakeDamage(1, currentPoopType);
+
         animator.SetTrigger("isHit");
         await Task.Delay(3000);
     }
@@ -240,8 +264,8 @@ public class AI_Dog : EnemyBaseComponent
     {
         if (collision.gameObject.CompareTag("Poop"))
         {
-
-            TakeDamage(1, currentPoopType);
+            var type = collision.gameObject.GetComponent<PoopProjectile>().GetPoopType();
+            TakeDamage(1, type);
         }
     }
 
