@@ -41,6 +41,8 @@ public class PoopProjectile : MonoBehaviour
         source = fuction;
     }
 
+    public PoopType GetPoopType() {  return poopType; }
+
     public void Launch(Vector3 target, PoopType type, PoopFunction functionSource, Vector3 playerVelocity)
     {
 
@@ -100,21 +102,21 @@ public class PoopProjectile : MonoBehaviour
         }
         if (collision.gameObject.CompareTag("Cat"))
         {
-            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10, poopType);
             Destroy(gameObject);
             Debug.Log("EnemyHit");
         }
 
         if (collision.gameObject.CompareTag("Dog"))
         {
-            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10);
+            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10, poopType);
             Destroy(gameObject);
             Debug.Log("EnemyHit");
         }
 
         if (collision.gameObject.CompareTag("Human"))
         {
-            obj.GetComponentInParent<EnemyPatrol>().TakeDamage(10);
+            obj.GetComponentInParent<EnemyPatrol>().TakeDamage(10, poopType);
             Destroy(gameObject);
             Debug.Log("EnemyHit");
         }

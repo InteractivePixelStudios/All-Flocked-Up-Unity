@@ -221,9 +221,8 @@ public class UI_VideoOptions : UI_SettingsMenu
         var modes = new List<string>
     {
         "Exclusive Fullscreen",
-        "Fullscreen",
-        "Maximized Window",
-        "Fullscreen Windowed"
+        "Fullscreen Window",
+        "Window"
     };
 
         fsDropDown.AddOptions(modes);
@@ -246,7 +245,7 @@ public class UI_VideoOptions : UI_SettingsMenu
             case 0: Screen.fullScreenMode = FullScreenMode.ExclusiveFullScreen; break;
             case 1: Screen.fullScreenMode = FullScreenMode.FullScreenWindow; break;
             case 2: Screen.fullScreenMode = FullScreenMode.Windowed; break;
-            case 3: Screen.fullScreenMode = FullScreenMode.MaximizedWindow; break;
+
         }
 
         isFullScreen = Screen.fullScreenMode == FullScreenMode.ExclusiveFullScreen ||
@@ -360,10 +359,11 @@ public class UI_VideoOptions : UI_SettingsMenu
         {
             "30FPS",
             "60FPS",
+            "90FPS",
             "120FPS",
             "Unlimited"
         };
-        frameLimitDropdown.AddOptions(new List<string> {"30FPS", "60FPS", "120FPS","Unlimited" });
+        frameLimitDropdown.AddOptions(new List<string> {"30FPS", "60FPS","90FPS", "120FPS","Unlimited" });
         var saved = PlayerPrefs.GetInt("FrameLimit", frameLimitBase);
         int index = 0;
         if(saved != -1)
@@ -376,7 +376,9 @@ public class UI_VideoOptions : UI_SettingsMenu
             {
                 case 30: index = 0; break;
                 case 60: index = 1; break;
-                case 120: index = 2; break;
+                case 90: index = 2; break;
+                case 120: index = 3; break;
+                case -1: index = 4; break;
                 default: index = 3; break;
             }
         }
@@ -481,9 +483,10 @@ public class UI_VideoOptions : UI_SettingsMenu
         shadowQualDropdown.onValueChanged.RemoveAllListeners();
         var options = new List<string>()
         {
-            "High",
+            "Low",
             "Medium",
-            "Low"
+            "High",
+            "Very High"
         };
         shadowQualDropdown.AddOptions(options);
         int saved = PlayerPrefs.GetInt("ShadowQuality", shadowQualBase);
@@ -551,6 +554,7 @@ public class UI_VideoOptions : UI_SettingsMenu
     }
     protected void OnRenderDistanceChanged(float value)
     {
+        Debug.Log(renderDisSlider.value  + " " + value);
         var distance = Mathf.Lerp(minRendDist, maxRendDist, value);
         SetRenderDistance(distance);
         SetRenderDistanceText(distance);

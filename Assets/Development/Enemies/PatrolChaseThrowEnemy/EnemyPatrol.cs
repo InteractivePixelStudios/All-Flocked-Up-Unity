@@ -49,7 +49,7 @@ public class EnemyPatrol : EnemyBaseComponent
     [SerializeField]bool canSeePlayer;
     bool iconActive;
     bool locationSet;
-
+    [SerializeField]ReactionState currentReactionState;
     private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
@@ -77,6 +77,12 @@ public class EnemyPatrol : EnemyBaseComponent
     public void SetCurrentState(EnemyState state)
     {
         currentState = state;
+    }
+
+    void SetNavAgentDestination(Vector3 pos, ReactionState state)
+    {
+        navAgent.SetDestination(pos);
+        currentReactionState = state;
     }
 
     void Update()
@@ -243,6 +249,7 @@ public class EnemyPatrol : EnemyBaseComponent
                     Retreat();
 
                 }
+
                 break;
         }
 
@@ -289,13 +296,41 @@ public class EnemyPatrol : EnemyBaseComponent
 
     protected  void HitReact()
     {
-        animController.SetTrigger("isHit");
+        
         isHit = false;
         if(isHoldingItem && currentHeldObject!=null) { DropHeldItem(); }
         currentState = EnemyState.Retreat;
     }
-    public override void OnHit()
+
+    //ReactionState GetReactionState(PoopType type)
+    //{
+    //    switch (type)
+    //    {
+    //        case Poop
+    //    }
+    //}
+    public override void OnHit(PoopType type)
     {
+        currentReactionState = type.poopReaction;
+        switch (currentReactionState)
+        {
+            case ReactionState.Normal:
+                animController.SetTrigger("isHit");
+                Debug.Log("Hit by Normal ");
+                break;
+            case ReactionState.Fire:
+                animController.SetTrigger("isHit");
+                Debug.Log("Hit by Fire");
+                break;
+            case ReactionState.Confetti:
+                animController.SetTrigger("isHit");
+                Debug.Log("Hit by Confetti");
+                break;
+            case ReactionState.Glow:
+                animController.SetTrigger("isHit");
+                Debug.Log("Hit by Glow");
+                break;
+        }
         isHit = true;
         Debug.Log("HitHuman");
         SetCurrentState(EnemyState.Hit);
@@ -305,14 +340,17 @@ public class EnemyPatrol : EnemyBaseComponent
         navAgent.isStopped = false;
         animController.SetFloat("Speed",navAgent.speed);
         Debug.Log("retreating");
-        //var centerPoint = transform.position;
-        //var radius = 5f;
-        //Vector3 randomDirection = Random.insideUnitSphere * radius;
         bool set = false;
         if (currentNode != null)
         {
             navAgent.SetDestination(currentNode.transform.position);
             set = true;
+            if (navAgent.remainingDistance <= 1f)
+            {
+
+                isRetreating = false;
+                isStopped = true;
+            }
         }
         else
         {
@@ -441,7 +479,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
     }
 
-    public virtual void StopVehicle()
+    public virtual void StopHuman()
     {
         navAgent.isStopped = true;
         //Debug.Log("Stopping");
@@ -451,8 +489,8 @@ public class EnemyPatrol : EnemyBaseComponent
     {
         if (collision.gameObject.CompareTag("Poop"))
         {
-
-            TakeDamage(1);
+            var type = collision.gameObject.GetComponent<PoopProjectile>().GetPoopType();
+            TakeDamage(1,type);
         }
     }
     //protected virtual void CheckForCollisions()

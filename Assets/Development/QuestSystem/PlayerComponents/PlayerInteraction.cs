@@ -18,6 +18,7 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask wearableLayer;
     public LayerMask perchLayer;
     public LayerMask rideLayer;
+    public LayerMask hideSeekLayer;
     public QuestLog questLog; // assign in Inspector
     public UI_CanvasController canvasController;
     public bool gamePaused;
@@ -206,6 +207,23 @@ public class PlayerInteraction : MonoBehaviour
             rideObj?.StartRiding();
         }
 
+
+        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, hideSeekLayer))
+        {
+            var hideSeekCon = hit.collider.GetComponent<HAS_Giver>();
+            if (hideSeekCon != null) { hideSeekCon?.GiveInfo(); }
+            else
+            {
+                var hideSeekObj = hit.collider.GetComponent<HAS_NPC>();
+                if (hideSeekObj != null)
+                {
+                    Debug.Log(hideSeekObj);
+                    hideSeekObj?.CallFound();
+                }
+            }
+
+        }
+
         if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, wearableLayer))
             {
                 var wearableObj = hit.collider.gameObject;
@@ -231,6 +249,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.Log("PerchSeen");
             currentPerchPoint = hit.collider.GetComponentInParent<I_Perchable>();
+            currentPerchPoint.SetPlayerRef(this.gameObject);
             Debug.Log(currentPerchPoint);
             perchComp.isReady = true;
             perchInteracted = true;

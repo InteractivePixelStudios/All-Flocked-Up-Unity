@@ -8,7 +8,7 @@ public class VehicleScript : VehicleBase
     protected override void Start()
     {
         base.Start();
-        navAgent = GetComponent<NavMeshAgent>();
+        //navAgent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
@@ -33,10 +33,6 @@ public class VehicleScript : VehicleBase
         base.StopVehicle();
     }
 
-    public override void TriggerCollisions()
-    {
-        base.TriggerCollisions();
-    }
 
     protected override void HonkHorn()
     {
