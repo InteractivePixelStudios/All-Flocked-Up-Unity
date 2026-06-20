@@ -8,6 +8,7 @@ using Unity.Cinemachine;
 public class RaceBase : MonoBehaviour
 {
     private GameObject playerRef => GetPlayer();
+    PlayerNavArrow navArrow;
     [SerializeField] private UI_CanvasController canvasController;
     public RaceData raceData => GetRaceData(currentRaceGiver.raceData);
     [SerializeField] private RaceCheckpoint checkpointPrefab;
@@ -43,6 +44,7 @@ public class RaceBase : MonoBehaviour
 
     private void Start()
     {
+        navArrow = playerRef.GetComponent<PlayerNavArrow>();
         if (activeCheckpoints.Count > 0)
             lastCheckpoint = activeCheckpoints[activeCheckpoints.Count - 1];
     }
@@ -87,6 +89,21 @@ public class RaceBase : MonoBehaviour
         {
             currentTime -= Time.deltaTime;
             if (currentTime <= 0 && !raceFailed) { raceFailed = true; RaceFailed(); }
+        }
+    }
+
+    public void UpdatePlayerArrow(int index)
+    {
+        if(index == 0)
+        {
+            navArrow.EnablePointerArrow(activeCheckpoints[0].gameObject);
+            return;
+        }
+        else
+        {
+            var next = activeCheckpoints[index + 1].gameObject;
+            navArrow.EnablePointerArrow(next);
+            return;
         }
     }
 
@@ -145,6 +162,7 @@ public class RaceBase : MonoBehaviour
             racer.StartMoving();
         }
         StartPlayerMove();
+        UpdatePlayerArrow(0);
     }
 
     private void SpawnCheckpoints()
@@ -182,15 +200,17 @@ public class RaceBase : MonoBehaviour
         raceStarted = false;
         GetRaceResults();
         DestroyRacers();
+        navArrow.DestroyArrow();
         canvasController.OpenRaceRewards();
         DestroyCheckpoints();
     }
 
     private void RaceFailed()
     {
-        StopPlayerMove();
         raceStarted = false;
+        navArrow.DestroyArrow();
         canvasController.OpenRaceFail();
+        DestroyCheckpoints();
     }
 
 
@@ -274,7 +294,9 @@ public class RaceBase : MonoBehaviour
     {
         countdown = 5;
         countdownComplete = false;
-        timerStarted = false;
+        raceTimer = raceData.raceTime;
+        currentTime = raceTimer;
+        timerStarted = true;
         DestroyRacers();
         raceFailed = false;
         Debug.Log("ResetCalled");
