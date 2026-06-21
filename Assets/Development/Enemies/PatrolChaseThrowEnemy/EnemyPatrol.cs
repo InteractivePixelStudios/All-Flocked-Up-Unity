@@ -406,7 +406,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
     protected async void ThrowObject()
     {
-        if (!isHoldingItem && isKicking || isThrowing || !canSeePlayer) return;
+        if (isHoldingItem || isKicking || isThrowing || !canSeePlayer) return;
         isThrowing = true;
         StopMove();
         Vector3 facingDir = (player.transform.position - transform.position).normalized;
@@ -542,6 +542,7 @@ public class EnemyPatrol : EnemyBaseComponent
         spawned.GetComponent<Rigidbody>().isKinematic = true;
         spawned.transform.SetParent(objectSpawnPoint, false);
         spawned.transform.position = objectSpawnPoint.transform.position;
+        spawned.GetComponent<ParticleSystem>().Stop();
         isHoldingItem = true;
 
     }

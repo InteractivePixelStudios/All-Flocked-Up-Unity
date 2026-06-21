@@ -308,6 +308,7 @@ public class PlayerFlightMovement : MonoBehaviour
     {
         if (isFlying && !isDiving && !isStalling)
         {
+            playerStamina.UseStamina(1);
             playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
             flapUp = true;
             await Task.Delay(500);
