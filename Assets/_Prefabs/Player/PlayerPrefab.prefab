@@ -137,7 +137,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iconRenderer: {fileID: 0}
   icon: {fileID: 21300000, guid: 43964cc754a863e4980f4e897b2d2c7e, type: 3}
-  isActive: 0
 --- !u!1 &2001886760897263158
 GameObject:
   m_ObjectHideFlags: 0
@@ -10837,6 +10836,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3875354736271577363}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!1001 &2886441181319531067
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8952464106424959765}
+    m_Modifications:
+    - target: {fileID: 2109346637251190887, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+      propertyPath: m_Name
+      value: PF_MissionComplete
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190809499159670811, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190809499159670811, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190809499159670811, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190809499159670811, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190809499159670811, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190809499159670811, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190809499159670811, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190809499159670811, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190809499159670811, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190809499159670811, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+--- !u!4 &3920914916934597152 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2190809499159670811, guid: 2d74fc34ddb78c445936f9e38d0f6bf7, type: 3}
+  m_PrefabInstance: {fileID: 2886441181319531067}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4433759641108231884
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11747,6 +11808,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1293844886419686030}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3920914916934597152}
     - targetCorrespondingSourceObject: {fileID: 5656298244435621357, guid: 5e1f69364a17c7d4c9fdbfc7fb293541, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6833759070502345426}
@@ -13313,7 +13377,6 @@ MonoBehaviour:
   currentPoopType: {fileID: 11400000, guid: 70be722b12d46094abe59a8da9976a90, type: 2}
   spawnPoint: {fileID: 6833759070502345426}
   projectilePrefab: {fileID: 6846412828355083065, guid: f2b7faadd86daf34fb84d125256a5103, type: 3}
-  poolSize: 10
   forwardVelocity: 5
   verticalVelocity: 3
 --- !u!114 &9166902959186705048

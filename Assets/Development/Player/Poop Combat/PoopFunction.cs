@@ -15,7 +15,6 @@ public class PoopFunction : MonoBehaviour
     public PoopType currentPoopType;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private PoopProjectile projectilePrefab;
-    [SerializeField] private int poolSize = 10; //adjust as needed
     [SerializeField] float forwardVelocity = 10f;
     [SerializeField] private float verticalVelocity = 5f;
 

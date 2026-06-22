@@ -31,7 +31,6 @@ public class AI_Raccoon : EnemyBaseComponent
     [SerializeField]private float maxSearchTime = 30f;
     [Header("Waypoints")]
     [SerializeField] private List<Waypoint> waypoints;
-    [SerializeField] private List<WaypointConnection> connections = new();
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]
@@ -41,7 +40,6 @@ public class AI_Raccoon : EnemyBaseComponent
     [SerializeField] protected bool isStopped;
     [SerializeField] protected bool isRetreating;
 
-    private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Climb, Search, Stop, Hit, Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
@@ -291,7 +289,7 @@ public class AI_Raccoon : EnemyBaseComponent
 
 
 
-    public new void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
 
 
@@ -339,31 +337,5 @@ public class AI_Raccoon : EnemyBaseComponent
 
     protected void ChooseNextDirection(Waypoint node)
     {
-        if (navAgent == null)
-            return;
-        connections.Clear();
-
-        foreach (var connection in node.connections)
-            connections.Add(connection);
-
-        if (connections.Count == 0 && node.nextWaypoint != null)
-        {
-            connections.Add(new WaypointConnection { node = node.nextWaypoint });
-
-        }
-        else
-        {
-            FindRandomWaypoint();
-            return;
-        }
-
-        int randomIndex = Random.Range(0, connections.Count);
-        Waypoint nextNode = connections[randomIndex].node;
-        if (nextNode == null)
-            return;
-        previousNode = currentNode;
-        SetMoveToLocation(nextNode);
-        MoveRacoonToLocation();
-
     }
 }

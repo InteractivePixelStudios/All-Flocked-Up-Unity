@@ -224,11 +224,6 @@ public class RaceBase : MonoBehaviour
         activeCheckpoints.Clear();
     }
 
-    public void GiveRewards()
-    {
-        var reward = raceData.raceRewards;
-        FindAnyObjectByType<EXPSystem>().IncrementXP(reward);
-    }
     private void SetStartLine()
     {
         Debug.Log(currentRaceStartingLine.name);

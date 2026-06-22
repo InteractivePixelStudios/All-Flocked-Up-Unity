@@ -19,7 +19,6 @@ public class UI_HudController : Singleton<UI_HudController>
     [SerializeField] private GameObject warningObj;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private Image warningImage;
-    private float fadeInAlpha = 200f;
 
     [SerializeField] private List<Sprite> healthImages = new();
     [SerializeField] private Image shownHealthImage;

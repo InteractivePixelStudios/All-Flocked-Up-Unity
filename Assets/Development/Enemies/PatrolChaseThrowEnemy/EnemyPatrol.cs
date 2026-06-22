@@ -50,7 +50,6 @@ public class EnemyPatrol : EnemyBaseComponent
     bool iconActive;
     bool locationSet;
     [SerializeField]ReactionState currentReactionState;
-    private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
@@ -453,7 +452,6 @@ public class EnemyPatrol : EnemyBaseComponent
         {
             //Debug.Log("Moving to: " + currentNode);
             navAgent.isStopped = false;
-            FindWaypoints();
             navAgent.SetDestination(currentNode.transform.position);
         }
         else

@@ -26,7 +26,6 @@ public class PlayerInteraction : MonoBehaviour
     private bool isWingventoryOpen;
     public PlayerPerchSystem perchComp;
     public I_Perchable currentPerchPoint;
-    bool perchInteracted;
 
     private PlayerInput playerInput;
     private InputAction interactAction;
@@ -252,7 +251,6 @@ public class PlayerInteraction : MonoBehaviour
             currentPerchPoint.SetPlayerRef(this.gameObject);
             Debug.Log(currentPerchPoint);
             perchComp.isReady = true;
-            perchInteracted = true;
             switch (currentPerchPoint)
             {
                 case PerchableObject_Tree:
@@ -275,7 +273,7 @@ public class PlayerInteraction : MonoBehaviour
             }
 
         }
-        else { perchComp.isReady = false; perchInteracted = false; }
+        else { perchComp.isReady = false; }
     }
 
         void OpenQuestLog(InputAction.CallbackContext ctx)
