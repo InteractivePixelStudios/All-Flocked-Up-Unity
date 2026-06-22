@@ -75,12 +75,12 @@ public class GrabHoldObject : MonoBehaviour
 
     }
 
-    private void PickUpObject(GameObject Object)
+    private void PickUpObject(GameObject obj)
     {
         Vector3 offset = new();
         try
         {
-            offset = Object.GetComponent<Interactable>().offset;
+            offset = obj.GetComponent<Interactable>().offset;
 
         }
         catch
@@ -90,25 +90,26 @@ public class GrabHoldObject : MonoBehaviour
         finally
         {
 
-            Object.transform.position = grabPoint.transform.localPosition+ offset;
-            Object.transform.rotation = grabPoint.transform.localRotation;
+            obj.transform.position = grabPoint.transform.localPosition+ offset;
+            obj.transform.rotation = grabPoint.transform.localRotation;
             grabOffset = offset;
-            Object.GetComponent<Rigidbody>().useGravity = false;
-            Object.transform.SetParent(grabPoint.transform, false);
-            grabbedObject.GetComponent<BoxCollider>().enabled = false;
+            obj.GetComponent<Rigidbody>().useGravity = false;
+            obj.transform.SetParent(grabPoint.transform, false);
+            obj.GetComponent<BoxCollider>().enabled = false;
             isHoldingObject = true;
-            HoldGrabbedObject(Object, offset);
+            obj.GetComponent<Interactable>().ToggleVFXOn();
+            HoldGrabbedObject(obj, offset);
         }
 
     }
 
 
-    private void HoldGrabbedObject(GameObject Object, Vector3 offset)
+    private void HoldGrabbedObject(GameObject obj, Vector3 offset)
     {
         if(grabbedObject != null)
         {
-            Object.transform.localPosition = Vector3.zero;
-            Object.transform.rotation = grabPoint.transform.rotation;
+            obj.transform.localPosition = Vector3.zero;
+            obj.transform.rotation = grabPoint.transform.rotation;
 
         }
     }
@@ -121,6 +122,7 @@ public class GrabHoldObject : MonoBehaviour
         grabbedObject.transform.SetParent(null, true);
         grabbedObject.GetComponent<Rigidbody>().useGravity = true;
         grabbedObject.GetComponent<BoxCollider>().enabled = true;
+        grabbedObject.GetComponent<Interactable>().ToggleVFXOff();
         grabbedObject = null;
 
     }
