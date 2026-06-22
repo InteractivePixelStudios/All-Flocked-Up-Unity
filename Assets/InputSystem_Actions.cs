@@ -244,6 +244,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EnterPhotoMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""97e2c934-733b-4eb7-a509-268488c5b934"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -728,6 +737,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Report"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d2c057a-209c-41aa-813d-d8ac630c7725"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnterPhotoMode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1641,6 +1661,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Dive = m_Player.FindAction("Dive", throwIfNotFound: true);
         m_Player_Debug = m_Player.FindAction("Debug", throwIfNotFound: true);
         m_Player_Report = m_Player.FindAction("Report", throwIfNotFound: true);
+        m_Player_EnterPhotoMode = m_Player.FindAction("EnterPhotoMode", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1763,6 +1784,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Dive;
     private readonly InputAction m_Player_Debug;
     private readonly InputAction m_Player_Report;
+    private readonly InputAction m_Player_EnterPhotoMode;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1843,6 +1865,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Report => m_Wrapper.m_Player_Report;
         /// <summary>
+        /// Provides access to the underlying input action "Player/EnterPhotoMode".
+        /// </summary>
+        public InputAction @EnterPhotoMode => m_Wrapper.m_Player_EnterPhotoMode;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -1919,6 +1945,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Report.started += instance.OnReport;
             @Report.performed += instance.OnReport;
             @Report.canceled += instance.OnReport;
+            @EnterPhotoMode.started += instance.OnEnterPhotoMode;
+            @EnterPhotoMode.performed += instance.OnEnterPhotoMode;
+            @EnterPhotoMode.canceled += instance.OnEnterPhotoMode;
         }
 
         /// <summary>
@@ -1981,6 +2010,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Report.started -= instance.OnReport;
             @Report.performed -= instance.OnReport;
             @Report.canceled -= instance.OnReport;
+            @EnterPhotoMode.started -= instance.OnEnterPhotoMode;
+            @EnterPhotoMode.performed -= instance.OnEnterPhotoMode;
+            @EnterPhotoMode.canceled -= instance.OnEnterPhotoMode;
         }
 
         /// <summary>
@@ -2584,6 +2616,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnReport(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "EnterPhotoMode" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEnterPhotoMode(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

@@ -158,6 +158,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "EnterPhotoMode",
+                    "type": "Button",
+                    "id": "97e2c934-733b-4eb7-a509-268488c5b934",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -642,6 +651,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Report",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6d2c057a-209c-41aa-813d-d8ac630c7725",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EnterPhotoMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
