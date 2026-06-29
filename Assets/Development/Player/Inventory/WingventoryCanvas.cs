@@ -264,11 +264,14 @@ public class WingventoryCanvas : MonoBehaviour
 
     void OpenCamera()
     {
-        //screenshotController.CallEnterPhotoMode();
+        screenshotController.CallEnterPhotoMode();
+        CloseWingventory();
     }
 
     void CloseCamera()
     {
+        
+        //uncertain if we will need this from the inventory - Jacob
         //screenshotController.CallExitPhotoMode();
     }
 

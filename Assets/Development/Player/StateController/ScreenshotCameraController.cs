@@ -60,7 +60,7 @@ public class ScreenshotCameraController : MonoBehaviour
         if (camAnchorFront == null) Debug.LogError("FrontCamAnchor not wired", this);
         if (camAnchorBack == null) Debug.LogError("SelfieCamAnchor not wired", this);
         
-        //Look up for map + actions
+        //Look up for action map + actions
         playerMap = InputSystem.actions.FindActionMap("Player");
         photoMap = InputSystem.actions.FindActionMap("PhotoMode");
         
@@ -102,7 +102,12 @@ public class ScreenshotCameraController : MonoBehaviour
         if (psc.CurrentState == PlayerState.PhotoMode)
             EndPhotoMode();
     }
-    private void OnFlipCamera(InputAction.CallbackContext context) => FlipCamera();
+    private void OnFlipCamera(InputAction.CallbackContext context) 
+    {
+        Debug.Log("OnFlipCamera fired");
+        FlipCamera();
+    }
+    
     private void OnSnapPhoto(InputAction.CallbackContext context) => TakePhoto();
     
     //todo: OnOrientCamera, OnZoomCamera actions
@@ -151,6 +156,9 @@ public class ScreenshotCameraController : MonoBehaviour
 
     
     // -state transition stuff-
+    public void CallEnterPhotoMode() => StartPhotoMode();
+    public void CallExitPhotoMode() => EndPhotoMode();
+    
     private void StartPhotoMode()
     {
        psc.EnterPhotoMode(); 
@@ -205,6 +213,8 @@ public class ScreenshotCameraController : MonoBehaviour
     
     private void FlipCamera()
     {
+        Debug.Log("FlipCamera fired");
+
         isSelfie = !isSelfie;
         Transform target = isSelfie ? camAnchorBack : camAnchorFront;
         cam.transform.parent = target;
