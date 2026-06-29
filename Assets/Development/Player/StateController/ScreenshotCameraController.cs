@@ -6,42 +6,120 @@ using UnityEngine.Serialization;
 
 public class ScreenshotCameraController : MonoBehaviour
 {
-    [SerializeField] private Camera cam;
+    [Header("Prefab components (assign via inspector)")]
     [SerializeField] private PlayerStateController psc;
     [SerializeField] private Transform camAnchorFront;
     [SerializeField] private Transform camAnchorBack;
-    [FormerlySerializedAs("UI_Hud")] [SerializeField] private UI_HudController uiHud;
     
-    //internal variables
-    [SerializeField] bool isSelfie = false;
-    
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Header("Run time components (assign via script")]
+    [SerializeField] private Camera cam;
+    [SerializeField] private UI_HudController uiHud;
     private Collider cameraCollider;
     private CinemachineBrain cinemachineBrain;
+    //private Transform originalCamParent;
+
+    //internal variables
+    [Header("internal variables")]
+    [SerializeField] bool isSelfie = false;
+    private float pitch = 0f;
+    private float yaw = 0f;
+    [SerializeField] private float orientSpeed = 50f;
+    [SerializeField] private float pitchLimit = 45f;
+    [SerializeField] private float yawLimit = 60f;
+     
+    //input actions
+    private InputActionMap playerMap;
+    private InputActionMap photoMap;
+    private InputAction openCameraAction;
+    private InputAction exitPhotoModeAction;
+    private InputAction flipCameraAction;
+    private InputAction snapPhotoAction;
+    //to do: orientCamera, Zoom camera actions
+
+
+
+    
+   
+    
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
+        //setting reference variables
         cam =  Camera.main;
-        cameraCollider = cam.GetComponent<Collider>();
-        cinemachineBrain = cam.GetComponent<CinemachineBrain>();
-        camAnchorFront = transform.Find("FrontCamAnchor");
-        camAnchorBack = transform.Find(("SelfieCamAnchor"));
+        if (cam != null)
+        {
+            cameraCollider = cam.GetComponent<Collider>();
+            cinemachineBrain = cam.GetComponent<CinemachineBrain>();
+        }
+       
         uiHud = FindAnyObjectByType<UI_HudController>();
-
-        if (!camAnchorFront)
-            Debug.Log("camAnchorFront is null");
-        if (!camAnchorBack)
-            Debug.Log("camAnchorBack is null");
+        //moveAction = InputSystem.actions.FindAction("Move");
+        //component check
+        if (psc == null) Debug.LogError("PlayerStateController not wired", this);
+        if (camAnchorFront == null) Debug.LogError("FrontCamAnchor not wired", this);
+        if (camAnchorBack == null) Debug.LogError("SelfieCamAnchor not wired", this);
         
+        //Look up for action map + actions
+        playerMap = InputSystem.actions.FindActionMap("Player");
+        photoMap = InputSystem.actions.FindActionMap("PhotoMode");
+        
+        openCameraAction = playerMap.FindAction("OpenCamera");
+        exitPhotoModeAction = photoMap.FindAction("ExitPhotoMode");
+        flipCameraAction = photoMap.FindAction("FlipCamera");
+        snapPhotoAction = photoMap.FindAction("SnapPhoto");
+        //todo: orientCamera, Zoom camera actions
+        
+        //subscribe for actions
+        openCameraAction.performed += OnOpenCamera;
+        exitPhotoModeAction.performed += OnExitPhotoMode;
+        flipCameraAction.performed += OnFlipCamera;
+        snapPhotoAction.performed += OnSnapPhoto;
+        //todo: orientCamera, Zoom camera actions
 
+        photoMap.Disable();
     }
 
+    private void OnDestroy()
+    {
+        //unsub actions when scene transitioning :)
+        if (openCameraAction != null) openCameraAction.performed -= OnOpenCamera;
+        if (exitPhotoModeAction != null) exitPhotoModeAction.performed -= OnExitPhotoMode;
+        if (flipCameraAction != null) flipCameraAction.performed -= OnFlipCamera;
+        if (snapPhotoAction != null) snapPhotoAction.performed -= OnSnapPhoto;
+        //todo: orientCamera, Zoom camera actions
 
+    }
+    
+    //callbacks
+    private void OnOpenCamera(InputAction.CallbackContext context)
+    {
+        if (psc.CurrentState == PlayerState.GroundMove)
+            StartPhotoMode();
+    }
+    private void OnExitPhotoMode(InputAction.CallbackContext context)
+    {
+        if (psc.CurrentState == PlayerState.PhotoMode)
+            EndPhotoMode();
+    }
+    private void OnFlipCamera(InputAction.CallbackContext context) 
+    {
+        Debug.Log("OnFlipCamera fired");
+        FlipCamera();
+    }
+    
+    private void OnSnapPhoto(InputAction.CallbackContext context) => TakePhoto();
+    
+    //todo: OnOrientCamera, OnZoomCamera actions
+
+    
+
+    
+    //replace update with actions later
     // Update is called once per frame
     private void Update()
     {
-        if (Keyboard.current.pKey.wasPressedThisFrame) //temporary for test
+        if (Keyboard.current.pKey.wasPressedThisFrame) //temporary for test, replace it later with inventory action
         {
             //if in photomode, leave photomode
             if (psc.CurrentState == PlayerState.PhotoMode)
@@ -51,15 +129,19 @@ public class ScreenshotCameraController : MonoBehaviour
                 EndPhotoMode();
                 Debug.Log("P pressed");
             }
-            //if in ground mode (not flying) enter photomode
-            else if (psc.CurrentState == PlayerState.GroundMove)
-            {
             
-
+            
+          
+            /*commented out for inputaction testing
+            //if in ground mode (not flying) enter photomode
+           else if (psc.CurrentState == PlayerState.GroundMove)
+            {
                 StartPhotoMode();
-            }
+            } */
         }
-        if (psc.CurrentState == PlayerState.PhotoMode)
+     /* commented out for inputaction testing
+      
+      if (psc.CurrentState == PlayerState.PhotoMode)
         {
             Debug.Log("in photo mode, waiting for space");
             //change this later as well for inputAction system
@@ -69,12 +151,14 @@ public class ScreenshotCameraController : MonoBehaviour
                 Debug.Log("space pressed, flipping");
                 FlipCamera();
             }
-        }
-
-        
-       
+        } */
     }
 
+    
+    // -state transition stuff-
+    public void CallEnterPhotoMode() => StartPhotoMode();
+    public void CallExitPhotoMode() => EndPhotoMode();
+    
     private void StartPhotoMode()
     {
        psc.EnterPhotoMode(); 
@@ -85,6 +169,10 @@ public class ScreenshotCameraController : MonoBehaviour
        if (cinemachineBrain)
        { Debug.Log("Main Camera CinemachineBrain Component disabled by Photo Mode"); cinemachineBrain.enabled = false;}
 
+       //swap the active input action map 
+       playerMap.Disable();
+       photoMap.Enable();
+       
        //move cam to anchor
        cam.transform.parent = camAnchorFront;
        cam.transform.localPosition = Vector3.zero;
@@ -99,9 +187,18 @@ public class ScreenshotCameraController : MonoBehaviour
         psc.ExitPhotoMode();
         Debug.Log("Photo Mode Exited");
         
+        
+        //these should never fail tbh, or else we have a problem...
+        if (cameraCollider)
         { Debug.Log("Main Camera Collider Component enabled by Photo Mode"); cameraCollider.enabled = true;}
+        
+        if (cinemachineBrain)
         { Debug.Log("Main Camera CinemachineBrain Component enabled by Photo Mode"); cinemachineBrain.enabled = true;}
-
+        
+        //swap the active input action map back
+        playerMap.Enable();
+        photoMap.Disable();
+        
         //reset to normal camera control
         cam.transform.parent = null;
 
@@ -110,27 +207,38 @@ public class ScreenshotCameraController : MonoBehaviour
         
         uiHud.ToggleMainHUD(true);
         uiHud.ToggleCameraOverlay(false);
+        
+        
     }
     
     private void FlipCamera()
     {
+        Debug.Log("FlipCamera fired");
+
         isSelfie = !isSelfie;
         Transform target = isSelfie ? camAnchorBack : camAnchorFront;
         cam.transform.parent = target;
         cam.transform.localPosition = Vector3.zero;
         cam.transform.localRotation = Quaternion.identity;
     }
-    
-    
-    
-    
+
+
+
+
     private void TakePhoto()
-    {}
-    
+    {
+        //TODO phototaking stuff
+        Debug.Log("TakePhoto Triggered");
+    }
+
     private void OrientCamera()
-    {}
-    
+    {
+        //TODO: up/down, left/right, limited axis
+    }
+
     private void ZoomCamera()
-    {}
+    { 
+        //TODO: in/out
+    }
     
 }
