@@ -54,6 +54,10 @@ public class ScreenshotCameraController : MonoBehaviour
         }
        
         uiHud = FindAnyObjectByType<UI_HudController>();
+        if (!uiHud)
+        {
+             
+        }
         //moveAction = InputSystem.actions.FindAction("Move");
         //component check
         if (psc == null) Debug.LogError("PlayerStateController not wired", this);
@@ -63,15 +67,22 @@ public class ScreenshotCameraController : MonoBehaviour
         //Look up for action map + actions
         playerMap = InputSystem.actions.FindActionMap("Player");
         photoMap = InputSystem.actions.FindActionMap("PhotoMode");
+        Debug.Log($"playerMap found: {playerMap != null}");
+        Debug.Log($"photoMap found: {photoMap != null}");
+
         
-        openCameraAction = playerMap.FindAction("OpenCamera");
+        //openCameraAction = playerMap.FindAction("OpenCamera");
         exitPhotoModeAction = photoMap.FindAction("ExitPhotoMode");
         flipCameraAction = photoMap.FindAction("FlipCamera");
         snapPhotoAction = photoMap.FindAction("SnapPhoto");
+        
+        Debug.Log($"flipCameraAction found: {flipCameraAction != null}");
+        Debug.Log($"exitPhotoModeAction found: {exitPhotoModeAction != null}");
+        Debug.Log($"snapPhotoAction found: {snapPhotoAction != null}");
         //todo: orientCamera, Zoom camera actions
         
         //subscribe for actions
-        openCameraAction.performed += OnOpenCamera;
+        //openCameraAction.performed += OnOpenCamera;
         exitPhotoModeAction.performed += OnExitPhotoMode;
         flipCameraAction.performed += OnFlipCamera;
         snapPhotoAction.performed += OnSnapPhoto;
@@ -119,7 +130,7 @@ public class ScreenshotCameraController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Keyboard.current.pKey.wasPressedThisFrame) //temporary for test, replace it later with inventory action
+        if (Keyboard.current.pKey.wasPressedThisFrame) //temporary for test, replace it later with input action
         {
             //if in photomode, leave photomode
             if (psc.CurrentState == PlayerState.PhotoMode)
@@ -172,6 +183,10 @@ public class ScreenshotCameraController : MonoBehaviour
        //swap the active input action map 
        playerMap.Disable();
        photoMap.Enable();
+       Debug.Log($"After Enable — photoMap.enabled = {photoMap.enabled}");
+       Debug.Log($"flipCameraAction.enabled = {flipCameraAction.enabled}");
+       Debug.Log($"flipCameraAction.bindings.Count = {flipCameraAction.bindings.Count}");
+
        
        //move cam to anchor
        cam.transform.parent = camAnchorFront;
