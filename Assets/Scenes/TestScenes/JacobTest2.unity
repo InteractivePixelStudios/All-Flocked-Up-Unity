@@ -34962,18 +34962,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bfaf2325a28c3a4f8a2d026d1f0d92f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetLocation: {fileID: 0}
-  navAgentComponent: {fileID: 0}
-  isMoving: 0
-  dialogue: {fileID: 0}
-  dialogueStartLineID:
-  - 6
-  - 2
-  - 3
-  retriggerDialogueLineID: 7
-  homeLocation: {fileID: 0}
-  questGiverComp: {fileID: 0}
-  dialogueFirst: 0
 --- !u!4 &623292237 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1560981557040299511, guid: 843ef1f065116fe48876e75136432331, type: 3}
@@ -35576,6 +35564,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0, z: 0}
+  hasVFX: 0
 --- !u!4 &629968961 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9e610f4871d5e6e40bfb09d778f478dc, type: 3}
@@ -74560,6 +74549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0, z: 0}
+  hasVFX: 0
 --- !u!33 &1260053685
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -94195,6 +94185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0, z: 0}
+  hasVFX: 0
 --- !u!4 &1578381365 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
@@ -98087,6 +98078,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 0, z: 0}
+  hasVFX: 0
 --- !u!33 &1641021471
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -128304,6 +128296,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1841949285}
     - target: {fileID: 4416998403051738265, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4416998403051738265, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: m_UIInputModule
       value: 
       objectReference: {fileID: 1618091861}
@@ -130704,7 +130700,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2933193811697573827, guid: 2be69d1deefc56d4da9c7f3098b31ebf, type: 3}
       propertyPath: m_fontSize
-      value: 66.3
+      value: 40.05
       objectReference: {fileID: 0}
     - target: {fileID: 3950183834418516554, guid: 2be69d1deefc56d4da9c7f3098b31ebf, type: 3}
       propertyPath: m_AnchoredPosition.y
