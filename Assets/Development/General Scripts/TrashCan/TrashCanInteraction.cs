@@ -13,7 +13,6 @@ public class TrashCanInteraction : MonoBehaviour
     [SerializeField] List<ConsumableBase> consumableList = new();
     [SerializeField] private int itemsRemain;
     [SerializeField] private float shootForce;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

@@ -23,7 +23,7 @@ public class GrabHoldObject : MonoBehaviour
         peckComp = GetComponent<PlayerPeckComponent>();
         playerInput = GetComponentInParent<PlayerInput>();
 
-        grabAction = playerInput.actions.FindAction("Grab");
+        grabAction = playerInput.actions.FindAction("Interact");
 
         if(grabAction != null )
         {

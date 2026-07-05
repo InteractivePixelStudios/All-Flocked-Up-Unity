@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public float interactionRange = 3f;
+    public float interactionRange = 1.5f;
     public LayerMask npcLayer;
     public LayerMask questLayer;
     public LayerMask dialogueLayer;
@@ -115,18 +115,15 @@ public class PlayerInteraction : MonoBehaviour
             Debug.DrawRay(transform.position + (transform.up / 4), transform.forward * interactionRange, Color.red);
             if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, npcLayer))
             {
-            Debug.Log("Pressed");
             var questNPC = hit.collider.GetComponentInParent<IQuestInteraction>();
             var questGiver =  hit.collider.GetComponentInParent<QuestGiver>();
                 if (questNPC != null)
                 {
-                Debug.Log("FoundNPC");
                 var NPC = hit.collider.gameObject.GetComponent<NPCBase>();
                 if (NPC.dialogueFirst == true)
                 {
                     canvasController.OpenDialogue();
                     NPC.InteractWithNPCDialogue();
-                    Debug.Log("DialogueFirst");
                     NPC.dialogueFirst = false;
                 }else if(NPC.dialogueFirst == false && questGiver.quests.Count>0 && !questLog.HasQuest(questGiver.quests[0]))
                 {
@@ -144,7 +141,6 @@ public class PlayerInteraction : MonoBehaviour
                 if (questInteractable != null)
                 {
                     questInteractable.InteractWithObjective();
-                Debug.Log("InteractWithQuest");
                 }
             }
 
@@ -183,12 +179,12 @@ public class PlayerInteraction : MonoBehaviour
             {
                 var nestObj = hit.collider.GetComponentInParent<NestBase>();
                 nestObj?.InteractWithNest();
-            Debug.Log("InteractWithNest");
+
                 var nestComp = nestObj.GetComponent<Q_InteractComponent>();
             if(nestComp != null)
             {
                 nestComp.InteractWithObjective();
-                Debug.Log("InteractWithQuest");
+
             }
             }
 
@@ -231,7 +227,7 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     comp.attachPoint = attachPoint;
                     comp.LookForObject(hit);
-                    Debug.Log("Attached");
+
                 }
                 else Debug.Log("skipped"); return;
             }
@@ -246,7 +242,7 @@ public class PlayerInteraction : MonoBehaviour
 
         if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, perchLayer))
         {
-            Debug.Log("PerchSeen");
+
             currentPerchPoint = hit.collider.GetComponentInParent<I_Perchable>();
             currentPerchPoint.SetPlayerRef(this.gameObject);
             Debug.Log(currentPerchPoint);
@@ -254,7 +250,7 @@ public class PlayerInteraction : MonoBehaviour
             switch (currentPerchPoint)
             {
                 case PerchableObject_Tree:
-                    Debug.Log("Ima Tree");
+
                     var tree = currentPerchPoint as PerchableObject_Tree;
                     tree.isPerching = true;
                     currentPerchPoint.StartPerch();

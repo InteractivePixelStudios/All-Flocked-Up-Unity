@@ -10,7 +10,7 @@ public class PlayerFinder : Singleton<PlayerFinder>
     void Start()
     {
         player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
-        camRef = GetComponent<CinemachineCamera>();
+        camRef = GetComponentInChildren<CinemachineCamera>();
         if(SceneManager.GetActiveScene() != SceneManager.GetSceneByName("MainMenu"))
         {
             SetTrackingTarget();

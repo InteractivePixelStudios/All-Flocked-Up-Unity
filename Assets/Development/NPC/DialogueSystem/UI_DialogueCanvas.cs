@@ -112,7 +112,6 @@ public class UI_DialogueCanvas : MonoBehaviour
         DestroyCurrentOptionButtons();
         responses = new LocalizedString[dialogueBase.currentResponseOptions.Length];
         dialogueBase.currentResponseOptions.CopyTo(responses.AsSpan());
-        Debug.Log("UISpawnResponseButtons");
         float startY = 0f;
         float offset = .2f;
         int index = 0;
@@ -132,10 +131,10 @@ public class UI_DialogueCanvas : MonoBehaviour
 
     private void ResponseClicked(string option)
     {
-        Debug.Log("responseClicked");
+
         dialogueBase.responseReturnID = responseReturnID = option;
         Cursor.visible = false;
-        DestroyCurrentOptionButtons(); Debug.Log("destroycalled");
+        DestroyCurrentOptionButtons(); 
         dialogueBase.ProgressDialogue();
     }
 
