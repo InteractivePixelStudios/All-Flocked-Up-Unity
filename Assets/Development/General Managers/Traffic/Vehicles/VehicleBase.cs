@@ -39,7 +39,8 @@ public class VehicleBase :MonoBehaviour
         if (currentNode == null)
         {
             StopVehicle();
-            Debug.Log("Cant find CurrentNode");
+            Destroy(this.gameObject);
+            //Debug.Log("Cant find CurrentNode");
             return;
         }
         //if (!navAgent.hasPath && !navAgent.pathPending)
@@ -113,7 +114,7 @@ public class VehicleBase :MonoBehaviour
     public virtual void StartMove()
     {
         stopTimer = 2.5f;
-        navAgent.isStopped = false;
+        //navAgent.isStopped = false;
         isMoving = true;
     }
 

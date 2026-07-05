@@ -117,11 +117,11 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         }
         else
         {
-            Debug.Log(index);
+
             dialogue.isRetrigger = false;
             dialogue.PrintDialogue(dialogueStartLineID[index]);
             index++;
-            Debug.Log(index);
+
             //if (index >= dialogueStartLineID.Count)
             //{
             //    dialogue.isRetrigger = true;
