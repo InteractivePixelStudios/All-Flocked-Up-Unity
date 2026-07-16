@@ -264,11 +264,17 @@ public class WingventoryCanvas : MonoBehaviour
 
     void OpenCamera()
     {
-        //screenshotController.CallEnterPhotoMode();
+        
+        //switched the order of these two first. Good practice to have script clean up its own state first then call out to other systems.
+        CloseWingventory();
+        screenshotController.CallEnterPhotoMode();
+        
     }
 
     void CloseCamera()
     {
+        
+        //uncertain if we will need this from the inventory - Jacob
         //screenshotController.CallExitPhotoMode();
     }
 

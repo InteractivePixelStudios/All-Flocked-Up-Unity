@@ -7,7 +7,6 @@ public class AI_Carlos : EnemyBaseComponent
     [SerializeField] private GameObject player;
     [SerializeField] private Vector3 targetPos;
     [SerializeField] private Vector3 lookOffset = new Vector3(0, 0, 0);
-    [SerializeField] private bool playerDetected;
     [SerializeField] private float lockTimer = 3f;
     [SerializeField] private bool aimLocked;
     [SerializeField] private GameObject bulletPrefab;
@@ -126,7 +125,7 @@ public class AI_Carlos : EnemyBaseComponent
         if (other.gameObject.CompareTag("Player"))
         {
             player = other.gameObject;
-            playerDetected = true;
+
         }
     }
 
@@ -135,7 +134,7 @@ public class AI_Carlos : EnemyBaseComponent
         if (other.gameObject.CompareTag("Player"))
         {
             player = null;
-            playerDetected = false;
+
         }
     }
 

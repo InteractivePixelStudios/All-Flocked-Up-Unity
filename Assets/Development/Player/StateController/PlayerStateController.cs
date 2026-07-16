@@ -33,6 +33,9 @@ public class PlayerStateController : MonoBehaviour
         if (SteamManager.Initialized)
         {
             //AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_003_Fly");
+            
+            // ^^^^this and other achievement triggers might benefit from using an observer pattern and events
+            //
         }
     }
 
@@ -41,8 +44,10 @@ public class PlayerStateController : MonoBehaviour
         CurrentState = PlayerState.GroundMove;
     }
 
+    //commenting out unused start + update
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    /*void Start()
     {
         
     }
@@ -51,5 +56,5 @@ public class PlayerStateController : MonoBehaviour
     void Update()
     {
         
-    }
+    }*/
 }

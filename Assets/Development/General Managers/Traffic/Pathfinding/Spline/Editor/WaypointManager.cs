@@ -145,7 +145,7 @@ public class WaypointManager : EditorWindow
 
         Waypoint selectedPoint = lastWaypoint;
 
-        Waypoint[] allWaypoints = GameObject.FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
+        Waypoint[] allWaypoints = GameObject.FindObjectsByType<Waypoint>();
         Waypoint closest = null;
         float closestDistance = Mathf.Infinity;
 
@@ -193,7 +193,7 @@ public class WaypointManager : EditorWindow
 
         Waypoint selectedPoint = lastWaypoint;
 
-        Waypoint[] allWaypoints = GameObject.FindObjectsByType<Waypoint>(FindObjectsSortMode.None);
+        Waypoint[] allWaypoints = GameObject.FindObjectsByType<Waypoint>();
         Waypoint closest = null;
         float closestDistance = Mathf.Infinity;
 

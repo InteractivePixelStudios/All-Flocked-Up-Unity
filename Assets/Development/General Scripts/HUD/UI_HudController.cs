@@ -168,7 +168,7 @@ public class UI_HudController : Singleton<UI_HudController>
     {
         var entry = Instantiate(toDoEntry);
         entryList.Add(entry);
-        entry.transform.parent = toDoBox.content.transform;
+        entry.transform.SetParent(toDoBox.content.transform);
         objDesc = new LocalizedString
         {
             TableReference = "AFU_Quest",

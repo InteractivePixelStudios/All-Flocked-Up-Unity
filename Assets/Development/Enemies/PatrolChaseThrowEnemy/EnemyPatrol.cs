@@ -540,7 +540,7 @@ public class EnemyPatrol : EnemyBaseComponent
         spawned.GetComponent<Rigidbody>().isKinematic = true;
         spawned.transform.SetParent(objectSpawnPoint, false);
         spawned.transform.position = objectSpawnPoint.transform.position;
-        spawned.GetComponent<ParticleSystem>().Stop();
+        spawned.GetComponentInChildren<ParticleSystem>().Stop();
         isHoldingItem = true;
 
     }

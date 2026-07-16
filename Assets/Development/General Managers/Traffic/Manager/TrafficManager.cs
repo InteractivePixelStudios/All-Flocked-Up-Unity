@@ -193,7 +193,7 @@ public class TrafficManager : MonoBehaviour
 
     private  void CallSpawnNew()
     {
-        Debug.Log("CallSpawnNew");
+        //Debug.Log("CallSpawnNew");
                 SpawnNewCar();
                 vehicleCache--;
             

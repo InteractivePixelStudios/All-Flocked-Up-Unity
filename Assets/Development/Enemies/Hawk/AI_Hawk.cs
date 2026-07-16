@@ -26,7 +26,6 @@ public class AI_Hawk : EnemyBaseComponent
     [SerializeField] private float maxVelocity = 15f;
     [Header("Dive")]
     public float diveRange = 1f;
-    private float diveForce = 20f;
     public float diveCooldown = 3f;
     [SerializeField] protected SphereCollider diveCollider;
     [SerializeField] private GameObject diveColliderParent;
