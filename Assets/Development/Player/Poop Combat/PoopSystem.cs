@@ -38,8 +38,6 @@ public class PoopSystem : MonoBehaviour
         accessoryComponent = GetComponentInParent<PlayerAccessoryComponent>();
     }
 
-
-
     private void Update()
     {
         if (cooldownTimer > 0f)
@@ -103,8 +101,5 @@ public class PoopSystem : MonoBehaviour
         maxPoop += poopBonus;
         updateItemsTimer = 30f;
     }
-
-    
-
 
 }
