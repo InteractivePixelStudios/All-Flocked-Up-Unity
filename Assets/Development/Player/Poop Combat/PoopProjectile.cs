@@ -17,7 +17,7 @@ public class PoopProjectile : MonoBehaviour
     private PoopFunction source;
     private PoopType poopType;
 
-    [SerializeField] private float speed = 15f; //temporary, this should be half of the player speed
+    [SerializeField] private float speed = 1f; //temporary, this should be half of the player speed
 
     private float lifeTimer;
 
@@ -25,6 +25,8 @@ public class PoopProjectile : MonoBehaviour
     [SerializeField] private ParticleSystem splashParticle;
     [SerializeField] EventReference splatSFX;
 
+    bool hasTarget = false;
+    GameObject targetEnemy;
 
     private void Awake()
     {
@@ -43,22 +45,26 @@ public class PoopProjectile : MonoBehaviour
 
     public PoopType GetPoopType() {  return poopType; }
 
-    public void Launch(Vector3 target, PoopType type, PoopFunction functionSource, Vector3 playerVelocity)
+    public void Launch(GameObject target, PoopType type, PoopFunction functionSource, Vector3 playerVelocity)
     {
+        Vector3 direction = (target.transform.position - transform.position).normalized;
+        direction.y = 0f;
 
+        Vector3 playerVel = new Vector3(playerVelocity.x, 0f, playerVelocity.z);
 
-        Vector3 direction = (target - transform.position).normalized;
-        Debug.Log(target);
+        float launchSpeed = playerVel.magnitude;
 
-        float launchSpeed = playerVelocity.magnitude * 0.5f; // Launch speed is half the player's speed
+        Vector3 launchVel = direction * launchSpeed;
 
-        if (launchSpeed <= 0.1f)
-        {
-            launchSpeed = speed; // Fallback to default speed if player is stationary
-        }
+        rb.linearVelocity = launchVel;
 
-        //rb.linearVelocity = direction * launchSpeed;
+        hasTarget = true;
+        targetEnemy = target;
+    }
 
+    public void SetVelocity(Vector3 velocity)
+    {
+        rb.linearVelocity = velocity;
     }
 
     private void SpawnPoopDecal(Vector3 position, Vector3 hit)
@@ -81,10 +87,17 @@ public class PoopProjectile : MonoBehaviour
         else return;
     }
 
-
-    private void Update()
+    private void FixedUpdate()
     {
+        if (hasTarget)
+        {
+            Vector3 direction = (targetEnemy.transform.position - transform.position).normalized;
+            direction.y = 0f;
 
+            Vector3 launchVel = direction * speed;
+
+            rb.linearVelocity = new Vector3(launchVel.x, rb.linearVelocity.y, launchVel.z);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
