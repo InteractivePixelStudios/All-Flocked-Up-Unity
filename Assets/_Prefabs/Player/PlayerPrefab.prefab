@@ -13194,6 +13194,8 @@ MonoBehaviour:
   glideGravityDivide: 6
   flapUpHeight: 1
   flapStaminaAmount: 2
+  flapAnimTime: 1
+  flapForwardSpeedIncrease: 3
   rotateSpeed: 80
   glideDownSpeed: 350
   glideDownDropSpeed: 1
@@ -13765,6 +13767,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projector: {fileID: 0}
   moveComp: {fileID: 0}
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!114 &7662461018856128867
 MonoBehaviour:
   m_ObjectHideFlags: 0
