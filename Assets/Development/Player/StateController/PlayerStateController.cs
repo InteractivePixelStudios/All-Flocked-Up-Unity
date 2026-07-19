@@ -3,10 +3,11 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 
 //this script exists to control the state of the player and alternate between modes like camera, and normal behavior. 
-//First iteration will only have groundmove, camera, and flymove. The controller will be used to regulate what the player can do based on state
+//The First iteration will only have groundmove, camera, and flymove. The controller will be used to regulate what the player can do based on state
 //camera state - movement disabled, camera will instead move, can take pictures
 //groundmove state - normal movement when not flying
 //flymove state - movement while flying
@@ -23,6 +24,8 @@ public class PlayerStateController : MonoBehaviour
 
     [SerializeField] private string defaultMapName = "UI";
     [SerializeField] private bool logMapSwitches = true;
+
+    [SerializeField] private string[] uiMapScenes = { "MainMenu", "CreditScene" };
     private void Start()
     {
         var actions = InputSystem.actions;
@@ -94,7 +97,6 @@ public class PlayerStateController : MonoBehaviour
         }
         
         
-        
         var actions = InputSystem.actions;
         if (actions == null) return;
         foreach(var map in actions.actionMaps)
@@ -104,4 +106,25 @@ public class PlayerStateController : MonoBehaviour
         }
 
     }
+
+    private void OnEnable()
+    {
+        //subscribe to scenemanager, so can auto turn on/off playermaps
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        //unsub
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
+    }
+
+    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        bool wantsUI = System.Array.IndexOf(uiMapScenes, scene.name) >= 0;
+        if (wantsUI) SwitchToUIMap();
+        else SwitchToPlayerMap();
+
+    }
+    
 }
