@@ -54,13 +54,13 @@ public class PlayerInteraction : MonoBehaviour
     }
     void InitInputs()
     {
-        interactAction = InputSystem.actions.FindAction("Interact");
-        questLogAction = InputSystem.actions.FindAction("QuestLog");
-        mapAction = InputSystem.actions.FindAction("Map");
-        inventoryAction = InputSystem.actions.FindAction("Inventory");
-        pauseAction = InputSystem.actions.FindAction("Pause");
-        debugAction = InputSystem.actions.FindAction("Debug");
-        reportAction = InputSystem.actions.FindAction("Report");
+        interactAction = InputSystem.actions.FindAction("Player/Interact");
+        questLogAction = InputSystem.actions.FindAction("Player/QuestLog");
+        mapAction = InputSystem.actions.FindAction("Player/Map");
+        inventoryAction = InputSystem.actions.FindAction("Player/Inventory");
+        pauseAction = InputSystem.actions.FindAction("Player/Pause");
+        debugAction = InputSystem.actions.FindAction("Player/Debug");
+        reportAction = InputSystem.actions.FindAction("Player/Report");
 
         if (interactAction != null && questLogAction != null && mapAction != null && inventoryAction != null && pauseAction != null)
         {
@@ -79,6 +79,9 @@ public class PlayerInteraction : MonoBehaviour
     {
         return isWingventoryOpen;
     }
+    
+    public void SetIsWingventoryOpen(bool value) => isWingventoryOpen = value;
+
 
     //public void OpenReport(InputAction.CallbackContext ctx)
     //{
@@ -305,13 +308,19 @@ public class PlayerInteraction : MonoBehaviour
                 isWingventoryOpen = true;
                 uiOn = true;
         }
-            else
+            
+            //this else never ever fires it's impossible with current action map setup
+            //moving the below logic somewhere else to kill two birds with one stone -
+            //having the bool flipped by all three inventory closing pathways: button, action and camera
+           
+            /*else
             {
                 canvasController.CloseWingventory();
-                isWingventoryOpen = false;
+                isWingventoryOpen = false;  //MOVED TO WINGVENTORYCANVAS LINES 97-99
                 uiOn = false;
-            }
-    }
+            }*/
+        }
+        
 
         void OpenPause(InputAction.CallbackContext ctx)
         {
@@ -320,14 +329,14 @@ public class PlayerInteraction : MonoBehaviour
                 canvasController.PauseGame();
             }
             else canvasController.ResumeGame(); uiOn = false;
-    }
+        }
 
         //OnLevelWasLoaded refreshes scene-bound refs on scene change — deprecated but functional
-    private void OnLevelWasLoaded(int level)
-    {
-        canvasController = FindAnyObjectByType<UI_CanvasController>();
-        questLog = FindAnyObjectByType<QuestLog>();
-        Debug.Log("OLWL fired, level=" + level);
-    }
+        private void OnLevelWasLoaded(int level)
+        {
+            canvasController = FindAnyObjectByType<UI_CanvasController>();
+            questLog = FindAnyObjectByType<QuestLog>();
+            Debug.Log("OLWL fired, level=" + level);
+        }
 }
 
