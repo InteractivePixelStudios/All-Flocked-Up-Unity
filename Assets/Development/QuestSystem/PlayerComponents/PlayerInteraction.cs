@@ -44,8 +44,8 @@ public class PlayerInteraction : MonoBehaviour
     }
     private void Update()
     {
-        if (playerInput.currentActionMap == playerInput.actions.FindActionMap("UI") &&!uiOn) { uiOn = true; InitInputs(); Debug.Log("REINIT"); }
-        else return;
+      //  if (playerInput.currentActionMap == playerInput.actions.FindActionMap("UI") &&!uiOn) { uiOn = true; InitInputs(); Debug.Log("REINIT"); }
+       // else return;
     }
 
     public bool ReturnInteractPerformed()
@@ -54,13 +54,13 @@ public class PlayerInteraction : MonoBehaviour
     }
     void InitInputs()
     {
-        interactAction = playerInput.actions.FindAction("Interact");
-        questLogAction = playerInput.actions.FindAction("QuestLog");
-        mapAction = playerInput.actions.FindAction("Map");
-        inventoryAction = playerInput.actions.FindAction("Inventory");
-        pauseAction = playerInput.actions.FindAction("Pause");
-        debugAction = playerInput.actions.FindAction("Debug");
-        reportAction = playerInput.actions.FindAction("Report");
+        interactAction = InputSystem.actions.FindAction("Interact");
+        questLogAction = InputSystem.actions.FindAction("QuestLog");
+        mapAction = InputSystem.actions.FindAction("Map");
+        inventoryAction = InputSystem.actions.FindAction("Inventory");
+        pauseAction = InputSystem.actions.FindAction("Pause");
+        debugAction = InputSystem.actions.FindAction("Debug");
+        reportAction = InputSystem.actions.FindAction("Report");
 
         if (interactAction != null && questLogAction != null && mapAction != null && inventoryAction != null && pauseAction != null)
         {
@@ -322,10 +322,12 @@ public class PlayerInteraction : MonoBehaviour
             else canvasController.ResumeGame(); uiOn = false;
     }
 
+        //OnLevelWasLoaded refreshes scene-bound refs on scene change — deprecated but functional
     private void OnLevelWasLoaded(int level)
     {
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         questLog = FindAnyObjectByType<QuestLog>();
+        Debug.Log("OLWL fired, level=" + level);
     }
 }
 
