@@ -179,7 +179,7 @@ public class UI_CanvasController : MonoBehaviour
             else enemies.Remove(enemy);
         }
     }
-
+//   \/ \/ \/ \/ this stuff targeted for refactoring \/ \/ \/ \/
     public void SetPlayerMap()
     {
         if (isUIMap)
@@ -189,7 +189,7 @@ public class UI_CanvasController : MonoBehaviour
             player.GetComponent<PlayerFlightMovement>().enabled = true;
             camRef.GetComponent<CinemachineOrbitalFollow>().enabled = true;
             isUIMap = false;
-           // Debug.Log("PlayerMAP");
+            Debug.Log("PlayerMAP");
 
         }
         else return;
@@ -204,7 +204,7 @@ public class UI_CanvasController : MonoBehaviour
             player.GetComponent<PlayerFlightMovement>().enabled = false;
             camRef.GetComponent<CinemachineOrbitalFollow>().enabled = false;
             isUIMap = true;
-            //Debug.Log("UIMAP");
+            Debug.Log("UIMAP");
         }
         else return;
     }
@@ -225,6 +225,8 @@ public class UI_CanvasController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
       //  Debug.Log("Hiding cursor");
     }
+    
+    // /\ /\ /\  this stuff targeted for refactoring /\ /\ /\
 
     //quest timer canvas
     public void ShowTimer()
