@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine.Localization;
 using System.Net;
+using UnityEngine.InputSystem;
 
 public class WingventoryCanvas : MonoBehaviour
 {
@@ -51,7 +52,7 @@ public class WingventoryCanvas : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questObjText;
 
     [SerializeField] ScreenshotCameraController screenshotController;
-
+    private InputAction closeAction;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -61,6 +62,7 @@ public class WingventoryCanvas : MonoBehaviour
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         playerWingventory = FindAnyObjectByType<PlayerWingventory>();
         screenshotController = FindAnyObjectByType<ScreenshotCameraController>();
+        
         GetTrinketCount();
         GetItemBoxes();
         leftBackPageButton.onClick.AddListener(GoCenterPage);
@@ -79,11 +81,22 @@ public class WingventoryCanvas : MonoBehaviour
         GetPlayerInv();
         SpawnItemButton();
         Time.timeScale = 0;
+        
+        closeAction = InputSystem.actions.FindAction("UI/Inventory");
+        if (closeAction != null)
+            closeAction.performed += OnCloseKey;
+
     }
 
     private void OnDestroy()
     {
         Time.timeScale = 1;
+        if (closeAction != null)
+            closeAction.performed -= OnCloseKey;
+
+        var interaction = FindAnyObjectByType<PlayerInteraction>();
+        if(interaction != null)
+            interaction.SetIsWingventoryOpen(false);
     }
 
     private void GoLeftPage()
@@ -107,7 +120,7 @@ public class WingventoryCanvas : MonoBehaviour
         rightCanvas.SetActive(false);
         Debug.Log("CenterPage");
     }
-
+    private void OnCloseKey(InputAction.CallbackContext context) => CloseWingventory();
     private void CloseWingventory()
     {
         canvasController.CloseWingventory();
