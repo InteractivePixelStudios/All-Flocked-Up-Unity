@@ -26,6 +26,10 @@ public class PerchableObject_Bush : MonoBehaviour, I_Perchable
         else return;
     }
 
+    public void SetPlayerRef(GameObject player)
+    {
+        playerRef = player;
+    }
     public void StartPerch()
     {
         isPerching = true;

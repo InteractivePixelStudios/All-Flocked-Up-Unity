@@ -27,7 +27,6 @@ public class PlayerSkinSelector : MonoBehaviour
     }
     private void Start()
     {
-        playerSpawnPoint = shopLocation.playerSpawnPoint;
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         var cams = FindObjectsByType<CinemachineCamera>();
         foreach(var camera in cams )
@@ -38,12 +37,19 @@ public class PlayerSkinSelector : MonoBehaviour
             }
         }
         shopLocation = FindAnyObjectByType<SkinShopLocation>();
+        if(shopLocation != null )
+        {
+            playerSpawnPoint = shopLocation.playerSpawnPoint;
+        }
     }
 
     private void OnLevelWasLoaded(int level)
     {
         shopLocation = FindAnyObjectByType<SkinShopLocation>();
-        playerSpawnPoint = shopLocation.playerSpawnPoint;
+        if (shopLocation != null)
+        {
+            playerSpawnPoint = shopLocation.playerSpawnPoint;
+        }
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         var cams = FindObjectsByType<CinemachineCamera>();
         foreach (var camera in cams)

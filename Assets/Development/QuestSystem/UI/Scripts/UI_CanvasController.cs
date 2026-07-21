@@ -115,6 +115,12 @@ public class UI_CanvasController : MonoBehaviour
     public UI_SkinSelector activeSkinSelector;
     Dictionary<Graphic, Color> cachedUIColors = new();
     public bool uiOpen;
+    [Header("HideAndSeek")]
+    [SerializeField] private UI_HideSeekCountdown hasCountdownPrefab;
+    public UI_HideSeekCountdown currentHASCountdown;
+
+    [SerializeField] private UI_HASComplete hasCompletePrefab;
+    public UI_HASComplete currentHASComplete;
 
     private void Start()
     {
@@ -173,7 +179,7 @@ public class UI_CanvasController : MonoBehaviour
             else enemies.Remove(enemy);
         }
     }
-
+//   \/ \/ \/ \/ this stuff targeted for refactoring \/ \/ \/ \/
     public void SetPlayerMap()
     {
         if (isUIMap)
@@ -209,7 +215,7 @@ public class UI_CanvasController : MonoBehaviour
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        Debug.Log("Showing cursor");
+       // Debug.Log("Showing cursor");
     }
     //cursor off
     public void HidePlayerCursor()
@@ -217,8 +223,10 @@ public class UI_CanvasController : MonoBehaviour
         SetPlayerMap();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        Debug.Log("Hiding cursor");
+      //  Debug.Log("Hiding cursor");
     }
+    
+    // /\ /\ /\  this stuff targeted for refactoring /\ /\ /\
 
     //quest timer canvas
     public void ShowTimer()
@@ -326,6 +334,7 @@ public class UI_CanvasController : MonoBehaviour
             activeNotifInstance.SetNotifText(text);
             return;
         }
+        if (activeDialogueInstance != null) return;
         activeNotifInstance = Instantiate(questNotifCanvas);
         ApplySavedContrast();
         activeNotifInstance.SetNotifText(text);
@@ -1027,5 +1036,38 @@ public class UI_CanvasController : MonoBehaviour
         SetContrastMode(value);
     }
 
+    public void SpawnHASCountdown()
+    {
+        if(currentHASCountdown== null)
+        {
+            currentHASCountdown = Instantiate(hasCountdownPrefab);
+
+        }
+    }
+
+    public void SpawnHASComplete()
+    {
+        if(currentHASComplete==null)
+        {
+            currentHASComplete = Instantiate(hasCompletePrefab);
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
+
+        }
+    }
+
+    public void CloseHASComplete()
+    {
+        if(currentHASComplete!= null)
+        {
+            Destroy(currentHASComplete.gameObject);
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
+        }
+    }
 
 }

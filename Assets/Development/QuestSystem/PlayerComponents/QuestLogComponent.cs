@@ -101,6 +101,7 @@ public class QuestLog : MonoBehaviour
             
         };
         instance.StartQuest();
+        instance.dialogueComp = questGiver.GetComponent<NPCBase>();
         activeQuests.Add(instance);
         hasQuest = true;
         currentQuestGiver = questGiver;
@@ -138,7 +139,7 @@ public class QuestLog : MonoBehaviour
             objIndex++;
             UI_HudController.Instance.AddToDoEntry(quest.questID, currentObjectives[0].objectiveDescription,objIndex);
         }
-        canvasController.ShowQuestNotif("Objective Complete");
+        //canvasController.ShowQuestNotif("Objective Complete");
         //canvasController.activeTrackerInstance.IncrementTrackerIndex();
         CheckForCompletedQuests();
         Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
@@ -166,17 +167,19 @@ public class QuestLog : MonoBehaviour
                 activeQuests.RemoveAt(i);
                 canvasController.EndTimer();
                 currentQuestGiver.quests.RemoveAt(0);
-                currentQuestGiver.hasQuest = false;
+                currentQuestGiver.hasQuest = true;
                 currentQuestGiver.GetComponent<NPCBase>().dialogueFirst = true;
+                GetComponent<VFXController>().PlayQuestParticles();
             }
             if(currentQuestGiver.quests.Count <= 0)
             {
                 currentQuestGiver.gameObject.layer = LayerMask.NameToLayer("Dialogue");
+                currentQuestGiver.hasQuest = false;
                 //var comp = currentQuestGiver.GetComponent<QuestGiver>();
                 //Debug.Log(currentQuestGiver.gameObject.layer);
                 //comp.enabled = false;
                 //Destroy(comp);
-               
+
             }
 
         }

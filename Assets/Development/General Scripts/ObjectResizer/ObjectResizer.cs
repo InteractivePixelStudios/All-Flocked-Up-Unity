@@ -6,8 +6,7 @@ public class ObjectResizer : MonoBehaviour
 {
     [SerializeField] private Transform mesh;
     [SerializeField] private float detectRadius = 1f;
-    [SerializeField] private float maxDistance =1f;
-    [SerializeField] private bool contacted = false;
+   // [SerializeField] private float maxDistance =1f;
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private float distance;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -22,7 +21,7 @@ public class ObjectResizer : MonoBehaviour
     void Update()
     {
 
-            CheckForPlayer();
+            //CheckForPlayer();
         
 
     }
@@ -33,7 +32,6 @@ public class ObjectResizer : MonoBehaviour
 
         if (colliders.Length > 0)
         {
-            contacted = true;
             Debug.Log("Contacted");
 
             foreach (var collider in colliders)
@@ -51,10 +49,6 @@ public class ObjectResizer : MonoBehaviour
                     mesh.localScale = Vector3.one * distance;
                 }
             }
-        }
-        else
-        {
-            contacted = false;
         }
     }
 }

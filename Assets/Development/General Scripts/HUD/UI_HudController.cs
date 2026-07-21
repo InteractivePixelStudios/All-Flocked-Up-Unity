@@ -19,7 +19,6 @@ public class UI_HudController : Singleton<UI_HudController>
     [SerializeField] private GameObject warningObj;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private Image warningImage;
-    private float fadeInAlpha = 200f;
 
     [SerializeField] private List<Sprite> healthImages = new();
     [SerializeField] private Image shownHealthImage;
@@ -39,12 +38,22 @@ public class UI_HudController : Singleton<UI_HudController>
     [SerializeField] private float currentPoop;
     [SerializeField] private float startPoop;
 
+
+    [SerializeField] private Pooper pooperComp;
+    [SerializeField] private PoopType currentPoopType;
+    [SerializeField] private List<Sprite> poopTypeSprites = new();
+    [SerializeField] private Image currentPoopSprite;
+
+
     [SerializeField] private Image levelUpIcon;
     [SerializeField] private EXPSystem expComp;
     [SerializeField] private int cachedLevel;
     float iconTimer = 5f;
     float fadeTimer = 2f;
     float visibleTime = 2f;
+
+    [SerializeField] private GameObject hideSeekIcon;
+    [SerializeField] private TextMeshProUGUI hideSeekFoundCount;
 
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject camPanel;
@@ -73,6 +82,7 @@ public class UI_HudController : Singleton<UI_HudController>
         expComp = playerRef.GetComponent<EXPSystem>();
         cachedLevel = expComp.PLAYERLEVEL;
         poopComp = playerRef.GetComponent<PoopSystem>();
+        pooperComp = playerRef.GetComponent<Pooper>();
         startHealth = healthComp.maxHealth;
         currentHealth = healthComp.currentHealth;
         currentStamina = staminaComp.GetCurrentStamina();
@@ -83,11 +93,53 @@ public class UI_HudController : Singleton<UI_HudController>
         HideIcon();
         HideReticle();
         HideToDoPanel();
+        GetPoopType();
+        UpdatePoopTypeSprite(currentPoopType);
+        HideHASIcon();
     }
 
     public bool GetIsTDOpen()
     {
         return isToDoOpen;
+    }
+
+    public void GetPoopType()
+    {
+        currentPoopType = pooperComp.poopType;
+    }
+
+    void UpdatePoopTypeSprite(PoopType type)
+    {
+        foreach(var t in poopTypeSprites)
+        {
+            if (t == type.hudSprite)
+            {
+                SetPoopSprite(t);
+                break;
+            }
+            else continue;
+        }
+    }
+
+    void SetPoopSprite(Sprite sprite)
+    {
+        if (sprite == null) return;
+        currentPoopSprite.sprite = sprite;
+    }
+
+   public void ShowHASIcon()
+    {
+        hideSeekIcon.SetActive(true);
+    }
+
+    public void HideHASIcon()
+    {
+        hideSeekIcon.SetActive(false);
+    }
+
+    public void UpdateHASText(float count)
+    {
+        hideSeekFoundCount.SetText(count.ToString());   
     }
 
     public void ShowReticle()
@@ -116,7 +168,7 @@ public class UI_HudController : Singleton<UI_HudController>
     {
         var entry = Instantiate(toDoEntry);
         entryList.Add(entry);
-        entry.transform.parent = toDoBox.content.transform;
+        entry.transform.SetParent(toDoBox.content.transform);
         objDesc = new LocalizedString
         {
             TableReference = "AFU_Quest",
@@ -152,6 +204,7 @@ public class UI_HudController : Singleton<UI_HudController>
         if (currentHealth !=  healthComp.currentHealth) { currentHealth = healthComp.currentHealth; UpdateHealth(); } 
         if(currentStamina != staminaComp.GetCurrentStamina()) { currentStamina = staminaComp.GetCurrentStamina(); UpdateStamina(); }
         if (currentPoop != poopComp.GetCurrentPoop()) { currentPoop = poopComp.GetCurrentPoop(); UpdatePoop(); }
+        if(!currentPoopSprite.Equals(currentPoopType.hudSprite)) { GetPoopType(); UpdatePoopTypeSprite(currentPoopType); }
         if (expComp.PLAYERLEVEL != cachedLevel)
         {
             cachedLevel = expComp.PLAYERLEVEL;

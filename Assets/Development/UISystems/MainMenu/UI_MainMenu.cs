@@ -30,7 +30,6 @@ public class UI_MainMenu : MonoBehaviour
     [SerializeField] private GameObject saveWindowPrefab;
     [SerializeField] private GameObject currentSaveWindow;
     private string savePath;
-    private bool menuOpen;
     [SerializeField] private Vector3 cameraOffset;
     [SerializeField] UI_LanguageSelector lang;
     public bool firstSelected;
@@ -49,7 +48,6 @@ public class UI_MainMenu : MonoBehaviour
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         playerRef = FindAnyObjectByType<PlayerFlightMovement>().gameObject;
         cameraRef = FindAnyObjectByType<CameraController>();
-        menuOpen = true;
         playerRef.transform.position = playerSpawnPoint.transform.position ;
         playerRef.transform.rotation  = playerSpawnPoint.transform.rotation;
         cameraRef.transform.forward = playerSpawnPoint.transform.forward;

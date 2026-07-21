@@ -21,7 +21,11 @@ public class Q_Collect : MonoBehaviour,IQuestMechanic
 
     public void OnDestroy()
     {
-        questLog.UpdateQuestObjective(objectiveID, 1);
+        if(questLog != null)
+        {
+            questLog.UpdateQuestObjective(objectiveID, 1);
+
+        }
 
 
     }

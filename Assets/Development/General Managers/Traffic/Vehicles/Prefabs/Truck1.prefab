@@ -100,6 +100,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1461346400035125683}
   - {fileID: 9182337480228054221}
   - {fileID: 358686958939100083}
   m_Father: {fileID: 0}
@@ -193,7 +194,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 327744
+    m_Bits: 262208
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -214,7 +215,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4260032
+    m_Bits: 4194496
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -225,6 +226,68 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.82, y: 1, z: 1}
   m_Center: {x: 0, y: 0.2, z: 3}
+--- !u!1001 &2337750741627386358
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5470013170722679898}
+    m_Modifications:
+    - target: {fileID: 3762446494581948485, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.572
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762446494581948485, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762446494581948485, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.544
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762446494581948485, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762446494581948485, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762446494581948485, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762446494581948485, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762446494581948485, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762446494581948485, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 3762446494581948485, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6482355163392069294, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_Name
+      value: PF_CarExhaust
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c99453d357598334990211920048d5ff, type: 3}
+--- !u!4 &1461346400035125683 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3762446494581948485, guid: c99453d357598334990211920048d5ff, type: 3}
+  m_PrefabInstance: {fileID: 2337750741627386358}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8711243936351568678
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -273,13 +336,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5326174905074205479, guid: 652eb85c111aa1d41be19be50ab8afae, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -2480880742077556519, guid: 652eb85c111aa1d41be19be50ab8afae, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -98835852040112367, guid: 652eb85c111aa1d41be19be50ab8afae, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 652eb85c111aa1d41be19be50ab8afae, type: 3}
       propertyPath: m_Name
       value: SM_Vehicle_Truck
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 652eb85c111aa1d41be19be50ab8afae, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 652eb85c111aa1d41be19be50ab8afae, type: 3}
       propertyPath: m_TagString
       value: Vehicle
+      objectReference: {fileID: 0}
+    - target: {fileID: 2602886545524159314, guid: 652eb85c111aa1d41be19be50ab8afae, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5084041274566785457, guid: 652eb85c111aa1d41be19be50ab8afae, type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

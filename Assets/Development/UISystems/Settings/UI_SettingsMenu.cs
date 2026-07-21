@@ -53,11 +53,12 @@ public class UI_SettingsMenu : MonoBehaviour
 
     public void SetFirstSettingsButton()
     {
-        if (Gamepad.current.IsActuated())
-        {
-            EventSystem.current.SetSelectedGameObject(videoButton.gameObject);
-        }
-        else return;
+
+            if (videoButton.gameObject == null)
+            {
+                EventSystem.current.SetSelectedGameObject(videoButton.gameObject);
+            }
+
     }
 
     protected void CloseSettings()

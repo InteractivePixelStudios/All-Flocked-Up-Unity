@@ -27,13 +27,16 @@ public class PlayerFlightMovement : MonoBehaviour
     [SerializeField] float mouseTiltSpeed = 1.0f;
 
     [Header("Flight Speeds: ")]
-    [SerializeField] float baseGlideSpeed = 400f;
+    [SerializeField] float baseGlideSpeed = 6f;
     [SerializeField] float maxDownwardVelocity = -3f;
     [SerializeField] float glideGravityDivide = 4f;
 
     [Header("Flap Variables: ")]
     [SerializeField] float flapUpHeight = 5f;
     [SerializeField] float flapStaminaAmount = 2f;
+    [SerializeField] float flapAnimTime = 1f;
+    float flapForwardSpeedBonus = 0f;
+    [SerializeField] float flapForwardSpeedIncrease = 3f;
 
     [Header("Movement Variables: ")]
     [SerializeField] float rotateSpeed = 80f;
@@ -145,7 +148,7 @@ public class PlayerFlightMovement : MonoBehaviour
             // add "Gravity" to player
             playerBody.AddForce((Vector3.down * Mathf.Abs(Physics.gravity.y / glideGravityDivide)) * Time.deltaTime, ForceMode.VelocityChange);
             // clamp the max downward velocity
-            playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, Mathf.Clamp(playerBody.linearVelocity.y, maxDownwardVelocity, 10000) , playerBody.linearVelocity.z);
+            playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, Mathf.Clamp(playerBody.linearVelocity.y, maxDownwardVelocity, 10000), playerBody.linearVelocity.z);
             FlightMovement();
             ForwardGlide();
         }
@@ -196,7 +199,7 @@ public class PlayerFlightMovement : MonoBehaviour
             transform.Rotate(new Vector3(0, rotateSpeed * horizontalMovement * Time.deltaTime, 0));
 
             Vector3 currentAngle = meshTransform.eulerAngles + new Vector3(0, 0, -horizontalMovement) * tiltSpeed * Time.deltaTime;
-    
+
             // Weird math to get relative angle
             currentAngle.z = Mathf.Clamp(((currentAngle.z + 540) % 360) - 180, -25f, 25f);
             meshTransform.rotation = Quaternion.Euler(currentAngle);
@@ -283,27 +286,46 @@ public class PlayerFlightMovement : MonoBehaviour
     {
         if (gliding && !isSpeedUp)
         {
-            Vector3 forwardGlideAmount = transform.forward * baseGlideSpeed * Time.deltaTime;
-            forwardGlideAmount.y = playerBody.linearVelocity.y;
-            playerBody.linearVelocity = forwardGlideAmount;
+            Vector3 forwardGlideAmount = transform.forward * (baseGlideSpeed + flapForwardSpeedBonus);
+            forwardGlideAmount.y = 0;
+            forwardGlideAmount = Vector3.ClampMagnitude(forwardGlideAmount, baseGlideSpeed);
+
+            Vector3 temp = playerBody.linearVelocity;
+
+            if (forwardGlideAmount.x < 0 && temp.x < forwardGlideAmount.x)
+                temp.x = forwardGlideAmount.x;
+            else if (temp.x > forwardGlideAmount.x)
+                temp.x = forwardGlideAmount.x;
+
+            if (forwardGlideAmount.z < 0 && temp.z < forwardGlideAmount.z)
+                temp.z = forwardGlideAmount.z;
+            else if (temp.z > forwardGlideAmount.z)
+                temp.z = forwardGlideAmount.z;
+
+            playerBody.linearVelocity = new Vector3(temp.x, playerBody.linearVelocity.y, temp.z);
+            playerBody.linearVelocity += forwardGlideAmount * Time.deltaTime;
         }
     }
 
     async void FlapUp(InputAction.CallbackContext context)
     {
-        if (isFlying && !isDiving && !isStalling)
+        if (isFlying && !isDiving && !isStalling && !flapUp)
         {
-                playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
-                flapUp = true;
-                await Task.Delay(500);
-                flapUp = false;
+            playerStamina.UseStamina(1);
+            playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
+            flapUp = true;
+            flapForwardSpeedBonus = flapForwardSpeedIncrease;
+            // Delay time in miliseconds
+            await Task.Delay((int)(flapAnimTime * 1000));
+            flapUp = false;
+            flapForwardSpeedBonus = 0f;
         }
     }
 
     async void Dive(InputAction.CallbackContext context)
     {
         if (isDiving || !isFlying) return;
-        
+
         isDiving = true;
         playerBody.AddForce(transform.forward * diveSpeed);
         playerBody.AddForce(Vector3.down * diveSpeed);
@@ -316,7 +338,7 @@ public class PlayerFlightMovement : MonoBehaviour
         if (isStalling || !isFlying) return;
 
         playerBody.linearVelocity = Vector3.zero;
-        
+
         stallStartLocation = transform.position;
         isStalling = true;
         playerBody.useGravity = false;
@@ -330,6 +352,8 @@ public class PlayerFlightMovement : MonoBehaviour
         flapAction.started += FlapUp;
         diveAction.performed += Dive;
         stallAction.performed += AirStall;
+
+        playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, playerBody.linearVelocity.y / glideGravityDivide, playerBody.linearVelocity.z);
 
         GetComponent<VFXController>().ToggleStreakOn();
         FlapUp(new InputAction.CallbackContext());
@@ -356,6 +380,29 @@ public class PlayerFlightMovement : MonoBehaviour
     public void CallReturnToWalk()
     {
         ReturnToWalkState();
+    }
+
+    // method gets the players directional speed to be able to limit speed based on max speed
+    public Vector2 FindVelRelativeToLook()
+    {
+        // players current forward angle
+        float lookAngle = transform.eulerAngles.y;
+        // players angle of movement with 0 being forward
+        float moveAngle = Mathf.Atan2(playerBody.linearVelocity.x, playerBody.linearVelocity.z) * Mathf.Rad2Deg;
+
+        // finds the relative velocity angle compared to the moveAngle
+        float velY = Mathf.DeltaAngle(lookAngle, moveAngle);
+        // the x velocity angle is just 90 degrees away
+        float velX = 90 - velY;
+
+
+        // multiply the magnitude by the angle to get magnitude in each direction
+        float magnitude = playerBody.linearVelocity.magnitude;
+        float yMag = magnitude * Mathf.Cos(velY * Mathf.Deg2Rad);
+        float xMag = magnitude * Mathf.Cos(velX * Mathf.Deg2Rad);
+
+        // return directional magnitude
+        return new Vector2(xMag, yMag);
     }
 
 }

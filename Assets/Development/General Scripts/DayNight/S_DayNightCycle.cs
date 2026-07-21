@@ -59,13 +59,11 @@ public class S_DayNightCycle : MonoBehaviour
         if (shouldBeDay && !isDay)
         {
             isDay = true;
-            Debug.Log("Day Starting");
             skybox.ChangeTimeOfDay(false);
             OnDayStart?.Invoke();
         }else if (!shouldBeDay && isDay)
         {
             isDay = false;
-            Debug.Log("Night Starting");
             skybox.ChangeTimeOfDay(true);
             OnNightStart?.Invoke();
         }

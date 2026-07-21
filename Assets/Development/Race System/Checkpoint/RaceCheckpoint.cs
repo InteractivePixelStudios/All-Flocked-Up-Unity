@@ -30,6 +30,7 @@ public class RaceCheckpoint : MonoBehaviour
         if (raceBase != null && raceBase.checkpointIndex == checkpointNumber)
         {
             raceBase.UpdateCheckpoints(checkpointNumber);
+            raceBase.UpdatePlayerArrow(checkpointNumber);
             checkpointParticle.Play();
             GetComponent<MeshRenderer>().enabled = false;
             

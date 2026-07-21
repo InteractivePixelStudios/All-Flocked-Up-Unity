@@ -15,7 +15,6 @@ public class PoopFunction : MonoBehaviour
     public PoopType currentPoopType;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private PoopProjectile projectilePrefab;
-    [SerializeField] private int poolSize = 10; //adjust as needed
     [SerializeField] float forwardVelocity = 10f;
     [SerializeField] private float verticalVelocity = 5f;
 
@@ -37,16 +36,28 @@ public class PoopFunction : MonoBehaviour
     }
 
     //Update to accept pigeon velocity - JK Oct23
-    public void FirePoop(Vector3 target, Vector3 playerVelocity)
+    public void FirePoop(bool hasTarget, GameObject target, Vector3 playerVelocity)
     {
         var projectile = Instantiate(projectilePrefab, spawnPoint.position, spawnPoint.rotation);
-        projectile.Launch(target, currentPoopType, this, playerVelocity);
+        projectile.SetPoopType(currentPoopType);
+        projectile.SetPoopFuction(this);
+
+        Vector3 velocity = playerVelocity;
+        velocity.y = 0;
+
+        if (hasTarget)
+            projectile.Launch(target, currentPoopType, this, playerVelocity);
+        else
+            projectile.SetVelocity(velocity);
+
         SoundCaller(currentPoopType, soundIndex = 0); // Added by Isaiah PM.
     }
 
     public void FireGroundPoop()
     {
         var projectile = Instantiate(projectilePrefab, spawnPoint.position, spawnPoint.rotation);
+        projectile.SetPoopType(currentPoopType);
+        projectile.SetPoopFuction(this);
         projectile.GetComponent<Rigidbody>().AddForce(spawnPoint.forward* forwardVelocity + spawnPoint.up * verticalVelocity, ForceMode.Impulse);
         SoundCaller(currentPoopType, soundIndex = 0); // Added by Isaiah PM.
     }
@@ -54,7 +65,7 @@ public class PoopFunction : MonoBehaviour
     public void HandleHitEffects(PoopType type, Vector3 position)
     {
         SoundCaller(type, soundIndex = 1); // Added by Isaiah PM.
-        if (type.splatVFX) Instantiate(type.splatVFX, position, Quaternion.identity);
+        if (type.splatVFX) Instantiate(type.splatVFX, position, Quaternion.Euler(-90,0,0));
         if (type.splatSFX) Debug.Log("Play poop splat sound here"); // Delegate to AudioManager
     }
 
@@ -67,7 +78,14 @@ public class PoopFunction : MonoBehaviour
             audioPlayer.Splat();
     }
 
+    public void SetPoopType(PoopType type)
+    {
+        currentPoopType = type;
+        projectilePrefab = currentPoopType.poopVisual.GetComponent<PoopProjectile>();
+    }
+
 }
 
 // Notes - Edit History 
 // January 14th, 2026 - Added SoundCaller method and integrated sound calls into FirePoop and HandleHitEffects methods. - Isaiah PM
+//**Updates... Just linked in the HandleHitEffects fuction and is working... needs the SFX delegate

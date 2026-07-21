@@ -48,6 +48,8 @@ MonoBehaviour:
   groupALights: []
   groupBLights: []
   waypoints: []
+  respawnWaypoints: []
+  respawnDelay: 5
   numberOfCars: 60
   vehicleTypes:
   - {fileID: 1129132032353857531, guid: 9702ae9e63d21b649ba69190bdfcec6e, type: 3}
@@ -61,3 +63,6 @@ MonoBehaviour:
   - {fileID: 8568736702299793114, guid: 4964686a00b45e2468726cbf9f0a6f94, type: 3}
   vehicles: []
   timer: 0
+  trafficLayer:
+    serializedVersion: 2
+    m_Bits: 65536

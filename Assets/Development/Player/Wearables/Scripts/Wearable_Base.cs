@@ -6,10 +6,10 @@ public class Wearable_Base : MonoBehaviour
 {
     public bool isGrabbed;
     public bool isRemoving;
-    [SerializeField] private Vector3 objectOffset;
+     private Vector3 objectOffset;
     [SerializeField] protected Quaternion objectRotOffset;
     [SerializeField] private Quaternion objectRotation;
-    [SerializeField] private GameObject wornObject;
+     private GameObject wornObject;
     [SerializeField] private LayerMask wearableLayer;
     public GameObject attachPoint;
     [SerializeField] private float grabDistance;

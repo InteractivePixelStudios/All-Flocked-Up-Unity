@@ -37,7 +37,10 @@ public class UI_LanguageSelector : MonoBehaviour
         selector.value = index;
         selector.RefreshShownValue();
         selector.onValueChanged.AddListener(ChangeLanguage);
-        EventSystem.current.SetSelectedGameObject(confirmButton.gameObject);
+        if (!confirmButton.gameObject)
+        {
+            EventSystem.current.SetSelectedGameObject(confirmButton.gameObject);
+        }
     }
 
     void ChangeLanguage(int id)
