@@ -6,6 +6,9 @@ public class Audio_OmniLoop : MonoBehaviour // Universal script for any and all 
 {
     [SerializeField] private EventReference loopEvent; // Assign in Inspector
     [SerializeField] private GameObject attenuationPrefab;
+    [SerializeField] private bool playLoopOnStart = true; // If true, will play the loop on Start. Assign in Inspector.
+    [SerializeField] private bool playPickupSoundOnDestroy = false; // If true, will play a pickup sound when the object is destroyed. Assign in Inspector.
+    [SerializeField] private EventReference pickupSoundEvent; // Assign in Inspector
     private EventInstance loopInstance;
 
     [Header("Debug Settings - Do Not Leave Triggered")]
@@ -16,6 +19,8 @@ public class Audio_OmniLoop : MonoBehaviour // Universal script for any and all 
 
     private void Start()
     {
+        if (!playLoopOnStart) return;
+
         loopInstance = RuntimeManager.CreateInstance(loopEvent);
         loopInstance.set3DAttributes(RuntimeUtils.To3DAttributes(transform.position));
 
@@ -36,5 +41,16 @@ public class Audio_OmniLoop : MonoBehaviour // Universal script for any and all 
         var instantiatedAttenuation = Instantiate(attenuationPrefab, transform.position, Quaternion.identity, transform);
         var visualizer = instantiatedAttenuation.GetComponent<FMODAttenuationVisualizer>();
         visualizer.AdjustSpheres(minDistance, maxDistance);
+    }
+
+    private void OnDestroy()
+    {
+        loopInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        loopInstance.release();
+
+        if (playPickupSoundOnDestroy)
+        {
+            RuntimeManager.PlayOneShot(pickupSoundEvent, transform.position);
+        }
     }
 }

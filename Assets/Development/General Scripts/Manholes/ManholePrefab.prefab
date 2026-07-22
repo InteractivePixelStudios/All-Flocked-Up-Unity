@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7851964376130535308}
   - component: {fileID: 7599644318246926711}
   - component: {fileID: 4133737509055899001}
+  - component: {fileID: 4457432550270833059}
   m_Layer: 0
   m_Name: ManholePrefab
   m_TagString: Untagged
@@ -151,6 +152,27 @@ MonoBehaviour:
   m_IgnoreFromBuild: 0
   m_ApplyToChildren: 1
   m_AffectedAgents: a98c17ec
+--- !u!114 &4457432550270833059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6905761285517732193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b6397254fda21d40bff51f53886dee2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio_OmniLoop
+  loopEvent:
+    Guid:
+      Data1: -1527415570
+      Data2: 1112810384
+      Data3: 844407224
+      Data4: 1723339927
+    Path: event:/World/Manhole
+  attenuationPrefab: {fileID: 0}
+  showAttenuationGizmo: 0
 --- !u!1001 &40952685816333027
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -68,6 +68,7 @@ GameObject:
   - component: {fileID: 5002285535403059682}
   - component: {fileID: 78534902488447598}
   - component: {fileID: 7769256715567061392}
+  - component: {fileID: -1586177351111145372}
   m_Layer: 11
   m_Name: HotdogConsumable
   m_TagString: Consumable
@@ -248,6 +249,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1586177351111145372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3157577530314214254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b6397254fda21d40bff51f53886dee2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Audio_OmniLoop
+  loopEvent:
+    Guid:
+      Data1: -310964654
+      Data2: 1289215694
+      Data3: -1891519088
+      Data4: -1841632765
+    Path: event:/World/ItemChime
+  attenuationPrefab: {fileID: 0}
+  playLoopOnStart: 0
+  playPickupSoundOnDestroy: 1
+  pickupSoundEvent:
+    Guid:
+      Data1: -1974806369
+      Data2: 1270287905
+      Data3: -1241348186
+      Data4: -957600871
+    Path: event:/World/ItemPickup
+  showAttenuationGizmo: 0
 --- !u!1001 &1602477192817717134
 PrefabInstance:
   m_ObjectHideFlags: 0

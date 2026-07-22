@@ -56,6 +56,7 @@ public class FootstepLogicV2 : MonoBehaviour
 
     [Header("Surface Detection")]
     [SerializeField] private SurfaceTypes surfaceType;
+    public SurfaceTypes CurrentSurfaceType => surfaceType; // Exposes the current surface type for external use
     [SerializeField] private LayerMask surfaceDetectionLayers;
     [SerializeField] private float raycastDistance = 1.5f; // Ground detection ray distance, adjustable per character height
     [SerializeField] private Transform surfaceDetectionOrigin;
