@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
-enum CanState {Full, InUse, Empty}
+enum CanState { Full, InUse, Empty }
 
 public class TrashCanInteraction : MonoBehaviour
 {
@@ -14,6 +15,11 @@ public class TrashCanInteraction : MonoBehaviour
     [SerializeField] private int itemsRemain;
     [SerializeField] private float shootForce;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [Header("Events")] // Added by IPM on 07/22/2026
+    [SerializeField] private UnityEvent OnSearchCanEvent; // Event to trigger when the trash can is searched - for Audio in this case.
+
+
     void Start()
     {
         TryGetComponent<Q_SearchTrash>(out questComp);
@@ -23,7 +29,8 @@ public class TrashCanInteraction : MonoBehaviour
 
     public void InteractWithTrashCan()
     {
-            SearchCan(); 
+        SearchCan();
+        OnSearchCanEvent?.Invoke();
     }
 
     private void SearchCan()
@@ -60,13 +67,13 @@ public class TrashCanInteraction : MonoBehaviour
 
     private void GiveReward()
     {
-        for(int i = itemsRemain; i>0;i--)
+        for (int i = itemsRemain; i > 0; i--)
         {
-            int rand = Random.Range(0, consumableList.Count-1);
-            var spawned = Instantiate(consumableList[rand],transform.position,transform.rotation);
-            spawned.GetComponent<Rigidbody>().AddForce(Vector3.up * shootForce + Vector3.forward, ForceMode.Impulse) ;
+            int rand = Random.Range(0, consumableList.Count - 1);
+            var spawned = Instantiate(consumableList[rand], transform.position, transform.rotation);
+            spawned.GetComponent<Rigidbody>().AddForce(Vector3.up * shootForce + Vector3.forward, ForceMode.Impulse);
         }
     }
 
-    
+
 }

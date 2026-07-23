@@ -232,6 +232,34 @@ MonoBehaviour:
   - Value J
   - Value K
   Exists: 1
+--- !u!114 &-7286987603077994552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/Player Splats/Player_Splats
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Player/Player Splats/Player_Splats
+  Guid:
+    Data1: 1965529891
+    Data2: 1116207704
+    Data3: -958216022
+    Data4: -1593549837
+  Banks:
+  - {fileID: -4730711827226204098}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 3758005528591416286}
+  MinDistance: 0.3
+  MaxDistance: 15
+  Length: 0
 --- !u!114 &-7238931286777563505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,31 +288,6 @@ MonoBehaviour:
   - Metal
   - Concrete
   - Wood
-  Exists: 1
---- !u!114 &-6464246517008124704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/Player_Poops/NormalPoop
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
-  Name: NormalPoop
-  StudioPath: 
-  Min: 0
-  Max: 0
-  Default: 0
-  ID:
-    data1: 4248391851
-    data2: 3104323414
-  Type: 2
-  IsGlobal: 0
-  Labels:
-  - Value A
   Exists: 1
 --- !u!114 &-6343781107320008344
 MonoBehaviour:
@@ -658,7 +661,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Player.bank
   Name: Player
   StudioPath: bank:/Player
-  lastModified: 639202695336715980
+  lastModified: 639203374306206080
   FileSizes: []
   Exists: 1
 --- !u!114 &-4682032281284765521
@@ -829,6 +832,30 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 474000
+--- !u!114 &-3489996402733339910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/LowHealth/Recovered
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Recovered
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0
+  ID:
+    data1: 202885147
+    data2: 737867548
+  Type: 1
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &-3324924022133784923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -921,6 +948,63 @@ MonoBehaviour:
   - Value D
   - Value E
   Exists: 1
+--- !u!114 &-2787081841114804104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Human_Footsteps/Surface
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Surface
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 0
+  ID:
+    data1: 169103654
+    data2: 3038382060
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Default
+  - Grass
+  - Metal
+  - Concrete
+  - Wood
+  Exists: 1
+--- !u!114 &-2461528745268950813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/Player Poops/Player_Poops
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Player/Player Poops/Player_Poops
+  Guid:
+    Data1: 1796020849
+    Data2: 1336446462
+    Data3: -1567428713
+    Data4: 1060673333
+  Banks:
+  - {fileID: -4730711827226204098}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 5435152435254585128}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-2446048355938964958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -939,6 +1023,34 @@ MonoBehaviour:
   lastModified: 639107469466840354
   FileSizes: []
   Exists: 1
+--- !u!114 &-2340090785939600818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Player/Player Damage/LowHealth
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Player/Player Damage/LowHealth
+  Guid:
+    Data1: 778528901
+    Data2: 1274384296
+    Data3: 1684759950
+    Data4: -1001054723
+  Banks:
+  - {fileID: -4730711827226204098}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -3489996402733339910}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 18524
 --- !u!114 &-2189292062327007833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -974,7 +1086,7 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 639202738193273825
+  lastModified: 639203379364107374
   FileSizes: []
   Exists: 1
 --- !u!114 &-1531029891017776377
@@ -1061,6 +1173,33 @@ MonoBehaviour:
   MinDistance: 3
   MaxDistance: 15
   Length: 30000
+--- !u!114 &-869433460292710175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Interactables/Trash/TrashRummage
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Interactables/Trash/TrashRummage
+  Guid:
+    Data1: -249003006
+    Data2: 1117787762
+    Data3: 76820130
+    Data4: -610755097
+  Banks:
+  - {fileID: -2134919958698608152}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 1800
 --- !u!114 &-281887107944519751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1220,9 +1359,7 @@ MonoBehaviour:
   - {fileID: -8802180254884189422}
   - {fileID: 2417387889876873505}
   - {fileID: 3346966892146202218}
-  - {fileID: 8523094663962102832}
   - {fileID: -4579526009494110138}
-  - {fileID: 1584307721144908184}
   - {fileID: 8083044264409889578}
   - {fileID: -1446348253360163913}
   - {fileID: 3904742819814139581}
@@ -1233,13 +1370,18 @@ MonoBehaviour:
   - {fileID: -5329128499928190295}
   - {fileID: 1279189435844115686}
   - {fileID: 6233653954882753449}
+  - {fileID: -869433460292710175}
+  - {fileID: -7286987603077994552}
+  - {fileID: -2461528745268950813}
+  - {fileID: -2340090785939600818}
+  - {fileID: 173924890324188974}
   EditorParameters: []
   MasterBanks:
   - {fileID: 5399977135161620194}
   StringsBanks:
   - {fileID: 7192909602320462823}
   cacheVersion: 131858
-  cacheTime: 639202738193273825
+  cacheTime: 639203379364107374
   SerializableEventsDict:
   - key: event:/Ambience/WorldWind
     index: 0
@@ -1249,32 +1391,38 @@ MonoBehaviour:
     index: 2
   - key: event:/Wingflaps/Player_WingflapsDown
     index: 3
-  - key: event:/Splats/Player_Splats
-    index: 4
   - key: event:/Wingflaps/Player_WingflapsUp
-    index: 5
-  - key: event:/Poops/Player_Poops
-    index: 6
+    index: 4
   - key: event:/Footsteps/Player_Footsteps
-    index: 7
+    index: 5
   - key: event:/World/TrashCans
-    index: 8
+    index: 6
   - key: event:/UI/Click
-    index: 9
+    index: 7
   - key: event:/UI/Hover
-    index: 10
+    index: 8
   - key: event:/World/PropCollision
-    index: 11
+    index: 9
   - key: event:/World/ItemChime
-    index: 12
+    index: 10
   - key: event:/World/ItemPickup
-    index: 13
+    index: 11
   - key: event:/World/Manhole
-    index: 14
+    index: 12
   - key: event:/Ambience/MainMenuMusic
-    index: 15
+    index: 13
   - key: event:/World/WorldBirds
+    index: 14
+  - key: event:/Interactables/Trash/TrashRummage
+    index: 15
+  - key: event:/Player/Player Splats/Player_Splats
     index: 16
+  - key: event:/Player/Player Poops/Player_Poops
+    index: 17
+  - key: event:/Player/Player Damage/LowHealth
+    index: 18
+  - key: event:/Footsteps/Human_Footsteps
+    index: 19
 --- !u!114 &73506915100599220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1299,6 +1447,34 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 1
   Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &173924890324188974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Footsteps/Human_Footsteps
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/Footsteps/Human_Footsteps
+  Guid:
+    Data1: 1400223851
+    Data2: 1078340251
+    Data3: 1947093944
+    Data4: 93548060
+  Banks:
+  - {fileID: -4730711827226204098}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -2787081841114804104}
   MinDistance: 1
   MaxDistance: 20
   Length: 0
@@ -1435,34 +1611,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 115800
---- !u!114 &1584307721144908184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Poops/Player_Poops
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Poops/Player_Poops
-  Guid:
-    Data1: 1796020849
-    Data2: 1336446462
-    Data3: -1567428713
-    Data4: 1060673333
-  Banks:
-  - {fileID: -4730711827226204098}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters:
-  - {fileID: -6464246517008124704}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &1763816579224656994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1610,6 +1758,31 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &3758005528591416286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Player_Splats/RandomSplat
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: RandomSplat
+  StudioPath: 
+  Min: 0
+  Max: 0
+  Default: 0
+  ID:
+    data1: 1677900866
+    data2: 322448417
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
+  Exists: 1
 --- !u!114 &3899528354637898082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1830,8 +2003,33 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639202607594066380
+  lastModified: 639203374305655272
   FileSizes: []
+  Exists: 1
+--- !u!114 &5435152435254585128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Player_Poops/NormalPoop
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: NormalPoop
+  StudioPath: 
+  Min: 0
+  Max: 0
+  Default: 0
+  ID:
+    data1: 4248391851
+    data2: 3104323414
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Value A
   Exists: 1
 --- !u!114 &5600823441476282664
 MonoBehaviour:
@@ -1888,31 +2086,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
---- !u!114 &6018920021882552824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/Player_Splats/RandomSplat
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
-  Name: RandomSplat
-  StudioPath: 
-  Min: 0
-  Max: 0
-  Default: 0
-  ID:
-    data1: 1677900866
-    data2: 322448417
-  Type: 2
-  IsGlobal: 0
-  Labels:
-  - Value A
-  Exists: 1
 --- !u!114 &6196370989545568069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2038,10 +2211,10 @@ MonoBehaviour:
   Path: Assets/StreamingAssets/FMOD/Banks/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639202607594097406
+  lastModified: 639203374305744693
   FileSizes:
   - Name: 
-    Value: 2192
+    Value: 2438
   Exists: 1
 --- !u!114 &7419841717107519623
 MonoBehaviour:
@@ -2231,34 +2404,6 @@ MonoBehaviour:
   - Name: Desktop
     Value: 134176
   Exists: 1
---- !u!114 &8523094663962102832
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Splats/Player_Splats
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/Splats/Player_Splats
-  Guid:
-    Data1: 1965529891
-    Data2: 1116207704
-    Data3: -958216022
-    Data4: -1593549837
-  Banks:
-  - {fileID: -4730711827226204098}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters:
-  - {fileID: 6018920021882552824}
-  MinDistance: 0.3
-  MaxDistance: 15
-  Length: 0
 --- !u!114 &8819942129792245364
 MonoBehaviour:
   m_ObjectHideFlags: 0
