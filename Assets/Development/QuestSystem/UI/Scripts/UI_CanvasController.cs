@@ -183,7 +183,7 @@ public class UI_CanvasController : MonoBehaviour
             player.GetComponent<PlayerFlightMovement>().enabled = true;
             camRef.GetComponent<CinemachineOrbitalFollow>().enabled = true;
             isUIMap = false;
-            Debug.Log("PlayerMAP");
+           // Debug.Log("PlayerMAP");
 
         }
         else return;
@@ -198,7 +198,7 @@ public class UI_CanvasController : MonoBehaviour
             player.GetComponent<PlayerFlightMovement>().enabled = false;
             camRef.GetComponent<CinemachineOrbitalFollow>().enabled = false;
             isUIMap = true;
-            Debug.Log("UIMAP");
+            //Debug.Log("UIMAP");
         }
         else return;
     }
@@ -209,7 +209,7 @@ public class UI_CanvasController : MonoBehaviour
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
-        Debug.Log("Showing cursor");
+       // Debug.Log("Showing cursor");
     }
     //cursor off
     public void HidePlayerCursor()
@@ -217,7 +217,7 @@ public class UI_CanvasController : MonoBehaviour
         SetPlayerMap();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-        Debug.Log("Hiding cursor");
+      //  Debug.Log("Hiding cursor");
     }
 
     //quest timer canvas
@@ -326,6 +326,7 @@ public class UI_CanvasController : MonoBehaviour
             activeNotifInstance.SetNotifText(text);
             return;
         }
+        if (activeDialogueInstance != null) return;
         activeNotifInstance = Instantiate(questNotifCanvas);
         ApplySavedContrast();
         activeNotifInstance.SetNotifText(text);

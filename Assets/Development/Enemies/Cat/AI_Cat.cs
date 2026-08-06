@@ -39,7 +39,7 @@ public class AI_Cat : EnemyBaseComponent
     [SerializeField] protected bool isRetreating;
     [SerializeField] protected bool canSeePlayer;
 
-    private int currentPointIndex = 0;
+   // private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Swat, Pounce, Stop, Hit, Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
@@ -130,7 +130,7 @@ public class AI_Cat : EnemyBaseComponent
             case EnemyState.Patrolling:
                 canSeePlayer = false;
                 MoveCatToLocation();
-                if (distanceToNode < 1f && !this.isHit)
+                if (distanceToNode < 0.5f && !this.isHit)
                     ChooseNextDirection(currentNode);
                 break;
             case EnemyState.Chasing:
@@ -197,7 +197,7 @@ public class AI_Cat : EnemyBaseComponent
     private void FindRandomWaypoint()
     {
         var randomIndex = Random.Range(0, waypoints.Count);
-        this.currentNode = waypoints[1];
+        this.currentNode = waypoints[randomIndex];
 
     }
 

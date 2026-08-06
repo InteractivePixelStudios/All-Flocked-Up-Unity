@@ -12,10 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25da5333b879d2d45a8d16915869372e, type: 3}
   m_Name: Nightin-Galavant
   m_EditorClassIdentifier: 
-  questName: Nightin-Galavant
+  questName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+    m_TableEntryReference:
+      m_KeyId: 25885829681152
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   questID: Q004
-  questLogDescription: Follow the Fireflies
-  trackerDescription: Follow the Fireflies
+  questLogDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+    m_TableEntryReference:
+      m_KeyId: 26170304155648
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  trackerDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+    m_TableEntryReference:
+      m_KeyId: 26181028990976
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   isMainQuest: 1
   stagesToComplete: 0
   isQuestTimed: 0
@@ -23,11 +47,43 @@ MonoBehaviour:
   autoAcceptQuest: 0
   autoCompleteQuest: 0
   stages:
-  - stageName: Follow the Trail
-    stageDescription: Follow the trail of fireflies
+  - stageName:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 26203837616128
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    stageDescription:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 26241724764160
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     objectivesToComplete:
-    - objectiveName: Follow
-      objectiveDescription: Follow
+    - objectiveName:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 26260150341632
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      objectiveDescription:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 26288352841728
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
       objectiveType: Q_Location
       objectiveID: 401
       quantityToComplete: 0
@@ -35,3 +91,8 @@ MonoBehaviour:
       bonusEXP: 0
     expReward: 0
     trinketReward: 0
+    hasDialogueAfter: 0
+  itemRewards: []
+  references:
+    version: 2
+    RefIds: []

@@ -22,7 +22,6 @@ public class AI_Dog : EnemyBaseComponent
     [SerializeField] private GameObject biteColliderParent;
     [Header("Waypoints")]
     [SerializeField] private List<Waypoint> waypoints;
-    [SerializeField] private List<WaypointConnection> connections = new();
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [Header("Components")]
@@ -32,7 +31,7 @@ public class AI_Dog : EnemyBaseComponent
     [SerializeField] protected bool isStopped;
     [SerializeField] protected bool isRetreating;
 
-    private int currentPointIndex = 0;
+    //private int currentPointIndex = 0;
     public enum EnemyState { Patrolling, Chasing, Bite, Stop, Hit, Retreat }
     private EnemyState currentState = EnemyState.Patrolling;
 
@@ -154,7 +153,6 @@ public class AI_Dog : EnemyBaseComponent
 
         }
         FindRandomWaypoint();
-        Debug.Log("CheckforWaypoints");
     }
 
 
@@ -162,7 +160,6 @@ public class AI_Dog : EnemyBaseComponent
     {
         var randomIndex = Random.Range(0, waypoints.Count);
         this.currentNode = waypoints[randomIndex];
-        Debug.Log("H");
     }
 
 
@@ -249,29 +246,20 @@ public class AI_Dog : EnemyBaseComponent
 
     protected void ChooseNextDirection(Waypoint node)
     {
-        connections.Clear();
-
-        foreach (var connection in node.connections)
-            connections.Add(connection);
-
-        if (connections.Count == 0 && node.nextWaypoint != null)
-        {
-            connections.Add(new WaypointConnection { node = node.nextWaypoint });
-
-        }
-        else
+        if (node.nextWaypoint == null)
         {
             FindRandomWaypoint();
             return;
         }
-
-        int randomIndex = Random.Range(0, connections.Count);
-        Waypoint nextNode = connections[randomIndex].node;
-        if (nextNode == null)
-            return;
-        previousNode = currentNode;
-        SetMoveToLocation(nextNode);
-        MoveDogToLocation();
+        else
+        {
+            Waypoint nextNode = node.nextWaypoint;
+            if (nextNode == null)
+                return;
+            previousNode = currentNode;
+            SetMoveToLocation(nextNode);
+            MoveDogToLocation();
+        }
 
     }
 }

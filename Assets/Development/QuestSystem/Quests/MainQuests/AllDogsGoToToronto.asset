@@ -12,10 +12,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25da5333b879d2d45a8d16915869372e, type: 3}
   m_Name: AllDogsGoToToronto
   m_EditorClassIdentifier: 
-  questName: All Dogs
-  questID: Q002
-  questLogDescription: All Dogs
-  trackerDescription: All Dogs
+  questName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+    m_TableEntryReference:
+      m_KeyId: 24385875267584
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  questID: Q003
+  questLogDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+    m_TableEntryReference:
+      m_KeyId: 24449150537728
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  trackerDescription:
+    m_TableReference:
+      m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+    m_TableEntryReference:
+      m_KeyId: 24464384249856
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   isMainQuest: 1
   stagesToComplete: 2
   isQuestTimed: 0
@@ -23,11 +47,43 @@ MonoBehaviour:
   autoAcceptQuest: 1
   autoCompleteQuest: 1
   stages:
-  - stageName: All Dogs
-    stageDescription: All Dogs
+  - stageName:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 24495673757696
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    stageDescription:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 24585507360768
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     objectivesToComplete:
-    - objectiveName: All Dogs
-      objectiveDescription: All Dogs
+    - objectiveName:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 24719750254592
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      objectiveDescription:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 24769016549376
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
       objectiveType: Q_KillComponent
       objectiveID: 201
       quantityToComplete: 1
@@ -35,11 +91,44 @@ MonoBehaviour:
       bonusEXP: 0
     expReward: 0
     trinketReward: 0
-  - stageName: All Dogs
-    stageDescription: All Dogs
+    hasDialogueAfter: 0
+  - stageName:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 24793125408768
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    stageDescription:
+      m_TableReference:
+        m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+      m_TableEntryReference:
+        m_KeyId: 24830848978944
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     objectivesToComplete:
-    - objectiveName: All Dogs
-      objectiveDescription: All Dogs
+    - objectiveName:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 24847651360768
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
+      objectiveDescription:
+        m_TableReference:
+          m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
+        m_TableEntryReference:
+          m_KeyId: 24900575088640
+          m_Key: 
+        m_FallbackState: 0
+        m_WaitForCompletion: 0
+        m_LocalVariables: []
       objectiveType: Q_InteractComponent
       objectiveID: 202
       quantityToComplete: 1
@@ -47,6 +136,10 @@ MonoBehaviour:
       bonusEXP: 0
     expReward: 0
     trinketReward: 0
+    hasDialogueAfter: 0
   itemRewards:
   - {fileID: 7004370475826129043, guid: ba34f1e0fb329a040b2248c25013f786, type: 3}
   - {fileID: 6246681715980741345, guid: 0a54840cdde938f46a8e29407f7cf9f6, type: 3}
+  references:
+    version: 2
+    RefIds: []
