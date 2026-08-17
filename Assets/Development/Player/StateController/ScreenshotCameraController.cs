@@ -13,9 +13,21 @@ public class ScreenshotCameraController : MonoBehaviour
     
     [Header("Run time components (assign via script")]
     [SerializeField] private Camera cam;
-    [SerializeField] private UI_HudController uiHud;
     private Collider cameraCollider;
     private CinemachineBrain cinemachineBrain;
+    
+    [SerializeField] private UI_HudController _uiHud;
+
+    private UI_HudController uiHud
+    {
+        get
+        {
+            if (_uiHud == null) _uiHud = FindAnyObjectByType<UI_HudController>();
+            return _uiHud;
+        }
+        
+    }
+
     //private Transform originalCamParent;
 
     //internal variables
@@ -52,12 +64,7 @@ public class ScreenshotCameraController : MonoBehaviour
             cameraCollider = cam.GetComponent<Collider>();
             cinemachineBrain = cam.GetComponent<CinemachineBrain>();
         }
-       
-        uiHud = FindAnyObjectByType<UI_HudController>();
-        if (!uiHud)
-        {
-             
-        }
+        
         //moveAction = InputSystem.actions.FindAction("Move");
         //component check
         if (psc == null) Debug.LogError("PlayerStateController not wired", this);
@@ -172,29 +179,43 @@ public class ScreenshotCameraController : MonoBehaviour
     
     private void StartPhotoMode()
     {
-       psc.EnterPhotoMode(); 
-       Debug.Log("Photo Mode Entered");
+        
+        //fail fast checks
+        if (psc == null) {Debug.LogError("StartPhotoMode: psc not wired", this);
+            return;
+        }
+        if (cam == null){Debug.LogError("StartPhotoMode: main cam missing", this);
+            return;
+        }
+        if (camAnchorFront == null)    {Debug.LogError("StartPhotoMode: cam anchor missing/not wired", this);
+            return;
+        }
+        if (playerMap == null || photoMap == null) {Debug.LogError("StartPhotoMode: action maps missing", this);
+            return;
+        }   
+        
+        //all clear, go go go
+        psc.EnterPhotoMode(); Debug.Log("Photo Mode Entered");
+        if (cameraCollider)
+        { Debug.Log("Main Camera Collider Component disabled by Photo Mode"); cameraCollider.enabled = false;}
+        if (cinemachineBrain)
+        { Debug.Log("Main Camera CinemachineBrain Component disabled by Photo Mode"); cinemachineBrain.enabled = false;}
 
-       if (cameraCollider)
-       { Debug.Log("Main Camera Collider Component disabled by Photo Mode"); cameraCollider.enabled = false;}
-       if (cinemachineBrain)
-       { Debug.Log("Main Camera CinemachineBrain Component disabled by Photo Mode"); cinemachineBrain.enabled = false;}
-
-       //swap the active input action map 
-       playerMap.Disable();
-       photoMap.Enable();
-       Debug.Log($"After Enable — photoMap.enabled = {photoMap.enabled}");
-       Debug.Log($"flipCameraAction.enabled = {flipCameraAction.enabled}");
-       Debug.Log($"flipCameraAction.bindings.Count = {flipCameraAction.bindings.Count}");
+        //--NEEDS REFACTORING TO USE PLAYER STATE CONTROLLER AS SINGLE SOURCE OF TRUTH -- swap the active input action map --NEEDS REFACTORING --
+        playerMap.Disable();
+        photoMap.Enable();
+        Debug.Log($"After Enable — photoMap.enabled = {photoMap.enabled}");
+        Debug.Log($"flipCameraAction.enabled = {flipCameraAction.enabled}");
+        Debug.Log($"flipCameraAction.bindings.Count = {flipCameraAction.bindings.Count}");
 
        
-       //move cam to anchor
-       cam.transform.parent = camAnchorFront;
-       cam.transform.localPosition = Vector3.zero;
-       cam.transform.localRotation = Quaternion.identity;
+        //move cam to anchor
+        cam.transform.parent = camAnchorFront;
+        cam.transform.localPosition = Vector3.zero;
+        cam.transform.localRotation = Quaternion.identity;
        
-       uiHud.ToggleMainHUD(false);
-       uiHud.ToggleCameraOverlay(true);
+        uiHud.ToggleMainHUD(false);
+        uiHud.ToggleCameraOverlay(true);
     }
 
     private void EndPhotoMode()
