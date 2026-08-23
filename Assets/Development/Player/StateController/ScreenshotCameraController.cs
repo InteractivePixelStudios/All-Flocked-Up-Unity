@@ -264,7 +264,17 @@ public class ScreenshotCameraController : MonoBehaviour
     private void TakePhoto()
     {
         //TODO phototaking stuff
-        Debug.Log("TakePhoto Triggered");
+        string folder = System.IO.Path.Combine(Application.persistentDataPath, "Screenshots");
+        if (!System.IO.Directory.Exists(folder)) //this check is technically redundant, as the CreateDirectory function already safegaurds for this. This is just for our visibility
+        System.IO.Directory.CreateDirectory(folder);
+
+        string timestamp = System.DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss"); 
+        string fullPath = System.IO.Path.Combine(folder, $"{timestamp}.png");
+
+        ScreenCapture.CaptureScreenshot(fullPath);
+
+
+        Debug.Log($"Screenshot Saved:{fullPath}");
     }
 
     private void OrientCamera()
