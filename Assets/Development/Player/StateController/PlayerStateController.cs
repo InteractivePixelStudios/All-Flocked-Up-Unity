@@ -22,26 +22,50 @@ public class PlayerStateController : MonoBehaviour
 {
     public PlayerState CurrentState { get; private set; } = PlayerState.GroundMove;
 
-    [SerializeField] private string defaultMapName = "UI";
+    [SerializeField] private string defaultMapName = "Player";
     [SerializeField] private bool logMapSwitches = true;
 
     [SerializeField] private string[] uiMapScenes = { "MainMenu", "CreditScene" };
-    private void Start()
+   private void Start()
+{
+    var actions = InputSystem.actions;
+    if (actions == null)
     {
-        var actions = InputSystem.actions;
-        if (actions == null)
-        {
-            Debug.LogWarning("Player State Controller: InputSystem.actions is null. No project wide actions asset assigned.");
-            return;
-        }
-
-        foreach (var map in actions.actionMaps)
-        {
-            if (map.name == defaultMapName) map.Enable();
-            else map.Disable();
-            
-        }
+        Debug.LogWarning("PSC: InputSystem.actions is null. No project-wide actions asset assigned.");
+        return;
     }
+
+    ApplyMapForScene(SceneManager.GetActiveScene());
+}
+
+private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+{
+    ApplyMapForScene(scene);
+}
+    private void OnEnable()
+    {
+        //subscribe to scenemanager, so can auto turn on/off playermaps
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        //unsub
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
+    }
+
+private void ApplyMapForScene(
+    Scene scene,
+    [CallerMemberName] string callerMethod = "",
+    [CallerFilePath]   string callerFile   = "",
+    [CallerLineNumber] int    callerLine   = 0)
+{
+    bool wantsUI = System.Array.IndexOf(uiMapScenes, scene.name) >= 0;
+    if (wantsUI) SwitchToUIMap(callerMethod, callerFile, callerLine);
+    else         SwitchToPlayerMap(callerMethod, callerFile, callerLine);
+}
+
+
     
     public void EnterPhotoMode()
     {
@@ -107,24 +131,7 @@ public class PlayerStateController : MonoBehaviour
 
     }
 
-    private void OnEnable()
-    {
-        //subscribe to scenemanager, so can auto turn on/off playermaps
-        SceneManager.sceneLoaded += HandleSceneLoaded;
-    }
 
-    private void OnDisable()
-    {
-        //unsub
-        SceneManager.sceneLoaded -= HandleSceneLoaded;
-    }
-
-    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        bool wantsUI = System.Array.IndexOf(uiMapScenes, scene.name) >= 0;
-        if (wantsUI) SwitchToUIMap();
-        else SwitchToPlayerMap();
-
-    }
+   
     
 }
