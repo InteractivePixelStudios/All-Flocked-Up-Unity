@@ -4,8 +4,8 @@ using NUnit.Framework;
 
 public class PoopSystem : MonoBehaviour
 {
-    [Header ("Poop Settings")]
-    [SerializeField] private int maxPoop = 5;
+    [Header("Poop Settings")]
+    [SerializeField] private int maxPoop = 10;
     [SerializeField] private float poopCooldown = 2.0f;
     [SerializeField] private int poopBonus = 0;
     [SerializeField] private PlayerAccessoryComponent accessoryComponent;
@@ -38,8 +38,6 @@ public class PoopSystem : MonoBehaviour
         accessoryComponent = GetComponentInParent<PlayerAccessoryComponent>();
     }
 
-
-
     private void Update()
     {
         if (cooldownTimer > 0f)
@@ -51,7 +49,7 @@ public class PoopSystem : MonoBehaviour
         {
             updateItemsTimer -= Time.deltaTime;
         }
-        else GetCurrentAccessories() ;
+        else GetCurrentAccessories();
     }
 
     public void AddMaxPoop(int value)
@@ -66,14 +64,14 @@ public class PoopSystem : MonoBehaviour
 
     public bool TryPoop()
     {
-        if (!CanPoop) return false;
-
+        if (!CanPoop || currentPoop<=0) return false;
+        currentPoop--;
         cooldownTimer = poopCooldown;
         return true;
     }
 
     //Logic to restore poop, ensure does not go past max poop count
-    private void RestorePoop(int amount) => currentPoop = Mathf.Min(currentPoop + amount, maxPoop);
+    private void RestorePoop(int amount) => currentPoop = (int)Mathf.Lerp(currentPoop,Mathf.Min(currentPoop + amount, maxPoop),Time.deltaTime);
     //logic to increase the maximum poop count
     private void IncreaseMaxPoop(int amount) => maxPoop += amount;
 
@@ -103,8 +101,5 @@ public class PoopSystem : MonoBehaviour
         maxPoop += poopBonus;
         updateItemsTimer = 30f;
     }
-
-    
-
 
 }

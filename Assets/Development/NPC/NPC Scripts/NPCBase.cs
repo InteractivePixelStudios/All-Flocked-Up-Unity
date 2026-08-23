@@ -117,11 +117,11 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         }
         else
         {
-            Debug.Log(index);
+
             dialogue.isRetrigger = false;
             dialogue.PrintDialogue(dialogueStartLineID[index]);
             index++;
-            Debug.Log(index);
+
             //if (index >= dialogueStartLineID.Count)
             //{
             //    dialogue.isRetrigger = true;
@@ -136,6 +136,11 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     public void SetMoveToLocation(Transform location)
     {
         targetLocation = location;
+    }
+
+    public void SetNewHome(GameObject home)
+    {
+        homeLocation = home;
     }
 
     //call this to run like wind

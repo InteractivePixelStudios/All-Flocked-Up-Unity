@@ -115,6 +115,12 @@ public class UI_CanvasController : MonoBehaviour
     public UI_SkinSelector activeSkinSelector;
     Dictionary<Graphic, Color> cachedUIColors = new();
     public bool uiOpen;
+    [Header("HideAndSeek")]
+    [SerializeField] private UI_HideSeekCountdown hasCountdownPrefab;
+    public UI_HideSeekCountdown currentHASCountdown;
+
+    [SerializeField] private UI_HASComplete hasCompletePrefab;
+    public UI_HASComplete currentHASComplete;
 
     private void Start()
     {
@@ -173,7 +179,7 @@ public class UI_CanvasController : MonoBehaviour
             else enemies.Remove(enemy);
         }
     }
-
+//   \/ \/ \/ \/ this stuff targeted for refactoring \/ \/ \/ \/
     public void SetPlayerMap()
     {
         if (isUIMap)
@@ -183,7 +189,7 @@ public class UI_CanvasController : MonoBehaviour
             player.GetComponent<PlayerFlightMovement>().enabled = true;
             camRef.GetComponent<CinemachineOrbitalFollow>().enabled = true;
             isUIMap = false;
-           // Debug.Log("PlayerMAP");
+            Debug.Log("PlayerMAP");
 
         }
         else return;
@@ -198,7 +204,7 @@ public class UI_CanvasController : MonoBehaviour
             player.GetComponent<PlayerFlightMovement>().enabled = false;
             camRef.GetComponent<CinemachineOrbitalFollow>().enabled = false;
             isUIMap = true;
-            //Debug.Log("UIMAP");
+            Debug.Log("UIMAP");
         }
         else return;
     }
@@ -219,6 +225,8 @@ public class UI_CanvasController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
       //  Debug.Log("Hiding cursor");
     }
+    
+    // /\ /\ /\  this stuff targeted for refactoring /\ /\ /\
 
     //quest timer canvas
     public void ShowTimer()
@@ -1028,5 +1036,38 @@ public class UI_CanvasController : MonoBehaviour
         SetContrastMode(value);
     }
 
+    public void SpawnHASCountdown()
+    {
+        if(currentHASCountdown== null)
+        {
+            currentHASCountdown = Instantiate(hasCountdownPrefab);
+
+        }
+    }
+
+    public void SpawnHASComplete()
+    {
+        if(currentHASComplete==null)
+        {
+            currentHASComplete = Instantiate(hasCompletePrefab);
+            if (!isUIMap)
+            {
+                ShowPlayerCursor();
+            }
+
+        }
+    }
+
+    public void CloseHASComplete()
+    {
+        if(currentHASComplete!= null)
+        {
+            Destroy(currentHASComplete.gameObject);
+            if (isUIMap)
+            {
+                HidePlayerCursor();
+            }
+        }
+    }
 
 }

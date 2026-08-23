@@ -27,13 +27,16 @@ public class PlayerFlightMovement : MonoBehaviour
     [SerializeField] float mouseTiltSpeed = 1.0f;
 
     [Header("Flight Speeds: ")]
-    [SerializeField] float baseGlideSpeed = 400f;
+    [SerializeField] float baseGlideSpeed = 6f;
     [SerializeField] float maxDownwardVelocity = -3f;
     [SerializeField] float glideGravityDivide = 4f;
 
     [Header("Flap Variables: ")]
     [SerializeField] float flapUpHeight = 5f;
     [SerializeField] float flapStaminaAmount = 2f;
+    [SerializeField] float flapAnimTime = 1f;
+    float flapForwardSpeedBonus = 0f;
+    [SerializeField] float flapForwardSpeedIncrease = 3f;
 
     [Header("Movement Variables: ")]
     [SerializeField] float rotateSpeed = 80f;
@@ -283,7 +286,7 @@ public class PlayerFlightMovement : MonoBehaviour
     {
         if (gliding && !isSpeedUp)
         {
-            Vector3 forwardGlideAmount = transform.forward * baseGlideSpeed;
+            Vector3 forwardGlideAmount = transform.forward * (baseGlideSpeed + flapForwardSpeedBonus);
             forwardGlideAmount.y = 0;
             forwardGlideAmount = Vector3.ClampMagnitude(forwardGlideAmount, baseGlideSpeed);
 
@@ -306,12 +309,16 @@ public class PlayerFlightMovement : MonoBehaviour
 
     async void FlapUp(InputAction.CallbackContext context)
     {
-        if (isFlying && !isDiving && !isStalling)
+        if (isFlying && !isDiving && !isStalling && !flapUp)
         {
+            playerStamina.UseStamina(1);
             playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
             flapUp = true;
-            await Task.Delay(500);
+            flapForwardSpeedBonus = flapForwardSpeedIncrease;
+            // Delay time in miliseconds
+            await Task.Delay((int)(flapAnimTime * 1000));
             flapUp = false;
+            flapForwardSpeedBonus = 0f;
         }
     }
 

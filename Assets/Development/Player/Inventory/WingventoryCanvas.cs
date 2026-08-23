@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine.Localization;
 using System.Net;
+using UnityEngine.InputSystem;
 
 public class WingventoryCanvas : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class WingventoryCanvas : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private Button questPanelButton;
     [SerializeField] private Button mapPanelButton;
+    [SerializeField] private Button cameraButton;
 
     [Header("Inv/Accessory")]
     [SerializeField] private PlayerWingventory playerWingventory;
@@ -49,6 +51,9 @@ public class WingventoryCanvas : MonoBehaviour
     [SerializeField] private QuestLog questLog;
     [SerializeField] private TextMeshProUGUI questObjText;
 
+    [SerializeField] ScreenshotCameraController screenshotController;
+    private InputAction closeAction;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,6 +61,8 @@ public class WingventoryCanvas : MonoBehaviour
         questLog = FindAnyObjectByType<QuestLog>();
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         playerWingventory = FindAnyObjectByType<PlayerWingventory>();
+        screenshotController = FindAnyObjectByType<ScreenshotCameraController>();
+        
         GetTrinketCount();
         GetItemBoxes();
         leftBackPageButton.onClick.AddListener(GoCenterPage);
@@ -64,6 +71,7 @@ public class WingventoryCanvas : MonoBehaviour
         closeButton.onClick.AddListener(CloseWingventory);
         questPanelButton.onClick.AddListener(OpenQuestPanel);
         mapPanelButton.onClick.AddListener(OpenMapPanel);
+        cameraButton.onClick.AddListener(OpenCamera);
         leftCanvas.SetActive(false);
         rightCanvas.SetActive(false);
         SetTrinketText();
@@ -73,11 +81,22 @@ public class WingventoryCanvas : MonoBehaviour
         GetPlayerInv();
         SpawnItemButton();
         Time.timeScale = 0;
+        
+        closeAction = InputSystem.actions.FindAction("UI/Inventory");
+        if (closeAction != null)
+            closeAction.performed += OnCloseKey;
+
     }
 
     private void OnDestroy()
     {
         Time.timeScale = 1;
+        if (closeAction != null)
+            closeAction.performed -= OnCloseKey;
+
+        var interaction = FindAnyObjectByType<PlayerInteraction>();
+        if(interaction != null)
+            interaction.SetIsWingventoryOpen(false);
     }
 
     private void GoLeftPage()
@@ -101,7 +120,7 @@ public class WingventoryCanvas : MonoBehaviour
         rightCanvas.SetActive(false);
         Debug.Log("CenterPage");
     }
-
+    private void OnCloseKey(InputAction.CallbackContext context) => CloseWingventory();
     private void CloseWingventory()
     {
         canvasController.CloseWingventory();
@@ -254,6 +273,22 @@ public class WingventoryCanvas : MonoBehaviour
 
             }
 
+    }
+
+    void OpenCamera()
+    {
+        
+        //switched the order of these two first. Good practice to have script clean up its own state first then call out to other systems.
+        CloseWingventory();
+        screenshotController.CallEnterPhotoMode();
+        
+    }
+
+    void CloseCamera()
+    {
+        
+        //uncertain if we will need this from the inventory - Jacob
+        //screenshotController.CallExitPhotoMode();
     }
 
 

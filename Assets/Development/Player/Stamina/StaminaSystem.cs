@@ -12,7 +12,7 @@ public class StaminaSystem : MonoBehaviour
 
     public void SetMaxStamina(float stamina)
     {
-
+        MaxStamina += stamina;
     }
 
     public float GetMaxStamina() {  return MaxStamina; }

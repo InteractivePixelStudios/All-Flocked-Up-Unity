@@ -191,11 +191,13 @@ public class Pooper : MonoBehaviour
         {
             if (poopSystem.TryPoop())
             {
-                Vector3 target = GetTarget();
+                Vector3 distanceCalc = pigeon.transform.position + new Vector3(pigeon.linearVelocity.x, 0f, pigeon.linearVelocity.z) * Mathf.Sqrt((pigeon.transform.position.y * 2) / MathF.Abs(Physics.gravity.y));
+                distanceCalc.y = 0f;
+                (GameObject, bool) target = GetTarget(distanceCalc);
 
                 //Get player velocity from pigeon rigidbody
                 Vector3 playerVelocity = pigeon.linearVelocity;
-                poopFunction.FirePoop(target , playerVelocity);
+                poopFunction.FirePoop(target.Item2, target.Item1, playerVelocity);
             }
         }else
         if (!isFlying && isAiming)
@@ -207,18 +209,13 @@ public class Pooper : MonoBehaviour
         }
     }
 
-    private Vector3 GetTarget()
+    private (GameObject, bool) GetTarget(Vector3 shotLocation)
     {
-
         RaycastHit hit;
-        if (Physics.SphereCast(transform.position,200f,Vector3.down,out hit,10f,poopableLayer))
+        if (Physics.SphereCast(transform.position,2f,(shotLocation-transform.position).normalized,out hit,100f,poopableLayer))
         {
-            Debug.DrawLine(transform.position,hit.point);
-            Debug.Log("Target Hit: " + hit.collider.name);
-            return hit.point;
-        }else return Vector3.down;
-
-        
+            return (hit.transform.gameObject, true);
+        }else return (null, false);
     }
 
     private void OnLevelWasLoaded(int level)

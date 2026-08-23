@@ -28,7 +28,7 @@ public class UI_RaceFail : MonoBehaviour
     }
     private void GetRequiredTime()
     {
-        raceRequiredTime.SetText(race.raceData.raceTime.ToString());
+        //raceRequiredTime.SetText(race.raceData.raceTime.ToString());
     }
 
     private void GetRaceInfo()

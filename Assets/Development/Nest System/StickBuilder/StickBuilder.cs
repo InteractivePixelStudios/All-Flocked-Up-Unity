@@ -3,12 +3,10 @@ using System.Collections.Generic;
 
 public class StickBuilder : MonoBehaviour
 {
-    [SerializeField] private int stickCount = 3;
     [SerializeField] private List<StickObject> sticks = new();
     [SerializeField] private float timer = 30f;
     public NestBase nestBaseRef;
     private Transform nestLocation;
-    [SerializeField] private float spawnRadius;
     private bool timerComplete = false;
     [SerializeField] private Vector3 offset = new Vector3(0,1,0);
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,8 +15,6 @@ public class StickBuilder : MonoBehaviour
 
         nestLocation = nestBaseRef.transform;
         timer = 30f;
-        stickCount = 3;
-        spawnRadius = 10f;
         SpawnSticks();
     }
 
