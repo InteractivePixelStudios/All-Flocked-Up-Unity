@@ -22,10 +22,10 @@ public class PlayerStateController : MonoBehaviour
 {
     public PlayerState CurrentState { get; private set; } = PlayerState.GroundMove;
 
-    [SerializeField] private string defaultMapName = "Player";
+   // [SerializeField] private string defaultMapName = "Player";
     [SerializeField] private bool logMapSwitches = true;
 
-    [SerializeField] private string[] uiMapScenes = { "MainMenu", "CreditScene" };
+    [SerializeField] private string[] uiMapScenes = { "MainMenu", "CreditScene", "TutorialIsland" };
    private void Start()
 {
     var actions = InputSystem.actions;
