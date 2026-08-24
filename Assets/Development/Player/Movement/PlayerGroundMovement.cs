@@ -121,6 +121,13 @@ public class PlayerGroundMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        /*Debug.Log($"[PGM] FixedUpdate — Player map enabled: {InputSystem.actions.FindActionMap("Player").enabled}, moveAction enabled: {moveAction?.enabled ?? false}, state={playerStateController.CurrentState}");
+
+        var freshMove = InputSystem.actions.FindAction("Move");
+        var playerMap = InputSystem.actions.FindActionMap("Player");
+        Debug.Log($"[PGM] cached: {moveAction.enabled} | fresh: {freshMove?.enabled} | same instance? {ReferenceEquals(moveAction, freshMove)}");
+        Debug.Log($"[PGM] playerMap actions: [{string.Join(", ", System.Linq.Enumerable.Select(playerMap.actions, a => $"{a.name}={a.enabled}"))}]"); */
+
         //if (isFlying) === refactored for PSC - Jacob ===
         if (playerStateController.CurrentState != PlayerState.GroundMove)
             return;
@@ -192,7 +199,7 @@ public class PlayerGroundMovement : MonoBehaviour
 
     void Jump(InputAction.CallbackContext context)
     {
-        if (input.currentActionMap != input.actions.FindActionMap("Player")) return;
+      //  if (input.currentActionMap != input.actions.FindActionMap("Player")) return;
 
         //if (isFlying)
         if (playerStateController.CurrentState != PlayerState.GroundMove)
