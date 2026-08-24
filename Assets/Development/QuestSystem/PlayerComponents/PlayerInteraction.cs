@@ -20,7 +20,19 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask rideLayer;
     public LayerMask hideSeekLayer;
     public QuestLog questLog; // assign in Inspector
-    public UI_CanvasController canvasController;
+    
+    //lazy init pattern here, helps fix some issues
+    private UI_CanvasController _canvasController;
+    public UI_CanvasController canvasController
+    {
+        get
+        {
+            if (!_canvasController) 
+            _canvasController = FindAnyObjectByType<UI_CanvasController>();
+            return _canvasController;
+        }
+    
+    }
     public bool gamePaused;
     [SerializeField] private GameObject attachPoint;
     private bool isWingventoryOpen;
@@ -334,7 +346,7 @@ public class PlayerInteraction : MonoBehaviour
         //OnLevelWasLoaded refreshes scene-bound refs on scene change — deprecated but functional
         private void OnLevelWasLoaded(int level)
         {
-            canvasController = FindAnyObjectByType<UI_CanvasController>();
+         //   canvasController = FindAnyObjectByType<UI_CanvasController>();
             questLog = FindAnyObjectByType<QuestLog>();
             Debug.Log("OLWL fired, level=" + level);
         }
