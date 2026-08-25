@@ -47,7 +47,11 @@ public class PlayerInteraction : MonoBehaviour
     private InputAction pauseAction;
     private InputAction debugAction;
     private InputAction reportAction;
-    bool uiOn;
+
+    private InputAction uiMapAction;
+
+    private InputAction uiPauseAction;
+        bool uiOn;
 
     private void Start()
     {
@@ -74,6 +78,10 @@ public class PlayerInteraction : MonoBehaviour
         debugAction = InputSystem.actions.FindAction("Player/Debug");
         reportAction = InputSystem.actions.FindAction("Player/Report");
 
+        uiMapAction   = InputSystem.actions.FindAction("UI/Map");
+        uiPauseAction = InputSystem.actions.FindAction("UI/Pause");
+
+
         if (interactAction != null && questLogAction != null && mapAction != null && inventoryAction != null && pauseAction != null)
         {
             //use started / cancelled for grab/hold
@@ -85,6 +93,9 @@ public class PlayerInteraction : MonoBehaviour
            // debugAction.performed += OpenDebug;
            // reportAction.performed += OpenReport;
         }
+
+        if ( uiMapAction != null) uiMapAction.performed += CloseMapFromUI;
+        if ( uiPauseAction != null) uiPauseAction.performed += ClosePauseFromUI;
         
     }
     public bool GetIsWingventoryOpen()
@@ -342,6 +353,25 @@ public class PlayerInteraction : MonoBehaviour
             }
             else canvasController.ResumeGame(); uiOn = false;
         }
+
+
+        void CloseMapFromUI(InputAction.CallbackContext ctx)
+        {
+            if(canvasController.activeMapCanvas != null)
+            canvasController.CloseMainMap();
+        }
+
+
+
+        void ClosePauseFromUI(InputAction.CallbackContext ctx)
+        {
+         if(canvasController.activePauseMenu != null)
+            canvasController.ResumeGame();
+
+
+        }
+
+
 
         //OnLevelWasLoaded refreshes scene-bound refs on scene change — deprecated but functional
         private void OnLevelWasLoaded(int level)
