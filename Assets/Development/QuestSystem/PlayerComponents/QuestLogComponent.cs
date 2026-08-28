@@ -169,6 +169,7 @@ public class QuestLog : MonoBehaviour
                 currentQuestGiver.quests.RemoveAt(0);
                 currentQuestGiver.hasQuest = true;
                 currentQuestGiver.GetComponent<NPCBase>().dialogueFirst = true;
+                GetComponent<VFXController>().PlayQuestParticles();
             }
             if(currentQuestGiver.quests.Count <= 0)
             {

@@ -17,7 +17,7 @@ public class VehicleBase :MonoBehaviour
     [SerializeField] protected LayerMask enemyLayer;
     [SerializeField] protected LayerMask trafficLayer;
     public bool isStopped;
-    private float stopTimer = 5f;
+    private float stopTimer = 2.5f;
     [SerializeField] private bool isMoving;
     [SerializeField] private List<WaypointConnection> connections = new();
     [SerializeField] protected float detectObjectRange=2f;
@@ -39,7 +39,8 @@ public class VehicleBase :MonoBehaviour
         if (currentNode == null)
         {
             StopVehicle();
-            Debug.Log("Cant find CurrentNode");
+            Destroy(this.gameObject);
+            //Debug.Log("Cant find CurrentNode");
             return;
         }
         //if (!navAgent.hasPath && !navAgent.pathPending)
@@ -48,14 +49,25 @@ public class VehicleBase :MonoBehaviour
         //   // Destroy(this.gameObject);
 
         //}
-        if (isStopped)
-        {
-            StopVehicle();
-        }
 
-        if (!navAgent.pathPending && navAgent.remainingDistance <= navAgent.stoppingDistance)
+        if (!navAgent.pathPending && navAgent.hasPath && navAgent.remainingDistance <= navAgent.stoppingDistance + 0.1f)
         {
+            navAgent.ResetPath();
             ChooseNextDirection(currentNode);
+        }
+        if(isStopped )
+        {
+            if (stopTimer > 0)
+            {
+                stopTimer -= Time.deltaTime;
+                StopVehicle();
+            }
+            else StartMove();
+
+        }
+        else
+        {
+            StartMove();
         }
 
     }
@@ -99,6 +111,13 @@ public class VehicleBase :MonoBehaviour
 
     }
 
+    public virtual void StartMove()
+    {
+        stopTimer = 2.5f;
+        //navAgent.isStopped = false;
+        isMoving = true;
+    }
+
     public virtual void TriggerCollisions()
     {
         HonkHorn();
@@ -106,7 +125,6 @@ public class VehicleBase :MonoBehaviour
         if (!isStopped)
         {
             isStopped = true;
-            StopVehicle();
         }
     }
 

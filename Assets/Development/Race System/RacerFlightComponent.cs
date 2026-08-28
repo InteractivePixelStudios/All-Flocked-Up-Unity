@@ -22,7 +22,6 @@ public class RacerFlightComponent : MonoBehaviour
 
     [Header("Flap Variables: ")]
     [SerializeField] float flapUpHeight = 5f;
-    [SerializeField] float flapStaminaAmount = 2f;
 
     [Header("Movement Variables: ")]
     [SerializeField] float rotateSpeed = 80f;

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerInteraction : MonoBehaviour
 {
-    public float interactionRange = 3f;
+    public float interactionRange = 1.5f;
     public LayerMask npcLayer;
     public LayerMask questLayer;
     public LayerMask dialogueLayer;
@@ -18,14 +18,26 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask wearableLayer;
     public LayerMask perchLayer;
     public LayerMask rideLayer;
+    public LayerMask hideSeekLayer;
     public QuestLog questLog; // assign in Inspector
-    public UI_CanvasController canvasController;
+    
+    //lazy init pattern here, helps fix some issues
+    private UI_CanvasController _canvasController;
+    public UI_CanvasController canvasController
+    {
+        get
+        {
+            if (!_canvasController) 
+            _canvasController = FindAnyObjectByType<UI_CanvasController>();
+            return _canvasController;
+        }
+    
+    }
     public bool gamePaused;
     [SerializeField] private GameObject attachPoint;
     private bool isWingventoryOpen;
     public PlayerPerchSystem perchComp;
     public I_Perchable currentPerchPoint;
-    bool perchInteracted;
 
     private PlayerInput playerInput;
     private InputAction interactAction;
@@ -44,8 +56,8 @@ public class PlayerInteraction : MonoBehaviour
     }
     private void Update()
     {
-        if (playerInput.currentActionMap == playerInput.actions.FindActionMap("UI") &&!uiOn) { uiOn = true; InitInputs(); Debug.Log("REINIT"); }
-        else return;
+      //  if (playerInput.currentActionMap == playerInput.actions.FindActionMap("UI") &&!uiOn) { uiOn = true; InitInputs(); Debug.Log("REINIT"); }
+       // else return;
     }
 
     public bool ReturnInteractPerformed()
@@ -54,13 +66,13 @@ public class PlayerInteraction : MonoBehaviour
     }
     void InitInputs()
     {
-        interactAction = playerInput.actions.FindAction("Interact");
-        questLogAction = playerInput.actions.FindAction("QuestLog");
-        mapAction = playerInput.actions.FindAction("Map");
-        inventoryAction = playerInput.actions.FindAction("Inventory");
-        pauseAction = playerInput.actions.FindAction("Pause");
-        debugAction = playerInput.actions.FindAction("Debug");
-        reportAction = playerInput.actions.FindAction("Report");
+        interactAction = InputSystem.actions.FindAction("Player/Interact");
+        questLogAction = InputSystem.actions.FindAction("Player/QuestLog");
+        mapAction = InputSystem.actions.FindAction("Player/Map");
+        inventoryAction = InputSystem.actions.FindAction("Player/Inventory");
+        pauseAction = InputSystem.actions.FindAction("Player/Pause");
+        debugAction = InputSystem.actions.FindAction("Player/Debug");
+        reportAction = InputSystem.actions.FindAction("Player/Report");
 
         if (interactAction != null && questLogAction != null && mapAction != null && inventoryAction != null && pauseAction != null)
         {
@@ -79,6 +91,9 @@ public class PlayerInteraction : MonoBehaviour
     {
         return isWingventoryOpen;
     }
+    
+    public void SetIsWingventoryOpen(bool value) => isWingventoryOpen = value;
+
 
     //public void OpenReport(InputAction.CallbackContext ctx)
     //{
@@ -115,18 +130,15 @@ public class PlayerInteraction : MonoBehaviour
             Debug.DrawRay(transform.position + (transform.up / 4), transform.forward * interactionRange, Color.red);
             if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, npcLayer))
             {
-            Debug.Log("Pressed");
             var questNPC = hit.collider.GetComponentInParent<IQuestInteraction>();
             var questGiver =  hit.collider.GetComponentInParent<QuestGiver>();
                 if (questNPC != null)
                 {
-                Debug.Log("FoundNPC");
                 var NPC = hit.collider.gameObject.GetComponent<NPCBase>();
                 if (NPC.dialogueFirst == true)
                 {
                     canvasController.OpenDialogue();
                     NPC.InteractWithNPCDialogue();
-                    Debug.Log("DialogueFirst");
                     NPC.dialogueFirst = false;
                 }else if(NPC.dialogueFirst == false && questGiver.quests.Count>0 && !questLog.HasQuest(questGiver.quests[0]))
                 {
@@ -144,7 +156,6 @@ public class PlayerInteraction : MonoBehaviour
                 if (questInteractable != null)
                 {
                     questInteractable.InteractWithObjective();
-                Debug.Log("InteractWithQuest");
                 }
             }
 
@@ -183,12 +194,12 @@ public class PlayerInteraction : MonoBehaviour
             {
                 var nestObj = hit.collider.GetComponentInParent<NestBase>();
                 nestObj?.InteractWithNest();
-            Debug.Log("InteractWithNest");
+
                 var nestComp = nestObj.GetComponent<Q_InteractComponent>();
             if(nestComp != null)
             {
                 nestComp.InteractWithObjective();
-                Debug.Log("InteractWithQuest");
+
             }
             }
 
@@ -206,6 +217,23 @@ public class PlayerInteraction : MonoBehaviour
             rideObj?.StartRiding();
         }
 
+
+        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, hideSeekLayer))
+        {
+            var hideSeekCon = hit.collider.GetComponent<HAS_Giver>();
+            if (hideSeekCon != null) { hideSeekCon?.GiveInfo(); }
+            else
+            {
+                var hideSeekObj = hit.collider.GetComponent<HAS_NPC>();
+                if (hideSeekObj != null)
+                {
+                    Debug.Log(hideSeekObj);
+                    hideSeekObj?.CallFound();
+                }
+            }
+
+        }
+
         if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, wearableLayer))
             {
                 var wearableObj = hit.collider.gameObject;
@@ -214,7 +242,7 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     comp.attachPoint = attachPoint;
                     comp.LookForObject(hit);
-                    Debug.Log("Attached");
+
                 }
                 else Debug.Log("skipped"); return;
             }
@@ -229,15 +257,15 @@ public class PlayerInteraction : MonoBehaviour
 
         if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, perchLayer))
         {
-            Debug.Log("PerchSeen");
+
             currentPerchPoint = hit.collider.GetComponentInParent<I_Perchable>();
+            currentPerchPoint.SetPlayerRef(this.gameObject);
             Debug.Log(currentPerchPoint);
             perchComp.isReady = true;
-            perchInteracted = true;
             switch (currentPerchPoint)
             {
                 case PerchableObject_Tree:
-                    Debug.Log("Ima Tree");
+
                     var tree = currentPerchPoint as PerchableObject_Tree;
                     tree.isPerching = true;
                     currentPerchPoint.StartPerch();
@@ -256,7 +284,7 @@ public class PlayerInteraction : MonoBehaviour
             }
 
         }
-        else { perchComp.isReady = false; perchInteracted = false; }
+        else { perchComp.isReady = false; }
     }
 
         void OpenQuestLog(InputAction.CallbackContext ctx)
@@ -292,13 +320,19 @@ public class PlayerInteraction : MonoBehaviour
                 isWingventoryOpen = true;
                 uiOn = true;
         }
-            else
+            
+            //this else never ever fires it's impossible with current action map setup
+            //moving the below logic somewhere else to kill two birds with one stone -
+            //having the bool flipped by all three inventory closing pathways: button, action and camera
+           
+            /*else
             {
                 canvasController.CloseWingventory();
-                isWingventoryOpen = false;
+                isWingventoryOpen = false;  //MOVED TO WINGVENTORYCANVAS LINES 97-99
                 uiOn = false;
-            }
-    }
+            }*/
+        }
+        
 
         void OpenPause(InputAction.CallbackContext ctx)
         {
@@ -307,12 +341,14 @@ public class PlayerInteraction : MonoBehaviour
                 canvasController.PauseGame();
             }
             else canvasController.ResumeGame(); uiOn = false;
-    }
+        }
 
-    private void OnLevelWasLoaded(int level)
-    {
-        canvasController = FindAnyObjectByType<UI_CanvasController>();
-        questLog = FindAnyObjectByType<QuestLog>();
-    }
+        //OnLevelWasLoaded refreshes scene-bound refs on scene change — deprecated but functional
+        private void OnLevelWasLoaded(int level)
+        {
+         //   canvasController = FindAnyObjectByType<UI_CanvasController>();
+            questLog = FindAnyObjectByType<QuestLog>();
+            Debug.Log("OLWL fired, level=" + level);
+        }
 }
 

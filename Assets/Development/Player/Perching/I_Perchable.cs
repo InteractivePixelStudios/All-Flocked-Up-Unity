@@ -7,4 +7,6 @@ public interface I_Perchable
      void UpdatePerch();
      void MovePosition(float x);
 
+    void SetPlayerRef(GameObject player);
+
 }

@@ -39,7 +39,7 @@ public class NestBase : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerRef = other.gameObject;
-            ShowNest();
+            //ShowNest();
         }
 
     }
@@ -48,7 +48,7 @@ public class NestBase : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            HideNest();
+            //HideNest();
         }
     }
 
