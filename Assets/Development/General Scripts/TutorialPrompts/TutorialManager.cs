@@ -31,6 +31,17 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] protected bool speakWithQ3;
     [SerializeField] protected bool tutComplete;
     [SerializeField] protected AchievementUnlocker achievement;
+
+    //we love our lazy init pattern, don't we folks?
+     private PlayerStateController _psc;
+     private PlayerStateController psc
+     {
+        get{
+        if (!_psc) _psc = FindAnyObjectByType<PlayerStateController>();
+        return _psc;
+        }
+    }
+
     bool achGiven;
     CinematicController cinematic;
     [SerializeField] private List<bool> savedTut = new();
@@ -59,8 +70,8 @@ public class TutorialManager : MonoBehaviour
         jumpAction = playerInput.actions.FindAction("Jump");
         clickAction = playerInput.actions.FindAction("Click");
         TogglePrompt(promptIndex);
-        playerMove.enabled = false;
-        playerFlight.enabled = false;
+        //playerMove.enabled = false;
+        //playerFlight.enabled = false;
 
 
     }
@@ -68,7 +79,7 @@ public class TutorialManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (tutComplete && !achGiven)
+       /* if (tutComplete && !achGiven)
         {
             if (SteamManager.Initialized)
             {
@@ -79,15 +90,16 @@ public class TutorialManager : MonoBehaviour
         }
         if (tutComplete)
         {
-            tutIndex = 7;
-        }
+            tutIndex = 7; //doesn't make sense anyways tbh
+        } */
         switch (tutIndex)
         {
             case 0:
                 if (clickAction.WasPressedThisFrame())
                 {
-                    playerMove.enabled = true;
-                    playerFlight.enabled = true;
+                    psc.SwitchToPlayerMap();
+                    //playerMove.enabled = true;
+                    //playerFlight.enabled = true;
                     promptIndex++;
                     UpdatePrompt(promptIndex);
                     SetTutState(1);
@@ -125,8 +137,9 @@ public class TutorialManager : MonoBehaviour
                 {
                     if (playerMove.GetIsFlying() == false)
                     {
-                        playerMove.enabled = false;
-                        playerFlight.enabled = false;
+                        psc.SwitchToUIMap();
+                        //playerMove.enabled = false;
+                        //playerFlight.enabled = false;
                         jumpCount = 0;
                         promptIndex++;
                         introIndex++;
@@ -193,10 +206,22 @@ public class TutorialManager : MonoBehaviour
                 }
                 return;
             case 7:
-                playerMove.enabled = true;
-                playerFlight.enabled = true;
+            
+            if (tutComplete) return; //extra just in-case guard something re-enables tut manager
+
+                psc.SwitchToPlayerMap();
+                //playerMove.enabled = true;
+                //playerFlight.enabled = true;
                 canvasController.DestroyPrompt();
                 tutComplete = true;
+
+
+                  if (SteamManager.Initialized)
+            {
+                AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_001_Coo");
+                achGiven = true;
+            }
+                this.enabled = false;
                 return;
         }
     }
