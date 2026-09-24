@@ -86,7 +86,7 @@ public class PlayerHealth : MonoBehaviour
         {
             camController.SwitchToRespawnCam();
         }
-
+        if (canvasController == null) canvasController = FindAnyObjectByType<UI_CanvasController>();
         canvasController.OpenRespawn();
     }
 }
