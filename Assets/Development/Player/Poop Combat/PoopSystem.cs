@@ -32,6 +32,11 @@ public class PoopSystem : MonoBehaviour
         maxPoop = poop;
     }
 
+    public void ReloadPoop()
+    {
+        currentPoop = maxPoop;
+    }
+
     private void Awake()
     {
         currentPoop = maxPoop;

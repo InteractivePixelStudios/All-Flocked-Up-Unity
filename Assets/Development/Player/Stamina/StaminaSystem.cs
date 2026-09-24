@@ -7,7 +7,7 @@ public class StaminaSystem : MonoBehaviour
     [SerializeField] float currentStamina;
     [SerializeField] float MaxStamina = 10;
     [SerializeField] float staminaRegenSpeed = .5f;
-
+    [SerializeField] private PlayerGroundMovement flightComp;
     bool regenStamina = false;
 
     public void SetMaxStamina(float stamina)
@@ -20,13 +20,14 @@ public class StaminaSystem : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentStamina = MaxStamina;   
+        currentStamina = MaxStamina;
+        flightComp = GetComponent<PlayerGroundMovement>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (regenStamina)
+        if (regenStamina && !flightComp.GetIsFlying())
         {
             currentStamina += staminaRegenSpeed * Time.deltaTime;
             if (currentStamina >= MaxStamina)
