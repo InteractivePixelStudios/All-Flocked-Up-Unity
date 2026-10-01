@@ -118,7 +118,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.26
+  m_Radius: 0.75
   m_Height: 0.2
   m_Direction: 1
   m_Center: {x: -0.27, y: 0.72, z: 0.11}
@@ -262,6 +262,26 @@ PrefabInstance:
     - target: {fileID: 6113523591080228929, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: alertEvent.Path
+      value: event:/Loot/Pickup
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: alertEvent.Guid.Data1
+      value: -592575950
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: alertEvent.Guid.Data2
+      value: 1334059850
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: alertEvent.Guid.Data3
+      value: 1096025485
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488329768979102629, guid: 2f7cb65f40e3ef04ea041cd686c453a1, type: 3}
+      propertyPath: alertEvent.Guid.Data4
+      value: -787674166
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

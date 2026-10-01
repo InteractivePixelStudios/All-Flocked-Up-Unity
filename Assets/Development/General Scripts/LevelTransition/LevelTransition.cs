@@ -33,6 +33,8 @@ public class LevelTransition : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            other.gameObject.GetComponent<Rigidbody>().linearVelocity = new Vector3(0,0,0);
+            other.gameObject.GetComponent<PlayerStateController>().ExitFlyMode();
             ShowTransitionPrompt();
         }
     }

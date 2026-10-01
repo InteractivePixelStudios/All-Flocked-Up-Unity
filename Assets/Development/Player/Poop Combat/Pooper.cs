@@ -37,6 +37,8 @@ public class Pooper : MonoBehaviour
 
     //Switching to new input system - JK Oct/23
 
+    public void CallReloadPoop() { poopSystem.ReloadPoop(); }
+
     public bool GetIsAiming()
     {
         return isAiming;

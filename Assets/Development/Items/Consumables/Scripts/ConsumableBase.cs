@@ -178,9 +178,9 @@ public class ConsumableBase : MonoBehaviour
         playerPoop = playerRef.GetComponent<Pooper>();
         if (playerPoop != null && poopTypeToGive!=null)
         {
-
-                    playerPoop.SetPoopType(poopTypeToGive);
-                    Debug.Log("Poop Type = " + poopTypeToGive);
+            playerPoop.CallReloadPoop();
+            playerPoop.SetPoopType(poopTypeToGive);
+            Debug.Log("Poop Type = " + poopTypeToGive);
 
         }
 

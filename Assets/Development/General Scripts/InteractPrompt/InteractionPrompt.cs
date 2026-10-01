@@ -43,10 +43,28 @@ public class InteractionPrompt : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            var direction = other.transform.position - transform.position;
+            //v0, buggy facing player
+            // var direction = other.transform.position - transform.position;
+            //Quaternion angle = Quaternion.LookRotation(-direction, Vector3.up);
+            // rend.gameObject.transform.rotation = angle;
+
+            //v1, icon faces main cam 
+            /*
+            var cam = Camera.main;
+            if (!cam) return;
+            var direction = cam.transform.position - transform.position;
             Quaternion angle = Quaternion.LookRotation(-direction, Vector3.up);
-            rend.gameObject.transform.rotation = angle;
-            
+            rend.gameObject.transform.rotation = angle; 
+            */
+
+
+            //v2, icon parallel to main cam
+            // /* 
+            var cam = Camera.main;
+            if (!cam) return;
+            rend.gameObject.transform.rotation = Quaternion.LookRotation(cam.transform.forward, Vector3.up);
+            // */
+
         }
     }
 
