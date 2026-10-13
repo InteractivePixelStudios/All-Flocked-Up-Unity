@@ -5,7 +5,7 @@ public class SkyboxParallaxer : MonoBehaviour
 {
     [SerializeField] private float rotationSpeed;
     [SerializeField] private Material dayMaterial;
-    [SerializeField] private Material nightMaterial;
+   // [SerializeField] private Material nightMaterial;
 
     void Update()
     {
@@ -17,15 +17,15 @@ public class SkyboxParallaxer : MonoBehaviour
         RenderSettings.skybox.SetFloat("_Rotation", Time.time * rotationSpeed);
     }
 
-    public void ChangeTimeOfDay(bool isNight)
-    {
-        if(isNight)
-        {
-            RenderSettings.skybox = nightMaterial;
-        }
-        else
-        {
-            RenderSettings.skybox = dayMaterial;
-        }
-    }
+    //public void ChangeTimeOfDay(bool isNight)
+    //{
+    //    if(isNight)
+    //    {
+    //        RenderSettings.skybox = nightMaterial;
+    //    }
+    //    else
+    //    {
+    //        RenderSettings.skybox = dayMaterial;
+    //    }
+    //}
 }

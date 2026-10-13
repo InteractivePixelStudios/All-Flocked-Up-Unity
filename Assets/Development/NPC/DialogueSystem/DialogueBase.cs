@@ -256,7 +256,10 @@ public class DialogueBase : MonoBehaviour
             string temp = "";
             foreach (char c in resolvedText)
             {
-                temp += c;
+
+
+                    temp += c;
+               
                 if (!skipLine)
                 {
                     canvasController.activeDialogueInstance.UpdateDialogueUI(currentDialogueName, temp, currentDialogueImage);

@@ -6,9 +6,8 @@ public class NestBase : MonoBehaviour
     [Header("BaseClassRefs")]
     private GameObject playerRef;
     [SerializeField] private float activeRadius;
-    [SerializeField] private StickBuilder stickBuilder;
+    [SerializeField] private ParticleSystem spawnedVFX;
     public bool isActiveNest;
-    bool sticksSpawned;
     private UI_CanvasController canvasController;
     [SerializeField] Material baseMaterial;
     [SerializeField] Material distanceMaterial;
@@ -27,9 +26,9 @@ public class NestBase : MonoBehaviour
 
     public void InteractWithNest()
     {
-        if (!isActiveNest && !sticksSpawned)
+        if (!isActiveNest)
         {
-            SpawnStickBuilder();
+            SpawnVFX();
         }
         else OpenNestMenu();
     }
@@ -52,11 +51,13 @@ public class NestBase : MonoBehaviour
         }
     }
 
-    private void SpawnStickBuilder()
+    private void SpawnVFX()
     {
-        sticksSpawned = true;
-        stickBuilder = Instantiate(stickBuilder, transform);
-        stickBuilder.nestBaseRef = this;
+        spawnedVFX.Play();
+        if (spawnedVFX.isPlaying)
+        {
+            spawnedVFX.Stop();
+        }
     }
 
     private void OpenNestMenu()

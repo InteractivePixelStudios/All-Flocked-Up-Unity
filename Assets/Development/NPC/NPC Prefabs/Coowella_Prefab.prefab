@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5949741675223679790}
-  - component: {fileID: 4078620249707364803}
   - component: {fileID: 7405353417557600948}
   - component: {fileID: 7936533893866051487}
   - component: {fileID: 3277858375702998658}
   - component: {fileID: 2623083403089361993}
   - component: {fileID: 6823453039802288073}
+  - component: {fileID: 816557406211993341}
   m_Layer: 7
   m_Name: Coowella_Prefab
   m_TagString: Untagged
@@ -40,21 +40,6 @@ Transform:
   - {fileID: 5335748938028551684}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4078620249707364803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 952328548695419677}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d5cec5f4c9ee7345888ed8132eacdbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconRenderer: {fileID: 0}
-  icon: {fileID: 21300000, guid: a07c2d927fc39364288304fe8e663a2f, type: 3}
-  isActive: 0
 --- !u!114 &7405353417557600948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,6 +181,18 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &816557406211993341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 952328548695419677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef598d7a4cc68014790939dbcb0f1329, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPC_IconToggle
 --- !u!1 &1226660031487918427
 GameObject:
   m_ObjectHideFlags: 0

@@ -248,14 +248,13 @@ public class PlayerGroundMovement : MonoBehaviour
     void StartSprint(InputAction.CallbackContext context)
     {
         //if (isFlying || crouching)
-        if(playerStateController.CurrentState != PlayerState.GroundMove || sprinting)
+        if(playerStateController.CurrentState != PlayerState.GroundMove || sprinting) return;
 
-            return;
-
-        if (playerStamina.UseStamina(sprintStaminaAmount))
+        if (playerBody.linearVelocity != Vector3.zero)
         {
             sprinting = true;
             currentMaxSpeed = sprintSpeed;
+            playerStamina.UseStamina(1);
         }
     }
 
