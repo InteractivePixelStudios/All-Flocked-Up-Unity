@@ -46,29 +46,29 @@ public class S_DayNightCycle : MonoBehaviour
         }
         
         //check for transition
-        CheckDayNightTransition();
+       // CheckDayNightTransition();
 
     }
 
-    private void CheckDayNightTransition()
-    {
+    //private void CheckDayNightTransition()
+    //{
         
-        //example: Day = 0.25 -> 0.75
-        bool shouldBeDay = timeOfDay is >= 0.25f and <= 0.75f; //note: this is identical to saying "bool shouldBeDay = (timeOfDay >= 0.25f && timeOfDay <= 0.75f);" This is just pattern matching which is a more modern use of C# syntax
+    //    //example: Day = 0.25 -> 0.75
+    //    bool shouldBeDay = timeOfDay is >= 0.25f and <= 0.75f; //note: this is identical to saying "bool shouldBeDay = (timeOfDay >= 0.25f && timeOfDay <= 0.75f);" This is just pattern matching which is a more modern use of C# syntax
 
-        if (shouldBeDay && !isDay)
-        {
-            isDay = true;
-            skybox.ChangeTimeOfDay(false);
-            OnDayStart?.Invoke();
-        }else if (!shouldBeDay && isDay)
-        {
-            isDay = false;
-            skybox.ChangeTimeOfDay(true);
-            OnNightStart?.Invoke();
-        }
+    //    if (shouldBeDay && !isDay)
+    //    {
+    //        isDay = true;
+    //        skybox.ChangeTimeOfDay(false);
+    //        OnDayStart?.Invoke();
+    //    }else if (!shouldBeDay && isDay)
+    //    {
+    //        isDay = false;
+    //        skybox.ChangeTimeOfDay(true);
+    //        OnNightStart?.Invoke();
+    //    }
         
         
-    }
+    //}
     
 }

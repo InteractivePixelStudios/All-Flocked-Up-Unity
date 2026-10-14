@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class TrafficLightChanger : MonoBehaviour
 {
@@ -54,19 +55,19 @@ public class TrafficLightChanger : MonoBehaviour
     private void ChangeLightColor(string color)
     {
         var lightColor = color;
-        if (lightColor == "Green")
+        if (lightColor.StartsWith("G"))
         {
             greenLight.SetActive(true);
             yellowLight.SetActive(false);
             redLight.SetActive(false);
         }
-        else if (lightColor == "Yellow")
+        else if (lightColor.StartsWith("Y"))
         {
             greenLight.SetActive(false);
             yellowLight.SetActive(true);
             redLight.SetActive(false);
         }
-        else if (lightColor == "Red")
+        else if (lightColor.StartsWith("R"))
         {
             greenLight.SetActive(false);
             yellowLight.SetActive(false);

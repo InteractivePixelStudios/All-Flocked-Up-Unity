@@ -319,7 +319,7 @@ public class PlayerInteraction : MonoBehaviour
             }
             else
             {
-                canvasController.CloseMainMap(); uiOn = false;
+                canvasController.CloseMainMap();
         }
         }
 

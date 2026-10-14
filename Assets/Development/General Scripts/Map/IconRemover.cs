@@ -21,7 +21,7 @@ public class IconRemover : MonoBehaviour
         worldIcon = reference;
     }
 
-    private void OnDestroy()
+    public void DestroyIcon()
     {
         compass.RemoveIcon(worldIcon);
     }

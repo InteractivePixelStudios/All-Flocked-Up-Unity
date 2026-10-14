@@ -143,6 +143,7 @@ public class CompassController : MonoBehaviour
             {
                 if (i < mapMarkers.Count && mapMarkers[i] != null)
                 {
+                    mapMarkers[i].GetComponent<IconRemover>().DestroyIcon();
                     Destroy(mapMarkers[i].gameObject);
                     mapMarkers.RemoveAt(i);
                 }
