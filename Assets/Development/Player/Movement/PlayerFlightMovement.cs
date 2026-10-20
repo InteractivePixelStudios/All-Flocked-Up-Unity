@@ -371,6 +371,7 @@ public class PlayerFlightMovement : MonoBehaviour
         flapAction.started -= FlapUp;
         diveAction.performed -= Dive;
         stallAction.performed -= AirStall;
+        playerStamina.RegenStamina();
 
         GetComponent<VFXController>().ToggleStreakOff();
         meshTransform.localRotation = Quaternion.Euler(Vector3.zero);

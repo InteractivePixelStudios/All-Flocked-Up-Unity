@@ -10,6 +10,7 @@ public class EnemyPatrol : EnemyBaseComponent
     [Header("Patrol")]
     public GameObject patrolPoint;
     public GameObject player;
+    [SerializeField] private float distanceToPlayer;
     public PlayerStealthSystem playerStealth;
     public float patrolSpeed = 3f;
     public float chaseSpeed = 5f;
@@ -22,11 +23,13 @@ public class EnemyPatrol : EnemyBaseComponent
     public float kickCooldown = 3f;
     [SerializeField] protected SphereCollider kickCollider;
     [SerializeField] private GameObject kickColliderParent;
+    bool canKick;
     bool isKicking;
     [Header("Throw")]
     public float throwRange=3f;
     public float throwForce = 10f;
     public float throwCooldown = 3f;
+    bool canThrow;
     bool isThrowing;
     [SerializeField] private GameObject throwObjectPrefab;
     [SerializeField] private Transform objectSpawnPoint;
@@ -51,7 +54,7 @@ public class EnemyPatrol : EnemyBaseComponent
     bool locationSet;
     [SerializeField]ReactionState currentReactionState;
     public enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
-    private EnemyState currentState = EnemyState.Patrolling;
+    [SerializeField]private EnemyState currentState = EnemyState.Patrolling;
 
     public bool IsDead = false;
 
@@ -65,14 +68,9 @@ public class EnemyPatrol : EnemyBaseComponent
         currentState = EnemyState.Patrolling;
         var rand = Random.Range(0, 1);
         if (rand == 0) {  SpawnHeldItem(); } else return;
+        navAgent.updatePosition = true;
     }
 
-    public  void SetIsHit()
-    {
-        Debug.Log("setIsHit");
-        isHit = true;
-        isHit = false;
-    }
     public void SetCurrentState(EnemyState state)
     {
         currentState = state;
@@ -84,14 +82,16 @@ public class EnemyPatrol : EnemyBaseComponent
         currentReactionState = state;
     }
 
+
     void Update()
     {
-        navAgent.updatePosition = true;
         if(kickCooldown>=0) kickCooldown -= Time.deltaTime;
         if(throwCooldown>=0)throwCooldown -= Time.deltaTime;
         if(MoveAfterCooldown>=0) MoveAfterCooldown -= Time.deltaTime;
-        float distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
-        if (distanceToPlayer < detectionRange)
+
+        distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
+
+        if (distanceToPlayer <= detectionRange)
         {
             canSeePlayer = true;
             if (!iconActive)
@@ -108,68 +108,42 @@ public class EnemyPatrol : EnemyBaseComponent
                 alertIcon.SetPlayerSeen(false);
                 iconActive = false;
             }
+            SetCurrentState(EnemyState.Patrolling);
+            isStopped = false;
         }
+        if(distanceToPlayer <= kickRange) { if (!canKick) { canKick = true; } else { canKick = false; } }
+        if (distanceToPlayer <= throwRange) { if (!canThrow) { canThrow = true; } else { canThrow = false; } }
+
         switch (currentState)
         {
             case EnemyState.Patrolling:
-                if (this.isHit) currentState = EnemyState.Hit;
-                if (this.isIdleStart && !this.isHit) currentState = EnemyState.Stop;
-                else if (playerStealth.GetStealth() < 10 && canSeePlayer && !this.isHit)
-                    currentState = EnemyState.Chasing;
-
+                if (isHit) {currentState = EnemyState.Hit; }
+                if (isIdleStart) { currentState = EnemyState.Stop; }
+                if (playerStealth.GetStealth() < 10 && canSeePlayer) { currentState = EnemyState.Chasing; }
                 break;
-
             case EnemyState.Chasing:
-                if (this.isHit)
-                    currentState = EnemyState.Hit;
-                else if (!canSeePlayer)
-                    currentState = EnemyState.Patrolling;
-                else if (!isKicking && !isThrowing && distanceToPlayer < kickRange)
-                    currentState = EnemyState.Kicking;
-                else if (!isHoldingItem &&!isKicking && !isThrowing && distanceToPlayer < throwRange)
-                    currentState = EnemyState.Throwing;
+                if (isHit) { currentState = EnemyState.Hit; }
+                if (!canSeePlayer) { currentState = EnemyState.Patrolling; }
+                if (canKick && !isKicking && !isThrowing) { currentState = EnemyState.Kicking; }
+                if (canThrow && !isKicking && !isThrowing) { if (isHoldingItem) { DropHeldItem(); } currentState = EnemyState.Throwing; }
                 break;
-
             case EnemyState.Kicking:
-                if (this.isHit)
-                    currentState = EnemyState.Hit;
-                if (distanceToPlayer > kickRange && !isHit)
-                    currentState = EnemyState.Chasing;
+                if (isHit) { currentState = EnemyState.Hit; }
+                if (!isKicking && MoveAfterCooldown <= 0) currentState = EnemyState.Chasing;
                 break;
-
             case EnemyState.Throwing:
-                if (this.isHit)
-                    currentState = EnemyState.Hit;
-                if (distanceToPlayer > throwRange && !this.isHit)
-                    currentState = EnemyState.Chasing;
+                if (isHit) { currentState = EnemyState.Hit; }
+                if (!isThrowing && MoveAfterCooldown <= 0) currentState = EnemyState.Chasing;
                 break;
-
             case EnemyState.Stop:
-                if (this.isHit)
-                {
-                    isStopped = false;
-                    currentState = EnemyState.Retreat;
-
-                }
-                else if (distanceToPlayer > throwRange && !this.isHit)
-                { currentState = EnemyState.Chasing; }
-                 else
-                isStopped = true;
+                if (isHit) { currentState = EnemyState.Retreat;}
+                //if (canSeePlayer){ currentState = EnemyState.Chasing; }
                 break;
-
             case EnemyState.Retreat:
-                if (this.isHit)
-                    currentState = EnemyState.Hit;
-                else if (isStopped && !this.isHit)
-                {
-                    isStopped = false;
-                    currentState = EnemyState.Patrolling;
-                }
+                if (isHit) { currentState = EnemyState.Hit; }
                 break;
-
             case EnemyState.Hit:
-                this.isHit = true;
-                currentState = EnemyState.Retreat;
+                if (!isHit){ currentState = EnemyState.Retreat; }
                 break;
 
     }
@@ -177,81 +151,41 @@ public class EnemyPatrol : EnemyBaseComponent
         switch (currentState)
         {
             case EnemyState.Patrolling:
-                //Debug.Log("Patrol");
-                if (locationSet)
+                if (!isStopped)
                 {
                     MoveHumanToLocation();
-                    if(navAgent.remainingDistance <= navAgent.stoppingDistance && !navAgent.pathPending)
-                    {
-                        locationSet = false;
-                    }
-                }
-
-                if (!locationSet)
-                {
-                    if (waypoints.Count > 1)
+                    if (navAgent.remainingDistance <= 1f && !navAgent.pathPending)
                     {
                         ChooseNextDirection(currentNode);
                     }
-                    else { StopMove(); }
-                    
                 }
-                break;
+                else { StopMove(); }
+            break;
             case EnemyState.Chasing:
                 ChasePlayer();
                 break;
             case EnemyState.Kicking: // throws until kick anim done
-                if (throwCooldown <= 0 && !isKicking)
+                if (throwCooldown <= 0)
                 {
                     ThrowObject();
-                    throwCooldown = 3f;
-                    MoveAfterCooldown = 1.5f;
-                    if (MoveAfterCooldown <= 0)
-                    {
-                        currentState = EnemyState.Chasing;
-                    }
-                    isKicking = true;
                 }
-                //if (kickCooldown <= 0)
-                //{
-                //    KickPlayer();
-
-                //    kickCooldown = 3f;
-                //    currentState = EnemyState.Chasing;
-                //}
                 break;
             case EnemyState.Throwing:
-                if (throwCooldown <= 0 && !isThrowing)
+                if (throwCooldown <= 0) 
                 {
                     ThrowObject();
-                    throwCooldown = 3f;
-                    MoveAfterCooldown = 1.5f;
-                    if (MoveAfterCooldown <= 0)
-                    {
-                        currentState = EnemyState.Chasing;
-                    }
-                    isThrowing = true;
                 }
                 break;
             case EnemyState.Stop:
                 StopMove();
-
                 break;
             case EnemyState.Hit:
                 HitReact();
-
                 break;
             case EnemyState.Retreat:
-                if (!isRetreating)
-                {
-                    isRetreating = true;
-                    Retreat();
-
-                }
-
+                 Retreat();
                 break;
         }
-
     }
 
     private void FindWaypoints()
@@ -263,10 +197,8 @@ public class EnemyPatrol : EnemyBaseComponent
             {
                 waypoints.Add(waypoint);
             }
-
         }
         FindRandomWaypoint();
-
     }
 
 
@@ -283,37 +215,29 @@ public class EnemyPatrol : EnemyBaseComponent
         {
             this.currentNode = waypoints[0];
         }
-
     }
 
     protected void StopMove()
     {
+        isStopped = true;
         navAgent.isStopped = true;
         navAgent.velocity = Vector3.zero;
         animController.SetFloat("Speed", 0f);
     }
 
     protected  void HitReact()
-    {
-        
-        isHit = false;
+    {      
+        isHit = true;
         if(isHoldingItem && currentHeldObject!=null) { DropHeldItem(); }
         currentState = EnemyState.Retreat;
     }
 
-    //ReactionState GetReactionState(PoopType type)
-    //{
-    //    switch (type)
-    //    {
-    //        case Poop
-    //    }
-    //}
     public override void OnHit(PoopType type)
     {
-        Debug.Log("Enemy Hit with: " + type);
         currentReactionState = type.poopReaction;
         switch (currentReactionState)
         {
+            // separate if wanting to add different react anims
             case ReactionState.Normal:
                 animController.SetTrigger("isHit");
                 Debug.Log("Hit by Normal ");
@@ -331,42 +255,34 @@ public class EnemyPatrol : EnemyBaseComponent
                 Debug.Log("Hit by Glow");
                 break;
         }
-        isHit = true;
-        Debug.Log("HitHuman");
-        SetCurrentState(EnemyState.Hit);
         HitReact();
     }
     protected void Retreat()
     {
         navAgent.isStopped = false;
-        animController.SetFloat("Speed",navAgent.speed);
-        Debug.Log("retreating");
-        bool set = false;
+        isRetreating = true;
+        animController.SetFloat("Speed", navAgent.speed);
         if (currentNode != null)
         {
             navAgent.SetDestination(currentNode.transform.position);
-            set = true;
             if (navAgent.remainingDistance <= 1f)
             {
-
                 isRetreating = false;
                 isStopped = true;
             }
         }
         else
         {
-            if (!set)
+            navAgent.SetDestination(transform.position + new Vector3(0, 0, 5));
+
+            if (navAgent.remainingDistance <= 1f)
             {
-                navAgent.SetDestination(transform.position + new Vector3(0, 0, 5));
-                set = true;
-            }
-            if(navAgent.remainingDistance <= 1f)
-            {
-                if(Physics.Raycast(transform.position,Vector3.forward, 2f, LayerMask.NameToLayer("PropBuilding")))
+                if (Physics.Raycast(transform.position, Vector3.forward, 2f, LayerMask.NameToLayer("PropBuilding")))
                 {
                     isRetreating = false;
                     isStopped = true;
-                }else 
+                    return;
+                }
                 isRetreating = false;
                 isStopped = true;
             }
@@ -379,9 +295,7 @@ public class EnemyPatrol : EnemyBaseComponent
         animController.SetFloat("Speed", navAgent.speed);
         Vector3 targetPos = player.transform.position;
         targetPos.y = transform.position.y;
-
         transform.position = Vector3.MoveTowards(transform.position, targetPos, chaseSpeed * Time.deltaTime);
-
         Vector3 dir = (targetPos - transform.position).normalized;
         dir.y = 0;
         if (dir != Vector3.zero)
@@ -390,7 +304,7 @@ public class EnemyPatrol : EnemyBaseComponent
 
     protected async void KickPlayer()
     {
-        if (!isKicking || isThrowing || !canSeePlayer) return;
+        if (isKicking || isThrowing || !canSeePlayer) return;
         isKicking = true;
         StopMove();
         var spawnedCollider = kickColliderParent.AddComponent<SphereCollider>();
@@ -402,12 +316,13 @@ public class EnemyPatrol : EnemyBaseComponent
         Destroy(spawnedCollider);
         Destroy(comp);
         isKicking = false;
+        MoveAfterCooldown = 1.5f;
 
     }
 
     protected async void ThrowObject()
     {
-        if (isHoldingItem || isKicking || isThrowing || !canSeePlayer) return;
+        if (isThrowing || isHoldingItem || isKicking || !canSeePlayer) return;
         isThrowing = true;
         StopMove();
         Vector3 facingDir = (player.transform.position - transform.position).normalized;
@@ -427,7 +342,7 @@ public class EnemyPatrol : EnemyBaseComponent
         objRB.AddForce((objectSpawnPoint.forward+(Vector3.down*0.5f))*throwForce,ForceMode.Impulse);
         throwCooldown = 3f;
         isThrowing = false;
-
+        MoveAfterCooldown = 1.5f;
     }
 
     protected void SetThrowPoint()
@@ -452,7 +367,6 @@ public class EnemyPatrol : EnemyBaseComponent
         if (navAgent == null)return;
         if (currentNode != null)
         {
-            //Debug.Log("Moving to: " + currentNode);
             navAgent.isStopped = false;
             navAgent.SetDestination(currentNode.transform.position);
         }
@@ -467,7 +381,6 @@ public class EnemyPatrol : EnemyBaseComponent
                     {
                         patrolPoint = obj.gameObject;
                         FindWaypoints();
-                        //Debug.Log("Moving to: " + currentNode);
                         navAgent.isStopped = false;
                         navAgent.SetDestination(currentNode.transform.position);
                         break;
@@ -479,30 +392,14 @@ public class EnemyPatrol : EnemyBaseComponent
 
     }
 
-    public virtual void StopHuman()
+    void OnCollisionEnter(Collision collision)
     {
-        navAgent.isStopped = true;
-        //Debug.Log("Stopping");
+        if (collision.gameObject.CompareTag("Poop"))
+        {
+            var type = collision.gameObject.GetComponent<PoopProjectile>().GetPoopType();
+            TakeDamage(1,type);
+        }
     }
-
-    //protected virtual void CheckForCollisions()
-    //{
-    //    RaycastHit hit;
-    //    int combinedMask = trafficLayer | playerLayer | enemyLayer;
-
-    //    if (Physics.Raycast(transform.position, transform.forward, out hit, detectObjectRange, combinedMask))
-    //    {
-    //        StopVehicle();
-    //        Debug.DrawLine(transform.position, hit.point, Color.yellow);
-    //    }
-    //    else
-    //    {
-    //        if (!navAgent.isStopped)
-    //            MoveVehicleToLocation();
-    //    }
-    //}
-
-
 
     protected void ChooseNextDirection(Waypoint node)
     {
@@ -523,13 +420,13 @@ public class EnemyPatrol : EnemyBaseComponent
             MoveHumanToLocation();
         }
         locationSet = true;
-
     }
 
     void SpawnHeldItem()
     {
         var rand = Random.Range(0, holdList.Count);
         var spawned = Instantiate(holdList[rand]);
+        spawned.transform.localScale = spawned.transform.localScale;
         currentHeldObject = spawned;
         spawned.GetComponent<Rigidbody>().isKinematic = true;
         spawned.transform.SetParent(objectSpawnPoint, false);

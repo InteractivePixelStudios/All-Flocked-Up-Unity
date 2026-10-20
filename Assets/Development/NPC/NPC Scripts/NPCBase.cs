@@ -14,12 +14,10 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     [SerializeField] private string retriggerDialogueLineID;
     [SerializeField]int index;
     [SerializeField] private GameObject homeLocation;
-    [SerializeField] private GameObject warpLocation;
     [SerializeField]bool readyToWarp;
-   [SerializeField] bool atWarpLoc = false;
     [SerializeField] private QuestGiver questGiverComp;
     public bool dialogueFirst;
-    private IconToggle questIcon;
+    private NPC_IconToggle questIcon;
     [SerializeField] bool isWaiting = true;
 
     public void SetReadyToWarp(bool value)
@@ -51,7 +49,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         {
             homeLocation = FindAnyObjectByType<LargeNest>().gameObject;
         }
-        questIcon = GetComponent<IconToggle>();
+        questIcon = GetComponent<NPC_IconToggle>();
         TryGetComponent<QuestGiver>(out questGiverComp);
     }
 
@@ -61,15 +59,9 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         {
             MoveToLocation();
         }
-        if (warpLocation != null && !atWarpLoc && readyToWarp) 
-        {
-            isMoving = false;
-            navAgentComponent.Warp(warpLocation.transform.position);
-            atWarpLoc = true; 
-        }
         if (dialogueFirst == false&& questGiverComp == null && !isWaiting &&!isMoving) //no quest giver... no dialogue...not waiting...for Racegiver
         {
-            questIcon.enabled = false;
+            //questIcon.enabled = false;
             targetLocation = homeLocation.transform;
             isMoving = true;
             return;

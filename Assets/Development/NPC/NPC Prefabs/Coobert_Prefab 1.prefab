@@ -153,12 +153,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4644452794067012375}
-  - component: {fileID: 6344119396711543627}
   - component: {fileID: 6138234727710805807}
   - component: {fileID: 7959446582293592916}
   - component: {fileID: 5535069320697473210}
   - component: {fileID: 6372822155200404349}
   - component: {fileID: 93492778128383876}
+  - component: {fileID: 3877624632522487946}
   m_Layer: 7
   m_Name: Coobert_Prefab 1
   m_TagString: Untagged
@@ -184,21 +184,6 @@ Transform:
   - {fileID: 2129492816392565363}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6344119396711543627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5155651706348689942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d5cec5f4c9ee7345888ed8132eacdbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconRenderer: {fileID: 0}
-  icon: {fileID: 21300000, guid: a07c2d927fc39364288304fe8e663a2f, type: 3}
-  isActive: 0
 --- !u!114 &6138234727710805807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,6 +326,18 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &3877624632522487946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5155651706348689942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef598d7a4cc68014790939dbcb0f1329, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPC_IconToggle
 --- !u!1001 &1875682253618435480
 PrefabInstance:
   m_ObjectHideFlags: 0

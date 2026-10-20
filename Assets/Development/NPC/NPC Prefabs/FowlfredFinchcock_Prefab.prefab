@@ -100,12 +100,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5249666582549899789}
-  - component: {fileID: 8913141031590849497}
   - component: {fileID: 7476584770450331387}
   - component: {fileID: 8354241031337874885}
   - component: {fileID: 7351667000996491866}
   - component: {fileID: 3969585093031471750}
   - component: {fileID: 7777853402534841075}
+  - component: {fileID: 8495114585975123318}
   m_Layer: 7
   m_Name: FowlfredFinchcock_Prefab
   m_TagString: Untagged
@@ -131,21 +131,6 @@ Transform:
   - {fileID: 738253274616905135}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8913141031590849497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6717993638709678988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d5cec5f4c9ee7345888ed8132eacdbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  iconRenderer: {fileID: 0}
-  icon: {fileID: 21300000, guid: a07c2d927fc39364288304fe8e663a2f, type: 3}
-  isActive: 0
 --- !u!114 &7476584770450331387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -288,6 +273,18 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &8495114585975123318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6717993638709678988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef598d7a4cc68014790939dbcb0f1329, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NPC_IconToggle
 --- !u!1 &8459665400988256539
 GameObject:
   m_ObjectHideFlags: 0
