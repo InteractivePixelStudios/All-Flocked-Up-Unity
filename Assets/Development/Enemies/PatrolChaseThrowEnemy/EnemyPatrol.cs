@@ -310,6 +310,7 @@ public class EnemyPatrol : EnemyBaseComponent
     //}
     public override void OnHit(PoopType type)
     {
+        Debug.Log("Enemy Hit with: " + type);
         currentReactionState = type.poopReaction;
         switch (currentReactionState)
         {
@@ -333,6 +334,7 @@ public class EnemyPatrol : EnemyBaseComponent
         isHit = true;
         Debug.Log("HitHuman");
         SetCurrentState(EnemyState.Hit);
+        HitReact();
     }
     protected void Retreat()
     {
@@ -483,14 +485,6 @@ public class EnemyPatrol : EnemyBaseComponent
         //Debug.Log("Stopping");
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Poop"))
-        {
-            var type = collision.gameObject.GetComponent<PoopProjectile>().GetPoopType();
-            TakeDamage(1,type);
-        }
-    }
     //protected virtual void CheckForCollisions()
     //{
     //    RaycastHit hit;

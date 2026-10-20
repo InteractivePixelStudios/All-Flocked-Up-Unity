@@ -176,11 +176,7 @@ public class Pooper : MonoBehaviour
 
     private void OnPoopPerformed(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Poop action performed");
-
-                TryPooping(GetIsFlying());
-            
-        
+        TryPooping(GetIsFlying());
     }
 
     #endregion
