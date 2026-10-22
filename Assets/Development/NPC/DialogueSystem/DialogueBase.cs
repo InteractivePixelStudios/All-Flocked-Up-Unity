@@ -22,7 +22,7 @@ public class DialogueBase : MonoBehaviour
     public LocalizedString[] currentResponseOptions;
     public string responseReturnID;
     [SerializeField] private UI_CanvasController canvasController;
-    private bool typerComplete {  get; set; }
+   // private bool typerComplete {  get; set; }
 
     [SerializeField] private string DIALOGUEFILENAME = "DialogueSpreadsheet.csv";
     [SerializeField]private List<DialogueLineData> dialogueList = new List<DialogueLineData>();
@@ -48,7 +48,7 @@ public class DialogueBase : MonoBehaviour
 
     public bool GetIsTyping()
     {
-        return typerComplete;
+        return false; // set to false to remove speechAnim
     }
 
     public void SetNPCRef(NPCBase npc)
@@ -166,15 +166,22 @@ public class DialogueBase : MonoBehaviour
     }
     
     //Sets the current dialogue and calls TypeText
-    public void PrintDialogue(string dialogueLineID)
+    public async void PrintDialogue(string dialogueLineID)
     {
         skipLine = false;
-        typerComplete = false;
+        //typerComplete = false;
         SetCurrentDialogue(dialogueLineID);
 
         if (canvasController.activeDialogueInstance != null)
         {
-            TypeText(textSpeed);
+            //TypeText(textSpeed); // removed the typewriter for event purpose
+            npcSpeech.Speech();
+            string resolvedText = await currentDialogueText.GetLocalizedStringAsync().Task;
+            canvasController.activeDialogueInstance.UpdateDialogueUI(currentDialogueName, resolvedText, currentDialogueImage);
+            //typerComplete = true;
+            await Task.Delay(500);
+            ShowResponseButtons(true);
+
 
         }
 
@@ -199,9 +206,10 @@ public class DialogueBase : MonoBehaviour
         }
         else
         {
+            //typerComplete = true;
             ClearDialogue();
         }
-        typerComplete = false;
+
     }
 
     //calls the function from the dialogue canvas
@@ -248,7 +256,7 @@ public class DialogueBase : MonoBehaviour
         if (canvasController.activeDialogueInstance != null)
         {
 
-            typerComplete = false;
+           // typerComplete = false;
 
             string resolvedText = await currentDialogueText.GetLocalizedStringAsync().Task;
 
@@ -286,8 +294,8 @@ public class DialogueBase : MonoBehaviour
     //calls function in dialogue canvas to show/spawn response buttons
     private void ShowResponseButtons(bool ready)
     {
-        typerComplete = ready;
-        if (typerComplete)
+       // typerComplete = ready;
+        if (ready)
         {
             canvasController.activeDialogueInstance.GetResponseOptions();
             

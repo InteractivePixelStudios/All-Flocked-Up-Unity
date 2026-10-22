@@ -109,8 +109,7 @@ public class EnemyPatrol : EnemyBaseComponent
                 iconActive = false;
             }
             SetCurrentState(EnemyState.Patrolling);
-            isStopped = false;
-        }
+       }
         if(distanceToPlayer <= kickRange) { if (!canKick) { canKick = true; } else { canKick = false; } }
         if (distanceToPlayer <= throwRange) { if (!canThrow) { canThrow = true; } else { canThrow = false; } }
 

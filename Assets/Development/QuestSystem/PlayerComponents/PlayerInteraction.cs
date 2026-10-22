@@ -151,7 +151,7 @@ public class PlayerInteraction : MonoBehaviour
                     canvasController.OpenDialogue();
                     NPC.InteractWithNPCDialogue();
                     NPC.dialogueFirst = false;
-                }else if(NPC.dialogueFirst == false && questGiver.quests.Count>0 && !questLog.HasQuest(questGiver.quests[0]))
+                }else if(NPC.dialogueFirst == false && questGiver.quests.Count>0 && !questLog.HasQuest(questGiver.quests[0])&& NPC.GetHasQuest())
                 {
                     //questGiver.hasQuest = true;
                     NPC.dialogueFirst = true;
