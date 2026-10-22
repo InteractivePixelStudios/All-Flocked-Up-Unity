@@ -15,7 +15,7 @@ public class PoopProjectile : MonoBehaviour
 
     private Rigidbody rb;
     private PoopFunction source;
-    private PoopType poopType;
+    [SerializeField] private PoopType poopType;
 
     [SerializeField] private float speed = 1f; //temporary, this should be half of the player speed
 
@@ -113,39 +113,21 @@ public class PoopProjectile : MonoBehaviour
             poopable.OnPoopHit(poopType);
             Debug.Log(poopable);
         }
-        if (collision.gameObject.CompareTag("Cat"))
-        {
-            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10, poopType);
-            Destroy(gameObject);
-            Debug.Log("EnemyHit");
-        }
-
-        if (collision.gameObject.CompareTag("Dog"))
-        {
-            obj.GetComponent<EnemyBaseComponent>().TakeDamage(10, poopType);
-            Destroy(gameObject);
-            Debug.Log("EnemyHit");
-        }
-
         if (collision.gameObject.CompareTag("Human"))
         {
-            obj.GetComponentInParent<EnemyPatrol>().TakeDamage(10, poopType);
+            obj.GetComponentInParent<EnemyBaseComponent>().TakeDamage(10, poopType);
             Destroy(gameObject);
-            Debug.Log("EnemyHit");
         }
-
         if (collision.gameObject.CompareTag("NPC"))
         {
             obj.GetComponent<NPCBase>().HitReact();
             Destroy(gameObject);
-            Debug.Log("NPCHit");
         }
         if (collision.gameObject.CompareTag("Vehicle"))
         {
             var vehicle = collision.gameObject.GetComponent<VehicleScript>();
             vehicle.TriggerCollisions();
             Destroy(gameObject);
-            Debug.Log("CarHit");
         }
         if (!collision.gameObject.CompareTag("Player"))
         {

@@ -10,12 +10,12 @@ public class EnemyBase_HitDetect : MonoBehaviour
         enemyBase = GetComponentInParent<EnemyBaseComponent>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Poop"))
         {
             enemyBase.TakeDamage(10,currentPoopType);
             
         }
-    }
+    }*/
 }
