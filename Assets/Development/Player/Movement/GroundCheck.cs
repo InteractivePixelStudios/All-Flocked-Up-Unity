@@ -6,6 +6,7 @@ public class GroundCheck : MonoBehaviour
     [SerializeField] float airCheckDistance = 0.25f;
     [SerializeField] LayerMask groundMask;
     [SerializeField] LayerMask propMask;
+    [SerializeField] private bool grounded;
 
     public bool IsGrounded(bool groundMovement)
     {
@@ -20,12 +21,15 @@ public class GroundCheck : MonoBehaviour
         // create a sphere and check if the player is on the ground, if player is on ground return true
         if (Physics.CheckSphere(transform.position, radius, groundMask, QueryTriggerInteraction.Ignore))
         {
-            return true;
+            grounded = true;
+            return grounded;
         }
         else if (Physics.CheckSphere(transform.position, radius, propMask, QueryTriggerInteraction.Ignore))
         {
-            return true;
+            grounded = true;
+            return grounded;
         }
-        return false;
+        grounded = false;
+        return grounded;
     }
 }

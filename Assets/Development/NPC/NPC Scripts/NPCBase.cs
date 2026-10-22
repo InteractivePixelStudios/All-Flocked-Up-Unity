@@ -35,6 +35,11 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     {
         return dialogueStartLineID.Count;
     }
+
+    public bool GetHasQuest()
+    {
+        return questGiverComp.hasQuest;
+    }
     //on load
     public void Awake()
     {

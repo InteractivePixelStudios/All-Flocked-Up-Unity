@@ -309,6 +309,7 @@ public class PlayerFlightMovement : MonoBehaviour
 
     async void FlapUp(InputAction.CallbackContext context)
     {
+        if (playerStamina.GetCurrentStamina() <= 0) return;
         if (isFlying && !isDiving && !isStalling && !flapUp)
         {
             playerStamina.UseStamina(1);

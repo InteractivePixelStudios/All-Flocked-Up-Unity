@@ -44,7 +44,7 @@ public class StaminaSystem : MonoBehaviour
 
     public bool UseStamina(float amount)
     {
-        if (currentStamina - amount >= 0)
+        if (currentStamina - amount >= 0.5)
         {
             CancelRegen();
             currentStamina -= amount;
@@ -52,7 +52,7 @@ public class StaminaSystem : MonoBehaviour
         }
         else
         {
-            RegenStamina();
+            currentStamina = 0;
             return false;
         }
 
