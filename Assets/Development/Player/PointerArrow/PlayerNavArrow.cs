@@ -63,5 +63,6 @@ public class PlayerNavArrow : MonoBehaviour
     {
         if(spawnedArrow != null)
         Destroy(spawnedArrow.gameObject);
+        isEnabled = false;
     }
 }

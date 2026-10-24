@@ -45,9 +45,9 @@ public class UI_HudController : Singleton<UI_HudController>
     [SerializeField] private Image currentPoopSprite;
 
 
-    [SerializeField] private Image levelUpIcon;
-    [SerializeField] private EXPSystem expComp;
-    [SerializeField] private int cachedLevel;
+    //[SerializeField] private Image levelUpIcon;
+    //[SerializeField] private EXPSystem expComp;
+   // [SerializeField] private int cachedLevel;
     float iconTimer = 5f;
     float fadeTimer = 2f;
     float visibleTime = 2f;
@@ -79,8 +79,8 @@ public class UI_HudController : Singleton<UI_HudController>
         playerRef = FindAnyObjectByType<PlayerHealth>().gameObject;
         healthComp = playerRef.GetComponent<PlayerHealth>();
         staminaComp = playerRef.GetComponent<StaminaSystem>();
-        expComp = playerRef.GetComponent<EXPSystem>();
-        cachedLevel = expComp.PLAYERLEVEL;
+        //expComp = playerRef.GetComponent<EXPSystem>();
+        //cachedLevel = expComp.PLAYERLEVEL;
         poopComp = playerRef.GetComponent<PoopSystem>();
         pooperComp = playerRef.GetComponent<Pooper>();
         startHealth = healthComp.maxHealth;
@@ -90,7 +90,7 @@ public class UI_HudController : Singleton<UI_HudController>
         startPoop = poopComp.GetMaxPoop();
         currentPoop = poopComp.GetCurrentPoop();
         UpdateHealth();
-        HideIcon();
+     //   HideIcon();
         HideReticle();
         HideToDoPanel();
         GetPoopType();
@@ -191,12 +191,12 @@ public class UI_HudController : Singleton<UI_HudController>
         }
     }
 
-    void HideIcon()
-    {
-        var color = levelUpIcon.color;
-        color.a = 0f;
-        levelUpIcon.color = color;
-    }
+    //void HideIcon()
+    //{
+    //    var color = levelUpIcon.color;
+    //    color.a = 0f;
+    //    levelUpIcon.color = color;
+    //}
 
     // Update is called once per frame
     void Update()
@@ -205,30 +205,30 @@ public class UI_HudController : Singleton<UI_HudController>
         if(currentStamina != staminaComp.GetCurrentStamina()) { currentStamina = staminaComp.GetCurrentStamina(); UpdateStamina(); }
         if (currentPoop != poopComp.GetCurrentPoop()) { currentPoop = poopComp.GetCurrentPoop(); UpdatePoop(); }
         if(!currentPoopSprite.Equals(currentPoopType.hudSprite)) { GetPoopType(); UpdatePoopTypeSprite(currentPoopType); }
-        if (expComp.PLAYERLEVEL != cachedLevel)
-        {
-            cachedLevel = expComp.PLAYERLEVEL;
+        //if (expComp.PLAYERLEVEL != cachedLevel)
+        //{
+        //    cachedLevel = expComp.PLAYERLEVEL;
 
-            iconTimer = visibleTime + fadeTimer;
+        //    iconTimer = visibleTime + fadeTimer;
 
-            var color = levelUpIcon.color;
-            color.a = 1f;          // show instantly
-            levelUpIcon.color = color;
-        }
-        if (iconTimer > 0f)
-        {
-            iconTimer -= Time.deltaTime;
+        //    var color = levelUpIcon.color;
+        //    color.a = 1f;          // show instantly
+        //    levelUpIcon.color = color;
+        //}
+        //if (iconTimer > 0f)
+        //{
+        //    iconTimer -= Time.deltaTime;
 
-            if (iconTimer <= fadeTimer)
-            {
-                var color = levelUpIcon.color;
+        //    if (iconTimer <= fadeTimer)
+        //    {
+        //        var color = levelUpIcon.color;
 
-                float time = 1f - (iconTimer / fadeTimer);
-                color.a = Mathf.Lerp(1f, 0f, time);
+        //        float time = 1f - (iconTimer / fadeTimer);
+        //        color.a = Mathf.Lerp(1f, 0f, time);
 
-                levelUpIcon.color = color;
-            }
-        }
+        //        levelUpIcon.color = color;
+        //    }
+        //}
 
         if (isWarningShown)
         {
@@ -306,16 +306,16 @@ public class UI_HudController : Singleton<UI_HudController>
         warningObj?.SetActive(false);
     }
 
-    public void ShowLevelUpIcon()
-    {
+    //public void ShowLevelUpIcon()
+    //{
 
-        iconTimer = visibleTime + fadeTimer;
+    //    iconTimer = visibleTime + fadeTimer;
 
-        var color = levelUpIcon.color;
-        color.a = 1f;
-        levelUpIcon.color = color;
+    //    var color = levelUpIcon.color;
+    //    color.a = 1f;
+    //    levelUpIcon.color = color;
 
-    }
+    //}
 
     private void OnLevelWasLoaded(int level)
     {

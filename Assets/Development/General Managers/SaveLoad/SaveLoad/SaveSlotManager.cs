@@ -29,7 +29,7 @@ public class SaveSlotManager
                         slotIndex = i,
                         exists = true,
                         playerName = data.playerName,
-                        currentLevel = data.level,
+                        //currentLevel = data.level,
                         lastSaved = data.lastSaved
 
                     }) ;
