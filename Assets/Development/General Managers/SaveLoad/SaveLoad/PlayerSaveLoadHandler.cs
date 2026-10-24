@@ -55,7 +55,7 @@ public class PlayerSaveLoadHandler : MonoBehaviour
         saveData.playerName = "Peep";  
         saveData.sceneName = SceneManager.GetActiveScene().name;
         saveData.health = player.GetComponent<PlayerHealth>().currentHealth;
-        saveData.level = player.GetComponent<EXPSystem>().PLAYERLEVEL;
+        //saveData.level = player.GetComponent<EXPSystem>().PLAYERLEVEL;
         saveData.position = player.transform.position;
         saveData.rotation = player.transform.rotation;
         saveData.trinkets = player.GetComponent<PlayerWingventory>().playerTrinketQuantity;
@@ -112,7 +112,7 @@ public class PlayerSaveLoadHandler : MonoBehaviour
             player.GetComponent<PlayerHealth>().currentHealth = pendingData.health;
             player.GetComponent<StaminaSystem>().SetMaxStamina(pendingData.stamina);
             player.GetComponent<PoopSystem>().SetMaxPoop(pendingData.poop);
-            player.GetComponent<EXPSystem>().GiveLevels(pendingData.level);
+           // player.GetComponent<EXPSystem>().GiveLevels(pendingData.level);
             player.GetComponent<QuestLog>().activeQuests = pendingData.activeQuests;
             player.GetComponent<QuestLog>().completedQuests = pendingData.completedQuests;
             FindAnyObjectByType<RaceBase>().completedRaces = pendingData.completedRaces;

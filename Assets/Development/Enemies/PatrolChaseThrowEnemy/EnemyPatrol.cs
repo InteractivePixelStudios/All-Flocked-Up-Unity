@@ -110,8 +110,8 @@ public class EnemyPatrol : EnemyBaseComponent
             }
             SetCurrentState(EnemyState.Patrolling);
        }
-        if(distanceToPlayer <= kickRange) { if (!canKick) { canKick = true; } else { canKick = false; } }
-        if (distanceToPlayer <= throwRange) { if (!canThrow) { canThrow = true; } else { canThrow = false; } }
+        canKick = distanceToPlayer <= kickRange;
+        canThrow = distanceToPlayer <= throwRange;
 
         switch (currentState)
         {
@@ -124,7 +124,7 @@ public class EnemyPatrol : EnemyBaseComponent
                 if (isHit) { currentState = EnemyState.Hit; }
                 if (!canSeePlayer) { currentState = EnemyState.Patrolling; }
                 if (canKick && !isKicking && !isThrowing) { currentState = EnemyState.Kicking; }
-                if (canThrow && !isKicking && !isThrowing) { if (isHoldingItem) { DropHeldItem(); } currentState = EnemyState.Throwing; }
+                else if (canThrow && !isKicking && !isThrowing) { if (isHoldingItem) { DropHeldItem(); } currentState = EnemyState.Throwing; }
                 break;
             case EnemyState.Kicking:
                 if (isHit) { currentState = EnemyState.Hit; }
@@ -205,7 +205,7 @@ public class EnemyPatrol : EnemyBaseComponent
     {
         if (waypoints.Count == 0) return;
         if (waypoints.Count == 1) { StopMove(); }
-        if(waypoints.Count < 2)
+        if(waypoints.Count > 2)
         {
             var randomIndex = Random.Range(0, waypoints.Count - 1);
             this.currentNode = waypoints[randomIndex];
@@ -224,10 +224,12 @@ public class EnemyPatrol : EnemyBaseComponent
         animController.SetFloat("Speed", 0f);
     }
 
-    protected  void HitReact()
+    protected async void HitReact()
     {      
         isHit = true;
         if(isHoldingItem && currentHeldObject!=null) { DropHeldItem(); }
+        await Task.Delay(1000);
+        isHit = false;
         currentState = EnemyState.Retreat;
     }
 
@@ -258,6 +260,8 @@ public class EnemyPatrol : EnemyBaseComponent
     }
     protected void Retreat()
     {
+        isHit = false;
+        isStopped = false;
         navAgent.isStopped = false;
         isRetreating = true;
         animController.SetFloat("Speed", navAgent.speed);
@@ -267,7 +271,7 @@ public class EnemyPatrol : EnemyBaseComponent
             if (navAgent.remainingDistance <= 1f)
             {
                 isRetreating = false;
-                isStopped = true;
+                currentState = EnemyState.Patrolling;
             }
         }
         else
@@ -280,10 +284,12 @@ public class EnemyPatrol : EnemyBaseComponent
                 {
                     isRetreating = false;
                     isStopped = true;
+                    currentState = EnemyState.Patrolling;
                     return;
                 }
                 isRetreating = false;
-                isStopped = true;
+                currentState = EnemyState.Patrolling;
+
             }
         }
     }
@@ -291,6 +297,7 @@ public class EnemyPatrol : EnemyBaseComponent
    protected void ChasePlayer()
     {
         if (isKicking || isThrowing || !canSeePlayer) return;
+        isStopped = false;
         animController.SetFloat("Speed", navAgent.speed);
         Vector3 targetPos = player.transform.position;
         targetPos.y = transform.position.y;
@@ -316,6 +323,7 @@ public class EnemyPatrol : EnemyBaseComponent
         Destroy(comp);
         isKicking = false;
         MoveAfterCooldown = 1.5f;
+        isStopped = false;
 
     }
 
@@ -342,6 +350,7 @@ public class EnemyPatrol : EnemyBaseComponent
         throwCooldown = 3f;
         isThrowing = false;
         MoveAfterCooldown = 1.5f;
+        isStopped = false;
     }
 
     protected void SetThrowPoint()

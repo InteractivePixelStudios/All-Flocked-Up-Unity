@@ -9,7 +9,7 @@ public class SaveData
     public string version;
     public string playerName;
     public string sceneName;
-    public int level;
+    //public int level;
     public int health;
     public Vector3 position;
     public Quaternion rotation;
