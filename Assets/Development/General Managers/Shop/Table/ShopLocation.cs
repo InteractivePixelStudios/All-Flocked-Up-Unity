@@ -4,7 +4,7 @@ using System.Linq;
 
 public class ShopLocation : ShopManager
 {
-    [SerializeField] protected Dictionary<GameObject, int> currentItemList = new();
+    [SerializeField] protected Dictionary<UI_ShopItemButton, int> currentItemList = new();
     [SerializeField] protected List<ShopItem> items = new();
     [SerializeField] private UI_CanvasController canvasController;
     [SerializeField] private PlayerWingventory inventoryRef;
@@ -24,7 +24,7 @@ public class ShopLocation : ShopManager
     // Update is called once per frame
     void Update()
     {
-        if(resetFlag)UpdateItemInventory();
+
     }
     protected void SpawnItemsInSlots()
     {

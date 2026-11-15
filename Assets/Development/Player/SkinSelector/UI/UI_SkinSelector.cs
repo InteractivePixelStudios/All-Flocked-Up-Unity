@@ -10,18 +10,16 @@ public class UI_SkinSelector : MonoBehaviour
     [SerializeField] private Button nextButton;
     [SerializeField] private Button confirmButton;
     [SerializeField] private PlayerSkinSelector playerComp;
+    UI_NestMenu nestMenu;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        nestMenu = GetComponentInParent<UI_NestMenu>();
         input = FindAnyObjectByType<PlayerInput>();
-        input.SwitchCurrentActionMap("UI");
-        playerComp = FindAnyObjectByType<PlayerSkinSelector>();
-        playerComp.gameObject.GetComponent<PlayerGroundMovement>().enabled = false;
+        playerComp = input.GetComponent<PlayerSkinSelector>();
         previousButton.onClick.AddListener(PreviousSkin);
         nextButton.onClick.AddListener(NextSkin);
         confirmButton.onClick.AddListener(SetSkinToPlayer);
-        //Cursor.visible = true;
-        //Cursor.lockState = CursorLockMode.Confined;
         EventSystem.current.SetSelectedGameObject(confirmButton.gameObject);
     }
     
@@ -37,12 +35,6 @@ public class UI_SkinSelector : MonoBehaviour
 
     void SetSkinToPlayer()
     {
-        //Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
-        playerComp.ConfirmSelection();
-        playerComp.DestroyBackdrop();
-        input.SwitchCurrentActionMap("Player");
-        playerComp.gameObject.GetComponent<PlayerGroundMovement>().enabled = true;
-        Destroy(this.gameObject);
+        nestMenu.CloseSkinSelector();
     }
 }

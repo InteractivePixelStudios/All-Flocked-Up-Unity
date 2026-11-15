@@ -31,9 +31,9 @@ public class RacerFlightComponent : MonoBehaviour
     [SerializeField] float tiltSpeed = 100f;
 
     float flapUpVelocity;
-
+    private bool flapCooldown;
     float horizontalMovement, forwardMovement;
-
+    private bool hasLeftGround;
     InputAction moveAction;
     InputAction flapAction;
 
@@ -71,24 +71,13 @@ public class RacerFlightComponent : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isFlying)
+        if (!isFlying || groundCheck == null) return;
+        bool grounded = groundCheck.IsGrounded(false);
+        if (!grounded)
         {
-            if (groundCheck.IsGrounded(false))
-            {
-                ReturnToWalkState();
-            }
-            //}else
-            //{
-            //    RaycastHit hit;
-            //    if (Physics.Raycast(transform.position + transform.up / 4, -transform.up * 3))
-            //    {
-            //        Debug.DrawRay(transform.position + transform.up / 4, -transform.up * 3, Color.aliceBlue);
-            //        FlapUp();
-            //    }
-            //}
-
-
+            hasLeftGround = true;
         }
+        else if (hasLeftGround) ReturnToWalkState();
     }
 
     void FixedUpdate()
@@ -96,7 +85,7 @@ public class RacerFlightComponent : MonoBehaviour
         if (isFlying)
         {
             // add "Gravity" to player
-            playerBody.AddForce((Vector3.down * Mathf.Abs(Physics.gravity.y / 4)) * Time.deltaTime, ForceMode.VelocityChange);
+            playerBody.AddForce(Vector3.down * Mathf.Abs(Physics.gravity.y / 4f), ForceMode.Acceleration);
             // clamp the max downward velocity
             playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, Mathf.Clamp(playerBody.linearVelocity.y, maxDownwardVelocity, 10000), playerBody.linearVelocity.z);
             FlightMovement();
@@ -165,9 +154,6 @@ public class RacerFlightComponent : MonoBehaviour
         else
         {
             isSlowFlap = false;
-            if (!gliding)
-                gliding = true;
-
             if (meshTransform.localRotation.x != 0)
             {
                 Vector3 currentAngle = meshTransform.localEulerAngles;
@@ -187,42 +173,43 @@ public class RacerFlightComponent : MonoBehaviour
 
     void ForwardGlide()
     {
-        if (gliding)
-        {
-            Vector3 forwardGlideAmount = transform.forward * baseGlideSpeed * Time.deltaTime;
-            forwardGlideAmount.y = playerBody.linearVelocity.y;
-            playerBody.linearVelocity = forwardGlideAmount;
-        }
+        Vector3 forwardGlideAmount = transform.forward * baseGlideSpeed * Time.fixedDeltaTime;
+        forwardGlideAmount.y = playerBody.linearVelocity.y;
+        playerBody.linearVelocity = forwardGlideAmount;
     }
 
     public async void FlapUp()
     {
-        if (isFlying)
-        {
-
-                playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
-                flapUp = true;
-                await Task.Delay(500);
-                flapUp = false;
-
-            }
-
-        
+        if (!isFlying || flapCooldown) return;
+        flapCooldown = true;
+        flapUp = true;
+        playerBody.linearVelocity = new Vector3(playerBody.linearVelocity.x, flapUpVelocity, playerBody.linearVelocity.z);
+        await Task.Delay(500);
+        flapUp = false;
+        flapCooldown = false;
     }
 
     public void InitiateFlight()
     {
+        if (isFlying) return;
+        hasLeftGround = false;
         isFlying = true;
-        //GetComponent<VFXController>().ToggleStreakOn();
         FlapUp();
     }
 
     void ReturnToWalkState()
     {
         isFlying = false;
-        //GetComponent<VFXController>().ToggleStreakOff();
-        meshTransform.localRotation = Quaternion.Euler(Vector3.zero);
-        //GetComponent<PlayerGroundMovement>().InitiateWalkState();
-        GetComponent<CPURacer>().ToggleNavCompOn();
+        gliding = false;
+        flapUp = false;
+        hasLeftGround = false;
+        if (meshTransform != null) meshTransform.localRotation = Quaternion.identity;
+        var racer = GetComponent<CPURacer>();
+        if (racer != null)
+        {
+            racer.OnFlightEnded();
+            racer.ToggleNavCompOn();
+        }
+
     }
 }

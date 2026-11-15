@@ -9,13 +9,6 @@ public class PlayerSkinSelector : MonoBehaviour
     Material currentMertial;
     int skinIndex;
 
-    [SerializeField] private CinemachineCamera cam;
-    [SerializeField] private GameObject camLocation;
-    [SerializeField] private SkinShopLocation shopLocation;
-    [SerializeField] private GameObject playerSpawnPoint;
-    [SerializeField] private UI_CanvasController canvasController;
-    [SerializeField]private bool isSelecting;
-
     public Material GetCurrentMaterial()
     {
         return currentMertial;
@@ -24,75 +17,6 @@ public class PlayerSkinSelector : MonoBehaviour
     public void SetLoadedMaterial(Material loaded)
     {
         currentMertial = loaded;
-    }
-    private void Start()
-    {
-        canvasController = FindAnyObjectByType<UI_CanvasController>();
-        var cams = FindObjectsByType<CinemachineCamera>();
-        foreach(var camera in cams )
-        {
-            if (camera.CompareTag("Player"))
-            {
-                cam = camera;
-            }
-        }
-        shopLocation = FindAnyObjectByType<SkinShopLocation>();
-        if(shopLocation != null )
-        {
-            playerSpawnPoint = shopLocation.playerSpawnPoint;
-        }
-    }
-
-    private void OnLevelWasLoaded(int level)
-    {
-        shopLocation = FindAnyObjectByType<SkinShopLocation>();
-        if (shopLocation != null)
-        {
-            playerSpawnPoint = shopLocation.playerSpawnPoint;
-        }
-        canvasController = FindAnyObjectByType<UI_CanvasController>();
-        var cams = FindObjectsByType<CinemachineCamera>();
-        foreach (var camera in cams)
-        {
-            if (camera.CompareTag("Player"))
-            {
-                cam = camera;
-            }
-        }
-    }
-
-    public void StartSkinSelector()
-    {
-        cam.GetComponent<CinemachineInputAxisController>().enabled = false;
-        isSelecting = true;
-        SetPlayerLocation();
-        PivotCamera();
-        OpenUI();
-    }
-
-    void SetPlayerLocation()
-    {
-        var rb = GetComponent<Rigidbody>();
-        rb.linearVelocity = Vector3.zero;
-        transform.position = playerSpawnPoint.transform.position;
-        transform.rotation = playerSpawnPoint.transform.rotation;
-    }
-
-    public void DestroyBackdrop()
-    {
-        //Destroy(spawnedBackdrop);
-    }
-
-    void PivotCamera()
-    {
-        if (isSelecting)
-        {
-            cam.GetComponent<CinemachineOrbitalFollow>().enabled = false;
-            cam.transform.position = camLocation.transform.position;
-            cam.transform.rotation = camLocation.transform.rotation;
-
-        }
-        
     }
 
 
@@ -104,7 +28,7 @@ public class PlayerSkinSelector : MonoBehaviour
 
     void SetSkinToMesh(Material material)
     {
-        foreach(var mesh in skinnedMesh)
+        foreach (var mesh in skinnedMesh)
         {
             mesh.material = material;
         }
@@ -112,7 +36,7 @@ public class PlayerSkinSelector : MonoBehaviour
 
     public void NextSkin()
     {
-        if(skinIndex == materials.Count)
+        if (skinIndex == materials.Count)
         {
             skinIndex = 0;
             SelectSkin(skinIndex);
@@ -134,16 +58,4 @@ public class PlayerSkinSelector : MonoBehaviour
         }
     }
 
-    void OpenUI()
-    {
-        canvasController.ShowSkinSelector();
-    }
-
-    public void ConfirmSelection()
-    {
-        isSelecting = false;
-        cam.GetComponent<CinemachineInputAxisController>().enabled = true;
-        cam.GetComponent<CinemachineOrbitalFollow>().enabled = true;
-        canvasController.HideSkinSelector();
-    }
 }

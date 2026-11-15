@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ad2137dd2ff87343830d0b9a09956d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poopType: {fileID: 0}
   speed: 15
   decalPrefab: {fileID: 19645291115763371, guid: 869a478023eee6d49bd7a4ad963aea7a, type: 3}
   splashParticle: {fileID: 1251939771617490355, guid: b0b033bbc9fad824483e30022b4afb0b, type: 3}
@@ -165,6 +166,8 @@ MonoBehaviour:
       Data3: -958216022
       Data4: -1593549837
     Path: event:/Splats/Player_Splats
+  hitVFXList:
+  - {fileID: 4642891620274152126, guid: 2ff35aeda0957ea4581ef29d3b164286, type: 3}
 --- !u!96 &4811352426452455203
 TrailRenderer:
   serializedVersion: 4

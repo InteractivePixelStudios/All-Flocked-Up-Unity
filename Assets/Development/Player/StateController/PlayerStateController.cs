@@ -100,16 +100,22 @@ private void ApplyMapForScene(
     {
         
         SwitchMap("Player", callerMethod, callerFile, callerLine);
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void SwitchToUIMap([CallerMemberName] string callerMethod = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
     {
         SwitchMap("UI", callerMethod, callerFile, callerLine);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     public void SwitchToPhotoModeMap([CallerMemberName] string callerMethod = "", [CallerFilePath] string callerFile = "", [CallerLineNumber] int callerLine = 0)
     {
         SwitchMap("PhotoMode", callerMethod, callerFile, callerLine);
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void SwitchMap(string mapName, string callerMethod, string callerFile,  int callerLine)

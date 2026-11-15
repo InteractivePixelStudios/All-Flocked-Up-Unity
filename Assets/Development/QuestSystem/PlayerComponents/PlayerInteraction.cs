@@ -51,7 +51,6 @@ public class PlayerInteraction : MonoBehaviour
     private InputAction uiMapAction;
 
     private InputAction uiPauseAction;
-        bool uiOn;
 
     private void Start()
     {
@@ -136,7 +135,6 @@ public class PlayerInteraction : MonoBehaviour
 
     public void Interact(InputAction.CallbackContext ctx)
     {
-
             RaycastHit hit;
             Debug.DrawRay(transform.position + (transform.up / 4), transform.forward * interactionRange, Color.red);
             if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, npcLayer))
@@ -170,16 +168,6 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
 
-            //if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, dialogueLayer))
-            //{
-            //    var dialogueInteractable = hit.collider.GetComponentInParent<NPCBase>();
-            //    if (dialogueInteractable != null)
-            //    {
-            //        canvasController.OpenDialogue();
-            //        dialogueInteractable.InteractWithNPCDialogue();
-            //    }
-            //}
-
             if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, trashLayer))
             {
                 var trashInteractable = hit.collider.GetComponentInParent<TrashCanInteraction>();
@@ -194,40 +182,24 @@ public class PlayerInteraction : MonoBehaviour
             var raceGiver = hit.collider.GetComponent<RaceGiver>();
             if (raceGiver != null)
             {
-
                     raceGiver.InteractWithRaceGiver();
-            }
-            
+            }  
         }
-
 
             if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, nestLayer))
             {
                 var nestObj = hit.collider.GetComponentInParent<NestBase>();
-                nestObj?.InteractWithNest();
-
+                if (nestObj.isActiveNest) { nestObj?.InteractWithNest(); }
                 var nestComp = nestObj.GetComponent<Q_InteractComponent>();
-            if(nestComp != null)
-            {
-                nestComp.InteractWithObjective();
-
-            }
+                if(nestComp != null){ nestComp.InteractWithObjective();}
             }
 
-            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, shopLayer))
-            {
-                var shopObj = hit.collider.GetComponentInParent<ShopLocation>();
-                var box = hit.collider as BoxCollider ?? hit.collider.GetComponentInParent<BoxCollider>();
-                shopObj?.InteractWithShop(box);
-            }
 
         if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward , out hit, interactionRange, rideLayer))
         {
             var rideObj = hit.collider.GetComponent<Rider_Base>();
-            Debug.Log(rideObj);
             rideObj?.StartRiding();
         }
-
 
         if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, hideSeekLayer))
         {
@@ -238,11 +210,9 @@ public class PlayerInteraction : MonoBehaviour
                 var hideSeekObj = hit.collider.GetComponent<HAS_NPC>();
                 if (hideSeekObj != null)
                 {
-                    Debug.Log(hideSeekObj);
                     hideSeekObj?.CallFound();
                 }
             }
-
         }
 
         if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, wearableLayer))
@@ -255,7 +225,7 @@ public class PlayerInteraction : MonoBehaviour
                     comp.LookForObject(hit);
 
                 }
-                else Debug.Log("skipped"); return;
+                else return;
             }
 
             RaycastHit lookHit;
@@ -266,7 +236,7 @@ public class PlayerInteraction : MonoBehaviour
             }
 
 
-        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, perchLayer))
+        if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange/3, perchLayer))
         {
 
             currentPerchPoint = hit.collider.GetComponentInParent<I_Perchable>();
@@ -306,7 +276,7 @@ public class PlayerInteraction : MonoBehaviour
             {
                 canvasController.ShowToDoPanel();
             }
-            else { canvasController.HideToDoPanel(); uiOn = false; }
+            else { canvasController.HideToDoPanel();}
         }
         
     }
@@ -320,7 +290,7 @@ public class PlayerInteraction : MonoBehaviour
             else
             {
                 canvasController.CloseMainMap();
-        }
+            }
         }
 
         void OpenInventory(InputAction.CallbackContext ctx)
@@ -329,56 +299,35 @@ public class PlayerInteraction : MonoBehaviour
             {
                 canvasController.OpenWingventory();
                 isWingventoryOpen = true;
-                uiOn = true;
-        }
-            
-            //this else never ever fires it's impossible with current action map setup
-            //moving the below logic somewhere else to kill two birds with one stone -
-            //having the bool flipped by all three inventory closing pathways: button, action and camera
-           
-            /*else
-            {
-                canvasController.CloseWingventory();
-                isWingventoryOpen = false;  //MOVED TO WINGVENTORYCANVAS LINES 97-99
-                uiOn = false;
-            }*/
+            }
         }
         
-
         void OpenPause(InputAction.CallbackContext ctx)
         {
             if (!gamePaused && canvasController.activePauseMenu == null && SceneManager.GetActiveScene() != SceneManager.GetSceneByName("MainMenu"))
             {
                 canvasController.PauseGame();
             }
-            else canvasController.ResumeGame(); uiOn = false;
+            else canvasController.ResumeGame();
         }
-
 
         void CloseMapFromUI(InputAction.CallbackContext ctx)
         {
-            if(canvasController.activeMapCanvas != null)
-            canvasController.CloseMainMap();
+            if(canvasController.activeMapCanvas != null) canvasController.CloseMainMap();
         }
 
 
 
         void ClosePauseFromUI(InputAction.CallbackContext ctx)
         {
-         if(canvasController.activePauseMenu != null)
-            canvasController.ResumeGame();
-
-
+            if (canvasController.activePauseMenu != null) canvasController.ResumeGame();
         }
-
-
 
         //OnLevelWasLoaded refreshes scene-bound refs on scene change — deprecated but functional
         private void OnLevelWasLoaded(int level)
         {
-         //   canvasController = FindAnyObjectByType<UI_CanvasController>();
             questLog = FindAnyObjectByType<QuestLog>();
-            Debug.Log("OLWL fired, level=" + level);
+
         }
 }
 

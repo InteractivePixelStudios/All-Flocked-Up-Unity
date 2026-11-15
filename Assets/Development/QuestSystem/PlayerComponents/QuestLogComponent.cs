@@ -106,10 +106,10 @@ public class QuestLog : MonoBehaviour
         hasQuest = true;
         currentQuestGiver = questGiver;
         GetIsQuestTimed(questData, instance);
-        //canvasController.ShowTracker();
         currentObjectives = instance.GetCurrentObjectives();
         //canvasController.activeTrackerInstance.SetTracker(instance.questID,currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription,0);
         UI_HudController.Instance.AddToDoEntry(instance.questID, currentObjectives[0].objectiveDescription,0);
+        canvasController.ShowToDoPanel();
 
 
     }
@@ -130,7 +130,6 @@ public class QuestLog : MonoBehaviour
     public void OnObjectiveUpdated(QuestRuntimeInstance quest, string objectiveID, int newValue)
     {
         var obj = quest.GetCurrentObjectives();
-        canvasController.DestroyTracker();
         if(objIndex< currentObjectives.Length)
         {
             //canvasController.ShowTracker();
@@ -160,6 +159,7 @@ public class QuestLog : MonoBehaviour
                 //canvasController.DestroyTracker();
                 //Add remove from HUD
                 await Task.Delay(1000);
+                canvasController.HideToDoPanel();
                 UI_HudController.Instance.ClearTDList(); // this will need to be adjusted... it'll clear whole list even if multi quests accepted
                 completedQuests.Add(activeQuests[i].questData);
                 canvasController.ShowQuestReward(activeQuests[i].questData);

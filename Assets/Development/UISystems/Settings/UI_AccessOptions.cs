@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine.Localization.Settings;
+using UnityEditor.AddressableAssets.BuildReportVisualizer;
 
 public class UI_AccessOptions : UI_SettingsMenu
 {
@@ -13,7 +14,7 @@ public class UI_AccessOptions : UI_SettingsMenu
     [SerializeField] private TMP_Dropdown cbModeDropdown;
     private const int cbModeBase = 0;
     [SerializeField] private TMP_Dropdown languageDropdown;
-    private const int langBase = 3;
+    private const int langBase = 0;
     [SerializeField] private Toggle highContrastToggle;
     private const bool highConBase = false;
     [SerializeField] private Material cbMaterial;
@@ -82,7 +83,7 @@ public class UI_AccessOptions : UI_SettingsMenu
         };
         cbModeDropdown.AddOptions(options);
         int index = PlayerPrefs.GetInt("CBMode", cbModeBase);
-        cbModeDropdown.value = index;
+        cbModeDropdown.SetValueWithoutNotify(Mathf.Clamp(index, 0, cbModeDropdown.options.Count - 1));
         cbModeDropdown.RefreshShownValue();
 
         ApplyCBMode(index);
@@ -152,26 +153,29 @@ public class UI_AccessOptions : UI_SettingsMenu
 
     void ResetCBMode()
     {
-        OnCBModeChanged(cbModeBase);
-        cbModeDropdown.value = cbModeBase;
+        cbModeDropdown.SetValueWithoutNotify(cbModeBase);
         cbModeDropdown.RefreshShownValue();
+        OnCBModeChanged(cbModeBase);
     }
 
     protected async void InitLanguageDD()
     {
         await settings.GetInitializationOperation().Task;
         var locales = settings.GetAvailableLocales().Locales;
+        if (locales == null || locales.Count == 0) return;
+
         List<string> options = new();
         int saveLang = PlayerPrefs.GetInt("Language", langBase);
         languageDropdown.ClearOptions();
-        for (int i = 0; i < locales.Count; i++)
-        {
-            var locale = locales[i];
-            options.Add(locale.LocaleName);
+        foreach(var lang in locales) 
+        { 
+            options.Add(lang.LocaleName);
         }
         languageDropdown.AddOptions(options);
-        languageDropdown.value = saveLang;
+        languageDropdown.SetValueWithoutNotify(saveLang);
         languageDropdown.RefreshShownValue();
+        ChangeLanguage(saveLang);
+        languageDropdown.onValueChanged.RemoveListener(OnLanguageChanged);
         languageDropdown.onValueChanged.AddListener(OnLanguageChanged);
 
     }
@@ -179,21 +183,22 @@ public class UI_AccessOptions : UI_SettingsMenu
     void ChangeLanguage(int id)
     {
         var localeList = settings.GetAvailableLocales().Locales;
+        if(localeList.Count == 0 || id<0 || id>= localeList.Count) return;
         settings.SetSelectedLocale(localeList[id]);
     }
 
     void ResetLanguage()
     {
-        OnLanguageChanged(langBase);
-        languageDropdown.value = langBase;
+        languageDropdown.SetValueWithoutNotify(langBase);
         languageDropdown.RefreshShownValue();
+        OnLanguageChanged(langBase);
     }
 
 
     protected void InitContrastModeDD()
     {
         bool value = PlayerPrefs.GetInt("HighContrastMode", 0) == 1;
-        highContrastToggle.isOn = value;
+        highContrastToggle.SetIsOnWithoutNotify(value);
         cachedTextColors.Clear();
 
         highContrastToggle.onValueChanged.AddListener(OnContrastModeChanged);
@@ -214,7 +219,7 @@ public class UI_AccessOptions : UI_SettingsMenu
 
     void ResetHighContrast()
     {
-        highContrastToggle.isOn = highConBase;
+        highContrastToggle.SetIsOnWithoutNotify(highConBase);
         OnContrastModeChanged(highConBase);
     }
 

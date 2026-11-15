@@ -13,7 +13,6 @@ public class UI_QuestReward : MonoBehaviour
     [SerializeField] Button acceptReward;
     [SerializeField] TextMeshProUGUI questName;
     [SerializeField] TextMeshProUGUI trinketText;
-    [SerializeField] TextMeshProUGUI expText;
     [SerializeField] Image itemImage;
     [SerializeField] List<Sprite> itemSprites = new();
     public UI_CanvasController canvasController;
@@ -46,7 +45,6 @@ public class UI_QuestReward : MonoBehaviour
     public void SetRewardText(int trinket, int exp,string[] reward)
     {
         trinketText.SetText(trinket.ToString());
-        expText.SetText(exp.ToString());
         if(reward != null)
         {
             itemImage.sprite = FindItemSprite(reward);
@@ -55,6 +53,7 @@ public class UI_QuestReward : MonoBehaviour
 
     Sprite FindItemSprite(string[] rewards)
     {
+        itemImage.gameObject.SetActive(false);
         foreach (var reward in rewards)
         {
             foreach (var item in itemSprites)
@@ -62,12 +61,13 @@ public class UI_QuestReward : MonoBehaviour
                 if (item.name.Equals(reward))
                 {
                     Sprite found = item;
+                    itemImage.gameObject.SetActive(true);
                     return found;
                 }
-                else break;
+                else continue;
 
             }
-            return null;
+             return null;
 
         }
         return null;

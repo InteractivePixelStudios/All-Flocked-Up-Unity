@@ -95,7 +95,7 @@ public class UI_CanvasController : MonoBehaviour
     [SerializeField] private UI_LanguageSelector languageSelectPrefab;
     public UI_LanguageSelector activeLanguageCanvas;
     [Header("PlayerInputComponent")]
-    [SerializeField] private PlayerInput input;
+    [SerializeField] private PlayerStateController playerState;
     bool isUIMap;
     [Header("Health")]
     [SerializeField] private RespawnController respawnCanvasPrefab;
@@ -124,8 +124,8 @@ public class UI_CanvasController : MonoBehaviour
 
     private void Start()
     {
-        input = FindAnyObjectByType<PlayerInput>();
-        player = input.gameObject;
+        playerState = FindAnyObjectByType<PlayerStateController>();
+        player = playerState.gameObject;
         var found = FindObjectsByType<CinemachineCamera>();
         foreach(var cam in found)
         {
@@ -145,7 +145,7 @@ public class UI_CanvasController : MonoBehaviour
         var found = FindObjectsByType<CinemachineCamera>();
         foreach (var cam in found)
         {
-            if (cam.GetComponent<CinemachineOrbitalFollow>() != null && cam.CompareTag("Player"))
+            if (cam.CompareTag("Player"))
             {
                 camRef = cam;
             }
@@ -182,51 +182,26 @@ public class UI_CanvasController : MonoBehaviour
 //   \/ \/ \/ \/ this stuff targeted for refactoring \/ \/ \/ \/
     public void SetPlayerMap()
     {
-        if (isUIMap)
-        {
-            input.SwitchCurrentActionMap("Player");
-            player.GetComponent<PlayerGroundMovement>().enabled = true;
-            player.GetComponent<PlayerFlightMovement>().enabled = true;
-            camRef.GetComponent<CinemachineOrbitalFollow>().enabled = true;
-            isUIMap = false;
-            Debug.Log("PlayerMAP");
-
-        }
-        else return;
+        playerState.SwitchToPlayerMap();
     }
 
     public void SetUIMap()
     {
-        if (!isUIMap)
-        {
-            input.SwitchCurrentActionMap("UI");
-            player.GetComponent<PlayerGroundMovement>().enabled = false;
-            player.GetComponent<PlayerFlightMovement>().enabled = false;
-            camRef.GetComponent<CinemachineOrbitalFollow>().enabled = false;
-            isUIMap = true;
-            Debug.Log("UIMAP");
-        }
-        else return;
+        playerState.SwitchToUIMap();
     }
     //cursor on
     public void ShowPlayerCursor()
     {
         SetUIMap();
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-       // Debug.Log("Showing cursor");
     }
     //cursor off
     public void HidePlayerCursor()
     {
         SetPlayerMap();
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-      //  Debug.Log("Hiding cursor");
+
     }
     
-    // /\ /\ /\  this stuff targeted for refactoring /\ /\ /\
 
     //quest timer canvas
     public void ShowTimer()
@@ -248,19 +223,12 @@ public class UI_CanvasController : MonoBehaviour
     //quest giver canvas
     public void ShowQuestGiver(QuestGiver questGiver)
     {
-
-
             activeGiverInstance = Instantiate(questGiverCanvas);
             activeGiverInstance.currentquestGiver = questGiver;
             activeGiverInstance.canvasController = this;
             activeGiverInstance.UpdateUIText(questGiver.quests[0].questName, questGiver.quests[0].questLogDescription, questGiver.quests[0].questName); // change last one to rewards
-        if (!isUIMap)
-        {
             ShowPlayerCursor();
-        }
-        ApplySavedContrast();
-        uiOpen = true;
-        
+        ApplySavedContrast();      
     }
 
     //quest giver canvas
@@ -268,40 +236,26 @@ public class UI_CanvasController : MonoBehaviour
     {
         if (questGiverCanvas != null)
         {
-
                 HidePlayerCursor();
-
             Destroy(activeGiverInstance.gameObject);
-            uiOpen = false;
             activeGiverInstance = null;
         }
     }
     //quest reward canvas
     public void ShowQuestReward(QuestDetails quest)
     {
-
             activeRewardInstance = Instantiate(questRewardsCanvas);
             ApplySavedContrast();
             activeRewardInstance.quest = quest;
             activeRewardInstance.canvasController = this;
-            if (!isUIMap)
-            {
-            ShowPlayerCursor();
-
-            }
-            uiOpen = true;
-        
+            ShowPlayerCursor();     
     }
     //quest reward canvas
     public void DestroyQuestReward()
     {
         if (activeRewardInstance != null)
         {
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-
-            }
+            HidePlayerCursor();
             Destroy(activeRewardInstance.gameObject);
             activeRewardInstance = null;
             uiOpen = false;
@@ -362,18 +316,8 @@ public class UI_CanvasController : MonoBehaviour
 
     public void ShowToDoPanel()
     {
-        //if (UI_HudController.Instance.GetIsTDOpen())
-        //{
-        //    ShowQuestLog();
-        //}else
-        //{
-        //    DestroyQuestLog();   
-        //}
-
-            UI_HudController.Instance.ShowToDoPanel();
-            ApplySavedContrast();
-        
-        
+        UI_HudController.Instance.ShowToDoPanel();
+        ApplySavedContrast();      
     }
 
     public void HideToDoPanel()
@@ -384,16 +328,9 @@ public class UI_CanvasController : MonoBehaviour
     //quest log canvas
     public void ShowQuestLog()
     {
-        if (!uiOpen)
-        {
             activeLogInstance = Instantiate(questLogCanvas);
             ApplySavedContrast();
-            if (!isUIMap)
-            {
-                ShowPlayerCursor();
-            }
-            uiOpen = true;
-        }
+            ShowPlayerCursor();
     }
 
     //quest log canvas
@@ -403,29 +340,19 @@ public class UI_CanvasController : MonoBehaviour
         {
             activeLogInstance.CloseQuestLog();
             activeLogInstance=null;
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
-            uiOpen = false;
+            HidePlayerCursor();
         }
     }
 
     //dialogue canvas
     public void OpenDialogue()
     {
-
-            if (activeDialogueInstance == null)
-            {
-                activeDialogueInstance = Instantiate(dialogueCanvas);
-                if (!isUIMap)
-                {
-                    ShowPlayerCursor();
-                }
-            ApplySavedContrast();
-            uiOpen = true;
-        }
-        
+        if (activeDialogueInstance == null)
+        {
+            activeDialogueInstance = Instantiate(dialogueCanvas);
+            ShowPlayerCursor();
+            ApplySavedContrast();          
+        }      
     }
     //dialogue response options transfer
     public void SendResponseOptions(LocalizedString[] responses)
@@ -443,29 +370,18 @@ public class UI_CanvasController : MonoBehaviour
         if(activeDialogueInstance != null)
         {
             Debug.Log("DialogueCLosedFromCanvas");
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
-            //activeDialogueInstance.DestroyDialogue();
+            HidePlayerCursor();
             Destroy(activeDialogueInstance.gameObject);
             activeDialogueInstance = null;
-            uiOpen = false;
         }
     }
 
     //race giver canvas
     public void OpenRaceGiver()
     {
-
-            raceGiverInstance = Instantiate(raceGiverCanvas);
-            ApplySavedContrast();
-            if (!isUIMap)
-            {
-            ShowPlayerCursor();
-            }
-
-
+        raceGiverInstance = Instantiate(raceGiverCanvas);
+        ApplySavedContrast();
+        ShowPlayerCursor();       
     }
     //race giver canvas
     public void CloseRaceGiver()
@@ -474,31 +390,19 @@ public class UI_CanvasController : MonoBehaviour
         {
             raceGiverInstance.CloseRaceGiver();
             raceGiverInstance = null;
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
-
-
+            HidePlayerCursor();
         }
     }
     //race rewards canavas
     public void OpenRaceRewards()
     {
-        if (!uiOpen)
-        {
             raceRewardInstance = Instantiate(raceRewardCanvas);
             ApplySavedContrast();
             raceRewardInstance.SetCanvasControllerRef(this);
             SendStandings();
-            if (!isUIMap)
-            {
-                ShowPlayerCursor();
-
-            }
+            ShowPlayerCursor();         
             Time.timeScale = 0;
-            uiOpen = true;
-        }
+        
     }
     //race rewards canvas
     public void CloseRaceRewards()
@@ -506,31 +410,18 @@ public class UI_CanvasController : MonoBehaviour
         if(raceRewardInstance != null)
         {
             Destroy(raceRewardInstance.gameObject);
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-
-            }
+            HidePlayerCursor();
             raceRewardInstance = null;
             Time.timeScale = 1;
-            uiOpen = false;
         }
     }
     //race fail canvas
     public void OpenRaceFail()
     {
-        if (!uiOpen)
-        {
-            raceFailInstance = Instantiate(raceFailCanvas);
-            if (!isUIMap)
-            {
-                ShowPlayerCursor();
-
-            }
-            ApplySavedContrast();
-            SendStandings();
-            uiOpen = true;
-        }
+        raceFailInstance = Instantiate(raceFailCanvas);
+        ShowPlayerCursor();
+        ApplySavedContrast();
+        SendStandings();
     }
     //race fail canvas
     public void CloseRaceFail(bool retry)
@@ -538,12 +429,8 @@ public class UI_CanvasController : MonoBehaviour
         if (raceFailInstance != null)
         {
             Destroy(raceFailInstance.gameObject);
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
+            HidePlayerCursor();
             raceFailInstance = null;
-            uiOpen = false;
         }
         if (retry)
         {
@@ -568,33 +455,23 @@ public class UI_CanvasController : MonoBehaviour
         if (!standings.ContainsKey(racer))
         {
             standings.Add(racer, time);
-            Debug.Log("Added to CC");
         }
-        //raceRewardInstance.racerList.Add
     }
 
     public void SendStandings()
     {
-
         foreach(var racer in  standings)
         {
             raceRewardInstance.GetRaceStandings(racer.Key, racer.Value);
-        }
-            
+        }        
     }
 
     public void OpenWingventory()
     {
-        if (!uiOpen)
-        {
-            activeWingventory = Instantiate(wingventoryCanvas);
-            ApplySavedContrast();
-            if (!isUIMap)
-            {
-                ShowPlayerCursor();
-            }
-            uiOpen = true;
-        }
+        activeWingventory = Instantiate(wingventoryCanvas);
+        ApplySavedContrast();
+        ShowPlayerCursor();           
+        
     }
 
     public void CloseWingventory()
@@ -603,28 +480,17 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeWingventory.gameObject);
             activeWingventory = null;
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
-            uiOpen = false;
+            HidePlayerCursor();
         }
     }
 
     public void OpenNestMenu()
     {
-        if (!uiOpen)
-        {
-            activeNestInstance = Instantiate(nestMenuCanvas);
-            ApplySavedContrast();
-            activeNestInstance.canvasController = this;
-            activeNestInstance.playerStats = player.GetComponent<PlayerCounter>();
-            if (!isUIMap)
-            {
-                ShowPlayerCursor();
-            }
-            uiOpen = true;
-        }
+        activeNestInstance = Instantiate(nestMenuCanvas);
+        ApplySavedContrast();
+        activeNestInstance.canvasController = this;
+        activeNestInstance.playerStats = player.GetComponent<PlayerCounter>();
+        ShowPlayerCursor();
     }
 
     public void CloseNestMenu()
@@ -633,33 +499,22 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeNestInstance.gameObject);
             activeNestInstance = null;
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
-            uiOpen = false;
+            HidePlayerCursor();
         }
-
     }
 
     public void OpenShopUI(ShopItem item, ShopLocation location)
     {
-        if (!uiOpen)
-        {
-            activeShopCanvas = Instantiate(shopUICanvas);
-            ApplySavedContrast();
-            shopLocationRef = location;
-            activeShopCanvas.transform.SetParent(shopLocationRef.transform);
-            activeShopCanvas.transform.localPosition = Vector3.zero + new Vector3(0, 1.5f, 0);
-            activeShopCanvas.currentItem = item;
-            activeShopCanvas.canvasController = this;
-            shopLocationRef = location;
-            if (!isUIMap)
-            {
-                ShowPlayerCursor();
-            }
-            uiOpen = true;
-        }
+
+        activeShopCanvas = Instantiate(shopUICanvas);
+        ApplySavedContrast();
+        shopLocationRef = location;
+        activeShopCanvas.transform.SetParent(shopLocationRef.transform);
+        activeShopCanvas.transform.localPosition = Vector3.zero + new Vector3(0, 1.5f, 0);
+        activeShopCanvas.currentItem = item;
+        activeShopCanvas.canvasController = this;
+        shopLocationRef = location;
+        ShowPlayerCursor();
     }
 
     public void CloseShopUI()
@@ -668,30 +523,19 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeShopCanvas.gameObject);
             activeShopCanvas = null;
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
-            uiOpen = false;
+            HidePlayerCursor();
         }
     }
 
     public void PauseGame()
     {
-        if (!uiOpen)
-        {
-            if (activePauseMenu == null && SceneManager.GetActiveScene() !=SceneManager.GetSceneByName("MainMenu"))
-            {
-                activePauseMenu = Instantiate(pauseMenuCanvas);
-                ApplySavedContrast();
-                if (!isUIMap)
-                {
-                    ShowPlayerCursor();
-                }
-                Time.timeScale = 0;
-                uiOpen = true;
-            }
 
+        if (activePauseMenu == null && SceneManager.GetActiveScene() !=SceneManager.GetSceneByName("MainMenu"))
+        {
+            activePauseMenu = Instantiate(pauseMenuCanvas);
+            ApplySavedContrast();
+            ShowPlayerCursor();
+            Time.timeScale = 0;
         }
     }
 
@@ -703,32 +547,19 @@ public class UI_CanvasController : MonoBehaviour
             activePauseMenu.ClosePauseUI();
             Destroy(activePauseMenu.gameObject);
             activePauseMenu = null;
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-
-            }
-            uiOpen = false;
+            HidePlayerCursor();
         }
-
     }
 
 
     public void OpenBugReporter()
     {
-        if (!uiOpen)
+        if (activeBugReporter == null)
         {
-            if (activeBugReporter == null)
-            {
-                activeBugReporter = Instantiate(bugReporterCanvas);
-                ApplySavedContrast();
-                if (!isUIMap)
-                {
-                    ShowPlayerCursor();
-                }
-                Time.timeScale = 0;
-                uiOpen = true;
-            }
+            activeBugReporter = Instantiate(bugReporterCanvas);
+            ApplySavedContrast();
+            ShowPlayerCursor();            
+            Time.timeScale = 0;            
         }
     }
 
@@ -738,62 +569,39 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeBugReporter.gameObject);
             activeBugReporter = null;
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
+            HidePlayerCursor();
             Time.timeScale = 1;
-            uiOpen = false;
         }
     }
 
     public void OpenDebugMenu()
     {
-        if (!uiOpen)
+        if (activeDebugMenu == null)
         {
-            if (activeDebugMenu == null)
-            {
-                activeDebugMenu = Instantiate(debugMenuCanvas);
-                ApplySavedContrast();
-                if (!isUIMap)
-                {
-                    ShowPlayerCursor();
-                }
-                uiOpen = true;
-            }
+            activeDebugMenu = Instantiate(debugMenuCanvas);
+            ApplySavedContrast();
+            ShowPlayerCursor();
         }
     }
 
     public void CloseDebugMenu()
     {
-
         if(activeDebugMenu != null)
         {
             Destroy(activeDebugMenu.gameObject);
             activeDebugMenu = null;
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
-            uiOpen = false;
+            HidePlayerCursor();
         }
     }
 
     public void OpenMainMap()
     {
-        if (!uiOpen)
+        if (activeMapCanvas == null)
         {
-            if (activeMapCanvas == null)
-            {
-                activeMapCanvas = Instantiate(mainMapCanvas);
-                ApplySavedContrast();
-                if (!isUIMap)
-                {
-                    ShowPlayerCursor();
-                }
-                Time.timeScale = 0;
-                uiOpen = true;
-            }
+            activeMapCanvas = Instantiate(mainMapCanvas);
+            ApplySavedContrast();
+            ShowPlayerCursor();
+            Time.timeScale = 0;
         }
     }
 
@@ -803,27 +611,18 @@ public class UI_CanvasController : MonoBehaviour
         {
             Destroy(activeMapCanvas.gameObject);
             activeMapCanvas = null;
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
+            HidePlayerCursor();          
             Time.timeScale = 1;
-            uiOpen = false;
         }
     }
 
     public void OpenLanguageSelect()
     {
-
             activeLanguageCanvas = Instantiate(languageSelectPrefab);
             ApplySavedContrast();
             if (activeLanguageCanvas != null)
             {
-                if (!isUIMap)
-                {
-                    ShowPlayerCursor();
-                }
-
+                ShowPlayerCursor();             
             }
         
     }
@@ -833,29 +632,19 @@ public class UI_CanvasController : MonoBehaviour
         if(activeLanguageCanvas != null)
         {
             Destroy(activeLanguageCanvas.gameObject);
-            //HidePlayerCursor();
-
-
         }
 
     }
 
     public void OpenRespawn()
     {
-        if (!uiOpen)
-        {
             activeRespawnCanvas = Instantiate(respawnCanvasPrefab);
             ApplySavedContrast();
             if (activeRespawnCanvas != null)
             {
                 activeRespawnCanvas.canvasController = this;
-                if (!isUIMap)
-                {
-                    ShowPlayerCursor();
-                }
-                uiOpen = true;
-            }
-        }
+                ShowPlayerCursor();
+            }     
     }
 
     public void CloseRespawn()
@@ -863,17 +652,12 @@ public class UI_CanvasController : MonoBehaviour
         if(activeRespawnCanvas != null)
         {
             Destroy(activeRespawnCanvas.gameObject);
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
-            uiOpen = false;
+            HidePlayerCursor();
         }
     }
 
     public void OpenLevelTransition()
     {
-
             if (activeLevelTransition == null)
             {
                 activeLevelTransition = Instantiate(levelTransitionPrefab);
@@ -881,13 +665,8 @@ public class UI_CanvasController : MonoBehaviour
                 activeLevelTransition.sceneName = cachedLevelName;
                 activeLevelTransition.canvasController = this;
                 activeLevelTransition.transitionObj = transitionObj;
-                if (!isUIMap)
-                {
-                    ShowPlayerCursor();
-                }
-
+                ShowPlayerCursor();              
             }
-
     }
 
     public void CloseLevelTransition()
@@ -895,17 +674,12 @@ public class UI_CanvasController : MonoBehaviour
         if (activeLevelTransition != null)
         {
             Destroy(activeLevelTransition.gameObject);
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
-
+            HidePlayerCursor();            
         }
     }
 
     public void ShowTutorialPrompt()
     {
-
             if (activeTutPrompt == null)
             {
                 activeTutPrompt = Instantiate(promptPrefab);
@@ -913,51 +687,28 @@ public class UI_CanvasController : MonoBehaviour
                 activeTutPrompt.promptIndex = cachedTutPromptIndex;
                 activeTutPrompt.arrowIndex = cachedIntroIndex;
                 activeTutPrompt.canvasController = this;
-            uiOpen = true;
-            //if (!isUIMap)
-            //{
-            //    ShowPlayerCursor();
-            //}
-
-
-
         }
-
     }
 
-        public void DestroyPrompt()
+    public void DestroyPrompt()
     {
         if(activeTutPrompt != null)
         {
-
-            //if (isUIMap)
-            //{
-            //    HidePlayerCursor();
-            //}
-            uiOpen = false;
             Destroy(activeTutPrompt.gameObject);
             cachedTutPromptIndex = -1;
-
         }
     }
 
     public void ShowSkinSelector()
     {
-        if (!uiOpen)
-        {
             if (activeSkinSelector == null)
             {
                 activeSkinSelector = Instantiate(skinSelectorPrefab);
                 ApplySavedContrast();
-                if (!isUIMap)
-                {
-                    ShowPlayerCursor();
-                }
+                ShowPlayerCursor();               
                 player.GetComponent<PlayerGroundMovement>().enabled = true;
                 player.GetComponent<PlayerFlightMovement>().enabled = true;
-                uiOpen = true;
-            }
-        }
+            }      
     }
 
     public void HideSkinSelector()
@@ -965,11 +716,7 @@ public class UI_CanvasController : MonoBehaviour
         if(activeSkinSelector != null)
         {
             Destroy(activeSkinSelector.gameObject);
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
-            uiOpen = false;
+            HidePlayerCursor();
         }
     }
 
@@ -1063,10 +810,7 @@ public class UI_CanvasController : MonoBehaviour
         if(currentHASComplete!= null)
         {
             Destroy(currentHASComplete.gameObject);
-            if (isUIMap)
-            {
-                HidePlayerCursor();
-            }
+            HidePlayerCursor();       
         }
     }
 
