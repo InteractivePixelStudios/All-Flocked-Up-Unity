@@ -8,14 +8,11 @@ using UnityEngine.InputSystem;
 
 public class UI_NestMenu : MonoBehaviour
 {
-    [Header("Icons")]
-    [SerializeField] private GameObject dayIcon;
-    [SerializeField] private GameObject nightIcon;
     [Header("Buttons")]
     [SerializeField] private Button closeMainButton;
-    [SerializeField] private Button invButton;
-    [SerializeField] private Button sleepButton;
-    [SerializeField] private Button closeInvButton;
+    [SerializeField] private Button shopButton;
+    [SerializeField] private Button skinButton;
+    [SerializeField] private Button closeShopButton;
     [SerializeField] private Button statsButton;
     [SerializeField] private Button closeStatsButton;
     [SerializeField] private Button scrapbookButton;
@@ -31,12 +28,12 @@ public class UI_NestMenu : MonoBehaviour
     [SerializeField] private List<Sprite> photos;
     [Header("Panels")]
     [SerializeField] private GameObject mainPanel;
-    [SerializeField] private GameObject invPanel;
+    [SerializeField] private GameObject shopPanel;
+    [SerializeField] private GameObject skinPanel;
     [SerializeField] private GameObject statsPanel;
     [SerializeField] private GameObject scrapbookPanel;
     
     [Header("Components")]
-    [SerializeField] private S_DayNightCycle dayNightSystem;
     public UI_CanvasController canvasController;
     public PlayerCounter playerStats;
 
@@ -50,16 +47,15 @@ public class UI_NestMenu : MonoBehaviour
 
     private void Awake()
     {
-        dayNightSystem = FindAnyObjectByType<S_DayNightCycle>();
         canvasController = FindAnyObjectByType<UI_CanvasController>();
 
     }
     void Start()
     {
         closeMainButton.onClick.AddListener(CloseNestMenu);
-        invButton.onClick.AddListener(OpenNestInventory);
-        sleepButton.onClick.AddListener(SleepAtNest);
-        closeInvButton.onClick.AddListener(CloseNestInventory);
+        shopButton.onClick.AddListener(OpenShopMenu);
+        skinButton.onClick.AddListener(OpenSkinSelector);
+        closeShopButton.onClick.AddListener(CloseShopMenu);
         statsButton.onClick.AddListener(OpenStats);
         closeStatsButton.onClick.AddListener(CloseStats);
         scrapbookButton.onClick.AddListener(OpenScrapbook);
@@ -69,54 +65,44 @@ public class UI_NestMenu : MonoBehaviour
         GetStats();
         if (Gamepad.current.IsActuated())
         {
-            EventSystem.current.SetSelectedGameObject(invButton.gameObject);
+            EventSystem.current.SetSelectedGameObject(shopButton.gameObject);
         }
         else return;
 
 
     }
 
-    private void Update()
-    {
-        GetCurrentTime();
-    }
-
-    private void GetCurrentTime()
-    {
-        if(dayNightSystem != null&& dayNightSystem.isDay != true)
-        {
-            nightIcon.SetActive(true);
-            dayIcon.SetActive(false);
-        }
-        else
-        {
-            nightIcon.SetActive(false);
-            dayIcon.SetActive(true);
-        }
-    }
-
-
     private void CloseNestMenu()
     {
         canvasController.CloseNestMenu();
-        Destroy(this.gameObject);
     }
 
-    private void OpenNestInventory()
+    private void OpenShopMenu()
     {
         mainPanel.SetActive(false);
-        invPanel.SetActive(true);
+        shopPanel.SetActive(true);
     }
 
-    private void CloseNestInventory()
+    public void CloseShopMenu()
     {
         mainPanel?.SetActive(true);
-        invPanel.SetActive(false);
+        shopPanel.SetActive(false);
     }
 
-    private void SleepAtNest()
+    private void OpenSkinSelector()
     {
-        dayNightSystem.timeOfDay += 0.5f;
+        mainPanel?.SetActive(false);
+        skinPanel.SetActive(true);
+        if (SteamManager.Initialized)
+        {
+            AchievementList.FindAnyObjectByType<AchievementList>().CompleteAchievement("SteamAch_006_Skin");
+        }
+    }
+
+    public void CloseSkinSelector()
+    {
+        mainPanel?.SetActive(true);
+        skinPanel.SetActive(false);
     }
 
 

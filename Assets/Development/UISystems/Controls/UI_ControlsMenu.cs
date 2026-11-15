@@ -1,17 +1,14 @@
-using NUnit.Framework;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using UnityEngine.EventSystems;
-using Unity.Cinemachine;
 
 public class UI_ControlsMenu : UI_PauseMenu
 {
+    [SerializeField] private PlayerInput playerInput;
     [Header("Controls")]
     [SerializeField] private Button closeControlsButton;
     [SerializeField] private Slider mouseSensSlider;
@@ -38,6 +35,9 @@ public class UI_ControlsMenu : UI_PauseMenu
     [SerializeField] private bool isRebinding = false;
     [SerializeField] private string currentAction = " ";
 
+    private InputActionRebindingExtensions.RebindingOperation rebindOperation;
+    private InputAction currentInputAction;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -46,10 +46,18 @@ public class UI_ControlsMenu : UI_PauseMenu
         cancelRemapButton.onClick.AddListener(CancelRemap);
         rebindButton.onClick.AddListener(OpenRemap);
         InitControlImageDD();
+        LoadBindings();
         InitKeybindBox();
         InitMouseSensSlider();
         InitControllerSensSlider();
         
+    }
+
+    protected void LoadBindings()
+    {
+        string json = PlayerPrefs.GetString("InputBindings", "");
+        if (!string.IsNullOrEmpty(json))
+            inputActions.LoadBindingOverridesFromJson(json);
     }
 
 
@@ -58,24 +66,24 @@ public class UI_ControlsMenu : UI_PauseMenu
         EventSystem.current.SetSelectedGameObject(mouseSensSlider.gameObject);
     }
 
-
-    private void Update()
-    {
-        DetectKeypress();        
-    }
-
-
     protected void InitMouseSensSlider()
     {
+        mouseSensSlider.onValueChanged.RemoveAllListeners();
         mouseSens = PlayerPrefs.GetFloat("MouseSens", 1f);
 
         mouseSensSlider.SetValueWithoutNotify(mouseSens);
+        meshSensText.SetText(mouseSens.ToString("F2"));
         mouseSensSlider.onValueChanged.AddListener((_) => OnMouseSensChanged());
+        if(CameraController.Instance != null)
+        {
+            CameraController.Instance.SetLookSens(mouseSens);
+        }
     }
 
     protected void OnMouseSensChanged()
     {
         mouseSens = mouseSensSlider.value;
+        meshSensText.SetText(mouseSens.ToString("F2"));
         ApplyMouseSens();
     }
 
@@ -88,15 +96,22 @@ public class UI_ControlsMenu : UI_PauseMenu
 
     protected void InitControllerSensSlider()
     {
+        controllerSensSlider.onValueChanged.RemoveAllListeners();
         controllerSens = PlayerPrefs.GetFloat("ControllerSens", 1f);
 
         controllerSensSlider.SetValueWithoutNotify(controllerSens);
+        controlSensText.SetText(controllerSens.ToString("F2"));
         controllerSensSlider.onValueChanged.AddListener((_) => OnControllerSensChanged());
+        if (CameraController.Instance != null)
+        {
+            CameraController.Instance.SetLookSens(controllerSens);
+        }
     }
 
     protected void OnControllerSensChanged()
     {
         controllerSens = controllerSensSlider.value;
+        controlSensText.SetText(controllerSens.ToString("F2"));
         ApplyControllerSens();
     }
 
@@ -114,11 +129,13 @@ public class UI_ControlsMenu : UI_PauseMenu
 
     protected void ConfirmRemap()
     {
+        if (isRebinding) CancelRebind();
         remapParent.SetActive(false);
     }
 
     protected void CancelRemap()
     {
+        CancelRebind();
         remapParent.SetActive(false);
     }
 
@@ -136,8 +153,8 @@ public class UI_ControlsMenu : UI_PauseMenu
             "Gamepad"
         };
         controlImageDropdown.AddOptions(options);
-        int index = PlayerPrefs.GetInt("ControlImage");
-        controlImageDropdown.value = index;
+        int index = Mathf.Clamp(PlayerPrefs.GetInt("ControlImage",0),0,1);
+        controlImageDropdown.SetValueWithoutNotify(index);
         controlImageDropdown.RefreshShownValue();
 
         SetControlImage(index);
@@ -149,11 +166,10 @@ public class UI_ControlsMenu : UI_PauseMenu
 
     protected void OnControlImageChanged(int index)
     {
-        switch (index)
-        {
-            case 0:SetControlImage(0); break;
-            case 1:SetControlImage(1); break;
-        }
+        SetControlImage(index);
+        PlayerPrefs.SetInt("ControlImage", index);
+        PlayerPrefs.Save();
+        
     }
 
     protected void SetControlImage(int index)
@@ -212,9 +228,74 @@ public class UI_ControlsMenu : UI_PauseMenu
     public void CheckForRebindPressed(string action)
     {
         if (isRebinding) return;
+        currentInputAction = inputActions.FindAction("Player/" + action);
+        if (currentInputAction == null) return;
         currentAction = action;
         ShowRebindNotif(action);
         isRebinding = true;
+        int bindingIndex = -1;
+        for (int i = 0; i < currentInputAction.bindings.Count; i++)
+        {
+            var binding = currentInputAction.bindings[i];
+            if (!binding.isComposite && !binding.isPartOfComposite && binding.path.StartsWith("<Keyboard>"))
+            {
+                bindingIndex = i;
+                break;
+            }
+        }
+
+        if (bindingIndex < 0)
+        {
+            CancelRebind();
+            return;
+        }
+
+        rebindOperation = currentInputAction.PerformInteractiveRebinding(bindingIndex)
+            .WithControlsHavingToMatchPath("<Keyboard>")
+            .WithCancelingThrough("<Keyboard>/escape")
+            .OnComplete(operation =>
+            {
+                string display = currentInputAction.GetBindingDisplayString(bindingIndex);
+                UpdateNotif(display);
+                SaveBindings();
+                FinishRebind();
+            })
+            .OnCancel(operation =>
+            {
+                FinishRebind();
+
+                if (currentNotif != null) Destroy(currentNotif);
+                currentNotif = null;
+            })
+            .Start();
+    }
+
+    protected void SaveBindings()
+    {
+        string json = inputActions.SaveBindingOverridesAsJson();
+        PlayerPrefs.SetString("InputBindings", json);
+        PlayerPrefs.Save();
+    }
+
+    protected void FinishRebind()
+    {
+        var operation = rebindOperation;
+        rebindOperation = null;
+        operation?.Dispose();
+        isRebinding = false;
+        InitKeybindBox();
+    }
+
+    protected void CancelRebind()
+    {
+        if (rebindOperation != null)
+        {
+            rebindOperation.Cancel();
+            return;
+        }
+        isRebinding = false;
+        if (currentNotif != null) Destroy(currentNotif);
+        currentNotif = null;
     }
 
     protected void ShowRebindNotif(string action)
@@ -233,32 +314,4 @@ public class UI_ControlsMenu : UI_PauseMenu
         Task.Delay(2000);
         Destroy(currentNotif.gameObject);
     }
-
-    protected void DetectKeypress()
-    {
-        if (!isRebinding) return;
-        if (Keyboard.current.anyKey.wasPressedThisFrame)
-        {
-            foreach (var key in Keyboard.current.allKeys)
-            {
-                if (key.wasPressedThisFrame)
-                {
-                    string keyName = key.displayName;
-                    ApplyKeybind(keyName);
-                    break;
-                }
-            }
-        }
-    }
-
-    protected void ApplyKeybind(string keyName)
-    {
-        UpdateNotif(keyName);
-        PlayerPrefs.SetString(currentAction + " Key", keyName);
-        PlayerPrefs.Save();
-        isRebinding = false;
-    }
-
-
-
 }

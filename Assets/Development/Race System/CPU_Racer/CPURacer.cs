@@ -82,6 +82,9 @@ public class CPURacer : MonoBehaviour
         navAgentComponent = GetComponent<NavMeshAgent>();
         raceBase = FindAnyObjectByType<RaceBase>();
         SetRacerStats();
+        SetRacerSpeed();
+        SetRacerWeight();
+        SetRacerAcceleration();
         GetCheckpoints();
         if (raceBase.countdownComplete)
         {
@@ -103,6 +106,7 @@ public class CPURacer : MonoBehaviour
         Debug.Log("CurrentSpeed = " + currentSpeed);
         if (targetLocation != null && isMoving && index < targetLocation.Count)
         {
+            isFlying = flightComponent.isFlying;
             currentLocation = targetLocation[index];
             if (!isFlying)
             {
@@ -126,30 +130,30 @@ public class CPURacer : MonoBehaviour
     //sets the location to move to
     public void SetMoveToLocation(int index)
     {
-        int num;
-        for (num = index; num < targetLocation.Count;num++)
-        {
-            // Debug.Log(targetLocation[num].name); Debug.Log(currentLocation);
-            MoveToLocation(targetLocation[num]);
-        }
-
+        if (targetLocation == null || index < 0 || index >= targetLocation.Count) return;
+        MoveToLocation(targetLocation[index]);
     }
     //moves the nav agent to the location given
     public void MoveToLocation(RaceCheckpoint checkpoint)
     {
-        if (navAgentComponent.destination != currentLocation.transform.position)
+        if (checkpoint == null || navAgentComponent == null || !navAgentComponent.isOnNavMesh) return;
+        Vector3 destination = checkpoint.transform.position;
+        if (!navAgentComponent.hasPath ||  Vector3.Distance(navAgentComponent.destination,destination)>0.1f)
         {
 
-            navAgentComponent.SetDestination(currentLocation.transform.position);
+            navAgentComponent.SetDestination(destination);
         }
-        else return;
     }
+
+
     //Stops nav agent movement
     private void StopMoving()
     {
-        navAgentComponent.isStopped = true;
-        navAgentComponent.speed = 0;
-        //says obsolete...it lies...it works... actually setting isStopped only stops movement and doesnt cancel velocity LOL...why unity
+        isMoving = false;
+        if (navAgentComponent.enabled && navAgentComponent.isOnNavMesh)
+        {
+            navAgentComponent.isStopped = true;
+        }
         body.linearVelocity = Vector3.zero;
     }
     public void NextCheckpoint()
@@ -189,11 +193,11 @@ public class CPURacer : MonoBehaviour
     //raycast for groundcheck bool 
     public bool GroundCheck()
     {
-        RaycastHit ground;
-        if(Physics.Raycast(transform.position + transform.up / 4, -transform.up * groundRange, out ground, groundLayer))
+        Vector3 origin = transform.position + transform.up * 0.25f;
+        isGrounded = Physics.Raycast(origin, -transform.up, out RaycastHit hit, groundRange, groundLayer);
+        if (isGrounded)
         {
-            Debug.DrawRay(transform.position + transform.up / 4, -transform.up * groundRange, Color.red);
-            isGrounded = true;
+            Debug.DrawRay(origin, -transform.up * groundRange, Color.red);
             isJumping = false;
         }
         return isGrounded;
@@ -201,78 +205,74 @@ public class CPURacer : MonoBehaviour
     //turns the racer when raycast detected in obstacle detection
     private void TurnRacer(float turnDeg)
     {
-        Quaternion startRot = Quaternion.LookRotation(Vector3.forward);
-        Quaternion endRot = Quaternion.LookRotation(Vector3.right);
-        Quaternion.RotateTowards(startRot, endRot, turnDeg);
+        transform.Rotate(0f, turnDeg * Time.deltaTime, 0f);
     }
     
     //YUMP-ING
     private void Jump()
     {
-
-        if (GroundCheck() == true && !isJumping)
+        if (!isGrounded || isJumping || isFlying) return;
+        isJumping = true;
+        wantsToFly = true;
+        if (navAgentComponent.enabled)
         {
-            isJumping = true;
-            // add verticle force to make the player jump
-            body.AddForce(Vector3.up * jumpHeight);
-
-                wantsToFly = true;
-            
+            navAgentComponent.enabled = false;
         }
-        else if (GroundCheck() == true && isJumping && wantsToFly)
-        {
-
-
-            if (!isFlying)
-            {
-                flightComponent.InitiateFlight();
-                Debug.Log("ThisGotCalled");
-            }
-        }
-        else return;
-
+        body.isKinematic = false;
+        body.AddForce(Vector3.up * jumpHeight, ForceMode.Impulse); ;
     }
 
     //... they believe they can touch the sky
     private void RacerFly()
     {
-        navAgentComponent.enabled = false;
-        if (!isFlying)
-        {
-            Debug.Log("FLYING");
-            flightComponent.InitiateFlight();
-        }
-        isFlying = true;
+        if (flightComponent.isFlying) return;
+        if (navAgentComponent.enabled) navAgentComponent.enabled = false;
+        flightComponent.InitiateFlight();
+        isFlying = flightComponent.isFlying;
     }
 
     private void FlightNavigation()
     {
-        var dir = (currentLocation.transform.position- transform.position).normalized;
-        Quaternion targetRot = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 10);
-        Debug.Log(dir);
-        var distance = Vector3.Distance(currentLocation.transform.position, transform.forward);
-        Debug.Log(distance);
-        if (distance > 3)
+        if (currentLocation == null || flightComponent == null) return;
+        Vector3 direction = currentLocation.transform.position - transform.position;
+        float distance = direction.magnitude;
+        if (distance <= 0.1f) return;
+        Quaternion targetRot = Quaternion.LookRotation(direction.normalized);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * 10f);
+        if (distance > 3f)
         {
-            if (currentLocation.transform.position.y > transform.position.y)
+            if (direction.y > 0.5f)
             {
-                Debug.Log("NotHighEnough");
-                if(flightComponent.isFlying != true) { flightComponent.InitiateFlight(); }
-                    flightComponent.FlapUp();
-                
-            }else if (currentLocation.transform.position.y < transform.position.y)
+                flightComponent.gliding = false;
+                flightComponent.FlapUp();
+            }
+            else if (direction.y < -0.5f)
             {
                 flightComponent.gliding = true;
-                Debug.Log("Glide");
             }
         }
+    }
 
+    public void OnFlightEnded()
+    {
+        isFlying = false;
+        wantsToFly = false;
     }
     //gets the checkpoints for the race and orders them
     private void GetCheckpoints()
     {
-        raceBase.activeCheckpoints.ForEach(checkpoint => { targetLocation.Add(checkpoint); totalCheckpoints++; });
+        if (targetLocation == null)
+        {
+            targetLocation = new List<RaceCheckpoint>();
+        }
+        else targetLocation.Clear();
+        if (raceBase == null || raceBase.activeCheckpoints == null) return;
+        foreach (var checkpoint in raceBase.activeCheckpoints)
+        {
+            if (checkpoint == null) continue;
+            targetLocation.Add(checkpoint);
+        }
+        totalCheckpoints = targetLocation.Count;
     }
     //Sets the racer stats to global current variables
     private void SetRacerStats()
@@ -337,7 +337,11 @@ public class CPURacer : MonoBehaviour
     public void StartMoving()
     {
         isMoving = true;
-        Debug.Log("RacerMOVE");
+        if (navAgentComponent.enabled && navAgentComponent.isOnNavMesh)
+        {
+            navAgentComponent.speed = speed;
+            navAgentComponent.isStopped = false;
+        }
     }
 
     public void ToggleNavCompOn()

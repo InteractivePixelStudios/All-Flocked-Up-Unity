@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class Anim_HumanController : MonoBehaviour
@@ -12,6 +13,11 @@ public class Anim_HumanController : MonoBehaviour
     public bool isThrowing;
     public bool isWalking;
     public bool isKicking;
+
+    public int sitDelayMs;
+    public int exitSitDelayMs;
+    
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,6 +43,22 @@ public class Anim_HumanController : MonoBehaviour
             animator.SetBool("isHit",true);
         }else
         animator.SetBool("isHit", false);
+    }
+
+    public async void StartSit()
+    {
+        animator.SetTrigger("StartSit");
+        await Task.Delay(sitDelayMs);
+        isSitting = true;
+        ToggleSitting(isSitting);
+    }
+
+    public async void ExitSit()
+    {
+        animator.SetTrigger("ExitSit");
+        await Task.Delay(exitSitDelayMs);
+        isSitting= false;
+        ToggleSitting(isSitting);
     }
 
     public void ToggleSitting(bool sitting)

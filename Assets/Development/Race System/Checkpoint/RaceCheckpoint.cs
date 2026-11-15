@@ -11,6 +11,8 @@ public class RaceCheckpoint : MonoBehaviour
     private GameObject hitObject;
    private int num;
     [SerializeField] private ParticleSystem checkpointParticle;
+    [SerializeField] private ParticleSystem finishParticles;
+    [SerializeField]private bool isFinish;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -49,7 +51,7 @@ public class RaceCheckpoint : MonoBehaviour
     {
         if (!raceBase.raceStarted) return;
         //this triggers early ....why me....activeCheckpoints get removed when hit so try to save count on Start but still nothing
-        if (checkpointNumber >= num)raceBase.AddRacerToCompleted(other.gameObject, this);
+        if (checkpointNumber >= num || isFinish) { raceBase.AddRacerToCompleted(other.gameObject, this); finishParticles.Play(); }
 
         if (other.gameObject.CompareTag("Player"))
         {

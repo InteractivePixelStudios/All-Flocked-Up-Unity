@@ -2,6 +2,9 @@ using FMODUnity;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 [RequireComponent(typeof(Rigidbody))]
 public class PoopProjectile : MonoBehaviour
@@ -24,6 +27,7 @@ public class PoopProjectile : MonoBehaviour
     [SerializeField] private PoopSplatDecal decalPrefab;
     [SerializeField] private ParticleSystem splashParticle;
     [SerializeField] EventReference splatSFX;
+    [SerializeField] private List<ParticleSystem> hitVFXList = new();
 
     bool hasTarget = false;
     GameObject targetEnemy;
@@ -100,6 +104,13 @@ public class PoopProjectile : MonoBehaviour
         }
     }
 
+    private async void CallDestroy(GameObject vfx)
+    {
+        Destroy(gameObject);
+        await Task.Delay(2500);
+        Destroy(vfx);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         var obj = collision.gameObject;
@@ -110,28 +121,35 @@ public class PoopProjectile : MonoBehaviour
         var poopable = obj.GetComponentInParent<PoopableObject>();
         if (poopable != null)
         {
+            //var spawn = Instantiate(poopType.hitParticleSpawn, obj.transform.position, obj.transform.rotation);
             poopable.OnPoopHit(poopType);
             Debug.Log(poopable);
         }
         if (collision.gameObject.CompareTag("Human"))
         {
+            var comp = obj.GetComponentInParent<EnemyPatrol>().GetVFXSpawn();
+            var spawn = Instantiate(poopType.hitParticleSpawn, comp.transform.localPosition, comp.transform.localRotation);
+            spawn.transform.SetParent(obj.transform,false);
             obj.GetComponentInParent<EnemyBaseComponent>().TakeDamage(10, poopType);
-            Destroy(gameObject);
+            CallDestroy(spawn.gameObject);
         }
         if (collision.gameObject.CompareTag("NPC"))
         {
+            var spawn = Instantiate(poopType.hitParticleSpawn, obj.transform.position, obj.transform.rotation);
             obj.GetComponent<NPCBase>().HitReact();
-            Destroy(gameObject);
+            CallDestroy(spawn.gameObject);
         }
         if (collision.gameObject.CompareTag("Vehicle"))
         {
+            var spawn = Instantiate(poopType.hitParticleSpawn, obj.transform.position, obj.transform.rotation);
             var vehicle = collision.gameObject.GetComponent<VehicleScript>();
             vehicle.TriggerCollisions();
-            Destroy(gameObject);
+            CallDestroy(spawn.gameObject);
         }
         if (!collision.gameObject.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            var spawn = Instantiate(poopType.hitParticleSpawn, obj.transform.position, obj.transform.rotation);
+            CallDestroy(spawn.gameObject);
         }
 
     }

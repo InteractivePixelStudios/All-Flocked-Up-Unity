@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2697761301062857412
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4830779093799608440}
+  m_Layer: 8
+  m_Name: SpawnLoc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4830779093799608440
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2697761301062857412}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.802, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1283460146543547471}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4895386601597912085
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,6 +133,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4464455659198594872}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4830779093799608440}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bbc3a2787fc92bc45b491fb45c42e1f8, type: 3}
       insertIndex: -1
@@ -156,6 +190,8 @@ MonoBehaviour:
   isThrowing: 0
   isWalking: 0
   isKicking: 0
+  sitDelayMs: 15
+  exitSitDelayMs: 19
 --- !u!195 &1185985605403439127
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -216,6 +252,7 @@ MonoBehaviour:
   enemyRef: {fileID: 0}
   patrolPoint: {fileID: 0}
   player: {fileID: 0}
+  distanceToPlayer: 0
   playerStealth: {fileID: 0}
   patrolSpeed: 2
   chaseSpeed: 3
@@ -249,7 +286,9 @@ MonoBehaviour:
   isIdleStart: 0
   canSeePlayer: 0
   currentReactionState: 0
+  currentState: 0
   IsDead: 0
+  vfxSpawnLoc: {fileID: 2697761301062857412}
 --- !u!114 &2037677813416457259
 MonoBehaviour:
   m_ObjectHideFlags: 0

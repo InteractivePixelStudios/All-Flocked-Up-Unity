@@ -205,30 +205,6 @@ public class UI_HudController : Singleton<UI_HudController>
         if(currentStamina != staminaComp.GetCurrentStamina()) { currentStamina = staminaComp.GetCurrentStamina(); UpdateStamina(); }
         if (currentPoop != poopComp.GetCurrentPoop()) { currentPoop = poopComp.GetCurrentPoop(); UpdatePoop(); }
         if(!currentPoopSprite.Equals(currentPoopType.hudSprite)) { GetPoopType(); UpdatePoopTypeSprite(currentPoopType); }
-        //if (expComp.PLAYERLEVEL != cachedLevel)
-        //{
-        //    cachedLevel = expComp.PLAYERLEVEL;
-
-        //    iconTimer = visibleTime + fadeTimer;
-
-        //    var color = levelUpIcon.color;
-        //    color.a = 1f;          // show instantly
-        //    levelUpIcon.color = color;
-        //}
-        //if (iconTimer > 0f)
-        //{
-        //    iconTimer -= Time.deltaTime;
-
-        //    if (iconTimer <= fadeTimer)
-        //    {
-        //        var color = levelUpIcon.color;
-
-        //        float time = 1f - (iconTimer / fadeTimer);
-        //        color.a = Mathf.Lerp(1f, 0f, time);
-
-        //        levelUpIcon.color = color;
-        //    }
-        //}
 
         if (isWarningShown)
         {

@@ -198,6 +198,7 @@ public class RaceBase : MonoBehaviour
     private void RaceCompleted()
     {
         raceStarted = false;
+        Destroy(currentRaceStartingLine.gameObject);
         GetRaceResults();
         DestroyRacers();
         navArrow.DestroyArrow();

@@ -104,8 +104,11 @@ public class UI_RaceReward: MonoBehaviour
     {
         Debug.Log("Clicked");
         raceBase.completedRaces.Add(raceBase.raceData);
-        Destroy(raceBase.currentRaceGiver.GetComponent<RaceGiver>());
-        GiveRaceRewards();
+        if (raceBase.currentRaceGiver.GetComponent<RaceGiver>() != null)
+        {
+            Destroy(raceBase.currentRaceGiver.GetComponent<RaceGiver>());
+        }
+
         canvasController.CloseRaceRewards();
         raceBase.StartPlayerMove();
     }
@@ -165,10 +168,6 @@ public class UI_RaceReward: MonoBehaviour
         if (labelText != null) labelText.SetText(time);
     }
 
-    private void GiveRaceRewards()
-    {
-        var EXP = FindAnyObjectByType<EXPSystem>();
-        EXP.IncrementXP(raceBase.raceData.raceRewards);
-    }
+
 
 }

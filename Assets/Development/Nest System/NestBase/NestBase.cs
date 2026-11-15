@@ -13,16 +13,6 @@ public class NestBase : MonoBehaviour
     [SerializeField] Material distanceMaterial;
 
 
-    protected void ShowNest()
-    {
-        gameObject.GetComponent<MeshRenderer>().material = baseMaterial;
-    }
-
-    protected void HideNest()
-    {
-        gameObject.GetComponent<MeshRenderer>().material = distanceMaterial;
-    }
-
 
     public void InteractWithNest()
     {
@@ -38,17 +28,9 @@ public class NestBase : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerRef = other.gameObject;
-            //ShowNest();
+
         }
 
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            //HideNest();
-        }
     }
 
     private void SpawnVFX()
@@ -58,6 +40,7 @@ public class NestBase : MonoBehaviour
         {
             spawnedVFX.Stop();
         }
+        isActiveNest = true;
     }
 
     private void OpenNestMenu()

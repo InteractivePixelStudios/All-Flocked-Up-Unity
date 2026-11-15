@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-
+[RequireComponent(typeof(Animator))]
+[RequireComponent (typeof(Enemy_AlertIcon))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyPatrol : EnemyBaseComponent
 {
     [Header("Patrol")]
@@ -14,7 +16,8 @@ public class EnemyPatrol : EnemyBaseComponent
     public PlayerStealthSystem playerStealth;
     public float patrolSpeed = 3f;
     public float chaseSpeed = 5f;
-    float MoveAfterCooldown = 1.5f;
+    public float retreatSpeed = 8f;
+    float moveAfterCooldown = 1.5f;
     [Header("Detection")]
     public float detectionRange = 5f;
     public float loseSightRange = 8f;
@@ -52,23 +55,33 @@ public class EnemyPatrol : EnemyBaseComponent
     [SerializeField]bool canSeePlayer;
     bool iconActive;
     bool locationSet;
+    bool hitActive;
     [SerializeField]ReactionState currentReactionState;
     public enum EnemyState { Patrolling, Chasing, Kicking, Throwing,Stop,Hit,Retreat }
     [SerializeField]private EnemyState currentState = EnemyState.Patrolling;
 
     public bool IsDead = false;
+    [SerializeField] private GameObject vfxSpawnLoc;
+    public GameObject GetVFXSpawn()
+    {
+        Debug.Log("GotVFXSpawn");
+        return vfxSpawnLoc;
+    }
 
     void Start()
     {
         player = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
-        playerStealth = player.GetComponent<PlayerStealthSystem>();
+        if (player != null)
+        {
+            playerStealth = player.GetComponent<PlayerStealthSystem>();
+        }
         animController = GetComponent<Animator>();
         alertIcon = GetComponent<Enemy_AlertIcon>();
         FindWaypoints();
         currentState = EnemyState.Patrolling;
         var rand = Random.Range(0, 1);
-        if (rand == 0) {  SpawnHeldItem(); } else return;
-        navAgent.updatePosition = true;
+        if (holdList != null && holdList.Count >0 && Random.Range(0,2) ==0) {  SpawnHeldItem(); }
+        if(navAgent != null) navAgent.updatePosition = true;
     }
 
     public void SetCurrentState(EnemyState state)
@@ -85,16 +98,17 @@ public class EnemyPatrol : EnemyBaseComponent
 
     void Update()
     {
-        if(kickCooldown>=0) kickCooldown -= Time.deltaTime;
-        if(throwCooldown>=0)throwCooldown -= Time.deltaTime;
-        if(MoveAfterCooldown>=0) MoveAfterCooldown -= Time.deltaTime;
+        if(navAgent == null || !navAgent.isOnNavMesh) return;
+        kickCooldown = Mathf.Max(0, kickCooldown - Time.deltaTime);
+        throwCooldown = Mathf.Max(0, throwCooldown - Time.deltaTime);
+        moveAfterCooldown = Mathf.Max(0, moveAfterCooldown - Time.deltaTime);
 
         distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
 
         if (distanceToPlayer <= detectionRange)
         {
             canSeePlayer = true;
-            if (!iconActive)
+            if (alertIcon!= null && !iconActive)
             {
                 alertIcon.SetPlayerSeen(true);
                 iconActive = true;
@@ -103,46 +117,50 @@ public class EnemyPatrol : EnemyBaseComponent
         else
         {
             canSeePlayer = false;
-            if (iconActive)
+            if (alertIcon != null && iconActive)
             {
                 alertIcon.SetPlayerSeen(false);
                 iconActive = false;
             }
             SetCurrentState(EnemyState.Patrolling);
        }
-        canKick = distanceToPlayer <= kickRange;
-        canThrow = distanceToPlayer <= throwRange;
+        canKick = distanceToPlayer <= kickRange && kickCooldown <= 0f;
+        canThrow = distanceToPlayer <= throwRange && throwCooldown <= 0f;
 
         switch (currentState)
         {
             case EnemyState.Patrolling:
-                if (isHit) {currentState = EnemyState.Hit; }
-                if (isIdleStart) { currentState = EnemyState.Stop; }
-                if (playerStealth.GetStealth() < 10 && canSeePlayer) { currentState = EnemyState.Chasing; }
+                if (isHit) currentState = EnemyState.Hit; 
+                else if (isIdleStart)  currentState = EnemyState.Stop; 
+                else if (playerStealth!=null && playerStealth.GetStealth() < 10 && canSeePlayer)  currentState = EnemyState.Chasing; 
                 break;
             case EnemyState.Chasing:
-                if (isHit) { currentState = EnemyState.Hit; }
-                if (!canSeePlayer) { currentState = EnemyState.Patrolling; }
-                if (canKick && !isKicking && !isThrowing) { currentState = EnemyState.Kicking; }
-                else if (canThrow && !isKicking && !isThrowing) { if (isHoldingItem) { DropHeldItem(); } currentState = EnemyState.Throwing; }
+                if (isHit) currentState = EnemyState.Hit; 
+                else if (!canSeePlayer)  currentState = EnemyState.Patrolling; 
+                else if (!isKicking && !isThrowing && moveAfterCooldown <=0f) 
+                { 
+                    if(canKick) currentState = EnemyState.Kicking; 
+                    else if (canThrow && !isHoldingItem) currentState = EnemyState.Throwing;
+                }
                 break;
             case EnemyState.Kicking:
                 if (isHit) { currentState = EnemyState.Hit; }
-                if (!isKicking && MoveAfterCooldown <= 0) currentState = EnemyState.Chasing;
+                else if (!isKicking && moveAfterCooldown <= 0) currentState = EnemyState.Chasing;
+                else if(!canSeePlayer &&!isKicking) currentState = EnemyState.Patrolling;
                 break;
             case EnemyState.Throwing:
                 if (isHit) { currentState = EnemyState.Hit; }
-                if (!isThrowing && MoveAfterCooldown <= 0) currentState = EnemyState.Chasing;
+                else if (!isThrowing && moveAfterCooldown <= 0) currentState = EnemyState.Chasing;
+                else if (!canSeePlayer && !isThrowing) currentState = EnemyState.Patrolling;
                 break;
             case EnemyState.Stop:
                 if (isHit) { currentState = EnemyState.Retreat;}
-                //if (canSeePlayer){ currentState = EnemyState.Chasing; }
                 break;
             case EnemyState.Retreat:
                 if (isHit) { currentState = EnemyState.Hit; }
                 break;
             case EnemyState.Hit:
-                if (!isHit){ currentState = EnemyState.Retreat; }
+                if (!isHit && hitActive){ currentState = EnemyState.Retreat; }
                 break;
 
     }
@@ -153,24 +171,24 @@ public class EnemyPatrol : EnemyBaseComponent
                 if (!isStopped)
                 {
                     MoveHumanToLocation();
-                    if (navAgent.remainingDistance <= 1f && !navAgent.pathPending)
+                    if (navAgent.remainingDistance <= 1f && !navAgent.pathPending && navAgent.hasPath)
                     {
                         ChooseNextDirection(currentNode);
                     }
                 }
                 else { StopMove(); }
-            break;
+                break;
             case EnemyState.Chasing:
                 ChasePlayer();
                 break;
             case EnemyState.Kicking: // throws until kick anim done
-                if (throwCooldown <= 0)
+                if (!isKicking && canKick)
                 {
                     ThrowObject();
                 }
                 break;
             case EnemyState.Throwing:
-                if (throwCooldown <= 0) 
+                if (!isThrowing&&canThrow) 
                 {
                     ThrowObject();
                 }
@@ -179,7 +197,10 @@ public class EnemyPatrol : EnemyBaseComponent
                 StopMove();
                 break;
             case EnemyState.Hit:
-                HitReact();
+                if (!hitActive)
+                {
+                    HitReact();
+                }
                 break;
             case EnemyState.Retreat:
                  Retreat();
@@ -189,6 +210,9 @@ public class EnemyPatrol : EnemyBaseComponent
 
     private void FindWaypoints()
     {
+        if (patrolPoint == null) return;
+        if(waypoints == null) waypoints = new List<Waypoint>();
+        waypoints.Clear();
         var waypointArray = patrolPoint.GetComponentsInChildren<Waypoint>();
         foreach (var waypoint in waypointArray)
         {
@@ -203,34 +227,38 @@ public class EnemyPatrol : EnemyBaseComponent
 
     private void FindRandomWaypoint()
     {
-        if (waypoints.Count == 0) return;
-        if (waypoints.Count == 1) { StopMove(); }
-        if(waypoints.Count > 2)
+        if (waypoints.Count == 0 || waypoints == null) return;
+        if (waypoints.Count == 1) 
         {
-            var randomIndex = Random.Range(0, waypoints.Count - 1);
-            this.currentNode = waypoints[randomIndex];
+            //StopMove();
+            currentNode = waypoints[0];
         }
-        else
-        {
-            this.currentNode = waypoints[0];
-        }
+        var randomIndex = Random.Range(0, waypoints.Count);
+        currentNode = waypoints[randomIndex];
+
     }
 
     protected void StopMove()
     {
         isStopped = true;
         navAgent.isStopped = true;
-        navAgent.velocity = Vector3.zero;
         animController.SetFloat("Speed", 0f);
     }
 
     protected async void HitReact()
-    {      
-        isHit = true;
-        if(isHoldingItem && currentHeldObject!=null) { DropHeldItem(); }
-        await Task.Delay(1000);
+    {
+        if (hitActive) return;
+        CallHit();
+        await Task.Delay(750);
         isHit = false;
         currentState = EnemyState.Retreat;
+    }
+
+    protected void CallHit()
+    {
+        StopMove();
+        isHit = true;
+        if (isHoldingItem && currentHeldObject != null) { DropHeldItem(); }
     }
 
     public override void OnHit(PoopType type)
@@ -256,6 +284,7 @@ public class EnemyPatrol : EnemyBaseComponent
                 Debug.Log("Hit by Glow");
                 break;
         }
+        currentState = EnemyState.Hit;
         HitReact();
     }
     protected void Retreat()
@@ -263,8 +292,9 @@ public class EnemyPatrol : EnemyBaseComponent
         isHit = false;
         isStopped = false;
         navAgent.isStopped = false;
+        navAgent.speed = retreatSpeed;
         isRetreating = true;
-        animController.SetFloat("Speed", navAgent.speed);
+        animController.SetFloat("Speed", navAgent.velocity.magnitude);
         if (currentNode != null)
         {
             navAgent.SetDestination(currentNode.transform.position);
@@ -278,9 +308,9 @@ public class EnemyPatrol : EnemyBaseComponent
         {
             navAgent.SetDestination(transform.position + new Vector3(0, 0, 5));
 
-            if (navAgent.remainingDistance <= 1f)
+            if (!navAgent.pathPending && navAgent.hasPath && navAgent.remainingDistance <= 1f)
             {
-                if (Physics.Raycast(transform.position, Vector3.forward, 2f, LayerMask.NameToLayer("PropBuilding")))
+                if (Physics.Raycast(transform.position, Vector3.forward, 2f, LayerMask.GetMask("PropBuilding")))
                 {
                     isRetreating = false;
                     isStopped = true;
@@ -298,31 +328,30 @@ public class EnemyPatrol : EnemyBaseComponent
     {
         if (isKicking || isThrowing || !canSeePlayer) return;
         isStopped = false;
-        animController.SetFloat("Speed", navAgent.speed);
-        Vector3 targetPos = player.transform.position;
-        targetPos.y = transform.position.y;
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, chaseSpeed * Time.deltaTime);
-        Vector3 dir = (targetPos - transform.position).normalized;
-        dir.y = 0;
-        if (dir != Vector3.zero)
-            transform.forward = dir;
+        navAgent.isStopped = false;
+        navAgent.SetDestination(player.transform.position);
+        animController.SetFloat("Speed", navAgent.velocity.magnitude);
     }
 
     protected async void KickPlayer()
     {
         if (isKicking || isThrowing || !canSeePlayer) return;
-        isKicking = true;
         StopMove();
-        var spawnedCollider = kickColliderParent.AddComponent<SphereCollider>();
-        var comp = spawnedCollider.AddComponent<KickComponent>();
-        comp.damage = 1;
-        animController.SetTrigger("isKicking");
-        kickCooldown = 3f;
-        await Task.Delay(3000);
-        Destroy(spawnedCollider);
-        Destroy(comp);
+        isKicking = true;
+        if (kickColliderParent != null)
+        {
+            var spawnedCollider = kickColliderParent.AddComponent<SphereCollider>();
+            var comp = spawnedCollider.AddComponent<KickComponent>();
+            comp.damage = 1;
+
+            animController.SetTrigger("isKicking");
+            kickCooldown = 3f;
+            await Task.Delay(3000);
+            Destroy(spawnedCollider);
+            Destroy(comp);
+        }
         isKicking = false;
-        MoveAfterCooldown = 1.5f;
+        moveAfterCooldown = 1.5f;
         isStopped = false;
 
     }
@@ -349,18 +378,18 @@ public class EnemyPatrol : EnemyBaseComponent
         objRB.AddForce((objectSpawnPoint.forward+(Vector3.down*0.5f))*throwForce,ForceMode.Impulse);
         throwCooldown = 3f;
         isThrowing = false;
-        MoveAfterCooldown = 1.5f;
+        moveAfterCooldown = 1.5f;
         isStopped = false;
     }
 
     protected void SetThrowPoint()
     {
         Vector3 targetPos = player.transform.position;
-        targetPos.y = objectSpawnPoint.transform.position.y;
-        Vector3 dir = (targetPos - objectSpawnPoint.transform.position).normalized;
+        targetPos.y = objectSpawnPoint.position.y;
+        Vector3 dir = (targetPos - objectSpawnPoint.position).normalized;
         dir.y = 0;
         if (dir != Vector3.zero)
-            objectSpawnPoint.transform.forward = dir;
+            objectSpawnPoint.forward = dir;
 
     }
 
@@ -376,6 +405,7 @@ public class EnemyPatrol : EnemyBaseComponent
         if (currentNode != null)
         {
             navAgent.isStopped = false;
+            navAgent.speed = patrolSpeed;
             navAgent.SetDestination(currentNode.transform.position);
         }
         else
@@ -383,62 +413,51 @@ public class EnemyPatrol : EnemyBaseComponent
             var found = FindObjectsByType<Waypoint>();
             foreach (var obj in found)
             {
-                if (obj.gameObject.CompareTag("Human"))
+            if (obj.gameObject.CompareTag("Human") || obj == null) continue;
+
+                patrolPoint = obj.gameObject;
+                FindWaypoints();
+                navAgent.isStopped = false;
+                if (currentNode != null)
                 {
-                    if (obj != null)
-                    {
-                        patrolPoint = obj.gameObject;
-                        FindWaypoints();
-                        navAgent.isStopped = false;
-                        navAgent.SetDestination(currentNode.transform.position);
-                        break;
-                    }
+                    navAgent.SetDestination(currentNode.transform.position);
                 }
+                break;
             }
+                
+            
         }
-        animController.SetFloat("Speed", navAgent.speed);
+        animController.SetFloat("Speed", navAgent.velocity.magnitude);
 
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Poop"))
-        {
-            var type = collision.gameObject.GetComponent<PoopProjectile>().GetPoopType();
-            TakeDamage(1,type);
-        }
     }
 
     protected void ChooseNextDirection(Waypoint node)
     {
         if(node == null) return;
-
         if (node.nextWaypoint == null)
         {
             FindRandomWaypoint();
             return;
-        }
-        else
-        {
-            Waypoint nextNode = node.nextWaypoint;
-            if (nextNode == null)
-                return;
-            previousNode = currentNode;
-            SetMoveToLocation(nextNode);
-            MoveHumanToLocation();
-        }
+        }      
+        Waypoint nextNode = node.nextWaypoint;
+        if (nextNode == null)return;
+        previousNode = currentNode;
+        SetMoveToLocation(nextNode);
+        MoveHumanToLocation();       
         locationSet = true;
     }
 
     void SpawnHeldItem()
     {
+        if (holdList == null || holdList.Count == 0 || objectSpawnPoint == null) return;
         var rand = Random.Range(0, holdList.Count);
+        if (holdList[rand] == null) return;
+
         var spawned = Instantiate(holdList[rand]);
-        spawned.transform.localScale = spawned.transform.localScale;
         currentHeldObject = spawned;
         spawned.GetComponent<Rigidbody>().isKinematic = true;
         spawned.transform.SetParent(objectSpawnPoint, false);
-        spawned.transform.position = objectSpawnPoint.transform.position;
+        spawned.transform.position = objectSpawnPoint.position;
         spawned.GetComponentInChildren<ParticleSystem>().Stop();
         isHoldingItem = true;
 
@@ -447,6 +466,9 @@ public class EnemyPatrol : EnemyBaseComponent
     void DropHeldItem()
     {
         currentHeldObject.GetComponent<Rigidbody>().isKinematic = false;
+        currentHeldObject.transform.SetParent(null, true);
+        currentHeldObject.GetComponent<Rigidbody>().isKinematic = false;
+        currentHeldObject = null;
         objectSpawnPoint.transform.DetachChildren();
         isHoldingItem = false;
     }

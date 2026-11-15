@@ -89,4 +89,9 @@ public class PlayerHealth : MonoBehaviour
         if (canvasController == null) canvasController = FindAnyObjectByType<UI_CanvasController>();
         canvasController.OpenRespawn();
     }
+
+    private void OnLevelWasLoaded(int level)
+    {
+        canvasController = FindAnyObjectByType<UI_CanvasController>();
+    }
 }

@@ -190,7 +190,6 @@ public class QuestRuntimeInstance
         
         cachedExp += questData.stages[currentStageIndex].expReward;
         cachedTrinkets += questData.stages[currentStageIndex].trinketReward;
-        itemRewards.AddRange(questData.itemRewards);
         currentStageIndex++;
         GetQuestObjects();
         if (!IsComplete)

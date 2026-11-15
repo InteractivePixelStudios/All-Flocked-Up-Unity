@@ -92,6 +92,7 @@ MonoBehaviour:
     expReward: 0
     trinketReward: 0
     hasDialogueAfter: 1
+    hasWarpAfter: 0
   - stageName:
       m_TableReference:
         m_TableCollectionName: GUID:a3440b662035b0e489761b5ed49cb496
@@ -135,9 +136,11 @@ MonoBehaviour:
       isOptional: 0
       bonusEXP: 0
     expReward: 0
-    trinketReward: 0
+    trinketReward: 5
     hasDialogueAfter: 1
-  itemRewards: []
+    hasWarpAfter: 0
+  itemRewards:
+  - {fileID: 4567726112435861742, guid: 495f98a21b611bc41855c08497b7dbc4, type: 3}
   references:
     version: 2
     RefIds: []

@@ -55,7 +55,6 @@ public class PlayerSaveLoadHandler : MonoBehaviour
         saveData.playerName = "Peep";  
         saveData.sceneName = SceneManager.GetActiveScene().name;
         saveData.health = player.GetComponent<PlayerHealth>().currentHealth;
-        //saveData.level = player.GetComponent<EXPSystem>().PLAYERLEVEL;
         saveData.position = player.transform.position;
         saveData.rotation = player.transform.rotation;
         saveData.trinkets = player.GetComponent<PlayerWingventory>().playerTrinketQuantity;
@@ -67,7 +66,6 @@ public class PlayerSaveLoadHandler : MonoBehaviour
         saveData.activeQuests = player.GetComponent<QuestLog>().activeQuests;
         saveData.completedQuests = player.GetComponent<QuestLog>().completedQuests;
         saveData.completedRaces = FindAnyObjectByType<RaceBase>().completedRaces;
-        saveData.timeOfDay = FindAnyObjectByType<S_DayNightCycle>().timeOfDay;
         saveData.playerSkin = player.GetComponent<PlayerSkinSelector>().GetCurrentMaterial();
         saveData.npcData = FindObjectsByType<NPCBase>().ToList();
         //var questobj = GameObject.FindObjectsByType(typeof(IQuestMechanic));
@@ -116,7 +114,6 @@ public class PlayerSaveLoadHandler : MonoBehaviour
             player.GetComponent<QuestLog>().activeQuests = pendingData.activeQuests;
             player.GetComponent<QuestLog>().completedQuests = pendingData.completedQuests;
             FindAnyObjectByType<RaceBase>().completedRaces = pendingData.completedRaces;
-            FindAnyObjectByType<S_DayNightCycle>().timeOfDay = pendingData.timeOfDay;
             player.GetComponent<PlayerWingventory>().playerTrinketQuantity = pendingData.trinkets;
             player.GetComponent<PlayerSkinSelector>().SetLoadedMaterial(pendingData.playerSkin);
             player.transform.position = pendingData.position;

@@ -18,10 +18,11 @@ public class CreditRoll : MonoBehaviour
     [SerializeField] private Dictionary<string, string> creditsNamesList;
     [SerializeField] private List<string> nameList = new();
     [SerializeField] private List<string> roleList = new();
-    private int nameIndex=0;
+    [SerializeField]private int nameIndex=0;
     private int imageIndex = 0;
     [SerializeField] private Image currentImage;
-    [SerializeField] private float timePerName;
+    [SerializeField] private float timePerName =5f;
+    [SerializeField] private float timePerImage = 6f;
     [SerializeField] private float currentTime;
     [SerializeField] private bool inReady;
     [SerializeField] private bool outReady;
@@ -56,7 +57,7 @@ public class CreditRoll : MonoBehaviour
             {
                 if (!currentImage.gameObject.activeInHierarchy) { currentImage.gameObject.SetActive(true); }
                 CycleImage();
-                currentTime = timePerName;
+                currentTime = timePerImage;
             }
         }
         currentTime -= Time.deltaTime;
@@ -64,22 +65,20 @@ public class CreditRoll : MonoBehaviour
 
 
 
-    private async void CycleNames()
+    private void CycleNames()
     {
         inReady = true;
         outReady = false;
         Debug.Log("CycleCalled");
         nameText.SetText(nameList[nameIndex]);
         roleText.SetText(roleList[nameIndex]);
-        await Task.Delay(5000);
         nameIndex++;
 
     }
 
-    private async void CycleImage()
+    private void CycleImage()
     {
         currentImage.sprite = splashImages[imageIndex];
-        await Task.Delay(6000);
         imageIndex++;
 
 

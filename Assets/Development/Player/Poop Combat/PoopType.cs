@@ -12,5 +12,5 @@ public class PoopType : ScriptableObject
     public GameObject poopVisual;
     public GameObject splatVFX;
     public AudioClip splatSFX;
-
+    public ParticleSystem hitParticleSpawn;
 }
