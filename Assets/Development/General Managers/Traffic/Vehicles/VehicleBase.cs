@@ -1,135 +1,138 @@
-using NUnit.Framework;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections.Generic;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.ProBuilder.MeshOperations;
-
 public class VehicleBase :MonoBehaviour
 {
     public Waypoint currentNode;
     [SerializeField] private Waypoint previousNode;
     [SerializeField] protected NavMeshAgent navAgent;
     private float vehicleSpeed => navAgent.speed;
-    [SerializeField] protected float detectRadius=2f;
     [SerializeField] protected LayerMask playerLayer;
     [SerializeField] protected LayerMask enemyLayer;
     [SerializeField] protected LayerMask trafficLayer;
-    public bool isStopped;
     private float stopTimer = 2.5f;
     [SerializeField] private bool isMoving;
-    [SerializeField] private List<WaypointConnection> connections = new();
-    [SerializeField] protected float detectObjectRange=2f;
     public TrafficManager manager;
-
     bool isLeftTurn;
     bool isRightTurn;
+    private bool stoppedAtLight;
+    private bool isBlocked;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected virtual void Start()
     {
         navAgent = GetComponent<NavMeshAgent>();
-        MoveVehicleToLocation();
+        StartMove();
     }
-
-
+    public bool GetNavAgentStopped()
+    {
+        return navAgent.isStopped;
+    }
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (currentNode == null)
+        if (currentNode == null || !navAgent.isOnNavMesh)
         {
-            StopVehicle();
-            Destroy(this.gameObject);
-            //Debug.Log("Cant find CurrentNode");
+            if (navAgent.isOnNavMesh) StopVehicle();
+            manager?.RemoveVehicleFromList(this);
+            Destroy(gameObject);
             return;
         }
-        //if (!navAgent.hasPath && !navAgent.pathPending)
-        //{
-        //    manager.RemoveVehicleFromList(this);
-        //   // Destroy(this.gameObject);
-
-        //}
-
         if (!navAgent.pathPending && navAgent.hasPath && navAgent.remainingDistance <= navAgent.stoppingDistance + 0.1f)
         {
             navAgent.ResetPath();
             ChooseNextDirection(currentNode);
-        }
-        if(isStopped )
-        {
-            if (stopTimer > 0)
+            if (currentNode != null && navAgent.isActiveAndEnabled)
             {
-                stopTimer -= Time.deltaTime;
-                StopVehicle();
+                MoveVehicleToLocation();
             }
-            else StartMove();
-
+            else
+            {
+                currentNode = null;
+                manager?.RemoveVehicleFromList(this);
+                Destroy(gameObject);
+                return;
+            }
         }
-        else
+        if (navAgent.isStopped && !stoppedAtLight && !isBlocked)
+        {
+            stopTimer -= Time.deltaTime;
+            if (stopTimer <= 0) StartMove();
+        }   
+    }
+
+    public void SetStoppedAtLight(bool stopped)
+    {
+        stoppedAtLight = stopped;
+        UpdateStopState();
+    }
+
+    public bool GetStoppedAtLight()
+    {
+        return stoppedAtLight;
+    }
+
+    public void SetBlocked(bool blocked)
+    {
+        isBlocked = blocked;
+        UpdateStopState();
+    }
+
+    private void UpdateStopState()
+    {
+        if (stoppedAtLight || isBlocked)
+        {
+            if (!navAgent.isStopped) StopVehicle();
+        }
+        else if (navAgent.isStopped)
         {
             StartMove();
         }
-
     }
-
+    //Anims
     public bool GetIsMoving()
     {
         return isMoving;
     }
-
     public bool GetIsLeftTurn()
     {
         return isLeftTurn;
     }
-
     public bool GetIsRightTurn()
     {
         return isRightTurn;
     }
-
+    //Logic
     protected virtual void SetMoveToLocation(Waypoint location)
     {
         currentNode = location;
-        navAgent.speed = 3.5f;
     }
-
     //call this to run like wind
     public virtual void MoveVehicleToLocation()
     {
-        if (currentNode == null || navAgent == null)
-            return;
-
+        if (currentNode == null || navAgent == null||stoppedAtLight || isBlocked || !navAgent.isOnNavMesh) return;
+        navAgent.speed = 3.5f;
         navAgent.isStopped = false;
         navAgent.SetDestination(currentNode.transform.position);
-        isMoving = true;
     }
-
     public virtual void StopVehicle()
     {
         navAgent.isStopped = true;
         isMoving = false;
 
     }
-
     public virtual void StartMove()
     {
+        if (stoppedAtLight || isBlocked) return;
         stopTimer = 2.5f;
-        //navAgent.isStopped = false;
         isMoving = true;
+        MoveVehicleToLocation();
     }
 
     public virtual void TriggerCollisions()
     {
         HonkHorn();
         navAgent.speed = 2;
-        if (!isStopped)
-        {
-            isStopped = true;
-        }
+        SetBlocked(true);
     }
-
-
-
     protected void ChooseNextDirection(Waypoint node)
     {
         if (node == null)
@@ -144,29 +147,24 @@ public class VehicleBase :MonoBehaviour
                 next = node.branches[0];
                 previousNode = currentNode;
                 SetMoveToLocation(next);
-                MoveVehicleToLocation();
+                
             }
             else
             {
                 manager.RemoveVehicleFromList(this);
-                Destroy(this.gameObject);
-                
+                Destroy(this.gameObject);                
             }
         }
         else
         {
             previousNode = currentNode;
             SetMoveToLocation(next);
-            MoveVehicleToLocation();
+            
         }
-
     }
-
     protected virtual void HonkHorn()
     {
         //add horn SFX/possible headlight VFX? 
         Debug.Log("HONNKKKKKKKKKKKK");
     }
-
-
 }

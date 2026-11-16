@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 5426232767404176667}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 2.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -52,7 +52,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.94, y: 1, z: 6.71}
+  m_Size: {x: 1.71, y: 1, z: 1.74}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1393213858110620242
 MonoBehaviour:
@@ -77,9 +77,7 @@ GameObject:
   - component: {fileID: 5542504100494569997}
   - component: {fileID: 4550492946090882327}
   - component: {fileID: 1129132032353857531}
-  - component: {fileID: 6618512199702343465}
-  - component: {fileID: -3361955497731246815}
-  - component: {fileID: 893293914631476070}
+  - component: {fileID: 2120444601610560269}
   m_Layer: 16
   m_Name: Car
   m_TagString: Vehicle
@@ -101,6 +99,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2657336211643858554}
+  - {fileID: 759082102382229950}
   - {fileID: 7112192599552636688}
   - {fileID: 6954674177099245938}
   m_Father: {fileID: 0}
@@ -114,7 +113,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 9065144564167441542}
   m_Enabled: 1
   m_AgentTypeID: -334000983
-  m_Radius: 2.5
+  m_Radius: 2.44
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -126,7 +125,7 @@ NavMeshAgent:
   m_Height: 0.91
   m_BaseOffset: 0
   m_WalkableMask: 16
-  m_ObstacleAvoidanceType: 3
+  m_ObstacleAvoidanceType: 4
 --- !u!114 &1129132032353857531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,7 +141,6 @@ MonoBehaviour:
   currentNode: {fileID: 0}
   previousNode: {fileID: 0}
   navAgent: {fileID: 4550492946090882327}
-  detectRadius: 10
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -152,33 +150,9 @@ MonoBehaviour:
   trafficLayer:
     serializedVersion: 2
     m_Bits: 65536
-  isStopped: 0
   isMoving: 0
-  connections: []
-  detectObjectRange: 10
   manager: {fileID: 0}
---- !u!65 &6618512199702343465
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9065144564167441542}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 262208
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 2.06, y: 1, z: 4.76}
-  m_Center: {x: 0, y: 0.47, z: 0}
---- !u!54 &-3361955497731246815
+--- !u!54 &2120444601610560269
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,38 +168,71 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 262208
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &893293914631476070
-BoxCollider:
+--- !u!1 &9214521263196365717
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9065144564167441542}
-  m_Material: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 759082102382229950}
+  - component: {fileID: 5909143538866421250}
+  m_Layer: 16
+  m_Name: GameObject
+  m_TagString: Vehicle
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &759082102382229950
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9214521263196365717}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5542504100494569997}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &5909143538866421250
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9214521263196365717}
+  m_Material: {fileID: 13400000, guid: f18836b9e00148d439cb0bd60739d801, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 4194496
+    m_Bits: 64
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32776
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.33, z: 2.06}
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7854677610985959545, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
 --- !u!1001 &2551984397837212049
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -278,9 +285,17 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: -6099631350572890976, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
+      propertyPath: m_TagString
+      value: Vehicle
+      objectReference: {fileID: 0}
     - target: {fileID: -5235631531913589492, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
       propertyPath: m_Layer
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: -5235631531913589492, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
+      propertyPath: m_TagString
+      value: Vehicle
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
       propertyPath: m_Name
@@ -298,54 +313,36 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 3258744820892344033, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
+      propertyPath: m_TagString
+      value: Vehicle
+      objectReference: {fileID: 0}
     - target: {fileID: 4786331671000840687, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
       propertyPath: m_Layer
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4786331671000840687, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
+      propertyPath: m_TagString
+      value: Vehicle
       objectReference: {fileID: 0}
     - target: {fileID: 8397775052183303125, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 8397775052183303125, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
+      propertyPath: m_TagString
+      value: Vehicle
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4601034736862729391}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
 --- !u!4 &2657336211643858554 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
   m_PrefabInstance: {fileID: 2551984397837212049}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3434858485691458752 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ab116fdfaf0705047b5c730f35311264, type: 3}
-  m_PrefabInstance: {fileID: 2551984397837212049}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &4601034736862729391
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3434858485691458752}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 64
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 5061047699922906861, guid: d49afb36398ea10429bf40318edf2006, type: 3}
 --- !u!1001 &6103805168077089079
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -397,6 +394,14 @@ PrefabInstance:
     - target: {fileID: 6482355163392069294, guid: c99453d357598334990211920048d5ff, type: 3}
       propertyPath: m_Name
       value: PF_CarExhaust
+      objectReference: {fileID: 0}
+    - target: {fileID: 6482355163392069294, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6482355163392069294, guid: c99453d357598334990211920048d5ff, type: 3}
+      propertyPath: m_TagString
+      value: Vehicle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

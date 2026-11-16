@@ -1,65 +1,49 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Android;
 
 public class TrafficLightTrigger : MonoBehaviour
 {
-    private List<VehicleBase> stoppedVehicle = new();
+    private readonly List<VehicleBase> stoppedVehicles = new();
     public BoxCollider redLightBox;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private void Awake()
     {
-        redLightBox = GetComponent<BoxCollider>();
+        if (redLightBox == null) redLightBox = GetComponent<BoxCollider>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Vehicle")) { 
-            var vehicle = other.GetComponent<VehicleBase>();
-            if (vehicle != null && !stoppedVehicle.Contains(vehicle))
-            {
-                if (!vehicle.isStopped)
-                {
-                    stoppedVehicle.Add(vehicle);
-                    vehicle.isStopped = true;
-                    vehicle.StopVehicle();
-                    Debug.Log("HitLight");
-                }
-            }
+        VehicleBase vehicle = other.GetComponentInParent<VehicleBase>();
 
+        if (vehicle == null)
+            return;
+
+        if (!stoppedVehicles.Contains(vehicle))
+        {
+            stoppedVehicles.Add(vehicle);
+            vehicle.SetStoppedAtLight(true);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Vehicle"))
+        VehicleBase vehicle = other.GetComponentInParent<VehicleBase>();
+        if (vehicle != null && stoppedVehicles.Remove(vehicle))
         {
-            var vehicle = other.GetComponent<VehicleBase>();
-            if (vehicle != null)
-            {
-                stoppedVehicle.Remove(vehicle);
-            }
+            vehicle.SetStoppedAtLight(false);
         }
     }
 
     public void StartMoveAfterLight()
     {
-        foreach(var vehicle in stoppedVehicle)
+        foreach (VehicleBase vehicle in stoppedVehicles)
         {
-            if(vehicle != null)
+            if (vehicle != null)
             {
-                vehicle.isStopped = false;
-                vehicle.MoveVehicleToLocation();
+                vehicle.SetStoppedAtLight(false);
             }
         }
-       stoppedVehicle.Clear();
-    }
 
+        stoppedVehicles.Clear();
+    }
 }

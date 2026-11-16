@@ -9,7 +9,7 @@ public class SaveData
     public string version;
     public string playerName;
     public string sceneName;
-    //public int level;
+    public int level;
     public int health;
     public Vector3 position;
     public Quaternion rotation;
@@ -22,7 +22,6 @@ public class SaveData
     public List<QuestDetails> completedQuests = new();
     public List<Transform> questObjects = new();
     public List<RaceData> completedRaces = new();
-    public float timeOfDay;
     public Material playerSkin;
     public PlayerPrefs playerPrefs;
     public List<bool> tutData = new();

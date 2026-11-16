@@ -31,39 +31,12 @@ public class RespawnController : MonoBehaviour
             ragdoll = player.GetComponent<RagdollController>();
         }
         respawnNests = FindObjectsByType<NestBase>();
-        nextButton.onClick.AddListener(NextNest);
-        prevButton.onClick.AddListener(PreviousNest);
         respawnButton.onClick.AddListener(RespawnPlayer);
-        NextNest(); 
-    }
-
-
-    void Update()
-    {
+        respawnText.SetText("HOME");
 
     }
 
-    public void NextNest()
-    {
-        currentNestIndex++;
-        if (currentNestIndex >= respawnNests.Length)
-        {
-            currentNestIndex = 0; 
-        }
-        Camera.main.GetComponent<CameraController>().respawnTarget = respawnNests[currentNestIndex].transform; 
-        respawnText.text = respawnNests[currentNestIndex].GetComponent<NestBrian>().nestName; 
-    }
 
-    public void PreviousNest()
-    {
-        currentNestIndex--;
-        if (currentNestIndex < 0)
-        {
-            currentNestIndex = respawnNests.Length - 1; 
-        }
-        Camera.main.GetComponent<CameraController>().respawnTarget = respawnNests[currentNestIndex].transform;
-        respawnText.text = respawnNests[currentNestIndex].GetComponent<NestBrian>().nestName; 
-    }
     public void RespawnPlayer()
     {
         if (respawnNests.Length == 0)

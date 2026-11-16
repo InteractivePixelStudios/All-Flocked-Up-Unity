@@ -19,6 +19,7 @@ public class NestBase : MonoBehaviour
         if (!isActiveNest)
         {
             SpawnVFX();
+            isActiveNest = true;
         }
         else OpenNestMenu();
     }
@@ -40,7 +41,6 @@ public class NestBase : MonoBehaviour
         {
             spawnedVFX.Stop();
         }
-        isActiveNest = true;
     }
 
     private void OpenNestMenu()

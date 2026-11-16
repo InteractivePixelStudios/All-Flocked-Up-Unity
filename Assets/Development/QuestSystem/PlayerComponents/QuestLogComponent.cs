@@ -46,59 +46,45 @@ public class QuestLog : MonoBehaviour
     //checks if timer = 0 and updates time... call for if quest failed to remove quest from activeQuest list 
     private void CheckTimerState(QuestRuntimeInstance quest)
     {
-
-            if (currentTime == 0f)
-            {
-                activeQuests.Remove(quest);
-
-                canvasController.EndTimer();
-                //quest.QuestFailed();
-                //OnQuestFailed(quest);
-                //doesn't remove when timer is done?
+        if (currentTime == 0f)
+        {
+            activeQuests.Remove(quest);
+            canvasController.EndTimer();
         }
-            else
-            {
-                Debug.Log("Quest Not Timed");
-            }
-        } 
+        else
+        {
+            Debug.Log("Quest Not Timed");
+        }
+    } 
 
     private void Update()
     {
         //needs to check for if quest is completed before timer done
-        if (questTimerStarted == true&& currentTime>0) { 
-        currentTime -= Time.deltaTime;
+        if (questTimerStarted == true&& currentTime>0) 
+        { 
+            currentTime -= Time.deltaTime;
             if(currentTime == 0f)
             {
                 //chnage later...this can only check against first index.... probably will add timer variables to questdetails so multiple quests can be timed at once or make an enum for quest states
                 //Active/Completed/Failed...
                 CheckTimerState(activeQuests[0]);
-                canvasController.EndTimer();
-                
-                
+                canvasController.EndTimer();                           
             }
-            else
-            {
-                //Debug.Log(currentTime);
-            }
+        }
     }
-    }
-
 
     //if playuer doesnt have quest already it creates QuestRuntimeInstance from QuestData and calls StartQuest() in that instance
     public void AcceptQuest(QuestDetails questData,QuestGiver questGiver)
     {
-       // if (hasQuest) { return; }
         if (HasQuestOrCompleted(questData))
         {
             Debug.LogWarning($"Quest '{questData.questName}' already accepted or completed.");
             return;
         }
-
         QuestRuntimeInstance instance = new()
         {
             questData = questData,
-            questID = questData.questID
-            
+            questID = questData.questID            
         };
         instance.StartQuest();
         instance.dialogueComp = questGiver.GetComponent<NPCBase>();
@@ -110,20 +96,15 @@ public class QuestLog : MonoBehaviour
         //canvasController.activeTrackerInstance.SetTracker(instance.questID,currentObjectives[0].objectiveName, currentObjectives[0].objectiveDescription,0);
         UI_HudController.Instance.AddToDoEntry(instance.questID, currentObjectives[0].objectiveDescription,0);
         canvasController.ShowToDoPanel();
-
-
     }
     //updates the quest Objective... call this on quest mechanics or anytime you want to complete an objective... send the objectiveID and number of times completed (usually 1 but can be other if needed)
     //otherwise checks if quest is completed
     public void UpdateQuestObjective(string objectiveID, int amount)
     {
         foreach (var quest in activeQuests.ToList())
-        {
-            
+        {           
                 quest.UpdateObjective(objectiveID, amount);
         }
-
-
     }
 
     //shows the quest notif when an objective is completed
@@ -132,16 +113,11 @@ public class QuestLog : MonoBehaviour
         var obj = quest.GetCurrentObjectives();
         if(objIndex< currentObjectives.Length)
         {
-            //canvasController.ShowTracker();
-            //Call hud to check off or remove previous
             UI_HudController.Instance.CompleteTDEntry(objIndex);
             objIndex++;
             UI_HudController.Instance.AddToDoEntry(quest.questID, currentObjectives[0].objectiveDescription,objIndex);
         }
-        //canvasController.ShowQuestNotif("Objective Complete");
-        //canvasController.activeTrackerInstance.IncrementTrackerIndex();
         CheckForCompletedQuests();
-        Debug.Log($"Quest {quest.questData.questName} objective {objectiveID} progress: {newValue}");
     }
 
     int GetIndex()
@@ -156,14 +132,12 @@ public class QuestLog : MonoBehaviour
         {
             if (activeQuests[i].IsComplete)
             {
-                //canvasController.DestroyTracker();
-                //Add remove from HUD
                 await Task.Delay(1000);
                 canvasController.HideToDoPanel();
                 UI_HudController.Instance.ClearTDList(); // this will need to be adjusted... it'll clear whole list even if multi quests accepted
                 completedQuests.Add(activeQuests[i].questData);
                 canvasController.ShowQuestReward(activeQuests[i].questData);
-                canvasController.activeRewardInstance.SetRewardText(activeQuests[i].GetCachedTrinkets(), activeQuests[i].GetCachedExp(), activeQuests[i].GetItemRewards().ToArray() ) ;
+                canvasController.activeRewardInstance.SetRewardText(activeQuests[i].GetCachedTrinkets(), activeQuests[i].GetItemRewards().ToArray() ) ;
                 activeQuests.RemoveAt(i);
                 canvasController.EndTimer();
                 currentQuestGiver.quests.RemoveAt(0);
@@ -175,13 +149,7 @@ public class QuestLog : MonoBehaviour
             {
                 currentQuestGiver.gameObject.layer = LayerMask.NameToLayer("Dialogue");
                 currentQuestGiver.hasQuest = false;
-                //var comp = currentQuestGiver.GetComponent<QuestGiver>();
-                //Debug.Log(currentQuestGiver.gameObject.layer);
-                //comp.enabled = false;
-                //Destroy(comp);
-
             }
-
         }
     }
 

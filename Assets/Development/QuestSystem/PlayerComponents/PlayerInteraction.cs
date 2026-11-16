@@ -189,9 +189,9 @@ public class PlayerInteraction : MonoBehaviour
             if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, nestLayer))
             {
                 var nestObj = hit.collider.GetComponentInParent<NestBase>();
-                if (nestObj.isActiveNest) { nestObj?.InteractWithNest(); }
                 var nestComp = nestObj.GetComponent<Q_InteractComponent>();
                 if(nestComp != null){ nestComp.InteractWithObjective();}
+                nestObj?.InteractWithNest(); 
             }
 
 

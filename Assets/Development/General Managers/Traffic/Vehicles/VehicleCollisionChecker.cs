@@ -1,43 +1,33 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class VehicleCollisionChecker : MonoBehaviour
 {
     VehicleBase vehicleBase;
-    int type;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private HashSet<VehicleBase> stoppedVehicles = new();
+
+    private void Awake()
     {
-
-
+        vehicleBase = GetComponentInParent<VehicleBase>();
     }
-
-
     private void OnTriggerEnter(Collider other)
     {
-
-        if (other.gameObject.CompareTag("Player") ||
-             other.gameObject.CompareTag("Vehicle") ||
-             other.gameObject.CompareTag("Enemy") ||
-             other.gameObject.CompareTag("NPC"))
-        {
-            vehicleBase = other.GetComponent<VehicleBase>();
-            vehicleBase.isStopped = true;
-            vehicleBase.TriggerCollisions();
-        } 
+        var hitVehicle = other.GetComponentInParent<VehicleBase>();
+        if(hitVehicle == null|| hitVehicle == vehicleBase) { return; }
+        stoppedVehicles.Add(hitVehicle);
+        vehicleBase.SetBlocked(true);
+            
+        
     }
 
     private void OnTriggerExit(Collider other)
     {
-
-        if (other.gameObject.CompareTag("Player") ||
-             other.gameObject.CompareTag("Vehicle") ||
-             other.gameObject.CompareTag("Enemy") ||
-             other.gameObject.CompareTag("NPC"))
+        var hitVehicle = other.GetComponentInParent<VehicleBase>();
+        if (hitVehicle == null || hitVehicle == vehicleBase) { return; }
+        stoppedVehicles.Remove(hitVehicle);
+        if(stoppedVehicles.Count== 0)
         {
-           
-            vehicleBase.MoveVehicleToLocation();
-
-
+            vehicleBase.SetBlocked(false);
         }
     }
 

@@ -131,7 +131,6 @@ public class PlayerGroundMovement : MonoBehaviour
         //if (isFlying) === refactored for PSC - Jacob ===
         if (playerStateController.CurrentState != PlayerState.GroundMove)
             return;
-
         Movement();
 
         if (sprinting)

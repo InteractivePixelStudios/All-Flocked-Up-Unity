@@ -1,7 +1,5 @@
-using NUnit.Framework;
 using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
+
 
 public class TrafficLightChanger : MonoBehaviour
 {
@@ -34,8 +32,7 @@ public class TrafficLightChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetCurrentLightTimer();
-        state = currentLightState;     
+        GetCurrentLightTimer();    
 
     }
 
@@ -44,61 +41,36 @@ public class TrafficLightChanger : MonoBehaviour
         lightTimer = trafficManager.timer;
     }
 
-    public void ChangeLightState(ITrafficInterface state, ETrafficLightState lightState)
+    public void ChangeLightState(ITrafficInterface newState, ETrafficLightState lightState)
     {
         currentState?.ExitTrafficState();
+        currentState = newState;
+        state = lightState;
         currentLightState = lightState;
-        currentState = state;
         SetState(lightState);
-    }
-
-    private void ChangeLightColor(string color)
-    {
-        var lightColor = color;
-        if (lightColor.StartsWith("G"))
-        {
-            greenLight.SetActive(true);
-            yellowLight.SetActive(false);
-            redLight.SetActive(false);
-        }
-        else if (lightColor.StartsWith("Y"))
-        {
-            greenLight.SetActive(false);
-            yellowLight.SetActive(true);
-            redLight.SetActive(false);
-        }
-        else if (lightColor.StartsWith("R"))
-        {
-            greenLight.SetActive(false);
-            yellowLight.SetActive(false);
-            redLight.SetActive(true);
-        }
-
+        currentState?.EnterTrafficState();
     }
 
     public void SetState(ETrafficLightState state)
     {
+        greenLight.SetActive(state == ETrafficLightState.Green);
+        yellowLight.SetActive(state == ETrafficLightState.Yellow);
+        redLight.SetActive(state == ETrafficLightState.Red);
         switch (state)
         {
             case ETrafficLightState.Green:
-                currentState = new GreenState(this);
-                trigger.StartMoveAfterLight();
-                ChangeLightColor("Green");
                 redLightStop = false;
                 trigger.redLightBox.enabled = false;
+                trigger.StartMoveAfterLight();
                 break;
             case ETrafficLightState.Yellow:
-                currentState = new YellowState(this);
-                ChangeLightColor("Yellow");
+
                 break;
             case ETrafficLightState.Red:
-                currentState = new RedState(this);
-                ChangeLightColor("Red");
                 redLightStop = true;
                 trigger.redLightBox.enabled = true;
                 break;
         }
-        currentState.EnterTrafficState();
     }
 
 

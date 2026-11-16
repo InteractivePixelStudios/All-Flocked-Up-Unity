@@ -1,9 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
+
+
 
 public class TrafficManager : MonoBehaviour
 {
@@ -13,12 +11,13 @@ public class TrafficManager : MonoBehaviour
     [SerializeField] private List<Waypoint> waypoints;
     [SerializeField] private List<Waypoint> respawnWaypoints;
     [SerializeField]float respawnDelay = 3f;
+    private int lightIndex = 1;
     int vehicleCache;
     private int lastIndex;
     [SerializeField] private int numberOfCars;
     [SerializeField] private List<VehicleBase> vehicleTypes = new();
     [SerializeField] private List<VehicleBase> vehicles;
-    public float timer;
+    public float timer = 10f;
     [SerializeField] private LayerMask trafficLayer;
 
 
@@ -27,21 +26,16 @@ public class TrafficManager : MonoBehaviour
         InitLights();
         GroupTrafficLights();
         FindWaypoints();
-
         SpawnCarsAtWaypoints();
         await System.Threading.Tasks.Task.Yield();
         foreach (var light in groupALights)
         {
             light.ChangeLightState(new GreenState(light), ETrafficLightState.Green);
         }
-
         foreach (var light in groupBLights)
         {
             light.ChangeLightState(new RedState(light), ETrafficLightState.Red);
         }
-
-
-
     }
 
     // Update is called once per frame
@@ -60,12 +54,9 @@ public class TrafficManager : MonoBehaviour
             {
                 CallSpawnNew();
             }
-                respawnDelay = 3f;
-            
+            respawnDelay = 3f;          
         }
     }
-
-
 
     private void InitLights()
     {
@@ -73,12 +64,10 @@ public class TrafficManager : MonoBehaviour
         trafficLights.AddRange(FindObjectsByType<TrafficLightChanger>());
     }
 
-    private void SetLights()
-    {
-
-    }
     private void FindWaypoints()
     {
+        waypoints.Clear();
+        respawnWaypoints.Clear();
         var waypointsArray = FindObjectsByType<Waypoint>();
         foreach (var waypoint in waypointsArray)
         {
@@ -113,52 +102,62 @@ public class TrafficManager : MonoBehaviour
         trafficLights.Clear();
     }
 
-
-
     public void ChangeGroupALightState(ITrafficInterface state, ETrafficLightState lightState) { 
         foreach(var light in groupALights)
-        {
-          
-            light.ChangeLightState(state,lightState);
-
+        {         
+            light.ChangeLightState(CreateLightState(light,lightState), lightState);
         }
-
-
     }
 
     public void ChangeGroupBLightState(ITrafficInterface state, ETrafficLightState lightState)
     {
         foreach (var light in groupBLights)
         {
-
-            light.ChangeLightState( state, lightState);
+            light.ChangeLightState(CreateLightState(light, lightState),lightState);
         }
     }
 
+    private ITrafficInterface CreateLightState(TrafficLightChanger light, ETrafficLightState state)
+    {
+        return state switch
+        {
+            ETrafficLightState.Green => new GreenState(light),
+            ETrafficLightState.Yellow => new YellowState(light),
+            ETrafficLightState.Red => new RedState(light),
+            _ => null
+
+
+        };
+    }
     private void SwitchLightGroups()
     {
         if (groupALights.Count == 0 || groupBLights.Count == 0)
             return;
-
-        var groupAState = groupALights[0].state;
-        if (groupAState ==ETrafficLightState.Green)
-        {
-            ChangeGroupALightState(new RedState(groupALights[0]), ETrafficLightState.Yellow);
-            ChangeGroupBLightState(new GreenState(groupBLights[0]), ETrafficLightState.Red);
-            timer = 10f;
-        }
-        if (groupAState == ETrafficLightState.Yellow)
-        {
-            ChangeGroupALightState(new RedState(groupALights[0]), ETrafficLightState.Red);
-            ChangeGroupBLightState(new YellowState(groupBLights[0]), ETrafficLightState.Yellow);
-            timer = 10f;
-        }
-        else if (groupAState == ETrafficLightState.Red)
+        if (lightIndex == 0)
         {
             ChangeGroupALightState(new GreenState(groupALights[0]), ETrafficLightState.Green);
             ChangeGroupBLightState(new RedState(groupBLights[0]), ETrafficLightState.Red);
             timer = 10f;
         }
+        else if (lightIndex == 1)
+        {
+            ChangeGroupALightState(new YellowState(groupALights[0]), ETrafficLightState.Yellow);
+            ChangeGroupBLightState(new RedState(groupBLights[0]), ETrafficLightState.Red);
+            timer = 10f;
+        }
+        else if (lightIndex == 2)
+        {
+            ChangeGroupALightState(new RedState(groupALights[0]), ETrafficLightState.Red);
+            ChangeGroupBLightState(new GreenState(groupBLights[0]), ETrafficLightState.Green);
+            timer = 10f;
+        }
+        else if (lightIndex == 3)
+        {
+            ChangeGroupALightState(new RedState(groupALights[0]), ETrafficLightState.Red);
+            ChangeGroupBLightState(new YellowState(groupBLights[0]), ETrafficLightState.Yellow);
+            timer = 10f;
+        }
+        lightIndex = (lightIndex + 1) % 4;
     }
 
     private  void SpawnCarsAtWaypoints()
@@ -166,7 +165,7 @@ public class TrafficManager : MonoBehaviour
         if (waypoints.Count == 0) return;
         List<Waypoint> used = new();
         List<Waypoint> tempList = new(waypoints);
-        for(int i = 0; i < numberOfCars; i++)
+        for(int i = 0; i < numberOfCars && tempList.Count > 0; i++)
         {
             var randomIndex = Random.Range(0, tempList.Count);
             Waypoint spawn = tempList[randomIndex];
@@ -177,27 +176,19 @@ public class TrafficManager : MonoBehaviour
             used.Add(spawn);
             tempList.Remove(spawn);
             car.manager = this;
-            car.MoveVehicleToLocation();
-            if (tempList.Count <= 0) { Debug.Log("tempList empty... no more waypoints?"); }
         }
-
-        //await Task.Yield();
     }
 
     public void RemoveVehicleFromList(VehicleBase vehicle)
     {
         vehicles.Remove(vehicle);
         vehicleCache++;
-       // CallSpawnNew();
     }
 
     private  void CallSpawnNew()
     {
-        //Debug.Log("CallSpawnNew");
-                SpawnNewCar();
-                vehicleCache--;
-            
-        
+        SpawnNewCar();
+        vehicleCache--;                
     }
 
     private void SpawnNewCar()
@@ -206,13 +197,14 @@ public class TrafficManager : MonoBehaviour
 
         while (attempts-- > 0)
         {
+            if (respawnWaypoints.Count == 0 || vehicleTypes.Count == 0) return;
             int randomIndex = Random.Range(0, respawnWaypoints.Count);
             Waypoint spawn = respawnWaypoints[randomIndex];
 
             if (spawn == null || spawn.nextWaypoint == null)
                 continue;
 
-            if (Physics.CheckSphere(spawn.transform.position, 2f, trafficLayer))
+            if (Physics.CheckSphere(spawn.transform.position, 4f, trafficLayer))
                 continue;
             var car = Instantiate(vehicleTypes[Random.Range(0, vehicleTypes.Count)], spawn.transform.position, spawn.transform.rotation);
             vehicles.Add(car);
@@ -220,10 +212,7 @@ public class TrafficManager : MonoBehaviour
             //car.transform.position = waypoint.transform.position;
             car.currentNode = spawn.nextWaypoint;
             car.manager = this;
-            car.MoveVehicleToLocation();
             return;
         }
-
-    }
-    
+    }    
 }

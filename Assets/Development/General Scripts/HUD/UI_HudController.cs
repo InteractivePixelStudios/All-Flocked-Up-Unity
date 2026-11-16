@@ -205,7 +205,6 @@ public class UI_HudController : Singleton<UI_HudController>
         if(currentStamina != staminaComp.GetCurrentStamina()) { currentStamina = staminaComp.GetCurrentStamina(); UpdateStamina(); }
         if (currentPoop != poopComp.GetCurrentPoop()) { currentPoop = poopComp.GetCurrentPoop(); UpdatePoop(); }
         if(!currentPoopSprite.Equals(currentPoopType.hudSprite)) { GetPoopType(); UpdatePoopTypeSprite(currentPoopType); }
-
         if (isWarningShown)
         {
             currentTime -= Time.deltaTime;
@@ -281,18 +280,6 @@ public class UI_HudController : Singleton<UI_HudController>
         currentTime = hawkTimer;
         warningObj?.SetActive(false);
     }
-
-    //public void ShowLevelUpIcon()
-    //{
-
-    //    iconTimer = visibleTime + fadeTimer;
-
-    //    var color = levelUpIcon.color;
-    //    color.a = 1f;
-    //    levelUpIcon.color = color;
-
-    //}
-
     private void OnLevelWasLoaded(int level)
     {
         InitHUD();

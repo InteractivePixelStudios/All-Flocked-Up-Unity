@@ -110,7 +110,6 @@ public class PlayerSaveLoadHandler : MonoBehaviour
             player.GetComponent<PlayerHealth>().currentHealth = pendingData.health;
             player.GetComponent<StaminaSystem>().SetMaxStamina(pendingData.stamina);
             player.GetComponent<PoopSystem>().SetMaxPoop(pendingData.poop);
-           // player.GetComponent<EXPSystem>().GiveLevels(pendingData.level);
             player.GetComponent<QuestLog>().activeQuests = pendingData.activeQuests;
             player.GetComponent<QuestLog>().completedQuests = pendingData.completedQuests;
             FindAnyObjectByType<RaceBase>().completedRaces = pendingData.completedRaces;
