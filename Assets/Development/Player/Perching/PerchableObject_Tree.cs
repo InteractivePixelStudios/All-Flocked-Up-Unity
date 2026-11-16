@@ -17,17 +17,12 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
     [SerializeField] private SphereCollider hideColliders;
     [SerializeField] private bool isPromptShown;
     [SerializeField] IconToggle icon;
-
-  
-
     void Update()
     {
-
         if (playerRef != null && isPerching)
         {
             if (jumpCheck)
             {
-                Debug.Log("Called" + jumpCheck);
                 StopPerch();
                 playerRef.GetComponent<Rigidbody>().linearVelocity = new Vector3(1, 1, 0);
             }
@@ -40,7 +35,7 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
     {
         playerRef = player;
         perchComp = playerRef.GetComponent<PlayerPerchSystem>();
-                    playerRef.GetComponentInChildren<IconToggle>().ShowIcon();
+        playerRef.GetComponentInChildren<IconToggle>().ShowIcon();
     }
 
     public void StartPerch()
@@ -71,7 +66,6 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
 
     public void MovePosition(float x)
     {
-
         if (x>0)
         {
             currentIndex++;
@@ -86,19 +80,14 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
         }
     }
 
-
     protected void ToggleMeshCollidersOn()
     {
-
-        hideColliders.GetComponent<SphereCollider>().isTrigger = true;
-        
+        hideColliders.GetComponent<SphereCollider>().isTrigger = true;   
     }
 
     protected void ToggleMeshCollidersOff()
     {
-
-        hideColliders.GetComponent<SphereCollider>().isTrigger = false;
-        
+        hideColliders.GetComponent<SphereCollider>().isTrigger = false;        
     }
 
    void OnTriggerEnter(Collider perchSphere)
@@ -113,13 +102,9 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
                     icon = playerRef.GetComponentInChildren<IconToggle>();
                     icon.ShowIcon();
                 }
-
             }
-
         }
     }
-
-
 
     void OnTriggerExit(Collider perchSphere)
     {
@@ -129,9 +114,7 @@ public class PerchableObject_Tree : MonoBehaviour, I_Perchable
             if (playerRef != null)
             {
                 playerRef = null;
-                perchComp = null;
-                
-
+                perchComp = null;               
             }
         }
     }

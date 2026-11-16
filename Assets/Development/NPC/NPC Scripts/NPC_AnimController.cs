@@ -8,8 +8,6 @@ public class NPC_AnimController : MonoBehaviour
     [SerializeField] private Animator playerAnimator;
     [SerializeField] private CPURacer groundMoveComp;
     [SerializeField] private GroundCheck groundCheckComp;
-
-
     [Header("Parameters")]
     private bool flapUp => groundMoveComp.GetFlapUp();
     private bool isDiving => groundMoveComp.GetIsDiving();
@@ -20,15 +18,12 @@ public class NPC_AnimController : MonoBehaviour
     private bool isJumping => groundMoveComp.GetIsJumping();
     private bool isSlowFlap => groundMoveComp.GetIsSlowFlap();
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerAnimator = GetComponentInChildren<Animator>();
         groundMoveComp = GetComponent<CPURacer>();
-
     }
 
-    // Update is called once per frame
     void Update()
     {
         ToggleIsGrounded();
@@ -45,8 +40,6 @@ public class NPC_AnimController : MonoBehaviour
     {
         return forwardSpeed;
     }
-
-
 
     private bool GetIsFlying()
     {
@@ -68,12 +61,9 @@ public class NPC_AnimController : MonoBehaviour
         playerAnimator.SetBool("isJumping", GetIsJumping());
     }
 
-
-
     private bool GetIsGrounded()
     {
         return isGrounded;
-
     }
 
     private void ToggleIsGrounded()
@@ -94,15 +84,12 @@ public class NPC_AnimController : MonoBehaviour
     private bool GetIsSlowFlap()
     {
         return isSlowFlap;
-
     }
 
     private void ToggleSlowFlap()
     {
         playerAnimator.SetBool("isSlowFlap", GetIsSlowFlap());
     }
-
-
 
     private bool GetFlapTrigger()
     {
@@ -123,8 +110,6 @@ public class NPC_AnimController : MonoBehaviour
     {
         playerAnimator.SetBool("isDiving", GetDiveTrigger());
     }
-
-
 }
 
 

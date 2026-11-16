@@ -33,9 +33,7 @@ public class RespawnController : MonoBehaviour
         respawnNests = FindObjectsByType<NestBase>();
         respawnButton.onClick.AddListener(RespawnPlayer);
         respawnText.SetText("HOME");
-
     }
-
 
     public void RespawnPlayer()
     {

@@ -12,11 +12,9 @@ public class CameraController : Singleton<CameraController>
     Pooper playerPoop;
     [SerializeField]
     float cameraDistanceFromPlayer = 10; // Distance we want the player from camera (later to be used for zooming in/out)
-
     InputAction lookAction; // Action for mouse input
     float x, y; // Mouse input values
     private float lookSens = 1f;
-
     void Start()
     {
         player = FindAnyObjectByType<PlayerFlightMovement>().transform;
@@ -29,18 +27,11 @@ public class CameraController : Singleton<CameraController>
     }
 
     void LateUpdate()
-    {
-        
+    {       
         if (playerState.CurrentState == PlayerState.PhotoMode)
         {
             return; // Don't do camera movement in photo mode
         }
-        //if (playerPoop.GetIsAiming())
-        //{
-        //    transform.rotation = Quaternion.Lerp(player.transform.rotation, Quaternion.Euler(90, 0, 0), Time.deltaTime * transitionSpeed);
-        //}
-
-        
         if (watchPlayer && player != null)
         {
             // Follow player
@@ -77,10 +68,8 @@ public class CameraController : Singleton<CameraController>
     void CameraMovement()
     {
         Vector3 tempPos = transform.forward * -cameraDistanceFromPlayer;
-
         tempPos -= transform.right * x * (Time.deltaTime /4);
         tempPos -= transform.up * y * (Time.deltaTime/4);
-
         transform.position = player.transform.position + tempPos;
         transform.LookAt(player);
     }

@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 
 public class DebugManager : MonoBehaviour
 {
@@ -12,11 +10,9 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private int trinkets;
     [SerializeField] private float stealth;
     [SerializeField] private int poop;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         playerRef = FindAnyObjectByType<PlayerGroundMovement>().gameObject;
-
     }
 
     public void ToggleMaxStamina(bool enable)
@@ -41,23 +37,8 @@ public class DebugManager : MonoBehaviour
 
     }
 
-    public void GivePlayerLevel()
-    {
-        var comp = playerRef.GetComponent<EXPSystem>();
-        currentLevel= comp.PLAYERLEVEL;
-        
-
-
-    }
-
-    public void GivePlayerMaxLevel()
-    {
-
-    }
-
     public void ToggleMaxPoop()
     {
 
     }
-
 }

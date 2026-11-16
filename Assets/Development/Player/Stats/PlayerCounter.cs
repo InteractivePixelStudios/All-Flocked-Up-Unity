@@ -17,7 +17,6 @@ public class PlayerCounter :  Counters
         local_deaths = deaths;
         local_flaps = flaps;
         local_timesPooped = timesPooped;
-        Debug.Log("GetStats");
     }
 
     void UpdateDictionary()
@@ -26,13 +25,10 @@ public class PlayerCounter :  Counters
         countersToSend.Add("Deaths",local_deaths);
         countersToSend.Add("Flaps", local_flaps);
         countersToSend.Add("Times Pooped", local_timesPooped);
-        Debug.Log("UpdateDict");
-
     }
     
     public Dictionary<string,int> SendStats()
     {
-        Debug.Log("SendDict");
         UpdateDictionary();
         return countersToSend;
     }

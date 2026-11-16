@@ -22,7 +22,6 @@ public class PlayerHealth : MonoBehaviour
     public Rigidbody rb;
     private RagdollController ragdoll;
     [SerializeField]UI_CanvasController canvasController;
-
     AnimController animController;
 
     void Start()

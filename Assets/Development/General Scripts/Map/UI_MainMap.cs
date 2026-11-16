@@ -1,11 +1,7 @@
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
-using UnityEngine.InputSystem;
-using System;
 
 public class UI_MainMap : MonoBehaviour
 {
@@ -13,7 +9,6 @@ public class UI_MainMap : MonoBehaviour
     [SerializeField] private GameObject[] markerOverlays;
     [SerializeField] private GameObject markerIconPrefab;
     [SerializeField] private Image bgImage;
-
     private void Start()
     {
         SwitchMapImage();
@@ -45,5 +40,4 @@ public class UI_MainMap : MonoBehaviour
     {
        
     }
-
 }

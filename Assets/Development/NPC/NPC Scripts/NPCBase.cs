@@ -4,7 +4,6 @@ using UnityEngine.AI;
 
 public class NPCBase: MonoBehaviour, I_NPCInterface
 {
-
     public Transform targetLocation;
     [SerializeField] private NavMeshAgent navAgentComponent;
     public bool isMoving=false;
@@ -22,10 +21,8 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
 
     public void SetReadyToWarp(bool value)
     {
-        Debug.Log("readytowarp Set");
         readyToWarp = value;
     }
-
     public void SetIsWaiting(bool value)
     {
         isWaiting = value;
@@ -40,12 +37,6 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     {
         return questGiverComp.hasQuest;
     }
-    //on load
-    public void Awake()
-    {
-
-    }
-    //on start
     public void Start()
     {
         navAgentComponent = GetComponent<NavMeshAgent>();
@@ -66,7 +57,6 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         }
         if (dialogueFirst == false&& questGiverComp == null && !isWaiting &&!isMoving) //no quest giver... no dialogue...not waiting...for Racegiver
         {
-            //questIcon.enabled = false;
             targetLocation = homeLocation.transform;
             isMoving = true;
             return;
@@ -80,9 +70,7 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
                 isMoving = true;
                 return;
             }
-
         }
-
     }  
     
     public void LoadData(NPCBase npc)
@@ -95,13 +83,11 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         transform.position = npc.transform.position;
         transform.rotation = npc.transform.rotation;
     }
-
     //use this to add "Look at" effects like a prompt or something
     public void LookAtNPC()
     {
 
     }
-
     //called from PlayerInteraction... opens and prints dialogue
     public void InteractWithNPCDialogue()
     {
@@ -114,19 +100,10 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
         }
         else
         {
-
             dialogue.isRetrigger = false;
             dialogue.PrintDialogue(dialogueStartLineID[index]);
             index++;
-
-            //if (index >= dialogueStartLineID.Count)
-            //{
-            //    dialogue.isRetrigger = true;
-            //   index = 0;
-            //}
         }
-
-
     }
 
     //sets the NPC move-to location
@@ -139,7 +116,6 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     {
         homeLocation = home;
     }
-
     //call this to run like wind
     public void MoveToLocation()
     {
@@ -163,7 +139,4 @@ public class NPCBase: MonoBehaviour, I_NPCInterface
     {
 
     }
-
-
-
 }

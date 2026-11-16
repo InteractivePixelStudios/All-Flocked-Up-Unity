@@ -15,7 +15,6 @@ public class WingventoryCanvas : MonoBehaviour
     [SerializeField] private GameObject centerCanvas;
     [SerializeField] private GameObject leftCanvas;
     [SerializeField] private GameObject rightCanvas;
-
     [Header("Buttons")]
     [SerializeField] private Button leftPageButton;
     [SerializeField] private Button rightPageButton;
@@ -25,7 +24,6 @@ public class WingventoryCanvas : MonoBehaviour
     [SerializeField] private Button questPanelButton;
     [SerializeField] private Button mapPanelButton;
     [SerializeField] private Button cameraButton;
-
     [Header("Inv/Accessory")]
     [SerializeField] private PlayerWingventory playerWingventory;
     public Dictionary<string, int> playerInvItems = new();
@@ -46,23 +44,18 @@ public class WingventoryCanvas : MonoBehaviour
     public Dictionary<UI_ItemButton, int> currentItemButtons = new();
     [SerializeField] private ScrollRect invBox;
     [SerializeField]private List<ScrollRect> itemBoxes = new();
-
     [Header("QuestRef")]
     [SerializeField] private QuestLog questLog;
     [SerializeField] private TextMeshProUGUI questObjText;
-
     [SerializeField] ScreenshotCameraController screenshotController;
     private InputAction closeAction;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         questLog = FindAnyObjectByType<QuestLog>();
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         playerWingventory = FindAnyObjectByType<PlayerWingventory>();
-        screenshotController = FindAnyObjectByType<ScreenshotCameraController>();
-        
+        screenshotController = FindAnyObjectByType<ScreenshotCameraController>();     
         GetTrinketCount();
         GetItemBoxes();
         leftBackPageButton.onClick.AddListener(GoCenterPage);
@@ -80,23 +73,17 @@ public class WingventoryCanvas : MonoBehaviour
         SetObjectiveText();
         GetPlayerInv();
         SpawnItemButton();
-        Time.timeScale = 0;
-        
+        Time.timeScale = 0;      
         closeAction = InputSystem.actions.FindAction("UI/Inventory");
-        if (closeAction != null)
-            closeAction.performed += OnCloseKey;
-
+        if (closeAction != null) closeAction.performed += OnCloseKey;
     }
 
     private void OnDestroy()
     {
         Time.timeScale = 1;
-        if (closeAction != null)
-            closeAction.performed -= OnCloseKey;
-
+        if (closeAction != null)closeAction.performed -= OnCloseKey;
         var interaction = FindAnyObjectByType<PlayerInteraction>();
-        if(interaction != null)
-            interaction.SetIsWingventoryOpen(false);
+        if(interaction != null) interaction.SetIsWingventoryOpen(false);
     }
 
     private void GoLeftPage()
@@ -118,7 +105,6 @@ public class WingventoryCanvas : MonoBehaviour
         centerCanvas.SetActive(true);
         leftCanvas.SetActive(false);
         rightCanvas.SetActive(false);
-        Debug.Log("CenterPage");
     }
     private void OnCloseKey(InputAction.CallbackContext context) => CloseWingventory();
     private void CloseWingventory()
@@ -130,7 +116,7 @@ public class WingventoryCanvas : MonoBehaviour
     private int GetTrinketCount()
     {
         int trinketCount= playerWingventory.playerTrinketQuantity;
-            return trinketCount;
+        return trinketCount;
     }
 
     private int GetKeychainCount()
@@ -178,14 +164,12 @@ public class WingventoryCanvas : MonoBehaviour
             invParent.SetActive(false);
             mapParent.SetActive(false);
             questParent.SetActive(true);
-            Debug.Log("QuestOpen");
         }
         else
         {
             invParent.SetActive(true);
             mapParent.SetActive(false);
             questParent.SetActive(false);
-            Debug.Log("QuestClosed");
         }
     }
 
@@ -219,8 +203,6 @@ public class WingventoryCanvas : MonoBehaviour
             else return null;
         }
         else return null;
-
-
     }
 
     private void GetItemBoxes()
@@ -264,31 +246,21 @@ public class WingventoryCanvas : MonoBehaviour
 
     public void RemoveItemFromInv(UI_ItemButton button)
     {
-
             Destroy(button);
             if (currentItemButtons.ContainsKey(button))
             {
                 currentItemButtons.Remove(button);
-                Debug.Log("Removed from dictionary");
-
             }
-
     }
-
     void OpenCamera()
     {
-        
-        //switched the order of these two first. Good practice to have script clean up its own state first then call out to other systems.
         CloseWingventory();
-        screenshotController.CallEnterPhotoMode();
-        
+        screenshotController.CallEnterPhotoMode();      
     }
 
     void CloseCamera()
     {
-        
-        //uncertain if we will need this from the inventory - Jacob
-        //screenshotController.CallExitPhotoMode();
+
     }
 
 

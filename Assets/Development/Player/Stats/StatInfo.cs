@@ -10,7 +10,6 @@ public class StatInfo
     {
         Health, Stamina, Stealth, Speed, PoopAmount, StunDuration
     }
-
     public float GetStat(stats stat)
     {
         switch (stat)
@@ -28,7 +27,6 @@ public class StatInfo
             case stats.StunDuration:
                 return stunDuration;
         }
-
         return 0;
     }
 

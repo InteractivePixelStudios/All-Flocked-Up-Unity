@@ -19,11 +19,6 @@ public class PlayerStealthSystem : MonoBehaviour
     public float maxTimer;
     public const float maxTimerBase = 30f;
     [SerializeField] InputAction crouchAction;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        //currentStealth = baseStealth;
-    }
 
     public int GetStealth()
     {
@@ -34,7 +29,7 @@ public class PlayerStealthSystem : MonoBehaviour
     {
         return isStealthToggled;
     }
-    // Update is called once per frame
+
     void Update()
     {
         if (isTimedBonus)
@@ -47,14 +42,10 @@ public class PlayerStealthSystem : MonoBehaviour
             }
             else { isStealthToggled = false; }
         }
-        {
-            
-        }
         if (isStealthToggled && !isActivated)
         {
             isActivated = true;
             GiveStealthAttribute(radiusModifier,stealthModifier);
-            Debug.Log("Toggled");
         }
         else if (!isStealthToggled && isActivated) { isActivated = false; RemoveStealthAttribute(radiusModifier, stealthModifier); Debug.Log("ToggleOFF"); }
         else return;
@@ -72,10 +63,8 @@ public class PlayerStealthSystem : MonoBehaviour
 
     private void IncreaseModifier(int modifier)
     {
-        Debug.Log("IncModCalled");
         if (stealthModifier != currentStealth)
         {
-            Debug.Log(stealthModifier + "+" + modifier + "+" + currentStealth );
             stealthModifier += modifier;
             SetStealth(stealthModifier);
         }
@@ -85,15 +74,12 @@ public class PlayerStealthSystem : MonoBehaviour
 
     private void DecreaseModifier(int modifier)
     {
-        Debug.Log("DecModCalled");
         if (stealthModifier == modifier)
         {
-            Debug.Log(stealthModifier + "+" + modifier + "+" + currentStealth);
             stealthModifier -= modifier;
             SetStealth(stealthModifier);
         }
         else return;
-
     }
 
     private void GainStealth(int modifier)
@@ -142,10 +128,7 @@ public class PlayerStealthSystem : MonoBehaviour
             GainStealth(stealthMod);
             //IncreaseModifier(stealthMod);
             IncreaseRadius(radModifier);
-            Debug.Log("GiveCalled");
         }
-
-
     }
 
     private void RemoveStealthAttribute(float radModifier,int stealthMod)
@@ -155,9 +138,7 @@ public class PlayerStealthSystem : MonoBehaviour
             LoseStealth(stealthMod);
             //DecreaseModifier(stealthMod);
             DecreaseRadius(radModifier);
-            Debug.Log("RemoveCalled");
         }
-
     }
 
     public void TimedStealthBonus(int bonus, float time)

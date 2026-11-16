@@ -1,11 +1,8 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Splines.Interpolators;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.Localization;
-using System;
 
 public class UI_HudController : Singleton<UI_HudController>
 {
@@ -15,16 +12,13 @@ public class UI_HudController : Singleton<UI_HudController>
     [SerializeField] private float currentTime;
     [SerializeField] private bool isWarningShown;
     public bool readyToSpawn;
-
     [SerializeField] private GameObject warningObj;
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private Image warningImage;
-
     [SerializeField] private List<Sprite> healthImages = new();
     [SerializeField] private Image shownHealthImage;
     [SerializeField] private Image staminaBarImage;
     [SerializeField] private Image poopBarImage;
-
     [SerializeField] private PlayerHealth healthComp;
     private float health => playerStats.GetStat(StatInfo.stats.Health);
     [SerializeField] private float currentHealth;
@@ -37,24 +31,15 @@ public class UI_HudController : Singleton<UI_HudController>
     private float poop => playerStats.GetStat(StatInfo.stats.PoopAmount);
     [SerializeField] private float currentPoop;
     [SerializeField] private float startPoop;
-
-
     [SerializeField] private Pooper pooperComp;
     [SerializeField] private PoopType currentPoopType;
     [SerializeField] private List<Sprite> poopTypeSprites = new();
     [SerializeField] private Image currentPoopSprite;
-
-
-    //[SerializeField] private Image levelUpIcon;
-    //[SerializeField] private EXPSystem expComp;
-   // [SerializeField] private int cachedLevel;
     float iconTimer = 5f;
     float fadeTimer = 2f;
     float visibleTime = 2f;
-
     [SerializeField] private GameObject hideSeekIcon;
     [SerializeField] private TextMeshProUGUI hideSeekFoundCount;
-
     [SerializeField] private GameObject mainPanel;
     [SerializeField] private GameObject camPanel;
     [SerializeField] private GameObject reticle;
@@ -64,12 +49,8 @@ public class UI_HudController : Singleton<UI_HudController>
     [SerializeField] private GameObject toDoEntry;
     [SerializeField] private List<GameObject> entryList = new();
 
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
         InitHUD();
     }
 
@@ -79,8 +60,6 @@ public class UI_HudController : Singleton<UI_HudController>
         playerRef = FindAnyObjectByType<PlayerHealth>().gameObject;
         healthComp = playerRef.GetComponent<PlayerHealth>();
         staminaComp = playerRef.GetComponent<StaminaSystem>();
-        //expComp = playerRef.GetComponent<EXPSystem>();
-        //cachedLevel = expComp.PLAYERLEVEL;
         poopComp = playerRef.GetComponent<PoopSystem>();
         pooperComp = playerRef.GetComponent<Pooper>();
         startHealth = healthComp.maxHealth;
@@ -90,7 +69,6 @@ public class UI_HudController : Singleton<UI_HudController>
         startPoop = poopComp.GetMaxPoop();
         currentPoop = poopComp.GetCurrentPoop();
         UpdateHealth();
-     //   HideIcon();
         HideReticle();
         HideToDoPanel();
         GetPoopType();
@@ -175,7 +153,6 @@ public class UI_HudController : Singleton<UI_HudController>
             TableEntryReference = questID + "_ObjDesc_" + index
         };
         objDesc.StringChanged += desc => entry.GetComponentInChildren<TextMeshProUGUI>().SetText(desc);
-
     }
 
     public void CompleteTDEntry(int taskIndex)
@@ -191,14 +168,6 @@ public class UI_HudController : Singleton<UI_HudController>
         }
     }
 
-    //void HideIcon()
-    //{
-    //    var color = levelUpIcon.color;
-    //    color.a = 0f;
-    //    levelUpIcon.color = color;
-    //}
-
-    // Update is called once per frame
     void Update()
     {
         if (currentHealth !=  healthComp.currentHealth) { currentHealth = healthComp.currentHealth; UpdateHealth(); } 
@@ -216,11 +185,9 @@ public class UI_HudController : Singleton<UI_HudController>
             {
                 readyToSpawn = true;
                 timerText.SetText("!");
-
             }
             else
             {
-
                 readyToSpawn = false;
                 ShowHawkWarning();
             }
@@ -229,7 +196,6 @@ public class UI_HudController : Singleton<UI_HudController>
 
     private void UpdateHealth()
     {
-
         if(currentHealth == startHealth)
         {
             shownHealthImage.sprite = healthImages[0];
@@ -254,8 +220,6 @@ public class UI_HudController : Singleton<UI_HudController>
         {
             shownHealthImage.sprite = healthImages[5];
         }
-
-
     }
 
     private void UpdateStamina()

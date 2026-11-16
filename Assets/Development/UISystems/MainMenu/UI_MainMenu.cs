@@ -58,11 +58,8 @@ public class UI_MainMenu : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(obj);
     }
-
-
     private void Update()
     {
-
         if (lang == null && !firstSelected)
         {
             if (Gamepad.current != null)
@@ -150,8 +147,6 @@ public class UI_MainMenu : MonoBehaviour
         }
         SceneManager.LoadScene("TutorialIsland");
         RemoveAllListeners();
-
-
     }
 
     protected void CheckForSavedGame()

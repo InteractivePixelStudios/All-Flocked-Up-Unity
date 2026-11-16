@@ -14,15 +14,13 @@ public class PlayerPeckComponent : MonoBehaviour
     public async void Peck()
     {
         if(player.GetIsFlying()) return; 
-            isPecking = true;
+        isPecking = true;
         await Task.Delay(50);
-             isPecking = false;
-        
+        isPecking = false;   
     }
 
     public bool GetIsPecking()
     {
         return isPecking;
     }
-
 }

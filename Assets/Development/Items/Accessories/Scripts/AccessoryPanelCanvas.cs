@@ -11,13 +11,11 @@ public class AccessoryPanelCanvas : MonoBehaviour
     [SerializeField] private Button breadButton;
     [SerializeField] private Button roseButton;
     [SerializeField] private Button recieptButton;
-
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] TextMeshProUGUI descText;
-
     [SerializeField] private Button closeButton;
     [SerializeField] private PlayerAccessoryComponent accessoryComponent;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         accessoryComponent = FindAnyObjectByType<PlayerAccessoryComponent>();
@@ -43,7 +41,6 @@ public class AccessoryPanelCanvas : MonoBehaviour
         descText.gameObject.SetActive(true);
         nameText.SetText(name);
         descText.SetText(desc);
-        Debug.Log(name + " + " + desc);
     }
 
     private void CloseAccessoryPanel()

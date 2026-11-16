@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class StaminaSystem : MonoBehaviour
@@ -17,14 +16,12 @@ public class StaminaSystem : MonoBehaviour
 
     public float GetMaxStamina() {  return MaxStamina; }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentStamina = MaxStamina;
         flightComp = GetComponent<PlayerGroundMovement>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (regenStamina && !flightComp.GetIsFlying())
@@ -55,7 +52,6 @@ public class StaminaSystem : MonoBehaviour
             currentStamina = 0;
             return false;
         }
-
     }
 
     public float GetCurrentStamina()

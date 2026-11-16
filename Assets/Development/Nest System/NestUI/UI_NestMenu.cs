@@ -31,19 +31,15 @@ public class UI_NestMenu : MonoBehaviour
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private GameObject skinPanel;
     [SerializeField] private GameObject statsPanel;
-    [SerializeField] private GameObject scrapbookPanel;
-    
+    [SerializeField] private GameObject scrapbookPanel;  
     [Header("Components")]
     public UI_CanvasController canvasController;
     public PlayerCounter playerStats;
-
     [Header("Counters")]
     [SerializeField] private Dictionary<string, int> counterDictionary = new();
     [SerializeField] private RectTransform statBox;
     [SerializeField] private CounterTextBox counterTextPrefab;
     private List<CounterTextBox> statTextPrefabs = new();
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
     {
@@ -68,8 +64,6 @@ public class UI_NestMenu : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(shopButton.gameObject);
         }
         else return;
-
-
     }
 
     private void CloseNestMenu()
@@ -144,7 +138,6 @@ public class UI_NestMenu : MonoBehaviour
     void GetStats()
     {
         counterDictionary = playerStats.SendStats();
-        Debug.Log("MenuGotStats");
     }
 
     void UpdateStats()
@@ -154,15 +147,12 @@ public class UI_NestMenu : MonoBehaviour
             Destroy(stat.gameObject);
         }
         foreach(var item in counterDictionary)
-        {
-            
+        {            
             var text =Instantiate(counterTextPrefab);
             text.transform.SetParent(statBox, false);
             text.statName = item.Key;
             text.statNumber = item.Value;
             statTextPrefabs.Add(text);
-            Debug.Log(item.Key + item.Value);
-
         }
     }
 }

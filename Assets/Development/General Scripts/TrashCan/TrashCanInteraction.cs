@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-
 enum CanState {Full, InUse, Empty}
 
 public class TrashCanInteraction : MonoBehaviour
@@ -13,13 +12,11 @@ public class TrashCanInteraction : MonoBehaviour
     [SerializeField] List<ConsumableBase> consumableList = new();
     [SerializeField] private int itemsRemain;
     [SerializeField] private float shootForce;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         TryGetComponent<Q_SearchTrash>(out questComp);
         TryGetComponent<InteractionPrompt>(out prompt);
     }
-
 
     public void InteractWithTrashCan()
     {
@@ -31,7 +28,6 @@ public class TrashCanInteraction : MonoBehaviour
         if (questComp != null)
         {
             questComp.SearchTrash();
-            Debug.Log("CompActive");
         }
         looted = true;
         ToggleParticles(looted);
@@ -57,7 +53,6 @@ public class TrashCanInteraction : MonoBehaviour
         else trashParticles.Play();
     }
 
-
     private void GiveReward()
     {
         for(int i = itemsRemain; i>0;i--)
@@ -66,7 +61,5 @@ public class TrashCanInteraction : MonoBehaviour
             var spawned = Instantiate(consumableList[rand],transform.position,transform.rotation);
             spawned.GetComponent<Rigidbody>().AddForce(Vector3.up * shootForce + Vector3.forward, ForceMode.Impulse) ;
         }
-    }
-
-    
+    }   
 }

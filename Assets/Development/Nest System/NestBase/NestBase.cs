@@ -11,9 +11,6 @@ public class NestBase : MonoBehaviour
     private UI_CanvasController canvasController;
     [SerializeField] Material baseMaterial;
     [SerializeField] Material distanceMaterial;
-
-
-
     public void InteractWithNest()
     {
         if (!isActiveNest)
@@ -29,9 +26,7 @@ public class NestBase : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             playerRef = other.gameObject;
-
         }
-
     }
 
     private void SpawnVFX()
@@ -51,5 +46,4 @@ public class NestBase : MonoBehaviour
             canvasController.OpenNestMenu();
         }
     }
-
 }

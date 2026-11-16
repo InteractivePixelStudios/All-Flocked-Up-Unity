@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace PigeonCore
 {
-
     public static class GameCore
     {
         public static bool EnableDebug = 
@@ -63,14 +62,12 @@ namespace PigeonCore
             return $"<b><color = {hexColor}>{log}</b>";
 
         } 
-
         public static bool GetIsFlying()
         {
             var comp = GameObject.FindGameObjectWithTag("Player");
             //uncomment and remove above var after sebastian pushes flight changes
             //var comp = GameObject.FindFirstObjectByType<PlayerFlightMovement>().isFlying;
             return comp;
-        }
-        
+        }       
     }
 }

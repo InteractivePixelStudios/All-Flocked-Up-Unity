@@ -13,7 +13,6 @@ public class UI_ItemButton : MonoBehaviour
     [SerializeField] private Button useButton;
     [SerializeField] private Button dropButton;
     public string itemRef;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         itemButton = GetComponent<Button>();
@@ -30,12 +29,6 @@ public class UI_ItemButton : MonoBehaviour
         wingUI = UI;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void SetWingRef(PlayerWingventory wing)
     {
         wingventory = wing;
@@ -45,14 +38,12 @@ public class UI_ItemButton : MonoBehaviour
     {
         useButton.gameObject.SetActive(true);
         dropButton.gameObject.SetActive(true);
-
     }
 
     private void HideOptions()
     {
         useButton.gameObject.SetActive(false);
         dropButton.gameObject.SetActive(false);
-
     }
 
     private void UseConsumeItem()
@@ -73,6 +64,5 @@ public class UI_ItemButton : MonoBehaviour
             wingUI.RemoveItemFromInv(this);
             Destroy(this.gameObject);
         }
-
     }
 }

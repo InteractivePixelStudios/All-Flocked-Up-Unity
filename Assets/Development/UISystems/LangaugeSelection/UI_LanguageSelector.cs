@@ -11,15 +11,13 @@ public class UI_LanguageSelector : MonoBehaviour
     [SerializeField] private Button confirmButton;
     [SerializeField] private LocalizationSettings settings;
     [SerializeField] private UI_CanvasController canvasController;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         canvasController = FindAnyObjectByType<UI_CanvasController>();
         Init();
         confirmButton.onClick.AddListener(DestroyCanvas);
-        //EventSystem.current.SetSelectedGameObject(confirmButton.gameObject);
     }
-
 
     async void Init()
     {

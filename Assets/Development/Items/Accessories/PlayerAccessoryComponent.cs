@@ -13,26 +13,17 @@ public class PlayerAccessoryComponent : MonoBehaviour
     public string currentItemName => currentItem.GetName();
     public string currentItemDesc =>currentItem.GetDescription();
     [SerializeField] protected Vector3 accessoryOffset;
-
     [SerializeField] protected GameObject headSlot;
     [SerializeField] protected GameObject neckSlot;
     [SerializeField] protected GameObject monocleSlot;
 
-    private void Start()
-    {
-
-
-    }
-
     public string SendItemName()
     {
-        Debug.Log("Called");
         return currentItemName;
     }
 
     public string SendItemDesc()
     {
-        Debug.Log("DescCalled");
         return currentItemDesc;
     }
     public void EquipAccessory(AccessoryBase accessory, bool isEquip, EAccessoryItems state, GameObject slot)
@@ -43,9 +34,7 @@ public class PlayerAccessoryComponent : MonoBehaviour
         currentItem.transform.SetParent(slot.transform, false);
         currentItem.transform.position = slot.transform.position;
         currentItem.transform.rotation = slot.transform.rotation;
-        currentEquippedAccessories.Add(currentItem);
-        
-        
+        currentEquippedAccessories.Add(currentItem);          
     }
 
     public void RemoveAccessory(AccessoryBase accessory, bool isEquip)
@@ -83,5 +72,4 @@ public class PlayerAccessoryComponent : MonoBehaviour
                 break;
         }
     }
-
 }

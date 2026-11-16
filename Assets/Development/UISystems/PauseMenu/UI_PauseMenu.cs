@@ -18,12 +18,8 @@ public class UI_PauseMenu : MonoBehaviour
     [SerializeField] protected GameObject currentSaveWindow;
     [SerializeField] private RectTransform scrollPanel;
 
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
         controlsCanvas.SetActive(false);
         continueButton.onClick.AddListener(Unpause);
         settingsButton.onClick.AddListener(OnSettingsOpen);
@@ -31,13 +27,11 @@ public class UI_PauseMenu : MonoBehaviour
         saveQuitButton.onClick.AddListener(OnQuit);
         EventSystem.current.SetSelectedGameObject(continueButton.gameObject);
         settingsCanvas.GetComponent<UI_SettingsMenu>().parent = this.gameObject;
-
     }
     public void Unpause()
     {
         var controller = FindAnyObjectByType<UI_CanvasController>();
         controller.ResumeGame();
-
     }
 
     public virtual void OnSettingsOpen()
@@ -45,19 +39,12 @@ public class UI_PauseMenu : MonoBehaviour
         if (!settingsOpen)
         {
             settingsOpen = true;
-            //mainCanvas.SetActive(false);
-            //settingsCanvas.SetActive(true);
             settingsCanvas.GetComponent<UI_SettingsMenu>().SetFirstSettingsButton();
-            Debug.Log("Open");
-
         }
         else
         {
             settingsOpen = false;
-            //mainCanvas.SetActive(true);
-            //settingsCanvas.SetActive(false);
             EventSystem.current.SetSelectedGameObject(continueButton.gameObject);
-
         }
     }
 
@@ -69,7 +56,6 @@ public class UI_PauseMenu : MonoBehaviour
             mainCanvas.SetActive(false);
             controlsCanvas.SetActive(true);
             controlsCanvas.GetComponent<UI_ControlsMenu>().SetFirstControlsButton();
-
         }
         else
         {
@@ -79,7 +65,6 @@ public class UI_PauseMenu : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(settingsButton.gameObject);
         }
     }
-
 
     public void ClosePauseUI()
     {
@@ -92,13 +77,10 @@ public class UI_PauseMenu : MonoBehaviour
         //for testing slots
         //SaveData data = new SaveData();
         //SaveSlotManager.SaveToSlot(0, data, true);
-
         currentSaveWindow = Instantiate(saveWindowPrefab,mainCanvas.gameObject.transform);
         var comp = currentSaveWindow.GetComponent<UI_SaveWindow>();
         comp.SetFirstSaveButton();
-        comp.isQuitting = false;
-        
-
+        comp.isQuitting = false;       
     }
 
     public void CloseSaveWindow()

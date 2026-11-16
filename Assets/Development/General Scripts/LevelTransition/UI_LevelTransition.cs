@@ -1,7 +1,5 @@
-using NUnit.Framework;
 using TMPro;
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class UI_LevelTransition : MonoBehaviour
@@ -12,7 +10,6 @@ public class UI_LevelTransition : MonoBehaviour
     public string sceneName;
     [SerializeField] private Button confirmButton;
     [SerializeField] private Button cancelButton;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         text.SetText(sceneName);
@@ -29,6 +26,4 @@ public class UI_LevelTransition : MonoBehaviour
     {
         canvasController.CloseLevelTransition();
     }
-
-
 }

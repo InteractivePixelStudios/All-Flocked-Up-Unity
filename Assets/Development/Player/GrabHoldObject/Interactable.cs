@@ -6,7 +6,6 @@ public class Interactable : MonoBehaviour
     [SerializeField]bool hasVFX;
     bool isGrabbed;
 
-
     public void ToggleVFXOn()
     {
         if (hasVFX && !isGrabbed)
@@ -26,5 +25,4 @@ public class Interactable : MonoBehaviour
         }
         else return;
     }
-
 }

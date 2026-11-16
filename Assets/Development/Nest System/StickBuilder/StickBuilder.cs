@@ -9,7 +9,6 @@ public class StickBuilder : MonoBehaviour
     private Transform nestLocation;
     private bool timerComplete = false;
     [SerializeField] private Vector3 offset = new Vector3(0,1,0);
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
 
@@ -18,13 +17,11 @@ public class StickBuilder : MonoBehaviour
         SpawnSticks();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!timerComplete)
         {
             StickTimer();
-
         }
         else return;
     }
@@ -38,7 +35,6 @@ public class StickBuilder : MonoBehaviour
         }
         else return;
     }
-
 
     public void SpawnSticks()
     {
@@ -56,14 +52,11 @@ public class StickBuilder : MonoBehaviour
         if (sticks.Count <=1)
         {
             BuildNest();            
-            Debug.Log("SticksCollected");
         }
         else
         {
             sticks.Remove(sticks[0]);
         }
-
-
     }
 
     private void BuildNest()
@@ -71,10 +64,5 @@ public class StickBuilder : MonoBehaviour
         nestBaseRef.isActiveNest = true;
         timerComplete = true;
         Destroy(this.gameObject);
-    }
-
-    private void ResetSticks()
-    {
-
     }
 }

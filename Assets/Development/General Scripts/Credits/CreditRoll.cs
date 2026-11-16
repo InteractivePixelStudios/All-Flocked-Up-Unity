@@ -3,11 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.VisualScripting;
-using System.Threading.Tasks;
-using System.Data;
 using UnityEngine.SceneManagement;
-using FMOD.Studio;
 
 public class CreditRoll : MonoBehaviour
 {
@@ -26,7 +22,6 @@ public class CreditRoll : MonoBehaviour
     [SerializeField] private float currentTime;
     [SerializeField] private bool inReady;
     [SerializeField] private bool outReady;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         nameText.alpha = 0f;
@@ -35,13 +30,11 @@ public class CreditRoll : MonoBehaviour
         skipButton.onClick.AddListener(SkipCredits);
     }
 
-    // Update is called once per frame
     void Update()
     {
         RollTimer();
         if (inReady &&!outReady) EffectIn();
         if (outReady) EffectOut();
-
     }
 
     private void RollTimer()
@@ -63,25 +56,19 @@ public class CreditRoll : MonoBehaviour
         currentTime -= Time.deltaTime;
     }
 
-
-
     private void CycleNames()
     {
         inReady = true;
         outReady = false;
-        Debug.Log("CycleCalled");
         nameText.SetText(nameList[nameIndex]);
         roleText.SetText(roleList[nameIndex]);
         nameIndex++;
-
     }
 
     private void CycleImage()
     {
         currentImage.sprite = splashImages[imageIndex];
         imageIndex++;
-
-
     }
 
     private void EffectIn()
@@ -96,8 +83,6 @@ public class CreditRoll : MonoBehaviour
             inReady = false;
             outReady = true;
         }
-
-
     }
 
     private void EffectOut()
@@ -117,9 +102,5 @@ public class CreditRoll : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
         DestroyImmediate(AudioWizard.Instance.gameObject);
-
     }
-
-
-
 }
