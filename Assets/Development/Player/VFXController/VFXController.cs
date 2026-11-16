@@ -11,7 +11,6 @@ public class VFXController : MonoBehaviour
     [SerializeField] private ParticleSystem diveParticles;
     [SerializeField] private CapsuleCollider capsuleCollider;
     [SerializeField] private ParticleSystem questCompleteParticles;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Start()
     {
@@ -20,7 +19,6 @@ public class VFXController : MonoBehaviour
         diveAction = input.actions.FindAction("Dive");
         if (diveAction != null) diveAction.performed += ToggleDiveStreaks;
     }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.relativeVelocity.magnitude > 10)

@@ -86,9 +86,7 @@ public class AnimController : MonoBehaviour
 
     private void ToggleAim()
     {
-
-        playerAnimator.SetBool("isAiming", GetIsAiming());
-        
+        playerAnimator.SetBool("isAiming", GetIsAiming());     
     }
 
     private bool GetIsFlying()
@@ -135,7 +133,6 @@ public class AnimController : MonoBehaviour
         return isGrounded;
 
     }
-
     private void ToggleIsGrounded()
     {
         playerAnimator.SetBool("isGrounded", GetIsGrounded());
@@ -154,7 +151,6 @@ public class AnimController : MonoBehaviour
     private bool GetIsSlowFlap()
     {
         return isSlowFlap;
-
     }
 
     private void ToggleSlowFlap()
@@ -170,10 +166,7 @@ public class AnimController : MonoBehaviour
 
     private void TogglePeckTrigger()
     {
-
-            playerAnimator.SetBool("isPecking",GetPeckTrigger());
-       
-
+       playerAnimator.SetBool("isPecking",GetPeckTrigger());    
     }
 
     private bool GetFlapTrigger()

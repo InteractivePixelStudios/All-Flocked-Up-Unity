@@ -15,8 +15,6 @@ public class UI_DebugMenu : MonoBehaviour
     void Start()
     {
         debugManager = new();
-        giveLevelButton.onClick.AddListener(debugManager.GivePlayerLevel);
-        maxLevelButton.onClick.AddListener(debugManager.GivePlayerMaxLevel);
     }
 
     private void OnStaminaToggled()

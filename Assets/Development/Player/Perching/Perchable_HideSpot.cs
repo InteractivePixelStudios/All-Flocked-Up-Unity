@@ -6,13 +6,11 @@ public class Perchable_HideSpot : MonoBehaviour
     [SerializeField] private PerchableObject_Tree treeRef;
     [SerializeField] private bool readyToHide;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         treeRef = GetComponentInParent<PerchableObject_Tree>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         treeRef.isHiding = readyToHide;

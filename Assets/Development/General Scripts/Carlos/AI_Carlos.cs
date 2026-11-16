@@ -1,7 +1,5 @@
-
 using System.Collections.Generic;
 using UnityEngine;
-
 public class AI_Carlos : EnemyBaseComponent
 {
     [SerializeField] private GameObject player;
@@ -20,10 +18,8 @@ public class AI_Carlos : EnemyBaseComponent
     [SerializeField] private float shootDistance;
     [SerializeField] private float shootForce;
     [SerializeField] private float shootTimer = 2;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
         for (int i = 0; i < bulletCount; i++)
         {
             bulletPrefab = Instantiate(bulletPrefab, bulletSpawnPoint.transform.position, bulletSpawnPoint.transform.rotation);
@@ -32,8 +28,6 @@ public class AI_Carlos : EnemyBaseComponent
             bulletIndex++;
         }
     }
-
-    // Update is called once per frame
     void Update()
     {
         if (player != null)
@@ -43,7 +37,6 @@ public class AI_Carlos : EnemyBaseComponent
             AimAtPlayer();
         }
     }
-
 
     private void DetectPlayer()
     {
@@ -58,9 +51,7 @@ public class AI_Carlos : EnemyBaseComponent
             lockTimer -= Time.deltaTime;
             if (lockTimer > 0) { aimLocked = true; PullOutGun(); AimAtPlayer(); } else { aimLocked = false; lockTimer = 3f; }
         }
-
     }
-
     private void PullOutGun()
     {
         if (spawnedGun == null)
@@ -69,11 +60,9 @@ public class AI_Carlos : EnemyBaseComponent
         }
         else return;
     }
-
     private void AimAtPlayer()
     {
         var direction = targetPos - spawnedGun.transform.position;
-        //spawnedGun.transform.LookAt(direction);
         if (shootTimer >= 0) { shootTimer -= Time.deltaTime; }
         if (player != null && aimLocked && spawnedGun != null)
         {
@@ -89,7 +78,6 @@ public class AI_Carlos : EnemyBaseComponent
             }
         }
     }
-
     private void Shoot(Vector3 dir)
     {
         if (player != null && aimLocked && gunPrefab != null && bulletIndex >= 0)
@@ -99,16 +87,13 @@ public class AI_Carlos : EnemyBaseComponent
             bulletPool[bulletIndex - 1].gameObject.GetComponent<Rigidbody>().AddForce(dir * shootForce, ForceMode.Impulse);
             bulletPool.RemoveAt(bulletIndex - 1);
             bulletIndex--;
-
         }
 
     }
-
     private void HitReact()
     {
 
     }
-
     private void ReloadPool()
     {
         for (int i = 0; i < bulletCount; i++)
@@ -119,7 +104,6 @@ public class AI_Carlos : EnemyBaseComponent
             bulletIndex++;
         }
     }
-
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -128,7 +112,6 @@ public class AI_Carlos : EnemyBaseComponent
 
         }
     }
-
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -137,7 +120,6 @@ public class AI_Carlos : EnemyBaseComponent
 
         }
     }
-
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Poop"))

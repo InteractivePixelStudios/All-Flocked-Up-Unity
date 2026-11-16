@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -8,23 +7,18 @@ public class HAS_Controller : MonoBehaviour
     [SerializeField] float countdownTimer;
     [SerializeField] bool countdownComplete = false;
     [SerializeField] private HAS_Info currentInfo;
-
     [SerializeField] private float hideSpotCount;
     private List<GameObject> hideSpots = new();
-
     [SerializeField] private float npcCount;
     [SerializeField] private HAS_NPC npcPrefab;
     private List<HAS_NPC> hideNPCs = new();
     [SerializeField] private GameObject spawnLocation;
-
     [SerializeField] private float gameTimer;
     [SerializeField] bool isStarted;
     [SerializeField] bool timerComplete;
     [SerializeField] private int foundCount;
     bool gameComplete;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         canvasController = FindAnyObjectByType<UI_CanvasController>();
@@ -115,8 +109,7 @@ public class HAS_Controller : MonoBehaviour
         {
             canvasController.SpawnHASComplete();
             ResetGame();
-        }
-        
+        }       
     }
 
     void HASFailed()
@@ -166,6 +159,4 @@ public class HAS_Controller : MonoBehaviour
             Destroy(npc.gameObject);
         }
     }
-
-
 }

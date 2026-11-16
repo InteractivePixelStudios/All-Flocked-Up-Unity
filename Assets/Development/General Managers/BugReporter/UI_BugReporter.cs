@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.Networking;
-using System.Collections;
 using UnityEngine.UI;
 using TMPro;
 
@@ -14,7 +12,6 @@ public class UI_BugReporter : MonoBehaviour
     [SerializeField] private Button submitButton;
     private GameObject bugReportManager;
     private BugReportManager reportManagerRef;
-
     private void Start()
     {
         submitButton.onClick.AddListener(SubmitBugReport);

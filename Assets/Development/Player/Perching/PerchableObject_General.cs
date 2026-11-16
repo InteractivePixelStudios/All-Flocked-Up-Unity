@@ -7,13 +7,12 @@ public class PerchableObject_General : MonoBehaviour, I_Perchable
     [SerializeField] private GameObject perchPoint;
     [SerializeField] private GameObject placementMesh;
     bool jumpCheck => playerRef.GetComponent<PlayerGroundMovement>().GetIsFlying();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         placementMesh.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isPerching)

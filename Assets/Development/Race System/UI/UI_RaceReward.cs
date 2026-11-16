@@ -13,20 +13,13 @@ public class UI_RaceReward: MonoBehaviour
 {
     [SerializeField] private Button acceptRewardButton;
     [SerializeField] private UI_CanvasController canvasController;
-
-
     [SerializeField] private TextMeshProUGUI raceNameText;
     [SerializeField] private TextMeshProUGUI raceRewardText;
     [SerializeField] private Image newRecordImage;
-
     [SerializeField] private RaceBase raceBase;
     public Dictionary<GameObject, float> racerList = new();
-
     [SerializeField] private ScrollRect nameTextBox;
     [SerializeField] private ScrollRect timeTextBox;
-
-    //[SerializeField] private float currentY = 0f;
-
     [SerializeField] private GameObject textPrefab;
     [SerializeField] private List<string> racerNames = new();
 
@@ -35,8 +28,6 @@ public class UI_RaceReward: MonoBehaviour
         canvasController = instance;
     }
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         newRecordImage.gameObject.SetActive(false);
@@ -53,7 +44,6 @@ public class UI_RaceReward: MonoBehaviour
         if (!racerList.ContainsKey(racer))
         {
             racerList.Add(racer, time);
-            Debug.Log($"Added {racer.name} to dictionary");
         }
     }
 
@@ -61,10 +51,8 @@ public class UI_RaceReward: MonoBehaviour
     {
         float startY = -40f;
         float offset = racerList.Count > 3 ? 40f : 20f;
-
         foreach (var racer in racerList)
         {
-            Debug.Log(racer.Key.name);
             var randInt = Random.Range(0, racerList.Count);
             var name = racerNames[randInt];
             CreateRacerText(name, startY, offset);
@@ -73,7 +61,6 @@ public class UI_RaceReward: MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     public void GetReward()
     {
         LocalizedString localizedString = new LocalizedString
@@ -81,12 +68,10 @@ public class UI_RaceReward: MonoBehaviour
             TableReference = "AFU_Races",
             TableEntryReference = raceBase.raceData.name
         };
-
         localizedString.GetLocalizedStringAsync().Completed += handle =>
         {
             raceNameText.SetText(handle.Result);
         };
-
         raceRewardText.SetText(raceBase.raceData.raceRewards.ToString()); 
     }
     //compares best race time with given and updates if faster
@@ -102,13 +87,11 @@ public class UI_RaceReward: MonoBehaviour
     //gives rewards to player
     private void AcceptReward()
     {
-        Debug.Log("Clicked");
         raceBase.completedRaces.Add(raceBase.raceData);
         if (raceBase.currentRaceGiver.GetComponent<RaceGiver>() != null)
         {
             Destroy(raceBase.currentRaceGiver.GetComponent<RaceGiver>());
         }
-
         canvasController.CloseRaceRewards();
         raceBase.StartPlayerMove();
     }
@@ -119,10 +102,8 @@ public class UI_RaceReward: MonoBehaviour
         TextMeshProUGUI name = textObject.GetComponent<TextMeshProUGUI>();
         RectTransform textTransform = textObject.GetComponent<RectTransform>();
         SetRacerTextTransform(textTransform, startY,offset);
-
         SetRacerTextTransform(textTransform, startY, offset);
         SetRacerText(name, text);
-
         return name;
     }
 
@@ -132,7 +113,6 @@ public class UI_RaceReward: MonoBehaviour
         transform.anchorMax = new Vector2(0.5f, 1);
         transform.pivot = new Vector2(0.5f, 1);
         transform.anchoredPosition = new Vector2(0, startY);
-
     }
 
     private void SetRacerText(TextMeshProUGUI text, string name)
@@ -146,10 +126,8 @@ public class UI_RaceReward: MonoBehaviour
         GameObject textObject = Instantiate(textPrefab, timeTextBox.content);
         TextMeshProUGUI timeText = textObject.GetComponent<TextMeshProUGUI>();
         RectTransform textTransform = textObject.GetComponent<RectTransform>();
-
         SetTimeTextTransform(textTransform, startY, offset);
         SetTimeText(timeText, racerTime);
-
         return timeText;
     }
 
@@ -167,7 +145,4 @@ public class UI_RaceReward: MonoBehaviour
         var labelText = timeText.GetComponentInChildren<TextMeshProUGUI>();
         if (labelText != null) labelText.SetText(time);
     }
-
-
-
 }

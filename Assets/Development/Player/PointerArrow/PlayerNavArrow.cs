@@ -9,7 +9,6 @@ public class PlayerNavArrow : MonoBehaviour
     [SerializeField] private GameObject arrowSpawnPoint;
     [SerializeField]bool isEnabled;
 
-    // Update is called once per frame
     void Update()
     {
         if (spawnedArrow == null) return;
@@ -48,7 +47,6 @@ public class PlayerNavArrow : MonoBehaviour
     private void SpawnArrow(GameObject destination)
     {
         spawnedArrow = Instantiate(arrowPrefab, arrowSpawnPoint.transform.position,arrowSpawnPoint.transform.rotation);
-        //spawnedArrow.transform.SetParent(arrowSpawnPoint.transform,true);
         SetDestination(destination);
     }
 

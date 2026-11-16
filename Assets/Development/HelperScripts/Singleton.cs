@@ -23,7 +23,6 @@ public abstract class Singleton<T> : MonoBehaviour where T : Component
                 instance = obj.AddComponent<T>();
                 DontDestroyOnLoad(obj);
             }
-
             return instance;
         }
     }
@@ -36,7 +35,6 @@ public abstract class Singleton<T> : MonoBehaviour where T : Component
             DontDestroyOnLoad(gameObject);
             return;
         }
-
         Destroy(gameObject);
     }
 }

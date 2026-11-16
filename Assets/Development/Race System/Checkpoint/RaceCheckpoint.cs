@@ -8,12 +8,11 @@ public class RaceCheckpoint : MonoBehaviour
     [SerializeField] private RaceBase raceBase;
     public string raceID;
     public int checkpointNumber;
-    private GameObject hitObject;
-   private int num;
+    private int num;
     [SerializeField] private ParticleSystem checkpointParticle;
     [SerializeField] private ParticleSystem finishParticles;
     [SerializeField]private bool isFinish;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     private void Start()
     {
         num = raceBase.activeCheckpoints.Count;
@@ -34,11 +33,8 @@ public class RaceCheckpoint : MonoBehaviour
             raceBase.UpdateCheckpoints(checkpointNumber);
             raceBase.UpdatePlayerArrow(checkpointNumber);
             checkpointParticle.Play();
-            GetComponent<MeshRenderer>().enabled = false;
-            
-            
+            GetComponent<MeshRenderer>().enabled = false;                       
         }
-
     }
 
     public void DestroyCheckpoint()
@@ -46,26 +42,20 @@ public class RaceCheckpoint : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    //trigger enter will call above function and destroy checkpoint
     private void OnTriggerEnter(Collider other)
     {
         if (!raceBase.raceStarted) return;
         //this triggers early ....why me....activeCheckpoints get removed when hit so try to save count on Start but still nothing
         if (checkpointNumber >= num || isFinish) { raceBase.AddRacerToCompleted(other.gameObject, this); finishParticles.Play(); }
-
         if (other.gameObject.CompareTag("Player"))
         {
             TriggerCheckpoint();
         }
-
         if (other.gameObject.CompareTag("Race"))
         {
             CPURacer racer = other.gameObject.GetComponent<CPURacer>();
             racer.NextCheckpoint(); 
-
         }
-
-        
     }
 
 

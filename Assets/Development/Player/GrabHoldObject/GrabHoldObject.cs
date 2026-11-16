@@ -14,26 +14,17 @@ public class GrabHoldObject : MonoBehaviour
     [SerializeField] private Vector3 grabOffset;
     [SerializeField] private bool isHoldingObject = false;
     [SerializeField] private PlayerPeckComponent peckComp;
-
     InputAction grabAction;
     PlayerInput playerInput;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         peckComp = GetComponent<PlayerPeckComponent>();
         playerInput = GetComponentInParent<PlayerInput>();
-
         grabAction = playerInput.actions.FindAction("Interact");
-
         if(grabAction != null )
         {
-
-                grabAction.started += OnGrabPressed;
-
-
-            
-            //grabAction.started += CallHold;
-
+           grabAction.started += OnGrabPressed;
         }
     }
 
@@ -58,9 +49,6 @@ public class GrabHoldObject : MonoBehaviour
         }
     }
 
-
-
-
     private void TryGrabObject()
     {
 
@@ -69,10 +57,7 @@ public class GrabHoldObject : MonoBehaviour
         {
             grabbedObject = hit.collider.gameObject;
             PickUpObject(grabbedObject);
-
         }
-
-
     }
 
     private void PickUpObject(GameObject obj)
@@ -89,7 +74,6 @@ public class GrabHoldObject : MonoBehaviour
         }
         finally
         {
-
             obj.transform.position = grabPoint.transform.localPosition+ offset;
             obj.transform.rotation = grabPoint.transform.localRotation;
             grabOffset = offset;
@@ -100,9 +84,7 @@ public class GrabHoldObject : MonoBehaviour
             obj.GetComponent<Interactable>().ToggleVFXOn();
             HoldGrabbedObject(obj, offset);
         }
-
     }
-
 
     private void HoldGrabbedObject(GameObject obj, Vector3 offset)
     {
@@ -110,11 +92,8 @@ public class GrabHoldObject : MonoBehaviour
         {
             obj.transform.localPosition = Vector3.zero;
             obj.transform.rotation = grabPoint.transform.rotation;
-
         }
     }
-
-
 
     private void ReleaseGrabbedObject()
     {
@@ -124,6 +103,5 @@ public class GrabHoldObject : MonoBehaviour
         grabbedObject.GetComponent<BoxCollider>().enabled = true;
         grabbedObject.GetComponent<Interactable>().ToggleVFXOff();
         grabbedObject = null;
-
     }
 }

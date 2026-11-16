@@ -20,6 +20,5 @@ public class StatManager : Singleton<StatManager>
         {
             _stats.LevelStat((StatInfo.stats)i, statincr[i]);
         }
-
     }
 }

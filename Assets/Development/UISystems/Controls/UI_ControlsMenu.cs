@@ -34,11 +34,9 @@ public class UI_ControlsMenu : UI_PauseMenu
     [SerializeField] private GameObject currentNotif;
     [SerializeField] private bool isRebinding = false;
     [SerializeField] private string currentAction = " ";
-
     private InputActionRebindingExtensions.RebindingOperation rebindOperation;
     private InputAction currentInputAction;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         closeControlsButton.onClick.AddListener(OnControlsOpen);
@@ -49,8 +47,7 @@ public class UI_ControlsMenu : UI_PauseMenu
         LoadBindings();
         InitKeybindBox();
         InitMouseSensSlider();
-        InitControllerSensSlider();
-        
+        InitControllerSensSlider();        
     }
 
     protected void LoadBindings()
@@ -59,7 +56,6 @@ public class UI_ControlsMenu : UI_PauseMenu
         if (!string.IsNullOrEmpty(json))
             inputActions.LoadBindingOverridesFromJson(json);
     }
-
 
     public void SetFirstControlsButton()
     {
@@ -70,7 +66,6 @@ public class UI_ControlsMenu : UI_PauseMenu
     {
         mouseSensSlider.onValueChanged.RemoveAllListeners();
         mouseSens = PlayerPrefs.GetFloat("MouseSens", 1f);
-
         mouseSensSlider.SetValueWithoutNotify(mouseSens);
         meshSensText.SetText(mouseSens.ToString("F2"));
         mouseSensSlider.onValueChanged.AddListener((_) => OnMouseSensChanged());
@@ -98,7 +93,6 @@ public class UI_ControlsMenu : UI_PauseMenu
     {
         controllerSensSlider.onValueChanged.RemoveAllListeners();
         controllerSens = PlayerPrefs.GetFloat("ControllerSens", 1f);
-
         controllerSensSlider.SetValueWithoutNotify(controllerSens);
         controlSensText.SetText(controllerSens.ToString("F2"));
         controllerSensSlider.onValueChanged.AddListener((_) => OnControllerSensChanged());
@@ -156,11 +150,9 @@ public class UI_ControlsMenu : UI_PauseMenu
         int index = Mathf.Clamp(PlayerPrefs.GetInt("ControlImage",0),0,1);
         controlImageDropdown.SetValueWithoutNotify(index);
         controlImageDropdown.RefreshShownValue();
-
         SetControlImage(index);
         PlayerPrefs.SetInt("ControlImage",index);
         PlayerPrefs.Save();
-
         controlImageDropdown.onValueChanged.AddListener(OnControlImageChanged);
     }
 
@@ -168,8 +160,7 @@ public class UI_ControlsMenu : UI_PauseMenu
     {
         SetControlImage(index);
         PlayerPrefs.SetInt("ControlImage", index);
-        PlayerPrefs.Save();
-        
+        PlayerPrefs.Save();      
     }
 
     protected void SetControlImage(int index)
@@ -202,8 +193,7 @@ public class UI_ControlsMenu : UI_PauseMenu
                         break;
                     }
                 }
-            }
-        
+            }    
         return keybinds;
     }
 
@@ -221,7 +211,6 @@ public class UI_ControlsMenu : UI_PauseMenu
             button.actionText.SetText(bind.Key);
             button.keyText.SetText(bind.Value);
             button.controlsRef = this;
-
         }
     }
 

@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Net;
-using Unity.VisualScripting;
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.PlayerLoop;
 enum E_ConsumableType {Health, Stamina,Poop,Custom }
 enum E_ReactionType { Health, Stamina,Poop,Speed,Flight,FlySpeed,Custom }
 public class ConsumableBase : MonoBehaviour
@@ -15,42 +11,20 @@ public class ConsumableBase : MonoBehaviour
     [SerializeField] private E_ConsumableType consumableType;
     [SerializeField] private bool hasReaction;
     [SerializeField] private E_ReactionType reactionType;
-
     [SerializeField] private int positiveEffectValue;
     [SerializeField] private int positiveModifier;
     [SerializeField] private int negativeEffectValue;
     [SerializeField] private int negativeModifier;
     [SerializeField] private List<PoopType> poopTypeList = new();
     [SerializeField] private PoopType poopTypeToGive;
-    //[Header("Health")]
-    //[SerializeField] private bool isHealth;
     [SerializeField] PlayerHealth playerHealth;
     [SerializeField] StaminaSystem playerStamina;
     [SerializeField] private Pooper playerPoop;
-    //[SerializeField] private int healthToRegen;
-    //[SerializeField] private int healthToLose;
-    //[Header("Stamina")]
-    //[SerializeField] private bool isStamina;
-    //[SerializeField]private float staminaToRegen;
-    //[SerializeField] private float staminaToLose;
-    //[Header("Poop")]
-    //[SerializeField] private bool isPoop;
-    //[SerializeField] private int poopToRegen;
-    //[SerializeField] private int poopToLose;
-    //[Header("Custom")]
-    //[SerializeField] private bool isCustom;
-    //[Header("ReactionModifiers")]
-    //[SerializeField] private int healthModifier;
-    //[SerializeField] private float staminaModifier;
-    //[SerializeField] private int poopModifier;
-    //[SerializeField] private float groundSpeedModifier;
     [SerializeField] private bool canFly;
     [SerializeField] private bool canPoop;
-    //[SerializeField] private float flightSpeedModifier;
     [Header("Particles")]
     [SerializeField] private ParticleSystem consumableParticles;
     public Sprite invSprite;
-
 
     private void Start()
     {
@@ -110,8 +84,7 @@ public class ConsumableBase : MonoBehaviour
     private void ReactionEffect(E_ReactionType reactionType)
     {
         switch (reactionType)
-        {
-            
+        {            
             case E_ReactionType.Health:
                 HealEffect(negativeEffectValue, negativeModifier);
                 break;
@@ -132,9 +105,7 @@ public class ConsumableBase : MonoBehaviour
                 break;
             case E_ReactionType.FlySpeed:
                 FlySpeedEffect(negativeEffectValue);
-                break;
-           
-
+                break;         
         }
     }
     //check for if object has reaction
@@ -168,8 +139,7 @@ public class ConsumableBase : MonoBehaviour
         {
 
         }
-        else
-            Debug.Log("");
+        else;
     }
 
     //poop effect
@@ -180,10 +150,7 @@ public class ConsumableBase : MonoBehaviour
         {
             playerPoop.CallReloadPoop();
             playerPoop.SetPoopType(poopTypeToGive);
-            Debug.Log("Poop Type = " + poopTypeToGive);
-
         }
-
     }
     //custom effect
     private void CustomEffect(int health, int healthMod,  bool canFly, bool canPoop)
@@ -200,8 +167,7 @@ public class ConsumableBase : MonoBehaviour
         {
 
         }
-        else
-            Debug.Log("");
+        else;
     }
 
     //speed effect

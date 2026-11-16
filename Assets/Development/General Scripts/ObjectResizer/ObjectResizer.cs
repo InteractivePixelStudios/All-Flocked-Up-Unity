@@ -1,31 +1,16 @@
-
 using UnityEngine;
-
-
 public class ObjectResizer : MonoBehaviour
 {
     [SerializeField] private Transform mesh;
     [SerializeField] private float detectRadius = 1f;
-   // [SerializeField] private float maxDistance =1f;
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private float distance;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         mesh = GetComponent<Transform>();
         mesh.localScale = Vector3.one * (distance*2);
 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-            //CheckForPlayer();
-        
-
-    }
-
     private void CheckForPlayer()
     {
         Collider[] colliders = Physics.OverlapSphere(this.transform.position, detectRadius, playerLayer);

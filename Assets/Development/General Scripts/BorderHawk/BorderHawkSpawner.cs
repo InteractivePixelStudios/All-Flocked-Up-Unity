@@ -1,8 +1,6 @@
 using NUnit.Framework;
 using UnityEngine;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 
 public class BorderHawkSpawner : MonoBehaviour
 {
@@ -14,7 +12,6 @@ public class BorderHawkSpawner : MonoBehaviour
     [SerializeField] private Vector3 spawnPoint;
     [SerializeField] private UI_HudController hudRef;
     bool isSpawned;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         hudRef = FindAnyObjectByType<UI_HudController>();
@@ -24,12 +21,6 @@ public class BorderHawkSpawner : MonoBehaviour
             zones.Add(zone);
         }
     }
-
-    private void Update()
-    {
-
-    }
-
      void SpawnHawk()
     {
         spawnPoint = playerRef.transform.position + offset;
@@ -39,7 +30,6 @@ public class BorderHawkSpawner : MonoBehaviour
             isSpawned = true;
         }
         else return;
-
     }
 
     private void ShowWarning()
@@ -55,8 +45,7 @@ public class BorderHawkSpawner : MonoBehaviour
     void DestroyHawk()
     {
         if(spawnedHawk != null)
-        {
-            
+        {           
             Destroy(spawnedHawk.gameObject);
             isSpawned = false;
         }
@@ -68,8 +57,7 @@ public class BorderHawkSpawner : MonoBehaviour
         {
             playerRef = other.gameObject;
             ShowWarning();
-        }
-        
+        }        
     }
 
     private void OnTriggerStay(Collider other)
@@ -85,7 +73,6 @@ public class BorderHawkSpawner : MonoBehaviour
         }
         else return;
     }
-
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Player"))
@@ -95,6 +82,4 @@ public class BorderHawkSpawner : MonoBehaviour
             hudRef.readyToSpawn = true;
         }
     }
-
-
 }

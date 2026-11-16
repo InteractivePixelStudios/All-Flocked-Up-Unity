@@ -8,11 +8,9 @@ public class PlayerPerchSystem : MonoBehaviour
     [SerializeField] private IconToggle icon;
     public bool isReady;
     bool isPerching;
-    //[SerializeField] private float checkDistance = 5f;
     public bool moveLeft;
     public bool moveRight;
     float x;
-
     PlayerInput playerInput;
     InputAction moveAction;
 
@@ -20,15 +18,11 @@ public class PlayerPerchSystem : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
         moveAction = playerInput.actions.FindAction("Move");
-
     }
-
 
     void Update()
     {
-
         if (isPerching && x < 0f) { currentPerchPoint.MovePosition(x); }
-
     }
 
     public void Perch(I_Perchable currentPerchPoint)
@@ -36,7 +30,6 @@ public class PlayerPerchSystem : MonoBehaviour
         if (isReady)
         {
             InteractWithPerch(currentPerchPoint);
-            Debug.Log("InteractWithPerch");
         }
     }
 
@@ -51,14 +44,10 @@ public class PlayerPerchSystem : MonoBehaviour
             if(PerchableObject_Tree.Equals(currentPerchPoint, true))
             {
                 currentPerchPoint.StartPerch();
-            }
-            
+            }            
         }
         finally
         {
-            
         }
     }
-
-
 }

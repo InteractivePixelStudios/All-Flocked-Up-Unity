@@ -1,12 +1,8 @@
 using UnityEngine;
-
 public class HAS_NPC : NPCBase
 {
     HAS_Controller controller;
     bool isFound;
-
-
-
     public void CallFound()
     {
         if (controller == null) { controller = FindAnyObjectByType<HAS_Controller>(); }
@@ -22,5 +18,4 @@ public class HAS_NPC : NPCBase
     {
         base.SetNewHome(home);
     }
-
 }

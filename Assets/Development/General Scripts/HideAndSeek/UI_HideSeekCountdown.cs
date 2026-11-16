@@ -9,12 +9,10 @@ public class UI_HideSeekCountdown : MonoBehaviour
     UI_CanvasController canvasController;
     [SerializeField] Image startIcon;
     [SerializeField] TextMeshProUGUI countText;
-
     float timer = 5f;
     float fadeTime = 2f;
     bool countStarted;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         canvasController = FindAnyObjectByType<UI_CanvasController>();
@@ -22,13 +20,10 @@ public class UI_HideSeekCountdown : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (countStarted)
         {
-
-
             timer -= Time.deltaTime;
             UpdateCountText(timer);
             if (timer > 5f)
@@ -50,7 +45,6 @@ public class UI_HideSeekCountdown : MonoBehaviour
             }
         }
     }
-
     void FadeIn()
     {
         var color = overlay.color;
@@ -60,7 +54,6 @@ public class UI_HideSeekCountdown : MonoBehaviour
         color.a = finalA;
         overlay.color = color;
     }
-
     void FadeOut()
     {
         var color = overlay.color;
@@ -70,7 +63,6 @@ public class UI_HideSeekCountdown : MonoBehaviour
         color.a = finalA;
         overlay.color = color;
     }
-
     async void ToggleStartImage()
     {
         startIcon.gameObject.SetActive(true);
@@ -79,7 +71,6 @@ public class UI_HideSeekCountdown : MonoBehaviour
         StartCount();
 
     }
-
     void UpdateCountText(float time)
     {
         if(time > 5 && time < 0) { countText.SetText(" "); }
@@ -89,19 +80,15 @@ public class UI_HideSeekCountdown : MonoBehaviour
         }
         else return;
     }
-
     async void StartCount()
     {
         countStarted = true;
         await Task.Delay(2000);
         FadeIn();
     }
-
     void DestroyCanvas()
     {
         canvasController.currentHASCountdown = null;
         Destroy(this.gameObject);
     }
-
-
 }

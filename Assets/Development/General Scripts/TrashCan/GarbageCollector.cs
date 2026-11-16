@@ -1,12 +1,10 @@
 using UnityEngine;
-
 public class GarbageCollector : MonoBehaviour
 {
     private int trashCount;
     [SerializeField] private GameObject trash1;
     [SerializeField] private GameObject trash2;
     [SerializeField] private GameObject trash3;
-
     private void Start()
     {
         ClearTrash();
@@ -27,7 +25,6 @@ public class GarbageCollector : MonoBehaviour
             trash3 .SetActive(true);
         }
         else return;
-
     }
 
     public void ClearTrash()
@@ -36,7 +33,6 @@ public class GarbageCollector : MonoBehaviour
         trash2.SetActive(false);
         trash3.SetActive(false);
     }
-
 
     private void OnTriggerEnter(Collider other)
     {

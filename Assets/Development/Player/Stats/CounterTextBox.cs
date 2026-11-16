@@ -11,7 +11,6 @@ public class CounterTextBox : MonoBehaviour
 
     private void Start()
     {
-
         UpdateText();
     }
 

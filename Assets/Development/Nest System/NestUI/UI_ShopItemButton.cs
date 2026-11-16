@@ -8,7 +8,6 @@ public class UI_ShopItemButton : MonoBehaviour
     private TextMeshProUGUI costText;
     private Image itemImage;
     public Sprite itemSprite;
-
     public Button itemButton  => GetComponent<Button>();
 
     private void Start()
@@ -16,5 +15,4 @@ public class UI_ShopItemButton : MonoBehaviour
         costText.SetText(cost.ToString());
         itemImage.sprite = itemSprite;
     }
-
 }

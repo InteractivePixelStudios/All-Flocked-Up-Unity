@@ -9,23 +9,10 @@ using Unity.VisualScripting;
 public class PlayerWingventory : MonoBehaviour
 {
    public int playerTrinketQuantity = 0;
-    public int playerKeychainQuantity = 0;
-    public int playerPrestoQuantity = 0;
+   public int playerKeychainQuantity = 0;
+   public int playerPrestoQuantity = 0;
    public Dictionary<string,int> inventory = new();
-    [SerializeField] private List<ConsumableBase> consumables = new();
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        //var item = FindAnyObjectByType<ConsumableBase>();
-        //AddItemToInv(item.gameObject, 1);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   [SerializeField] private List<ConsumableBase> consumables = new();
 
     public void AddItemToInv(string item, int quantity)
     {
@@ -61,7 +48,6 @@ public class PlayerWingventory : MonoBehaviour
                 RemoveItemFromInv(item.Key, item.Value);
             }
         }
-
     }
 
     public void UseConsumeItem(string item)
@@ -76,7 +62,6 @@ public class PlayerWingventory : MonoBehaviour
                 }
             }
         }
-
     }
 
     public void DropItem(string item)
@@ -129,5 +114,4 @@ public class PlayerWingventory : MonoBehaviour
             else continue;
         }return null;
     }
-
 }

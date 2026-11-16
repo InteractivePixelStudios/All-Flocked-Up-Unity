@@ -22,15 +22,12 @@ public class UI_RaceCountdown : MonoBehaviour
         {
             raceBase = FindAnyObjectByType<RaceBase>();
         }
-
-
     }
     // Update is called once per frame
     void Update()
     {
         GetTimer();
-        SetImage();
-       
+        SetImage();      
     }
 
     private void GetTimer()
