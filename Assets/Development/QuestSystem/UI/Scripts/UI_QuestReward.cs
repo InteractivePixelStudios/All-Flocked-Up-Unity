@@ -42,7 +42,7 @@ public class UI_QuestReward : MonoBehaviour
         };
     }
 
-    public void SetRewardText(int trinket, int exp,string[] reward)
+    public void SetRewardText(int trinket, string[] reward)
     {
         trinketText.SetText(trinket.ToString());
         if(reward != null)

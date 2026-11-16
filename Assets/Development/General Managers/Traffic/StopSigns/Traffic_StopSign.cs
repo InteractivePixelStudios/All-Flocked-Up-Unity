@@ -3,60 +3,65 @@ using UnityEngine;
 public class Traffic_StopSign : MonoBehaviour
 {
     private VehicleBase stoppedVehicle;
-    public BoxCollider redLightBox;
-    [SerializeField] private float stopDelay;
+
+    [SerializeField] private float stopDelay = 3f;
     [SerializeField] private float currentTime;
     [SerializeField] private bool isStopped;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        redLightBox = GetComponent<BoxCollider>();
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if (stoppedVehicle != null)
-        {
+        if (stoppedVehicle == null || !isStopped)
+            return;
 
-            if (isStopped && currentTime > 0)
-            {
-                currentTime -= Time.deltaTime;
-                stoppedVehicle.isStopped = true;
-            }
-            if (!isStopped || currentTime < 0)
-            {
-                isStopped = false;
-                stoppedVehicle.isStopped = false;
-                StartMoveAfterDelay();
-                currentTime = stopDelay;
-            }
-            if (!this.isActiveAndEnabled)
-            {
-                stoppedVehicle.isStopped = false;
-            }
+        currentTime -= Time.deltaTime;
+
+        if (currentTime <= 0f)
+        {
+            StartMoveAfterDelay();
         }
-        else return;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Vehicle"))
-        {
-            stoppedVehicle = other.gameObject.GetComponent<VehicleBase>();
-            stoppedVehicle.isStopped = true;
-            isStopped = true;
-            currentTime = stopDelay;
-            Debug.Log("triggerHit");
-        }
+        VehicleBase vehicle = other.GetComponentInParent<VehicleBase>();
+
+        if (vehicle == null || stoppedVehicle != null)
+            return;
+
+        stoppedVehicle = vehicle;
+        isStopped = true;
+        currentTime = stopDelay;
+
+        stoppedVehicle.StopVehicle();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        VehicleBase vehicle = other.GetComponentInParent<VehicleBase>();
+
+        if (vehicle == null || vehicle != stoppedVehicle)
+            return;
+
+        stoppedVehicle = null;
+        isStopped = false;
+        currentTime = 0f;
     }
 
     public void StartMoveAfterDelay()
     {
-        stoppedVehicle.MoveVehicleToLocation();
+        if (stoppedVehicle == null || !isStopped)
+            return;
+
+        isStopped = false;
+        stoppedVehicle.StartMove();
     }
 
+    private void OnDisable()
+    {
+        if (stoppedVehicle != null && isStopped)
+            stoppedVehicle.StartMove();
+
+        stoppedVehicle = null;
+        isStopped = false;
+    }
 }
-
-

@@ -40,10 +40,10 @@ public class QuestRuntimeInstance
         
     }
 
-    public int GetCachedExp()
-    {
-        return cachedExp;
-    }
+    //public int GetCachedExp()
+    //{
+    //    return cachedExp;
+    //}
 
     public int GetCachedTrinkets()
     {
@@ -61,7 +61,7 @@ public class QuestRuntimeInstance
         questLog = GameObject.FindAnyObjectByType<QuestLog>();
         player = questLog.gameObject;
         arrowPointer = player.GetComponent<PlayerNavArrow>();
-        expComp = player.GetComponent<EXPSystem>();
+       // expComp = player.GetComponent<EXPSystem>();
         invComp = player.GetComponent<PlayerWingventory>();
         canvasController = GameObject.FindAnyObjectByType<UI_CanvasController>();
 
@@ -143,7 +143,7 @@ public class QuestRuntimeInstance
         foreach (var obj in objectives)
         {
             if (objectiveProgress[objectiveID] + amount > obj.quantityToComplete) { return; }
-            cachedExp += obj.bonusEXP;
+           // cachedExp += obj.bonusEXP;
         }
         GetObjectiveDestination(objectiveID); 
 
@@ -188,7 +188,7 @@ public class QuestRuntimeInstance
     public void AdvanceStage()
     {
         
-        cachedExp += questData.stages[currentStageIndex].expReward;
+        //cachedExp += questData.stages[currentStageIndex].expReward;
         cachedTrinkets += questData.stages[currentStageIndex].trinketReward;
         currentStageIndex++;
         GetQuestObjects();
@@ -217,7 +217,7 @@ public class QuestRuntimeInstance
     {
         if(currentStageIndex >= questData.stages.Length) { dialogueComp.SetIsWaiting(false); }
         arrowPointer.DestroyArrow();
-        expComp.IncrementXP(cachedExp);
+        //expComp.IncrementXP(cachedExp);
         invComp.AddTrinketToInv(cachedTrinkets, 0);
         GiveItemReward();
         questLog.CheckForCompletedQuests();
