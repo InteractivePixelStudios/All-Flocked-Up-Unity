@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
-  cam: {fileID: 0}
+  camRef: {fileID: 0}
   enemies: []
   timerCanvas: {fileID: 5240851892648539506, guid: e017759075689f24f8a36b3bfd58f710, type: 3}
   activeTimerInstance: {fileID: 0}
@@ -94,9 +94,23 @@ MonoBehaviour:
   activeMapCanvas: {fileID: 0}
   languageSelectPrefab: {fileID: 5662701699369037092, guid: d4b3212bc06cc8b499602cdc053e9fc8, type: 3}
   activeLanguageCanvas: {fileID: 0}
-  input: {fileID: 0}
+  playerState: {fileID: 0}
   respawnCanvasPrefab: {fileID: 4318662841707859134, guid: a7afa39afeeb21b4c954129c1e324f98, type: 3}
   activeRespawnCanvas: {fileID: 0}
   levelTransitionPrefab: {fileID: 7592592986424255734, guid: a9d87d571d68d6c4e98bdffae29987a4, type: 3}
   activeLevelTransition: {fileID: 0}
   cachedLevelName: 
+  transitionObj: {fileID: 0}
+  promptPrefab: {fileID: 0}
+  activeTutPrompt: {fileID: 0}
+  cachedTutPromptIndex: 0
+  cachedIntroIndex: 0
+  skinSelectorPrefab: {fileID: 0}
+  activeSkinSelector: {fileID: 0}
+  uiOpen: 0
+  hasCountdownPrefab: {fileID: 3634230155014922774, guid: 3999779df68d88a45a877607716f362d, type: 3}
+  currentHASCountdown: {fileID: 0}
+  hasCompletePrefab: {fileID: 3065056702213998674, guid: 8dfb16998aa77b34888c1a0159800d2a, type: 3}
+  currentHASComplete: {fileID: 0}
+  paintCanvasPrefab: {fileID: 4206112148006906713, guid: e165f94ebb6a4b440b4db45d1b39d4a5, type: 3}
+  paintInstance: {fileID: 0}

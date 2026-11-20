@@ -27,6 +27,7 @@ public class AI_Cat : EnemyBaseComponent
     public float pounceRange = 3f;
     public Vector3 pounceForce;
     public float pounceCooldown = 3f;
+    bool isPouncing;
     [Header("Waypoints")]
     [SerializeField] private List<Waypoint> waypoints;
     public Waypoint currentNode;
@@ -77,14 +78,15 @@ public class AI_Cat : EnemyBaseComponent
         {
             case EnemyState.Patrolling:
                 if (isHit) currentState = EnemyState.Hit;
-                if (playerStealth.GetStealth()<10 && distanceToPlayer < detectionRange) currentState = EnemyState.Chasing;
+                else if (playerStealth.GetStealth()<10 && distanceToPlayer < detectionRange) currentState = EnemyState.Chasing;
                 break;
 
             case EnemyState.Chasing:
                 if (isHit) currentState = EnemyState.Hit;
-                else if (distanceToPlayer < swatRange) currentState = EnemyState.Swat;
-                else if (distanceToPlayer < pounceRange) currentState = EnemyState.Pounce;
+                else if (distanceToPlayer < swatRange && swatCooldown <=0) currentState = EnemyState.Swat;
+                else if (distanceToPlayer < pounceRange && pounceCooldown <=0) currentState = EnemyState.Pounce;
                 else if (distanceToPlayer > detectionRange) currentState = EnemyState.Patrolling;
+                else if (distanceToPlayer > loseSightRange) currentState = EnemyState.Patrolling;
                 break;
 
             case EnemyState.Swat:
@@ -109,11 +111,16 @@ public class AI_Cat : EnemyBaseComponent
                 if (!isHit) currentState = EnemyState.Retreat;
                 break;
         }
+
+    }
+
+    private void FixedUpdate()
+    {
         switch (currentState)
         {
             case EnemyState.Patrolling:
                 canSeePlayer = false;
-                if(!isStopped) MoveCatToLocation();
+                if (!isStopped) MoveCatToLocation();
                 if (distanceToNode < 0.5f) ChooseNextDirection(currentNode);
                 break;
             case EnemyState.Chasing:
@@ -140,7 +147,7 @@ public class AI_Cat : EnemyBaseComponent
                 StopMove();
                 break;
             case EnemyState.Hit:
-                if(!hitActive) HitReact();
+                if (!hitActive) HitReact();
                 break;
             case EnemyState.Retreat:
                 GetRetreat();
@@ -180,6 +187,12 @@ public class AI_Cat : EnemyBaseComponent
         hitActive = true;
         CallHit();
         await Task.Delay(750);
+        if (this == null || !isActiveAndEnabled) return;
+        if (currentState != EnemyState.Hit)
+        {
+            hitActive = false;
+            return;
+        }
         isHit = false;
         hitActive = false;
         currentState = EnemyState.Retreat;
@@ -217,7 +230,7 @@ public class AI_Cat : EnemyBaseComponent
     {
         if (!isRetreating)
         {
-            var radius = 2000f;
+            var radius = 15f;
             Vector3 randomDirection = Random.insideUnitSphere * radius;
             randomDirection.y = 0f;
             retreatLocation = transform.position + randomDirection;
@@ -228,7 +241,7 @@ public class AI_Cat : EnemyBaseComponent
 
     void RetreatToLocation()
     {
-        transform.position = Vector3.MoveTowards(transform.position, retreatLocation, chaseSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, retreatLocation, retreatSpeed * Time.deltaTime);
         if (Vector3.Distance(transform.position, retreatLocation) < 5)
         {
             isRetreating = false;
@@ -244,12 +257,14 @@ public class AI_Cat : EnemyBaseComponent
 
     protected void ChasePlayer()
     {
+        if (isPouncing) return;
         Vector3 targetPos = player.transform.position;
-        targetPos.y = transform.position.y;
-        transform.position = Vector3.MoveTowards(transform.position, targetPos, chaseSpeed * Time.deltaTime);
-        Vector3 dir = (targetPos - transform.position).normalized;
-        dir.y = 0;
-        if (dir != Vector3.zero)  transform.forward = dir;
+        targetPos.y = rigidbodyComp.position.y;
+        Vector3 newPosition = Vector3.MoveTowards( rigidbodyComp.position, targetPos, chaseSpeed * Time.fixedDeltaTime );
+        rigidbodyComp.MovePosition(newPosition);
+        Vector3 direction = targetPos - rigidbodyComp.position;
+        direction.y = 0f;
+        if (direction.sqrMagnitude > 0.001f) transform.forward = direction.normalized;
         animator.SetFloat("Speed", chaseSpeed);
     }
 
@@ -261,32 +276,40 @@ public class AI_Cat : EnemyBaseComponent
         comp.damage = 3;
         spawnedCollider.includeLayers = LayerMask.GetMask("Player");
         spawnedCollider.isTrigger = true;
-        spawnedCollider.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        spawnedCollider.radius = 0.1f;
         swatCooldown = 3f;
-        await Task.Delay(3000);
+        await Task.Delay(500);
         Destroy(spawnedCollider);
         Destroy(comp);
     }
 
     protected async void Pounce()
     {
+        if (isPouncing) return;
+        isPouncing = true;
         animator.SetTrigger("isPounce");
         rigidbodyComp.linearVelocity = Vector3.zero;
         await Task.Delay(1000);
+        if (this == null || !isActiveAndEnabled || currentState == EnemyState.Hit || isHit)
+        {
+            isPouncing = false;
+            return;
+        }
         Vector3 dirToPlayer = (player.transform.position-transform.position).normalized;
         dirToPlayer.y = 0;
         Vector3 force = dirToPlayer * pounceForce.z + Vector3.up * pounceForce.y;
         rigidbodyComp.AddForce(force,ForceMode.Impulse);
         var spawnedCollider = swatColliderParent.AddComponent<SphereCollider>();
         spawnedCollider.includeLayers = LayerMask.GetMask("Player");
-        spawnedCollider.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+        spawnedCollider.radius = 0.1f;
         spawnedCollider.isTrigger = true;
         var comp = spawnedCollider.gameObject.AddComponent<KickComponent>(); //used as damage comp
         comp.damage = 3;
-        await Task.Delay(3000);
+        await Task.Delay(500);
         Destroy(spawnedCollider);
         pounceCooldown = 3f;
         Destroy(comp);
+        isPouncing = false;
     }
 
     protected virtual void SetMoveToLocation(Waypoint location)
@@ -299,7 +322,7 @@ public class AI_Cat : EnemyBaseComponent
     {
         if (currentNode == null || rigidbodyComp == null)return;
         Vector3 direction = (currentNode.transform.position - transform.position).normalized;
-        rigidbodyComp.MovePosition(transform.position + direction * patrolSpeed * Time.deltaTime);
+        rigidbodyComp.MovePosition(transform.position + direction * patrolSpeed * Time.fixedDeltaTime);
         transform.forward = direction;
         animator.SetFloat("Speed", patrolSpeed);
     }

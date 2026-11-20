@@ -12,12 +12,9 @@ public class RespawnController : MonoBehaviour
     public UI_CanvasController canvasController;
 
     [Header("Respawn Nest Configuration")]
-    [SerializeField] private NestBase[] respawnNests; 
-    [SerializeField] private int currentNestIndex = 0; 
+    [SerializeField] private NestBase homeNest;
 
     [Header("Buttons")]
-    [SerializeField] private Button nextButton;
-    [SerializeField] private Button prevButton;
     [SerializeField] private Button respawnButton;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -30,14 +27,14 @@ public class RespawnController : MonoBehaviour
             startLoc = transform.position;
             ragdoll = player.GetComponent<RagdollController>();
         }
-        respawnNests = FindObjectsByType<NestBase>();
+        homeNest = FindAnyObjectByType<NestBase>();
         respawnButton.onClick.AddListener(RespawnPlayer);
         respawnText.SetText("HOME");
     }
 
     public void RespawnPlayer()
     {
-        if (respawnNests.Length == 0)
+        if (homeNest!=null)
         {
             ragdoll.ToggleRagdollOff();
             player.transform.position = startLoc; 
@@ -47,7 +44,7 @@ public class RespawnController : MonoBehaviour
             return; // No nests to respawn to
         }
         ragdoll.ToggleRagdollOff();
-        player.transform.position = respawnNests[currentNestIndex].transform.position; 
+        player.transform.position = homeNest.transform.position; 
         player.GetComponent<PlayerHealth>().currentHealth = player.GetComponent<PlayerHealth>().maxHealth; 
         Camera.main.GetComponent<CameraController>().SwitchToPlayer();
         canvasController.CloseRespawn();
