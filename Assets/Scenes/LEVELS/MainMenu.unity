@@ -1476,10 +1476,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3569887676213852972, guid: 8f031cbb55cf82e41952f6a772e05997, type: 3}
-      propertyPath: cam
-      value: 
-      objectReference: {fileID: 763325450}
     - target: {fileID: 5285818879667603142, guid: 8f031cbb55cf82e41952f6a772e05997, type: 3}
       propertyPath: m_Name
       value: QuestPackage
@@ -3100,7 +3096,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8524410934233700579, guid: 12e22784bd499694aa434fb0359fcf83, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 535822335
+      value: 4293918719
       objectReference: {fileID: 0}
     - target: {fileID: 8524410934233700579, guid: 12e22784bd499694aa434fb0359fcf83, type: 3}
       propertyPath: m_projectionMatrixMode
@@ -5716,31 +5712,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1487221359}
   m_SourcePrefab: {fileID: 100100000, guid: df83e22fa51b9c0479c2d1b88b4b4764, type: 3}
---- !u!1 &920786737 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1910674787607842549, guid: 5a7f7ff10fffaa542940e77e689d3c5c, type: 3}
-  m_PrefabInstance: {fileID: 1819415858}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &920786740
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 920786737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61632f83684f8a647bf556ef4ca2510e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HumanSkinSelector
-  bodyMesh: {fileID: 0}
-  hairMesh: {fileID: 0}
-  browMesh: {fileID: 0}
-  shirtMesh: {fileID: 0}
-  pantsMesh: {fileID: 0}
-  shoeMesh: {fileID: 0}
-  noseMesh: {fileID: 0}
-  earMesh: {fileID: 0}
 --- !u!1001 &924222008
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6098,6 +6069,14 @@ PrefabInstance:
     - target: {fileID: 655625950154952515, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: collisionLayers.m_Bits
       value: 528846872
+      objectReference: {fileID: 0}
+    - target: {fileID: 690359639471727024, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: rideLayer.m_Bits
+      value: 536870912
+      objectReference: {fileID: 0}
+    - target: {fileID: 690359639471727024, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
+      propertyPath: paintLayer.m_Bits
+      value: 2147483648
       objectReference: {fileID: 0}
     - target: {fileID: 1781996746508539891, guid: b0eda1aad6587d3438aa95f0a831a8af, type: 3}
       propertyPath: startDialogueIndex
@@ -7180,7 +7159,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 8b8dcc43a86ddae49a6574c0f4363850, type: 2}
     - target: {fileID: 3528140245696314382, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.76852083
+      value: 0.7607084
       objectReference: {fileID: 0}
     - target: {fileID: 3528140245696314382, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
       propertyPath: m_AnchorMax.y
@@ -7188,7 +7167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3528140245696314382, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.72
+      value: 0.7154792
       objectReference: {fileID: 0}
     - target: {fileID: 3528140245696314382, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
       propertyPath: m_AnchorMin.y
@@ -7196,7 +7175,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3528140245696314382, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -9.200012
+      value: -3.2000122
       objectReference: {fileID: 0}
     - target: {fileID: 3528140245696314382, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
       propertyPath: m_SizeDelta.y
@@ -7208,7 +7187,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3528140245696314382, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3528140245696314382, guid: e41ea0bea3ce8d54b90793a8209cf593, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -12071,7 +12050,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: RaceOfBase
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4693314046519308625, guid: 154288f1fda7f5a44a0b0973eb760f26, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -14024,10 +14004,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1910674787607842549, guid: 5a7f7ff10fffaa542940e77e689d3c5c, type: 3}
-      insertIndex: 4
-      addedObject: {fileID: 920786740}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a7f7ff10fffaa542940e77e689d3c5c, type: 3}
 --- !u!114 &1819415859 stripped
 MonoBehaviour:

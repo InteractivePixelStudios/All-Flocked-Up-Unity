@@ -19,6 +19,7 @@ public class PlayerInteraction : MonoBehaviour
     public LayerMask perchLayer;
     public LayerMask rideLayer;
     public LayerMask hideSeekLayer;
+    public LayerMask paintLayer;
     public QuestLog questLog; // assign in Inspector
     
     //lazy init pattern here, helps fix some issues
@@ -177,6 +178,17 @@ public class PlayerInteraction : MonoBehaviour
                 }
             }
 
+            if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, paintLayer))
+            {
+                var painter = hit.collider.GetComponentInChildren<PaintInteraction>();
+                if (painter != null)
+                {
+                    painter.OpenPainter();
+                    
+                    Debug.Log("OpenPaint");
+                }
+            }
+
         if (Physics.Raycast(transform.position + (transform.up / 4), transform.forward, out hit, interactionRange, raceLayer))
         {
             var raceGiver = hit.collider.GetComponent<RaceGiver>();
@@ -277,8 +289,7 @@ public class PlayerInteraction : MonoBehaviour
                 canvasController.ShowToDoPanel();
             }
             else { canvasController.HideToDoPanel();}
-        }
-        
+        }      
     }
 
         void OpenMap(InputAction.CallbackContext ctx)

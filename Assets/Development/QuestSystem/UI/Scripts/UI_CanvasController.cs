@@ -11,6 +11,7 @@ using UnityEngine.UI;
 using System.Linq;
 using NUnit.Framework;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 
 public class UI_CanvasController : MonoBehaviour
 {
@@ -121,6 +122,9 @@ public class UI_CanvasController : MonoBehaviour
 
     [SerializeField] private UI_HASComplete hasCompletePrefab;
     public UI_HASComplete currentHASComplete;
+
+    [SerializeField] private UI_PaintCanvas paintCanvasPrefab;
+    public UI_PaintCanvas paintInstance;
 
     private void Start()
     {
@@ -797,11 +801,7 @@ public class UI_CanvasController : MonoBehaviour
         if(currentHASComplete==null)
         {
             currentHASComplete = Instantiate(hasCompletePrefab);
-            if (!isUIMap)
-            {
-                ShowPlayerCursor();
-            }
-
+            ShowPlayerCursor();         
         }
     }
 
@@ -814,4 +814,24 @@ public class UI_CanvasController : MonoBehaviour
         }
     }
 
+    public void OpenPaint(PaintInteraction interaction,PaintDecal decal)
+    {
+        if (paintInstance == null)
+        {
+            paintInstance = Instantiate(paintCanvasPrefab);
+            paintInstance.SetCanvasController(this);
+            paintInstance.SetPaintInteraction(interaction);
+            paintInstance.SetDecal(decal);
+            ShowPlayerCursor();
+        }
+    }
+
+    public void ClosePaint()
+    {
+        if(paintInstance != null)
+        {
+            Destroy(paintInstance.gameObject);
+            HidePlayerCursor();
+        }
+    }
 }
